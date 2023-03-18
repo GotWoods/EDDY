@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "EdiParser": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

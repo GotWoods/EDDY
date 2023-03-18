@@ -1,0 +1,28 @@
+﻿#Envelope (Edi Notepad is helpful)
+#ISA = x12 (most use this)
+#UNA = Edifact (europe uses this more)
+
+ISA*00* *00* *02*SCAC *01*006922827HUH1 *080903*1132*U*00401*000010067*0*P*>~
+GS*QM*SCAC*006922827HUH1*20080903*1132*9951*X*004010~
+
+ST*214*099510001~					#Transaction Set Header (214 is file type?)
+	B10*4735103*5365205*SCAC~			#Beginning Segment for Transportation Carrier
+	L11*5365205*LO~						#Identfiers
+	L11*01*QN~
+	L11*392651*PO~
+	L11*392651*PO~
+	N1*SH*HUHTAMAKI FSBU~               #Name
+	N3*5566 NEW VIENNA ROAD~            #Address Information
+	N4*NEW VIENNA*OH*45159*US~          #Geographic Location
+	N1*CN*HUHTAMAKI~                    #Name
+	N3*100 HIGGENSON AVE~               #Address Information
+	N4*LINCOLN*RI*02865*US~             #Geographic Location
+	LX*1~								#Transaction Set Line Number (I assume this starts a loop)
+
+	AT7***AA*NA*20080903*16000000*ET~	#Status Details
+	MS1*NEW VIENNA*OH*US~				#Equipment Location
+	AT8*G*L*6240*402~					#Shipment Weight, Packaging and Quantity Data. Weight Qualifier, Weight Unit Code, Weight, Lading Quantity, Volumne Unit Qualifier, Volume
+	EFI*ZZ*NAME~						
+SE*17*099510001~					#Transaction Set Trailer (seems to have the same number at the ST section)
+
+
