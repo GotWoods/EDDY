@@ -82,7 +82,7 @@ public class ISA_InterchangeControlHeader : EdiX12Segment
         result.Append(ComponentElementSeparator);  //1 characters
         var resultAsString = result.ToString();
 		if (!resultAsString.EndsWith(options.LineEnding))
-			resultAsString += options.LineEnding;
+		    resultAsString += options.LineEnding;
         return resultAsString;
 
 		/*

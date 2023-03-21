@@ -12,6 +12,7 @@ public class Date
     public DateTime DateTime { get; set; }
 
     public bool IncludeSecondsInDateTime { get; set; }
+    public bool IncludeMillisecondsInDateTime { get; set; }
     public bool IncludeTime { get; set; } = true;
     public string TimeCode { get; set; }
     public static Date From(G62_DateTime input)
@@ -25,6 +26,14 @@ public class Date
 
         var format = "yyyyMMddHHmm";
         var dateAndTime = input.Date + input.Time;
+
+        if (dateAndTime.Length == 16)
+        {
+            format = "yyyyMMddHHmmssff";
+            dates.IncludeSecondsInDateTime = true;
+            dates.IncludeMillisecondsInDateTime = true;
+        }
+        
         if (dateAndTime.Length == 14)
         {
             format = "yyyyMMddHHmmss";
@@ -41,6 +50,8 @@ public class Date
         return dates;
     }
 
+    
+
     public G62_DateTime ToG62()
     {
         var g62 = new G62_DateTime();
@@ -50,7 +61,9 @@ public class Date
 
         if (IncludeTime)
         {
-            if (IncludeSecondsInDateTime)
+            if (IncludeMillisecondsInDateTime)
+                g62.Time = DateTime.ToString("HHmmssff");
+            else if (IncludeSecondsInDateTime)
                 g62.Time = DateTime.ToString("HHmmss");
             else
                 g62.Time = DateTime.ToString("HHmm");

@@ -24,7 +24,7 @@ public class Edi204_MotorCarrierLoadTender
     public InterlineInformation InterlineInformation { get; set; }
     public List<NTE_Note> Notes { get; set; } = new();
     public List<BillOfLadingHandlingInfo> BillOfLadingHandlingInfo { get; set; } = new();
-    public L3_TotalWeightAndCharges Totals { get; set; } = new();
+    public L3_TotalWeightAndCharges Totals { get; set; }
     public B2_BeginningSegmentForShipmentInformationTransaction ShipmentInformation { get; set; } = new();
 
     public string ApplicationType { get; set; }
@@ -184,53 +184,8 @@ public class Edi204_MotorCarrierLoadTender
                     new("OtherEquipmentDetails", new[] { "N7", "N7A", "N7B", "MEA", "M7" }) //0380
                 }),
             new("Summary", new[] { "LX", "L4" }) //1000
-    });
+        });
 
-
-        //var billOfLadingRules = new ("BillOfLading", new[] {"AT5", "RTT", "C3"}); //0050
-        //var partyRules = new GroupingRule("Parties", new[] { "N1", "N2", "N3", "N4", "L11", "G61" }); //0100
-        //var equipmentDetailRules = new GroupingRule("Equipment Details", new[] { "N7", "N7A", "N7B", "MEA", "M7" }); //0200
-
-        // var stopDetailsRules = new GroupingRule("StopOffDetails", new[] { "S5", "L11", "G62", "AT8", "LAD", "NTE", "PLD" },
-        //     new List<GroupingRule>
-        //     {
-        //         new("HandlingRequirements", new[] { "AT5", "RTT", "C3" }), //0305
-        //         new("StopParties", new[] { "N1", "N2", "N3", "N4", "G61" }), //0310
-        //         new("ShipmentData", new[] { "L5", "AT8", "L11", "MEA", "PER", "L4" }, new List<GroupingRule>() //0320
-        //         {
-        //             new("OrderDetails", new[] { "AT5", "RTT", "C3" }), //323
-        //             new("Contact", new[] { "G61", "L11", "LH6" }, new List<GroupingRule>() //325
-        //             {
-        //                 new("HazMat", new[] { "LH1", "LH2", "LH3", "LFH", "LEP", "LH4", "LHT" }) //330
-        //             })
-        //         }),
-        //         new("OrderInformationDetail", new[] { "OID", "G62", "LAD" }, new List<GroupingRule>() //0350
-        //         {
-        //             new("OrderData", new[] { "L5", "AT8", "L4" }, new List<GroupingRule>() //360
-        //             {
-        //                 new("Contact", new[] { "G61", "L11", "LH6" }, new List<GroupingRule>() //365
-        //                 {
-        //                     new("HazMat", new[] { "LH1", "LH2", "LH3", "LFH", "LEP", "LH4", "LHT" }) //370
-        //                 })
-        //             })
-        //         }),
-        //         new("OtherEquipmentDetails", new[] { "N7", "N7A", "N7B", "MEA", "M7" }) //0380
-        //     }
-        // ); //0300
-        ///* */stopDetailsRules.AddSubRule("HandlingRequirements", "AT5", "RTT", "C3"); //0305
-        ///* */stopDetailsRules.AddSubRule("StopParties", "N1", "N2", "N3", "N4", "G61"); //0310
-        ///* */var shipmentDataRules = stopDetailsRules.AddSubRule("ShipmentData", "L5", "AT8"); //0320
-        // /*   */shipmentDataRules.AddSubRule("HandlingRequirements", "AT5", "RTT", "C3"); //0323
-        // /*   */var contactRules = shipmentDataRules.AddSubRule("Contact", "G61", "L11", "LH6"); //0325
-        // /*     */contactRules.AddSubRule("HazMat", "LH1", "LH2", "LH3", "LFH", "LEP", "LH4", "LHT"); //0330
-        // /* */var stopOrderInfoRule = stopDetailsRules.AddSubRule("StopOrderInformation", "OID", "G62", "LAD"); //0350
-        // /*   */var orderDetailRules = stopOrderInfoRule.AddSubRule("OrderDetails", "L5", "AT8", "L4"); //0360
-        // /*   */var orderDetailsContactRules = orderDetailRules.AddSubRule("OrderDetailContact", "G61", "L11", "LH6"); //0365
-        // /*     */orderDetailsContactRules.AddSubRule("HazmatDetails", "LH1", "LH2", "LH3", "LFH", "LEP", "LH4", "LHT"); //0370
-        // /* */stopDetailsRules.AddSubRule("OtherEquipmentDetails", "N7", "N7A", "N7B", "MEA", "M7"); //0380
-
-        //var summary = new GroupingRule("Summary", new[] { "LX", "L4" }); //1000
-        //var rootRules = new List<GroupingRule> { billOfLadingRules, partyRules, equipmentDetailRules, stopDetailsRules, summary };
 
         var groupReader = new GroupedSectionReader(section);
         var groupedSection = groupReader.Read(root);
@@ -245,7 +200,7 @@ public class Edi204_MotorCarrierLoadTender
         //StopOffDetails
         // new("HandlingRequirements", new[] { "AT5", "RTT", "C3" }), //0305
         // new("StopParties", new[] { "N1", "N2", "N3", "N4", "G61" }), //0310
-        // new("ShipmentData", new[] { "L5", "AT8", "L11", "MEA", "L4" }, new List<GroupingRule>() //0320 //TODO: PER code implementation
+        // new("ShipmentDetail", new[] { "L5", "AT8", "L11", "MEA", "L4" }, new List<GroupingRule>() //0320 //TODO: PER code implementation
         // {
         //     new("OrderDetails", new[] { "AT5", "RTT", "C3" }), //323
         //     new("Contact", new[] { "G61", "L11", "LH6" }, new List<GroupingRule>() //325
@@ -337,73 +292,194 @@ public class Edi204_MotorCarrierLoadTender
                 stop.Entity = entity;
             }
 
-            foreach (var shipmentData in stopSegment.Children.Where(x=>x.Rule.Name== "ShipmentDetail"))
-            {
-                var detail = new ShipmentInformationDetail();
-                foreach (var segment in shipmentData.Segments)
-                {
-                    switch (segment)
-                    {
-                        case L5_DescriptionMarksAndNumbers l5:
-                            detail.DescriptionMarksAndNumbers = l5;
-                            break;
-                        case AT8_ShipmentWeightPackagingAndQuantityData at8:
-                            detail.ShipmentWeightPackagingQuantity = at8;
-                            break;
-                        case L11_BusinessInstructionsAndReferenceNumber l11:
-                            detail.ReferenceNumbers.Add(l11);
-                            break;
-                        case MEA_Measurements mea:
-                            detail.Measurements.Add(mea);
-                            break;
-                        case L4_Measurement l4:
-                            detail.Measuresment = l4;
-                            break;
-                    }
-                }
-                stop.ShipmentDetails.Add(detail);
-            }
+            //started by an L5
+            foreach (var shipmentData in stopSegment.Children.Where(x => x.Rule.Name == "ShipmentDetail")) 
+                stop.ShipmentDetails.Add(ProcessShipmentInformationDetail(shipmentData));
 
-            foreach (var orderInfo in stopSegment.Children.Where(x => x.Rule.Name == "OrderInformationDetail"))
-            {
-                var detail = new OrderInformationDetail();
-
-                foreach (var segment in orderInfo.Segments)
-                    switch (segment)
-                    {
-                        case OID_OrderInformationDetail oid:
-                            detail.Weight = oid.Weight;
-                            detail.PurchaseOrderNumber = oid.PurchaseOrderNumber;
-                            detail.WeightUnitCode = oid.WeightUnitCode;
-                            detail.PackagingFormCode = oid.PackagingFormCode;
-                            detail.Quantity = oid.Quantity;
-                            detail.ReferenceIdentification = oid.ReferenceIdentification;
-                            break;
-                        case G62_DateTime g62:
-                            break;
-                        case LAD_LadingDetail lad: //this looks to mirror the OID but use different codes, it can repeat though
-                            detail.LadingInformation.Add(LadingInformation.FromLAD(lad));
-                            break;
-                    }
-
-                foreach (var l5Group in orderInfo.Children.Where(x => x.Rule.Name == "OrderDetails"))
-                foreach (var segment in l5Group.Segments)
-                    switch (segment)
-                    {
-                        case L5_DescriptionMarksAndNumbers l5:
-                            detail.DescriptionAndMarks.Add(DescriptionMarksAndNumbers.CreateFromL5(l5));
-                            break;
-                        case AT8_ShipmentWeightPackagingAndQuantityData at8:
-                            //detail.ShipmentWeightPackagingInformation = at8;
-                            break;
-                    }
-
-                stop.Details.Add(detail);
-            }
+            //started by an OID
+            foreach (var orderInfo in stopSegment.Children.Where(x => x.Rule.Name == "OrderInformationDetail")) 
+                stop.Details.Add(ProcessOrderInformationDetail(orderInfo));
 
             //var otherEquipmentDetails = stopSegment.Children.FirstOrDefault(x=>x.Rule.Name== "OtherEquipmentDetails")
             Stops.Add(stop);
         }
+    }
+
+    private ShipmentInformationDetail ProcessShipmentInformationDetail(Group shipmentData)
+    {
+        // new("ShipmentDetail", new[] { "L5", "AT8", "L11", "MEA", "L4" }, new List<GroupingRule>() //0320 //TODO: PER code implementation
+        // {
+        //     new("OrderDetails", new[] { "AT5", "RTT", "C3" }), //323
+        //     new("Contact", new[] { "G61", "L11", "LH6" }, new List<GroupingRule>() //325
+        //     {
+        //         new("HazMat", new[] { "LH1", "LH2", "LH3", "LFH", "LEP", "LH4", "LHT" }) //330
+        //     })
+        // }),
+
+        var detail = new ShipmentInformationDetail();
+        foreach (var segment in shipmentData.Segments)
+            switch (segment)
+            {
+                case L5_DescriptionMarksAndNumbers l5:
+                    detail.DescriptionMarksAndNumbers = l5;
+                    break;
+                case AT8_ShipmentWeightPackagingAndQuantityData at8:
+                    detail.ShipmentWeightPackagingQuantity = at8;
+                    break;
+                case L11_BusinessInstructionsAndReferenceNumber l11:
+                    detail.ReferenceNumbers.Add(l11);
+                    break;
+                case MEA_Measurements mea:
+                    detail.Measurements.Add(mea);
+                    break;
+                case L4_Measurement l4:
+                    detail.Measuresment = l4;
+                    break;
+            }
+
+        //TODO: this is pretty the same as the OrderDetails
+        foreach (var contactGroup in shipmentData.Children.Where(x=>x.Rule.Name == "Contact"))
+        {
+            var contact = new ShipmentDetailContact();
+            foreach (var contactSegment in contactGroup.Segments)
+                switch (contactSegment)
+                {
+                    case G61_Contact g61:
+                        contact.Info = g61;
+                        break;
+                    case L11_BusinessInstructionsAndReferenceNumber l11:
+                        break;
+                    case LH6_HazardousCertification lh6:
+                        break;
+                }
+
+            foreach (var hazMatGroup in contactGroup.Children.Where(x => x.Rule.Name == "HazMat"))
+            {
+                var hazMatInfo = new HazMatInfo();
+                foreach (var hazMatSegment in hazMatGroup.Segments)
+                {
+                    switch (hazMatSegment)
+                    {
+                        case LH1_HazardousIdentificationInformation lh1:
+                            hazMatInfo.IdentificationInfo = lh1;
+                            break;
+                        case LH2_HazardousClassificationInformation lh2:
+                            hazMatInfo.Classiciation.Add(lh2);
+                            break;
+                        case LH3_HazardousMaterialShippingNameInformation lh3:
+                            hazMatInfo.ShippingName.Add(lh3);
+                            break;
+                        case LFH_FreeFormHazardousMaterialInformation lfh:
+                            hazMatInfo.FreeFormInfo.Add(lfh);
+                            break;
+                        case LEP_EPARequiredData lep:
+                            hazMatInfo.EpaData.Add(lep);
+                            break;
+                        case LH4_CanadianDangerousRequirements lh4:
+                            hazMatInfo.CanadianRequierments = lh4;
+                            break;
+                        case LHT_TransborderHazardousRequirements lht:
+                            hazMatInfo.TransborderRequirements.Add(lht);
+                            break;
+                    }
+                }
+                contact.HazMatInfo.Add(hazMatInfo);
+            }
+
+            detail.Detail.Add(contact);
+        }
+        return detail;
+       
+
+    }
+
+    private OrderInformationDetail ProcessOrderInformationDetail(Group orderInfo)
+    {
+        var detail = new OrderInformationDetail();
+
+        foreach (var segment in orderInfo.Segments)
+            switch (segment)
+            {
+                case OID_OrderInformationDetail oid:
+                    detail.Summary = oid;
+                    break;
+                case G62_DateTime g62:
+                    break;
+                case LAD_LadingDetail lad: //this looks to mirror the OID but use different codes, it can repeat though
+                    detail.LadingInformation.Add(LadingInformation.FromLAD(lad));
+                    break;
+            }
+
+        foreach (var l5Group in orderInfo.Children.Where(x => x.Rule.Name == "OrderData"))
+        {
+            var orderDetail = new OrderDetail();
+            foreach (var segment in l5Group.Segments)
+                switch (segment)
+                {
+                    case L5_DescriptionMarksAndNumbers l5:
+                        orderDetail.DescriptionMarksAndNumbers = l5;
+                        break;
+                    case AT8_ShipmentWeightPackagingAndQuantityData at8:
+                        orderDetail.ShipmentWeightPackagingAndQuantityData = at8;
+                        break;
+                }
+
+            //G61 group
+            foreach (var contactGroup in l5Group.Children.Where(x => x.Rule.Name == "Contact"))
+            {
+                var contact = new ShipmentDetailContact();
+                foreach (var contactSegment in contactGroup.Segments)
+                    switch (contactSegment)
+                    {
+                        case G61_Contact g61:
+                            contact.Info = g61;
+                            break;
+                        case L11_BusinessInstructionsAndReferenceNumber l11:
+                            break;
+                        case LH6_HazardousCertification lh6:
+                            break;
+                    }
+
+                foreach (var hazMatGroup in contactGroup.Children.Where(x=>x.Rule.Name== "HazMat"))
+                {
+                    var hazMatInfo = new HazMatInfo();
+                    foreach (var hazMatSegment in hazMatGroup.Segments)
+                    {
+                        switch (hazMatSegment)
+                        {
+                            case LH1_HazardousIdentificationInformation lh1:
+                                hazMatInfo.IdentificationInfo = lh1;
+                                break;
+                            case LH2_HazardousClassificationInformation lh2:
+                                hazMatInfo.Classiciation.Add(lh2);
+                                break;
+                            case LH3_HazardousMaterialShippingNameInformation lh3:
+                                hazMatInfo.ShippingName.Add(lh3);
+                                break;
+                            case LFH_FreeFormHazardousMaterialInformation lfh:
+                                hazMatInfo.FreeFormInfo.Add(lfh);
+                                break;
+                            case LEP_EPARequiredData lep:
+                                hazMatInfo.EpaData.Add(lep);
+                                break;
+                            case LH4_CanadianDangerousRequirements lh4:
+                                hazMatInfo.CanadianRequierments = lh4;
+                                break;
+                            case LHT_TransborderHazardousRequirements lht:
+                                hazMatInfo.TransborderRequirements.Add(lht);
+                                break;
+                        }
+                    }
+                    contact.HazMatInfo.Add(hazMatInfo);
+                }
+
+                orderDetail.Contacts.Add(contact);
+            }
+
+            detail.OrderDetails.Add(orderDetail);
+        }
+
+        return detail;
     }
 
 
@@ -547,13 +623,11 @@ public class Edi204_MotorCarrierLoadTender
                 });
 
                 if (stop.Entity.Address3 != null)
-                {
                     s.Segments.Add(new N3_PartyLocation
                     {
                         AddressInformation = stop.Entity.Address3,
                         AddressInformation2 = stop.Entity.Address4
                     });
-                }
 
                 s.Segments.Add(new N4_GeographicLocation
                 {
@@ -564,8 +638,6 @@ public class Edi204_MotorCarrierLoadTender
                 });
 
                 foreach (var contact in stop.Entity.Contacts) s.Segments.Add(contact.ToG61());
-
-           
             }
 
             foreach (var detail in stop.ShipmentDetails)
@@ -573,29 +645,120 @@ public class Edi204_MotorCarrierLoadTender
                 s.Segments.Add(detail.DescriptionMarksAndNumbers);
                 s.Segments.Add(detail.ShipmentWeightPackagingQuantity);
                 //323
-                foreach (var referenceNumber in detail.ReferenceNumbers)
+
+                foreach (var shipmentDetailContact in detail.Detail)
                 {
-                    s.Segments.Add(referenceNumber);
+                    s.Segments.Add(shipmentDetailContact.Info);
+                    //TODO: Reference numbers L11
+
+                    foreach (var certification in shipmentDetailContact.HazardosCertifications)
+                    {
+                        s.Segments.Add(certification);
+                    }
+
+                    //TODO: this is the same as the orderinfo
+                    foreach (var hazMatInfo in shipmentDetailContact.HazMatInfo)
+                    {
+                        if (hazMatInfo.IdentificationInfo != null)
+                            s.Segments.Add(hazMatInfo.IdentificationInfo);
+                        foreach (var classificationInformation in hazMatInfo.Classiciation)
+                        {
+                            s.Segments.Add(classificationInformation);
+                        }
+
+                        foreach (var shippingNameInformation in hazMatInfo.ShippingName)
+                        {
+                            s.Segments.Add(shippingNameInformation);
+                        }
+
+                        foreach (var freeFormHazardousMaterialInformation in hazMatInfo.FreeFormInfo)
+                        {
+                            s.Segments.Add(freeFormHazardousMaterialInformation);
+                        }
+
+                        foreach (var lepEpaRequiredData in hazMatInfo.EpaData)
+                        {
+                            s.Segments.Add(lepEpaRequiredData);
+                        }
+
+
+                        if (hazMatInfo.CanadianRequierments != null)
+                            s.Segments.Add(hazMatInfo.CanadianRequierments);
+
+                        foreach (var transborderRequirement in hazMatInfo.TransborderRequirements)
+                        {
+                            s.Segments.Add(transborderRequirement);
+                        }
+                    }
+                        
+
                 }
 
-                foreach (var measurement in detail.Measurements)
-                {
-                    s.Segments.Add(measurement);
-                }
+                foreach (var referenceNumber in detail.ReferenceNumbers) s.Segments.Add(referenceNumber);
+
+                foreach (var measurement in detail.Measurements) s.Segments.Add(measurement);
 
                 if (detail.Measuresment != null)
                     s.Segments.Add(detail.Measuresment);
+
+
+
             }
 
             foreach (var stopDetail in stop.Details)
             {
-                s.Segments.Add(new OID_OrderInformationDetail { ReferenceIdentification = stopDetail.ReferenceIdentification, PackagingFormCode = stopDetail.PackagingFormCode, Weight = stopDetail.Weight, WeightUnitCode = stopDetail.WeightUnitCode, Quantity = stopDetail.Quantity, PurchaseOrderNumber = stopDetail.PurchaseOrderNumber });
+                s.Segments.Add(stopDetail.Summary);
                 foreach (var ladingInformation in stopDetail.LadingInformation) s.Segments.Add(ladingInformation.ToLAD());
-                foreach (var descriptionAndMark in stopDetail.DescriptionAndMarks) s.Segments.Add(descriptionAndMark.ToL5());
+                foreach (var detail in stopDetail.OrderDetails)
+                {
+                    s.Segments.Add(detail.DescriptionMarksAndNumbers);
+                    s.Segments.Add(detail.ShipmentWeightPackagingAndQuantityData);
+                    
+                    foreach (var contact in detail.Contacts)
+                    {
+                        s.Segments.Add(contact.Info);
+                        foreach (var hazMatInfo in contact.HazMatInfo)
+                        {
+                            if (hazMatInfo.IdentificationInfo != null)    
+                                s.Segments.Add(hazMatInfo.IdentificationInfo);
+                            foreach (var classificationInformation in hazMatInfo.Classiciation)
+                            {
+                                s.Segments.Add(classificationInformation);
+                            }
+
+                            foreach (var shippingNameInformation in hazMatInfo.ShippingName)
+                            {
+                                s.Segments.Add(shippingNameInformation);
+                            }
+
+                            foreach (var freeFormHazardousMaterialInformation in hazMatInfo.FreeFormInfo)
+                            {
+                                s.Segments.Add(freeFormHazardousMaterialInformation);
+                            }
+
+                            foreach (var lepEpaRequiredData in hazMatInfo.EpaData)
+                            {
+                                s.Segments.Add(lepEpaRequiredData);
+                            }
+
+
+                            if (hazMatInfo.CanadianRequierments != null)
+                                s.Segments.Add(hazMatInfo.CanadianRequierments);
+
+                            foreach (var transborderRequirement in hazMatInfo.TransborderRequirements)
+                            {
+                                s.Segments.Add(transborderRequirement);
+                            }
+                        }
+
+                        
+                    }
+                }
             }
         }
 
-        s.Segments.Add(Totals);
+        if (Totals!=null)
+            s.Segments.Add(Totals);
 
         return s;
     }

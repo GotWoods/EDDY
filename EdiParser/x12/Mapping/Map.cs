@@ -61,7 +61,7 @@ public class Map
         }
 
         var components = string.Join(options.Separator, data);
-        while (components.EndsWith("*"))
+        while (components.EndsWith(options.Separator))
             components = components.Substring(0, components.Length - 1);
         return segmentType.Name + components + options.LineEnding;
     }

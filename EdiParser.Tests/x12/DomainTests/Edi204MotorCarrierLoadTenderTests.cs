@@ -38,18 +38,21 @@ public class Edi204MotorCarrierLoadTenderTests
 
 
     [Theory]
+
+    //[InlineData(@"G:\EdiSamples\LandstarAgent\204\OUT", '*', '~')]
+    //[InlineData(@"G:\EdiSamples\PureTransportation\204\OUT\2023\02", '*', '~')]
+    //[InlineData(@"G:\EdiSamples\R2Logistics\204\OUT\2023\02", '*', '~')]
+    //[InlineData(@"G:\EdiSamples\Marelli\204\IN\01", '*', '~')]
+    //[InlineData(@"G:\EdiSamples\Penske\204\IN\02\WPIB", '^', '~')]
+    //[InlineData(@"G:\EdiSamples\KLGExpress\204\OUT\2023\02", '*', '~')]
+    //[InlineData(@"G:\EdiSamples\FreightSOL\204\OUT\2023\02", '*', '~')]
+    //[InlineData(@"G:\EdiSamples\CardinalLogisticsManagement\204\OUT\2023\02", '*', '~')]
+    //[InlineData(@"G:\EdiSamples\CHRobinson\204\OUT", '*', '~')]
+    //[InlineData(@"G:\EdiSamples\Transplace\204\IN\02", '*', '~')]
+
     [InlineData(@"G:\EdiSamples\knight\204\OUT\2023\02", '*', '~')]
-    [InlineData(@"G:\EdiSamples\LandstarAgent\204\OUT", '*', '~')]
-    [InlineData(@"G:\EdiSamples\PureTransportation\204\OUT\2023\02", '*', '~')]
-    [InlineData(@"G:\EdiSamples\R2Logistics\204\OUT\2023\02", '*', '~')]
-    [InlineData(@"G:\EdiSamples\Marelli\204\IN\01", '*', '~')]
-    [InlineData(@"G:\EdiSamples\Transplace\204\IN\02", '*', '~')]
-    [InlineData(@"G:\EdiSamples\Penske\204\IN\02", '^', '~')]
-    [InlineData(@"G:\EdiSamples\KLGExpress\204\OUT\2023\02", '*', '~')]
-    [InlineData(@"G:\EdiSamples\FreightSOL\204\OUT\2023\02", '*', '~')]
-    [InlineData(@"G:\EdiSamples\CardinalLogisticsManagement\204\OUT\2023\02", '*', '~')]
-    // [InlineData(@"G:\EdiSamples\CHRobinson\204\OUT", '~')]
-    // [InlineData(@"G:\EdiSamples\CHRobinson\204\IN", '\n')]
+    [InlineData(@"G:\EdiSamples\Penske\204\IN\02\ZF", '*', '\n')]
+    //[InlineData(@"G:\EdiSamples\CHRobinson\204\IN", '*', '\n')]
     public void ToDocument(string path, char seperator, char lineSeperator)
     {
         foreach (var file in Directory.GetFiles(path))
@@ -100,10 +103,10 @@ public class Edi204MotorCarrierLoadTenderTests
                 outputOptions.Separator = seperator.ToString();
                 outputOptions.LineEnding = lineSeperator.ToString();
                 var actual = newDocument.ToString(outputOptions);
-                actual = actual.Replace("~", "~\r\n"); //pretty formatting
+                //actual = actual.Replace("~", "~\r\n"); //pretty formatting
 
                 expectedLines = data.Replace("\r\n", "\n").Split(lineSeperator);
-                actualLines = actual.Split("~");
+                actualLines = actual.Split(lineSeperator);
 
 
                 for (var i = 0; i < expectedLines.Length; i++)

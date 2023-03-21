@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using EdiParser.x12.DomainModels._204;
 using EdiParser.x12.Models;
 
 namespace EdiParser.x12.DomainModels;
@@ -10,4 +11,5 @@ public class ShipmentInformationDetail
     public List<L11_BusinessInstructionsAndReferenceNumber> ReferenceNumbers { get; set; } = new();
     public List<MEA_Measurements> Measurements { get; set; } = new();
     public L4_Measurement Measuresment { get; set; }
+    public List<ShipmentDetailContact> Detail { get; set; } = new();
 }
