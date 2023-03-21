@@ -7,10 +7,10 @@ namespace EdiParser.EdiFact.Models.Beta;
 public class BGM_BeginningOfMessage
 {
     [Position(1)]
-    public C002_DocumentMessageName DocumentMessageName { get; set; }
+    public C002_DocumentMessageName DocumentMessageName { get; set; } = new();
 
     [Position(2)]
-    public C106_DocumentMessageIdentification DocumentMessageIdentification { get; set; }
+    public C106_DocumentMessageIdentification DocumentMessageIdentification { get; set; } = new();
 
     [Position(3)]
     public string MessageFunctionCode { get; set; }

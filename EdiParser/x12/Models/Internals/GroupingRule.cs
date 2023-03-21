@@ -9,13 +9,34 @@ public class GroupingRule
     private List<GroupingRule> _subRules = new();
 
     public string Name { get; set; }
+
+    public GroupingRule(string name, string[] allowedTypeIdentifiers)
+    {
+        Name = name;
+        foreach (var allowedTypeIdentifier in allowedTypeIdentifiers)
+        {
+            AllowedTypes.Add(EdiSectionParserFactory.GetSegmentFor(allowedTypeIdentifier));
+        }
+    }
+
+    public GroupingRule(string name, string[] allowedTypeIdentifiers, List<GroupingRule> subRules)
+    {
+        Name = name;
+        foreach (var allowedTypeIdentifier in allowedTypeIdentifiers)
+        {
+            AllowedTypes.Add(EdiSectionParserFactory.GetSegmentFor(allowedTypeIdentifier));
+        }
+
+        _subRules = subRules;
+    }
+
     public GroupingRule(string name, params Type[] allowedTypes)
     {
         Name = name;
         AllowedTypes = allowedTypes.ToList();
     }
 
-    public List<Type> AllowedTypes { get; set; }
+    public List<Type> AllowedTypes { get; set; } = new();
 
     public IReadOnlyList<GroupingRule> SubRules => _subRules.AsReadOnly();
 
@@ -30,6 +51,13 @@ public class GroupingRule
     {
         rule.Parent = this;
         this._subRules.Add(rule);
+    }
+
+    public GroupingRule AddSubRule(string name, params string[] allowedTypes)
+    {
+        var groupingRule = new GroupingRule(name, allowedTypes);
+        AddSubRule(groupingRule);
+        return groupingRule;
     }
 
     public GroupingRule AddSubRule(string name, params Type[] allowedTypes)

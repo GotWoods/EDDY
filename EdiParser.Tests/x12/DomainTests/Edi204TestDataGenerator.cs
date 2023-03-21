@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using EdiParser.x12.DomainModels;
+using EdiParser.x12.DomainModels._204;
 using EdiParser.x12.DomainModels._210;
+using EdiParser.x12.Models;
 
 namespace EdiParser.Tests.x12.DomainTests;
 
@@ -23,21 +25,21 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
     public Edi204_MotorCarrierLoadTender BuildChRobinson()
     {
         var expected = new Edi204_MotorCarrierLoadTender();
-        expected.CarrierStandardCarrierAlphaCode = "PNII";
-        expected.ShipmentIdentificationNumber = "340186303";
-        expected.ShipmentMethodOfPaymentCode = "TP";
+        expected.ShipmentInformation.StandardCarrierAlphaCode = "PNII";
+        expected.ShipmentInformation.ShipmentIdentificationNumber = "340186303";
+        expected.ShipmentInformation.ShipmentMethodOfPaymentCode = "TP";
         expected.Purpose = "00";
 
-        expected.ReferenceNumbers.Add(new KeyValuePair<string, string>("VD", "T5227893"));
-        expected.ReferenceNumbers.Add(new KeyValuePair<string, string>("SI", "1032301-FW62-FW62-LTL-20201117"));
-        expected.ReferenceNumbers.Add(new KeyValuePair<string, string>("SI", "1032301-FW64-FW64-LTL-20201117"));
-        expected.ReferenceNumbers.Add(new KeyValuePair<string, string>("CR", "-60860-INBOUND"));
-        expected.ReferenceNumbers.Add(new KeyValuePair<string, string>("CR", "-60864-INBOUND"));
-        expected.ReferenceNumbers.Add(new KeyValuePair<string, string>("OW", "TMC29316100"));
-        expected.ReferenceNumbers.Add(new KeyValuePair<string, string>("RB", "USD"));
-        expected.ReferenceNumbers.Add(new KeyValuePair<string, string>("TH", "TMC APTIV"));
+        expected.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "VD", ReferenceIdentification = "T5227893" });
+        expected.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "SI", ReferenceIdentification = "1032301-FW62-FW62-LTL-20201117" });
+        expected.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "SI", ReferenceIdentification = "1032301-FW64-FW64-LTL-20201117"});
+        expected.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "CR", ReferenceIdentification = "-60860-INBOUND" });
+        expected.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "CR", ReferenceIdentification = "-60864-INBOUND" });
+        expected.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "OW", ReferenceIdentification = "TMC29316100" });
+        expected.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "RB", ReferenceIdentification = "USD" });
+        expected.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "TH", ReferenceIdentification = "TMC APTIV" });
 
-        expected.Notes.Add(new Note { ReferenceCode = "ZZZ", Description = "1387" });
+        expected.Notes.Add(new NTE_Note { NoteReferenceCode= "ZZZ", Description = "1387" });
 
 
         expected.Entities.Add(new Entity
@@ -80,7 +82,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
                 new() { ReferenceCode = "SPH", Description = "D120550 - 19 CTNS; D120127 - 33 CTNS 1 SKID W/ 17 CTNS 1 SKID W/ 16 CTNS" },
                 new() { ReferenceCode = "PKG", Description = "Dimensions H(in)40 W(in)42 L(ft)04 L(in)04" }
             },
-            Details = new List<StopDetails>
+            Details = new List<OrderInformationDetail>
             {
                 new()
                 {
@@ -129,7 +131,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
                 new() { ReferenceCode = "OTH", Description = "No Touch" },
                 new() { ReferenceCode = "PKG", Description = "Dimensions H(in)40 W(in)42 L(ft)04 L(in)04" }
             },
-            Details = new List<StopDetails>
+            Details = new List<OrderInformationDetail>
             {
                 new()
                 {
@@ -171,33 +173,33 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
     public Edi204_MotorCarrierLoadTender BuildCardinal()
     {
         var expected = new Edi204_MotorCarrierLoadTender();
-        expected.CarrierStandardCarrierAlphaCode = "CCNI";
-        expected.ShipmentIdentificationNumber = "L11005765";
-        expected.ShipmentMethodOfPaymentCode = "TP";
+        expected.ShipmentInformation.StandardCarrierAlphaCode = "CCNI";
+        expected.ShipmentInformation.ShipmentIdentificationNumber = "L11005765";
+        expected.ShipmentInformation.ShipmentMethodOfPaymentCode = "TP";
         expected.Purpose = "00";
 
-        expected.ReferenceNumbers.Add(new KeyValuePair<string, string>("BN", "30722781"));
-        expected.ReferenceNumbers.Add(new KeyValuePair<string, string>("RU", "MID508v1"));
+        expected.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "BN", ReferenceIdentification = "30722781" });
+        expected.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "RU", ReferenceIdentification = "MID508v1" });
 
-        expected.Notes.Add(new Note());
+        expected.Notes.Add(new NTE_Note());
         expected.Notes[0].Description = "Stop Dep; Interval -None;";
-        expected.Notes[0].ReferenceCode = "OTH";
+        expected.Notes[0].NoteReferenceCode = "OTH";
 
-        expected.Notes.Add(new Note());
+        expected.Notes.Add(new NTE_Note());
         expected.Notes[1].Description = "Solo";
-        expected.Notes[1].ReferenceCode = "CAJ";
+        expected.Notes[1].NoteReferenceCode = "CAJ";
 
-        expected.Notes.Add(new Note());
+        expected.Notes.Add(new NTE_Note());
         expected.Notes[2].Description = "NA";
-        expected.Notes[2].ReferenceCode = "ALT";
+        expected.Notes[2].NoteReferenceCode = "ALT";
 
-        expected.Notes.Add(new Note());
+        expected.Notes.Add(new NTE_Note());
         expected.Notes[3].Description = "1228.25";
-        expected.Notes[3].ReferenceCode = "CBH";
+        expected.Notes[3].NoteReferenceCode = "CBH";
 
-        expected.Notes.Add(new Note());
+        expected.Notes.Add(new NTE_Note());
         expected.Notes[4].Description = "(USD) Base Rate Only";
-        expected.Notes[4].ReferenceCode = "ECM";
+        expected.Notes[4].NoteReferenceCode = "ECM";
 
         expected.Entities.Add(new Entity());
         expected.Entities[0].Name = "Cabinetworks CO TRAX";
@@ -207,6 +209,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
         expected.Entities[0].PostalZip = "46242";
         expected.Entities[0].Country = "US";
         expected.Entities[0].EntityIdentifierCode = "RM";
+        expected.Entities[0].Contacts.Add(new Contact() { CommunicationNumber = "NA", CommunicationNumberQualifier = "TE", ContactFunctionCode = "AP", ContactInquiryReference = null, Name = "NA" });
 
         expected.Entities.Add(new Entity());
         expected.Entities[1].Name = "Cabinetworks MACA";
@@ -216,6 +219,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
         expected.Entities[1].PostalZip = "46242";
         expected.Entities[1].Country = "US";
         expected.Entities[1].EntityIdentifierCode = "QD";
+        expected.Entities[1].Contacts.Add(new Contact() { CommunicationNumber = "NA", CommunicationNumberQualifier = "TE", ContactFunctionCode = "RP", ContactInquiryReference = null, Name = "NA" });
 
         //g61
         //n7
@@ -236,18 +240,24 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
         expected.Stops[0].Entity.ProvinceState = "OH";
         expected.Stops[0].Entity.Country = "US";
         expected.Stops[0].Entity.PostalZip = "44062";
-        expected.Stops[0].Details.Add(new StopDetails());
+        expected.Stops[0].Entity.IdentificationCodeQualifier = "93";
+        expected.Stops[0].Entity.IdentificationCode = "103043";
+        expected.Stops[0].Entity.Contacts.Add(new Contact { CommunicationNumber = "NA", CommunicationNumberQualifier = "TE", ContactFunctionCode = "SH", ContactInquiryReference = null, Name = "NA" });
+    
+        expected.Stops[0].Details.Add(new OrderInformationDetail());
         expected.Stops[0].Details[0].PackagingFormCode = "PL";
         expected.Stops[0].Details[0].ReferenceIdentification = "S14083098";
         expected.Stops[0].Details[0].Weight = 1;
         expected.Stops[0].Details[0].WeightUnitCode = "L";
         expected.Stops[0].Details[0].Quantity = 1;
-        expected.Stops[0].Details.Add(new StopDetails());
+        expected.Stops[0].Details.Add(new OrderInformationDetail());
         expected.Stops[0].Details[1].PackagingFormCode = "PL";
         expected.Stops[0].Details[1].ReferenceIdentification = "S14083099";
         expected.Stops[0].Details[1].Weight = 1;
         expected.Stops[0].Details[1].WeightUnitCode = "L";
         expected.Stops[0].Details[1].Quantity = 1;
+        expected.Stops[0].Dates.Add(new Date { DateQualifier = "10", DateTime = new DateTime(2023,03,06, 03, 00, 00), IncludeSecondsInDateTime = true, IncludeTime = true, TimeCode = "ET", TimeQualifer = "I" });
+        expected.Stops[0].Dates.Add(new Date { DateQualifier = "10", DateTime = new DateTime(2023, 03, 06, 03, 10, 00), IncludeSecondsInDateTime = true, IncludeTime = true, TimeCode = "ET", TimeQualifer ="K" });
 
         expected.Stops.Add(new StopOffDetails());
         expected.Stops[1].StopSequenceNumber = 2;
@@ -265,7 +275,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
         expected.Stops[1].Entity.ProvinceState = "PA";
         expected.Stops[1].Entity.Country = "US";
         expected.Stops[1].Entity.PostalZip = "18840";
-        expected.Stops[1].Details.Add(new StopDetails());
+        expected.Stops[1].Details.Add(new OrderInformationDetail());
         expected.Stops[1].Details[0].PackagingFormCode = "PL";
         expected.Stops[1].Details[0].ReferenceIdentification = "S14083098";
         expected.Stops[1].Details[0].Weight = 1;
@@ -289,7 +299,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
         expected.Stops[2].Entity.ProvinceState = "OH";
         expected.Stops[2].Entity.Country = "US";
         expected.Stops[2].Entity.PostalZip = "44076";
-        expected.Stops[2].Details.Add(new StopDetails());
+        expected.Stops[2].Details.Add(new OrderInformationDetail());
         expected.Stops[2].Details[0].PackagingFormCode = "PL";
         expected.Stops[2].Details[0].ReferenceIdentification = "S14083099";
         expected.Stops[2].Details[0].Weight = 1;

@@ -25,7 +25,8 @@ public class x12Document
             var lines = 0;
             foreach (var segment in section.Segments)
             {
-                sb.Append(Map.SegmentToString(segment, options));
+                if (segment != null)
+                    sb.Append(Map.SegmentToString(segment, options));
                 lines++;
             }
             var footer = new SE_TransactionSetTrailer();
@@ -55,8 +56,14 @@ public class x12Document
         var result = new x12Document();
 
         var isa = data.Substring(0, 106); //fixed length string
+
+        options.Separator = isa.Substring(103, 1);
+        //component seperator is at 104
+        options.LineEnding = isa.Substring(105, 1);
+        //options.LineEnding = result.IsaInterchangeControlHeader.ComponentElementSeparator.Substring(1); //strip the leading > character
+
         result.IsaInterchangeControlHeader = Map.MapObject<ISA_InterchangeControlHeader>(isa, options);
-        options.LineEnding = result.IsaInterchangeControlHeader.ComponentElementSeparator.Substring(1); //strip the leading > character
+        
         if (string.IsNullOrWhiteSpace(options.LineEnding))
             options.LineEnding = "\n";
         var lines = data.Split(options.LineEnding.ToCharArray());

@@ -25,17 +25,14 @@ public class Map
                 var propertyValue = values[position];
                 if (propertyValue.Trim().Length > 0)
                 {
-                    Type underlyingType = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
-                    object safeValue = (propertyValue == null) ? null : Convert.ChangeType(propertyValue, underlyingType);
+                    var underlyingType = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
+                    var safeValue = propertyValue == null ? null : Convert.ChangeType(propertyValue, underlyingType);
                     propertyInfo.SetValue(result, safeValue, null);
                 }
             }
         }
 
-        if (options.PerformValidations)
-        {
-            result.ValidationResult = result.Validate();
-        }
+        if (options.PerformValidations) result.ValidationResult = result.Validate();
 
         return result;
     }
@@ -43,15 +40,16 @@ public class Map
     public static T MapObject<T>(string line, MapOptions options) where T : new()
     {
         var segment = MapObject(typeof(T), line, options);
-        return (T)Convert.ChangeType(segment, typeof(T)); ;
+        return (T)Convert.ChangeType(segment, typeof(T));
+        ;
     }
 
-    public static string SegmentToString<T>(T segment, MapOptions options) where T: EdiX12Segment
+    public static string SegmentToString<T>(T segment, MapOptions options) where T : EdiX12Segment
     {
         var segmentType = segment.GetType().GetCustomAttribute<Segment>();
 
         var props = segment.GetType().GetProperties().Where(prop => Attribute.IsDefined(prop, typeof(PositionAttribute))).ToList();
-        var data = new string[props.Max(x=>x.GetCustomAttribute<PositionAttribute>().Position)+1];
+        var data = new string[props.Max(x => x.GetCustomAttribute<PositionAttribute>().Position) + 1];
 
         //there is no gaurantee the properties will be in order in the class so we dump the values into an array 
         foreach (var propertyInfo in props)
@@ -64,7 +62,7 @@ public class Map
 
         var components = string.Join(options.Separator, data);
         while (components.EndsWith("*"))
-            components = components.Substring(0,components.Length - 1);
+            components = components.Substring(0, components.Length - 1);
         return segmentType.Name + components + options.LineEnding;
     }
 }

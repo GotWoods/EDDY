@@ -15,12 +15,19 @@ public class EdiSectionParserFactory
     private static Dictionary<string, Type> _parsers;
     public static EdiX12Segment Parse(string line, MapOptions mapOptions)
     {
+        var identifier = line.Substring(0,  line.IndexOf(mapOptions.Separator));
+        return Map.MapObject(GetSegmentFor(identifier), line, mapOptions);
+    }
+
+    public static Type GetSegmentFor(string identifier)
+    {
         if (!_isInitialized)
             _parsers = LoadSegmentProviders();
-        
-        var identifier = line.Substring(0,  line.IndexOf(mapOptions.Separator));
-        Type entry = _parsers[identifier];
-        return Map.MapObject(entry, line, mapOptions);
+
+        // if (!_parsers.ContainsKey(identifier))
+        //     return typeof(Unkown_Segment);
+
+        return _parsers[identifier];
     }
 
     public static Dictionary<string, Type> LoadSegmentProviders()
@@ -39,6 +46,4 @@ public class EdiSectionParserFactory
         }
         return matches;
     }
-
-
 }

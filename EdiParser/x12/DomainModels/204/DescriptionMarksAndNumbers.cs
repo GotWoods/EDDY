@@ -1,6 +1,6 @@
 ﻿using EdiParser.x12.Models;
 
-namespace EdiParser.x12.DomainModels._210;
+namespace EdiParser.x12.DomainModels._204;
 
 public class DescriptionMarksAndNumbers
 {

@@ -77,126 +77,126 @@ public class Edi210_MotorCarrierFreightDetailsAndInvoice
         var section = document.Sections[0]; //it is possible a document contains multiple instructions
         var groupReader = new GroupedSectionReader(section);
 
-        var groupedSection = groupReader.Read(partyRules, equipmentDetailsRules, orderInformationRules, stopRules, transactionSetRules);
-
-
-        foreach (var segment in groupedSection.Segments)
-        {
-            switch (segment)
-            {
-                case B3_BeginningSegmentForCarriersInvoice b3:
-                    InvoiceNumber = b3.InvoiceNumber;
-                    ShipmentIdentificationNumber = b3.ShipmentIdentificationNumber;
-                    DeliveryDate = b3.DeliveryDate;
-                    //TOOD: b3.DateTimeQualifier;
-                    break;
-                case C2_BankID c2:
-                    break;
-                case C3_CurrencyIdentifier c3:
-                    break;
-                case ITD_TermsOfSaleDeferredTermsOfSale itd:
-                    break;
-                case L11_BusinessInstructionsAndReferenceNumber l11:
-                    break;
-                case G62_DateTime g62:
-                    break;
-                case R3_RouteInformationMotor r3:
-                    break;
-                case H3_SpecialHandlingInstructions h3:
-                    break;
-                case K1_Remarks k1:
-                    break;
-              
-                case L3_TotalWeightAndCharges l3:
-                    this.Totals = l3;
-                    break;
-            }
-        }
-
-        foreach (var party in groupedSection.Children.Where(x => x.Rule == partyRules))
-        {
-            var entity = new Entity();
-            foreach (var segment in party.Segments)
-                switch (segment)
-                {
-                    case N1_PartyIdentification n1:
-                        entity.EntityIdentifierCode = n1.EntityIdentifierCode;
-                        entity.Name = n1.Name;
-                        break;
-                    case N2_AdditionalNameInformation n2:
-                        //additional name is this used?
-                        break;
-                    case N3_PartyLocation n3: //n3 can be here twice so maybe an address3/address4?
-                        entity.Address1 = n3.AddressInformation;
-                        entity.Address2 = n3.AddressInformation2;
-                        break;
-                    case N4_GeographicLocation n4:
-                        entity.City = n4.CityName;
-                        entity.ProvinceState = n4.StateOrProvinceCode;
-                        entity.Country = n4.CountryCode;
-                        entity.PostalZip = n4.PostalCode;
-                        break;
-                    case L11_BusinessInstructionsAndReferenceNumber l11:
-                        break;
-                    case G61_Contact g61: //there can be 3 of these
-                        entity.AddContact(g61);
-                        break;
-                }
-
-            Entities.Add(entity);
-        }
-
-        foreach (var equipmentDetail in groupedSection.Children.Where(x => x.Rule == equipmentDetailsRules))
-        {
-            var details = new EquipmentDetails();
-            foreach (var segment in equipmentDetail.Segments)
-                switch (segment)
-                {
-                    case N7_EquipmentDetails n7: //TODO: only once
-                        details.LineData = n7;
-                        break;
-                    case M7_SealNumbers m7: //TODO: max 2
-                        details.SealNumbers.Add(m7.SealNumber);
-                        if (!IsNullOrWhiteSpace(m7.SealNumber2))
-                            details.SealNumbers.Add(m7.SealNumber2);
-                        if (!IsNullOrWhiteSpace(m7.SealNumber3))
-                            details.SealNumbers.Add(m7.SealNumber3);
-                        if (!IsNullOrWhiteSpace(m7.SealNumber4))
-                            details.SealNumbers.Add(m7.SealNumber4);
-                        break;
-                }
-            EquipmentDetails.Add(details);
-        }
-
-        foreach (var transactionSets in groupedSection.Children.Where(x => x.Rule == transactionSetRules))
-        {
-            var transactionSet = new TransactionSet();
-            foreach (var segment in transactionSets.Segments)
-                switch (segment)
-                {
-                    case L11_BusinessInstructionsAndReferenceNumber l11:
-                        break;
-                    case L5_DescriptionMarksAndNumbers l5:
-                        break;
-                    case H1_HazardousMaterial:
-                        break;
-                    case H2_AdditionalHazardousMaterialDescription:
-                        break;
-                    case L0_LineItemQuantityAndWeight l0:
-                        break;
-                    case L1_RateAndCharges l1:
-                        break;
-                    case L4_Measurement:
-                        break;
-                    case L7_TariffReference l7:
-                        break;
-                    case K1_Remarks k1:
-                        break;
-                    //OID/SDQ can be a subloop
-                    //n1/ns/n3/n4/l11 can be a subloop (that can contain more subitems
-                }
-         
-        }
+        // var groupedSection = groupReader.Read(partyRules, equipmentDetailsRules, orderInformationRules, stopRules, transactionSetRules);
+        //
+        //
+        // foreach (var segment in groupedSection.Segments)
+        // {
+        //     switch (segment)
+        //     {
+        //         case B3_BeginningSegmentForCarriersInvoice b3:
+        //             InvoiceNumber = b3.InvoiceNumber;
+        //             ShipmentIdentificationNumber = b3.ShipmentIdentificationNumber;
+        //             DeliveryDate = b3.DeliveryDate;
+        //             //TOOD: b3.DateTimeQualifier;
+        //             break;
+        //         case C2_BankID c2:
+        //             break;
+        //         case C3_CurrencyIdentifier c3:
+        //             break;
+        //         case ITD_TermsOfSaleDeferredTermsOfSale itd:
+        //             break;
+        //         case L11_BusinessInstructionsAndReferenceNumber l11:
+        //             break;
+        //         case G62_DateTime g62:
+        //             break;
+        //         case R3_RouteInformationMotor r3:
+        //             break;
+        //         case H3_SpecialHandlingInstructions h3:
+        //             break;
+        //         case K1_Remarks k1:
+        //             break;
+        //       
+        //         case L3_TotalWeightAndCharges l3:
+        //             this.Totals = l3;
+        //             break;
+        //     }
+        // }
+        //
+        // foreach (var party in groupedSection.Children.Where(x => x.Rule == partyRules))
+        // {
+        //     var entity = new Entity();
+        //     foreach (var segment in party.Segments)
+        //         switch (segment)
+        //         {
+        //             case N1_PartyIdentification n1:
+        //                 entity.EntityIdentifierCode = n1.EntityIdentifierCode;
+        //                 entity.Name = n1.Name;
+        //                 break;
+        //             case N2_AdditionalNameInformation n2:
+        //                 //additional name is this used?
+        //                 break;
+        //             case N3_PartyLocation n3: //n3 can be here twice so maybe an address3/address4?
+        //                 entity.Address1 = n3.AddressInformation;
+        //                 entity.Address2 = n3.AddressInformation2;
+        //                 break;
+        //             case N4_GeographicLocation n4:
+        //                 entity.City = n4.CityName;
+        //                 entity.ProvinceState = n4.StateOrProvinceCode;
+        //                 entity.Country = n4.CountryCode;
+        //                 entity.PostalZip = n4.PostalCode;
+        //                 break;
+        //             case L11_BusinessInstructionsAndReferenceNumber l11:
+        //                 break;
+        //             case G61_Contact g61: //there can be 3 of these
+        //                 entity.AddContact(g61);
+        //                 break;
+        //         }
+        //
+        //     Entities.Add(entity);
+        // }
+        //
+        // foreach (var equipmentDetail in groupedSection.Children.Where(x => x.Rule == equipmentDetailsRules))
+        // {
+        //     var details = new EquipmentDetails();
+        //     foreach (var segment in equipmentDetail.Segments)
+        //         switch (segment)
+        //         {
+        //             case N7_EquipmentDetails n7: //TODO: only once
+        //                 details.LineData = n7;
+        //                 break;
+        //             case M7_SealNumbers m7: //TODO: max 2
+        //                 details.SealNumbers.Add(m7.SealNumber);
+        //                 if (!IsNullOrWhiteSpace(m7.SealNumber2))
+        //                     details.SealNumbers.Add(m7.SealNumber2);
+        //                 if (!IsNullOrWhiteSpace(m7.SealNumber3))
+        //                     details.SealNumbers.Add(m7.SealNumber3);
+        //                 if (!IsNullOrWhiteSpace(m7.SealNumber4))
+        //                     details.SealNumbers.Add(m7.SealNumber4);
+        //                 break;
+        //         }
+        //     EquipmentDetails.Add(details);
+        // }
+        //
+        // foreach (var transactionSets in groupedSection.Children.Where(x => x.Rule == transactionSetRules))
+        // {
+        //     var transactionSet = new TransactionSet();
+        //     foreach (var segment in transactionSets.Segments)
+        //         switch (segment)
+        //         {
+        //             case L11_BusinessInstructionsAndReferenceNumber l11:
+        //                 break;
+        //             case L5_DescriptionMarksAndNumbers l5:
+        //                 break;
+        //             case H1_HazardousMaterial:
+        //                 break;
+        //             case H2_AdditionalHazardousMaterialDescription:
+        //                 break;
+        //             case L0_LineItemQuantityAndWeight l0:
+        //                 break;
+        //             case L1_RateAndCharges l1:
+        //                 break;
+        //             case L4_Measurement:
+        //                 break;
+        //             case L7_TariffReference l7:
+        //                 break;
+        //             case K1_Remarks k1:
+        //                 break;
+        //             //OID/SDQ can be a subloop
+        //             //n1/ns/n3/n4/l11 can be a subloop (that can contain more subitems
+        //         }
+        //  
+        // }
         
     }
 }

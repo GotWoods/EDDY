@@ -21,11 +21,13 @@ namespace EdiParser.x12.Models
         public int? LadingQuantity { get; set; }
         [Position(5)]
         public int? LadingQuantityUnitized { get; set; }
-        [Position(6)]
-        public decimal? Volume { get; set; }
-        [Position(7)]
-        public string VolumeUnitQualifier { get; set; }
 
+        [Position(6)]
+        public string VolumeUnitQualifier { get; set; }
+        
+        [Position(7)]
+        public decimal? Volume { get; set; }
+        
         public override ValidationResult Validate()
         {
             var validator = new BasicValidator<AT8_ShipmentWeightPackagingAndQuantityData>(this);

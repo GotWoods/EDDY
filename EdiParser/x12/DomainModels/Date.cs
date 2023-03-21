@@ -3,15 +3,15 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using EdiParser.x12.Models;
 
-namespace EdiParser.x12.DomainModels._210;
+namespace EdiParser.x12.DomainModels;
 
-public class Date 
+public class Date
 {
     public string DateQualifier { get; set; }
     public string TimeQualifer { get; set; }
     public DateTime DateTime { get; set; }
 
-    public bool IncludeSecondsInDateTime{ get; set; }
+    public bool IncludeSecondsInDateTime { get; set; }
     public bool IncludeTime { get; set; } = true;
     public string TimeCode { get; set; }
     public static Date From(G62_DateTime input)
@@ -30,13 +30,13 @@ public class Date
             format = "yyyyMMddHHmmss";
             dates.IncludeSecondsInDateTime = true;
         }
-        if (dateAndTime.Length == 8 ) //just date only
+        if (dateAndTime.Length == 8) //just date only
         {
             format = "yyyyMMdd";
             dates.IncludeTime = false;
         }
 
-            dates.DateTime = System.DateTime.ParseExact(dateAndTime, format, CultureInfo.InvariantCulture);
+        dates.DateTime = DateTime.ParseExact(dateAndTime, format, CultureInfo.InvariantCulture);
         dates.TimeCode = input.TimeCode;
         return dates;
     }

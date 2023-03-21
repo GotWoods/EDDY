@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Text;
+using EdiParser.x12.DomainModels._210;
 using EdiParser.x12.Models;
 
-namespace EdiParser.x12.DomainModels._210
+namespace EdiParser.x12.DomainModels._204
 {
     public class StopOffDetails
     {
@@ -29,9 +29,10 @@ namespace EdiParser.x12.DomainModels._210
         public Entity Entity {  get; set; }
 
         public List<Note> Notes { get; set; } = new();
-        public List<StopDetails> Details { get; set; } = new();
+        public List<OrderInformationDetail> Details { get; set; } = new();
         public List<DescriptionMarksAndNumbers> DescriptionAndMarks { get; set; } = new();
         public AT8_ShipmentWeightPackagingAndQuantityData ShipmentWeightPackagingAndQuantityData { get; set; }
+        public List<ShipmentInformationDetail> ShipmentDetails { get; set; } = new();
 
         //details
 

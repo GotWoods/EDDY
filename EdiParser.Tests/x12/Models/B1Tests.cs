@@ -22,8 +22,8 @@ public class B1Tests
         };
 
         string expected = "B1*47*7*dsfY6abA*y*O*tW9*wz";
-        var actual = Map.SegmentToString(input, MapOptionsForTesting.x12DefaultEndsWithNewline);
-        Assert.Equivalent(expected, actual);
+        var actual = Map.SegmentToString(input, MapOptionsForTesting.x12DefaultEndsWithNewline).Trim();
+        Assert.Equal(expected, actual);
     }
 
     [Fact]

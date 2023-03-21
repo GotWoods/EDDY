@@ -34,9 +34,9 @@ public class PLDTests
     }
     [Theory]
     [InlineData("", 0, true)]
-    [InlineData("v1", 1, true)]
+    [InlineData("v", 1, true)]
     [InlineData("", 1, false)]
-    [InlineData("v1", 0, false)]
+    [InlineData("v", 0, false)]
     public void Validation_AllAreRequiredWeightUnitCode(string weightUnitCode, decimal weight, bool isValidExpected)
     {
         var subject = new PLD_PalletShipmentInformation();

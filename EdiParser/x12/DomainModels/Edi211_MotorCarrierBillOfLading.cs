@@ -19,6 +19,6 @@ public class Edi211_MotorCarrierBillOfLading
          var contactRule = detailRules.AddSubRule("Contacts", typeof(G61_Contact), typeof(L11_BusinessInstructionsAndReferenceNumber), typeof(LH6_HazardousCertification));
          contactRule.AddSubRule("Hazmat", typeof(LH1_HazardousIdentificationInformation), typeof(LH2_HazardousClassificationInformation), typeof(LH3_HazardousMaterialShippingNameInformation), typeof(LFH_FreeFormHazardousMaterialInformation), typeof(LEP_EPARequiredData), typeof(LH4_CanadianDangerousRequirements), typeof(LHT_TransborderHazardousRequirements), typeof(L11_BusinessInstructionsAndReferenceNumber));
 
-          var groupedSection = groupReader.Read(partyRules, detailRules);
+      //    var groupedSection = groupReader.Read(partyRules, detailRules);
     }
 }

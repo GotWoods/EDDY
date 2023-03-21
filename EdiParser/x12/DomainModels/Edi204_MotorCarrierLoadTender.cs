@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EdiParser.x12.DomainModels._210;
-using EdiParser.x12.Mapping;
+using EdiParser.x12.DomainModels._204;
 using EdiParser.x12.Models;
 using EdiParser.x12.Models.Internals;
 using static System.String;
@@ -11,101 +10,38 @@ namespace EdiParser.x12.DomainModels;
 
 public class Edi204_MotorCarrierLoadTender
 {
-    public string CarrierStandardCarrierAlphaCode { get; set; }
-    public string ShipmentIdentificationNumber { get; set; }
-    public string ShipmentMethodOfPaymentCode { get; set; }
+    //public string CarrierStandardCarrierAlphaCode { get; set; }
+    //public string ShipmentIdentificationNumber { get; set; }
+    //public string ShipmentMethodOfPaymentCode { get; set; }
+    public Date OrderDate { get; set; }
+    public string Purpose { get; set; }
+
+
     public List<Entity> Entities { get; set; } = new();
     public List<StopOffDetails> Stops { get; set; } = new();
-    public List<KeyValuePair<string, string>> ReferenceNumbers { get; set; } = new();
+    public List<L11_BusinessInstructionsAndReferenceNumber> ReferenceNumbers { get; set; } = new();
     public List<EquipmentDetails> EquipmentDetails { get; set; } = new();
-    public Date OrderDate { get; set; }
     public InterlineInformation InterlineInformation { get; set; }
-
-    // public string Receiver { get; set; }
-    //
-    // public string Sender { get; set; }
-
-    public DateTime CreationDate { get; set; }
-    public string Purpose { get; set; }
-    public List<Note> Notes { get; set; } = new();
-
+    public List<NTE_Note> Notes { get; set; } = new();
+    public List<BillOfLadingHandlingInfo> BillOfLadingHandlingInfo { get; set; } = new();
     public L3_TotalWeightAndCharges Totals { get; set; } = new();
+    public B2_BeginningSegmentForShipmentInformationTransaction ShipmentInformation { get; set; } = new();
 
+    public string ApplicationType { get; set; }
 
+    public PLD_PalletShipmentInformation PalletInformation { get; set; }
 
-    public void LoadFrom(Section section)
+    //public string ShipmentWeightCode { get; set; }
+
+    //public string PaymentMethodCode { get; set; }
+
+    private void ReadHeader(Group groupedSection)
     {
-        //this.CreationDate = document.IsaInterchangeControlHeader.CreationDate;
-        // Sender = document.IsaInterchangeControlHeader.InterchangeSenderId;
-        // Receiver = document.IsaInterchangeControlHeader.InterchangeReceiverId;
-        //
-        // var section = document.Sections[0]; //it is possible a document contains multiple instructions
-        var groupedSectionReader = new GroupedSectionReader(section);
-
-        //0050
-        var billOfLadingRules = new GroupingRule("Bill Of Lading", typeof(AT5_BillOfLadingHandlingRequirements), typeof(RTT_FreightRateInformation), typeof(C3_CurrencyIdentifier));
-
-        //0100
-        var partyRules = new GroupingRule("Parties", typeof(N1_PartyIdentification), typeof(N2_AdditionalNameInformation), typeof(N3_PartyLocation), typeof(N4_GeographicLocation), typeof(L11_BusinessInstructionsAndReferenceNumber), typeof(G61_Contact));
-
-        //0200
-        var equipmentDetailRules = new GroupingRule("Equipment Details", typeof(N7_EquipmentDetails), typeof(N7A_AccessorialEquipmentDetails), typeof(N7B_AdditionalEquipmentDetails), typeof(MEA_Measurements), typeof(M7_SealNumbers));
-        
-        //0300
-        var stopDetailsRules = new GroupingRule("StopOffDetails", typeof(S5_StopOffDetails), typeof(L11_BusinessInstructionsAndReferenceNumber), typeof(G62_DateTime), typeof(AT8_ShipmentWeightPackagingAndQuantityData), typeof(LAD_LadingDetail), typeof(NTE_Note), typeof(PLD_PalletShipmentInformation));
-        
-        //0305
-        stopDetailsRules.AddSubRule("Handling Requirements", typeof(AT5_BillOfLadingHandlingRequirements), typeof(RTT_FreightRateInformation), typeof(C3_CurrencyIdentifier));
-        //PLD/NTE can exist as standalones here... even though it is in a loop?
-        
-        //0310
-        var stopPartiesRules = stopDetailsRules.AddSubRule("Stop Parties", typeof(N1_PartyIdentification), typeof(N2_AdditionalNameInformation), typeof(N3_PartyLocation), typeof(N4_GeographicLocation), typeof(G61_Contact));
-        
-        //0320
-        var shipmentDataRules = stopDetailsRules.AddSubRule("Shipment Data", typeof(L5_DescriptionMarksAndNumbers), typeof(AT8_ShipmentWeightPackagingAndQuantityData));
-
-        //0323
-        shipmentDataRules.AddSubRule(new GroupingRule("Handling Requirements", typeof(AT5_BillOfLadingHandlingRequirements), typeof(RTT_FreightRateInformation), typeof(C3_CurrencyIdentifier)));
-        //L11/MEA/PER/L4 can just exist here even though it is in a loop?
-
-        //0325
-        var contactRules = shipmentDataRules.AddSubRule("Contact", typeof(G61_Contact), typeof(L11_BusinessInstructionsAndReferenceNumber), typeof(LH6_HazardousCertification));
-
-        //0330
-        contactRules.AddSubRule("HazMat", typeof(LH1_HazardousIdentificationInformation), typeof(LH2_HazardousClassificationInformation), typeof(LH3_HazardousMaterialShippingNameInformation), typeof(LFH_FreeFormHazardousMaterialInformation), typeof(LEP_EPARequiredData), typeof(LH4_CanadianDangerousRequirements), typeof(LHT_TransborderHazardousRequirements));
-
-        //0350
-        var stopOrderInfoRule = stopDetailsRules.AddSubRule("Stop Order Information", typeof(OID_OrderInformationDetail), typeof(G62_DateTime), typeof(LAD_LadingDetail));
-
-        //0360
-        var orderDetailRules = stopOrderInfoRule.AddSubRule("Order Details", typeof(L5_DescriptionMarksAndNumbers), typeof(AT8_ShipmentWeightPackagingAndQuantityData), typeof(L4_Measurement));
-
-        //0365
-        var orderDetailsContactRules = orderDetailRules.AddSubRule("Order Detail Contact", typeof(G61_Contact), typeof(L11_BusinessInstructionsAndReferenceNumber), typeof(LH6_HazardousCertification));
-
-        //0370
-        orderDetailsContactRules.AddSubRule("Hazmat Details", typeof(LH1_HazardousIdentificationInformation), typeof(LH2_HazardousClassificationInformation), typeof(LH3_HazardousMaterialShippingNameInformation), typeof(LFH_FreeFormHazardousMaterialInformation), typeof(LEP_EPARequiredData), typeof(LH4_CanadianDangerousRequirements), typeof(LHT_TransborderHazardousRequirements));
-
-        //0380
-        stopDetailsRules.AddSubRule("Other EquipmentDetails", typeof(N7_EquipmentDetails), typeof(N7A_AccessorialEquipmentDetails), typeof(N7B_AdditionalEquipmentDetails), typeof(MEA_Measurements), typeof(M7_SealNumbers));
-
-        //1000
-        var summary = new GroupingRule("Summary", typeof(LX_TransactionSetLineNumber), typeof(L4_Measurement));
-
-        var groupReader = new GroupedSectionReader(section);
-
-        var groupedSection = groupReader.Read(partyRules, billOfLadingRules, equipmentDetailRules, stopDetailsRules, summary);
-        
         foreach (var segment in groupedSection.Segments)
             switch (segment)
             {
                 case B2_BeginningSegmentForShipmentInformationTransaction b2:
-                    CarrierStandardCarrierAlphaCode = b2.StandardCarrierAlphaCode;
-                    ShipmentIdentificationNumber = b2.ShipmentIdentificationNumber;
-                    ShipmentMethodOfPaymentCode = b2.ShipmentMethodOfPaymentCode;
-                    ShipmentMethodOfPaymentCode = b2.ShipmentMethodOfPaymentCode;
-                    PaymentMethodCode = b2.PaymentMethodCode;
-                    ShipmentWeightCode = b2.ShipmentWeightCode;
+                    ShipmentInformation = b2;
                     break;
                 case B2A_SetPurpose b2a:
                     Purpose = b2a.TransactionSetPurposeCode;
@@ -115,90 +51,44 @@ public class Edi204_MotorCarrierLoadTender
                     OrderDate = Date.From(g62);
                     break;
                 case L11_BusinessInstructionsAndReferenceNumber l11:
-                    ReferenceNumbers.Add(new KeyValuePair<string, string>(l11.ReferenceIdentificationQualifier, l11.ReferenceIdentification));
-                    //can be up to 99999 of these
-                    //var l11 = (L11_BusinessInstructionsAndReferenceNumber)document.Sections[0].Segments.First(x => x.GetType() == typeof(L11_BusinessInstructionsAndReferenceNumber));
-                    //     public string Purpose { get; set; } //always being set to revised but B2A is the purpose of the document
-                    //l11 exists on the stops as well
-                    // switch (l11.ReferenceIdentificationQualifier.ToUpperInvariant())
-                    // {
-                    //     case "BN":
-                    //         TenderRequestId = l11.ReferenceIdentification;
-                    //         break;
-                    //     case "RU":
-                    //         RouteName = l11.ReferenceIdentification;
-                    //         break;
-                    //     case "R1":
-                    //         Control_VersionID = l11.ReferenceIdentification;
-                    //         break;
-                    //     case "IN":
-                    //         CarrierInvoiceNumber = l11.ReferenceIdentification;
-                    //         break;
-                    //     case "CN":
-                    //     case "SI":
-                    //         ProNumber = l11.ReferenceIdentification;
-                    //         break;
-                    //     case "CR":
-                    //     case "TN":
-                    //         CarrierReleaseNumber = l11.ReferenceIdentification;
-                    //         break;
-                    //     case "TH":
-                    //     case "11":
-                    //     case "DD":
-                    //         AccountCode = l11.ReferenceIdentification;
-                    //         break;
-                    // }
-
+                    ReferenceNumbers.Add(l11);
                     break;
                 case MS3_InterlineInformation ms3:
-                    this.InterlineInformation = InterlineInformation.FromMS3(ms3);
-                    // if (ms3.TransportationMethodTypeCode == "O")
-                    // {
-                    // }
-                    //
-                    // //TransportationMode = ms3.TransportationMethodTypeCode;
-                    // if (ms3.TransportationMethodTypeCode == "LT")
-                    // {
-                    // }
-                    //PreferedCarrierSCAC = b2.StandardCarrierAlphaCode
+                    InterlineInformation = InterlineInformation.FromMS3(ms3);
                     break;
                 case PLD_PalletShipmentInformation pld:
-                    this.PalletInformation = pld;
+                    PalletInformation = pld;
                     break;
                 case NTE_Note nte:
-                
-                    var note = new Note();
-                    note.ReferenceCode = nte.NoteReferenceCode;
-                    note.Description = nte.Description;
-                    this.Notes.Add(note);
-                    // switch (nte.NoteReferenceCode)
-                    // {
-                    //
-                    //     case "OTH":
-                    //         //CheckCallRequirements = NTE.Description
-                    //         break;
-                    //     case "BOL":
-                    //     case "ALT":
-                    //     case "INT":
-                    //     case "ADD":
-                    //         //TenderRequestComments = NTE.Description
-                    //         //SpecialInstructions = NTE.Description
-                    //         break;
-                    //     case "CBH":
-                    //         //EstimatedCost = NTE.Description
-                    //         break;
-                    //     case "ECM":
-                    //         //EstimatedCostComments = NTE.Description
-                    //         break;
-                    // }
-
+                    Notes.Add(nte);
                     break;
                 case L3_TotalWeightAndCharges l3:
-                    this.Totals = l3;
+                    Totals = l3;
                     break;
+            }
+
+
+        foreach (var handling in groupedSection.Children.Where(x => x.Rule.Name == "BillOfLading"))
+        {
+            var bolInfo = new BillOfLadingHandlingInfo();
+            foreach (var segment in handling.Segments)
+                switch (segment)
+                {
+                    case AT5_BillOfLadingHandlingRequirements at5:
+                        bolInfo.HandlingRequirements = at5;
+                        break;
+                    case RTT_FreightRateInformation rtt:
+                        bolInfo.FreightRateInformation = rtt;
+                        break;
+                    case C3_CurrencyIdentifier c3:
+                        bolInfo.Currency = c3;
+                        break;
+                }
+
+            BillOfLadingHandlingInfo.Add(bolInfo);
         }
 
-        foreach (var party in groupedSection.Children.Where(x => x.Rule == partyRules))
+        foreach (var party in groupedSection.Children.Where(x => x.Rule.Name == "Parties"))
         {
             var entity = new Entity();
             foreach (var segment in party.Segments)
@@ -214,8 +104,7 @@ public class Edi204_MotorCarrierLoadTender
                         //additional name is this used?
                         break;
                     case N3_PartyLocation n3: //n3 can be here twice so maybe an address3/address4?
-                        entity.Address1 = n3.AddressInformation;
-                        entity.Address2 = n3.AddressInformation2;
+                        entity.Add(n3);
                         break;
                     case N4_GeographicLocation n4:
                         entity.City = n4.CityName;
@@ -233,7 +122,7 @@ public class Edi204_MotorCarrierLoadTender
             Entities.Add(entity);
         }
 
-        foreach (var equipmentDetail in groupedSection.Children.Where(x => x.Rule == equipmentDetailRules))
+        foreach (var equipmentDetail in groupedSection.Children.Where(x => x.Rule.Name == "EquipmentDetails"))
         {
             var details = new EquipmentDetails();
             foreach (var segment in equipmentDetail.Segments)
@@ -241,15 +130,8 @@ public class Edi204_MotorCarrierLoadTender
                 {
                     case N7_EquipmentDetails n7:
                         details.LineData = n7;
-                        // details.EquipmentNumber = n7.EquipmentNumber;
-                        // details.EquipmentDescriptionCode = n7.EquipmentDescriptionCode;
-                        // details.EquipmentLength = n7.EquipmentLength;
-                        // details.Weight = n7.Weight;
-                        // details.WeightQualifier = n7.WeightQualifier;
-                        // details.Height = n7.Height;
-                        // details.Width = n7.Width;
                         break;
-                    case M7_SealNumbers m7: //TODO: max 2
+                    case M7_SealNumbers m7:
                         details.SealNumbers.Add(m7.SealNumber);
                         if (!IsNullOrWhiteSpace(m7.SealNumber2))
                             details.SealNumbers.Add(m7.SealNumber2);
@@ -259,49 +141,172 @@ public class Edi204_MotorCarrierLoadTender
                             details.SealNumbers.Add(m7.SealNumber4);
                         break;
                 }
-            this.EquipmentDetails.Add(details);
-        }
 
-        foreach (var stopSegment in groupedSection.Children.Where(x => x.Rule == stopDetailsRules))
+            EquipmentDetails.Add(details);
+        }
+    }
+
+
+    public void LoadFrom(Section section)
+    {
+        if (section.SectionType != "204")
+            throw new ArgumentOutOfRangeException("Expected a section type of 204 but was provied a type of " + section.SectionType);
+
+        //TODO: L11/MEA/PER/L4 exists between some loops
+        var root = new GroupingRule("Root", new[] { "B2", "B2A", "C3", "L11", "G62", "MS3", "PLD", "LH6", "NTE", "L3" }, new List<GroupingRule>
+        {
+            new("BillOfLading", new[] { "AT5", "RTT", "C3" }), //0050
+            new("Parties", new[] { "N1", "N2", "N3", "N4", "L11", "G61" }), //0100
+            new("EquipmentDetails", new[] { "N7", "N7A", "N7B", "MEA", "M7" }), //0200
+            new("StopOffDetails", new[] { "S5", "L11", "G62", "AT8", "LAD", "NTE", "PLD" },
+                new List<GroupingRule>
+                {
+                    new("HandlingRequirements", new[] { "AT5", "RTT", "C3" }), //0305
+                    new("StopParties", new[] { "N1", "N2", "N3", "N4", "G61" }), //0310
+                    new("ShipmentDetail", new[] { "L5", "AT8", "L11", "MEA", "L4" }, new List<GroupingRule>() //0320 //TODO: PER code implementation
+                    {
+                        new("OrderDetails", new[] { "AT5", "RTT", "C3" }), //323
+                        new("Contact", new[] { "G61", "L11", "LH6" }, new List<GroupingRule>() //325
+                        {
+                            new("HazMat", new[] { "LH1", "LH2", "LH3", "LFH", "LEP", "LH4", "LHT" }) //330
+                        })
+                    }),
+                    new("OrderInformationDetail", new[] { "OID", "G62", "LAD" }, new List<GroupingRule>() //0350
+                    {
+                        new("OrderData", new[] { "L5", "AT8", "L4" }, new List<GroupingRule>() //360
+                        {
+                            new("Contact", new[] { "G61", "L11", "LH6" }, new List<GroupingRule>() //365
+                            {
+                                new("HazMat", new[] { "LH1", "LH2", "LH3", "LFH", "LEP", "LH4", "LHT" }) //370
+                            })
+                        })
+                    }),
+                    new("OtherEquipmentDetails", new[] { "N7", "N7A", "N7B", "MEA", "M7" }) //0380
+                }),
+            new("Summary", new[] { "LX", "L4" }) //1000
+    });
+
+
+        //var billOfLadingRules = new ("BillOfLading", new[] {"AT5", "RTT", "C3"}); //0050
+        //var partyRules = new GroupingRule("Parties", new[] { "N1", "N2", "N3", "N4", "L11", "G61" }); //0100
+        //var equipmentDetailRules = new GroupingRule("Equipment Details", new[] { "N7", "N7A", "N7B", "MEA", "M7" }); //0200
+
+        // var stopDetailsRules = new GroupingRule("StopOffDetails", new[] { "S5", "L11", "G62", "AT8", "LAD", "NTE", "PLD" },
+        //     new List<GroupingRule>
+        //     {
+        //         new("HandlingRequirements", new[] { "AT5", "RTT", "C3" }), //0305
+        //         new("StopParties", new[] { "N1", "N2", "N3", "N4", "G61" }), //0310
+        //         new("ShipmentData", new[] { "L5", "AT8", "L11", "MEA", "PER", "L4" }, new List<GroupingRule>() //0320
+        //         {
+        //             new("OrderDetails", new[] { "AT5", "RTT", "C3" }), //323
+        //             new("Contact", new[] { "G61", "L11", "LH6" }, new List<GroupingRule>() //325
+        //             {
+        //                 new("HazMat", new[] { "LH1", "LH2", "LH3", "LFH", "LEP", "LH4", "LHT" }) //330
+        //             })
+        //         }),
+        //         new("OrderInformationDetail", new[] { "OID", "G62", "LAD" }, new List<GroupingRule>() //0350
+        //         {
+        //             new("OrderData", new[] { "L5", "AT8", "L4" }, new List<GroupingRule>() //360
+        //             {
+        //                 new("Contact", new[] { "G61", "L11", "LH6" }, new List<GroupingRule>() //365
+        //                 {
+        //                     new("HazMat", new[] { "LH1", "LH2", "LH3", "LFH", "LEP", "LH4", "LHT" }) //370
+        //                 })
+        //             })
+        //         }),
+        //         new("OtherEquipmentDetails", new[] { "N7", "N7A", "N7B", "MEA", "M7" }) //0380
+        //     }
+        // ); //0300
+        ///* */stopDetailsRules.AddSubRule("HandlingRequirements", "AT5", "RTT", "C3"); //0305
+        ///* */stopDetailsRules.AddSubRule("StopParties", "N1", "N2", "N3", "N4", "G61"); //0310
+        ///* */var shipmentDataRules = stopDetailsRules.AddSubRule("ShipmentData", "L5", "AT8"); //0320
+        // /*   */shipmentDataRules.AddSubRule("HandlingRequirements", "AT5", "RTT", "C3"); //0323
+        // /*   */var contactRules = shipmentDataRules.AddSubRule("Contact", "G61", "L11", "LH6"); //0325
+        // /*     */contactRules.AddSubRule("HazMat", "LH1", "LH2", "LH3", "LFH", "LEP", "LH4", "LHT"); //0330
+        // /* */var stopOrderInfoRule = stopDetailsRules.AddSubRule("StopOrderInformation", "OID", "G62", "LAD"); //0350
+        // /*   */var orderDetailRules = stopOrderInfoRule.AddSubRule("OrderDetails", "L5", "AT8", "L4"); //0360
+        // /*   */var orderDetailsContactRules = orderDetailRules.AddSubRule("OrderDetailContact", "G61", "L11", "LH6"); //0365
+        // /*     */orderDetailsContactRules.AddSubRule("HazmatDetails", "LH1", "LH2", "LH3", "LFH", "LEP", "LH4", "LHT"); //0370
+        // /* */stopDetailsRules.AddSubRule("OtherEquipmentDetails", "N7", "N7A", "N7B", "MEA", "M7"); //0380
+
+        //var summary = new GroupingRule("Summary", new[] { "LX", "L4" }); //1000
+        //var rootRules = new List<GroupingRule> { billOfLadingRules, partyRules, equipmentDetailRules, stopDetailsRules, summary };
+
+        var groupReader = new GroupedSectionReader(section);
+        var groupedSection = groupReader.Read(root);
+
+
+        ReadHeader(groupedSection);
+        ReadDetail(groupedSection);
+    }
+
+    private void ReadDetail(Group groupedSection)
+    {
+        //StopOffDetails
+        // new("HandlingRequirements", new[] { "AT5", "RTT", "C3" }), //0305
+        // new("StopParties", new[] { "N1", "N2", "N3", "N4", "G61" }), //0310
+        // new("ShipmentData", new[] { "L5", "AT8", "L11", "MEA", "L4" }, new List<GroupingRule>() //0320 //TODO: PER code implementation
+        // {
+        //     new("OrderDetails", new[] { "AT5", "RTT", "C3" }), //323
+        //     new("Contact", new[] { "G61", "L11", "LH6" }, new List<GroupingRule>() //325
+        //     {
+        //         new("HazMat", new[] { "LH1", "LH2", "LH3", "LFH", "LEP", "LH4", "LHT" }) //330
+        //     })
+        // }),
+        // new("OrderInformationDetail", new[] { "OID", "G62", "LAD" }, new List<GroupingRule>() //0350
+        // {
+        //     new("OrderData", new[] { "L5", "AT8", "L4" }, new List<GroupingRule>() //360
+        //     {
+        //         new("Contact", new[] { "G61", "L11", "LH6" }, new List<GroupingRule>() //365
+        //         {
+        //             new("HazMat", new[] { "LH1", "LH2", "LH3", "LFH", "LEP", "LH4", "LHT" }) //370
+        //         })
+        //     })
+        // }),
+        // new("OtherEquipmentDetails", new[] { "N7", "N7A", "N7B", "MEA", "M7" }) //0380
+
+
+        foreach (var stopSegment in groupedSection.Children.Where(x => x.Rule.Name == "StopOffDetails"))
         {
             var stop = new StopOffDetails();
             foreach (var segment in stopSegment.Segments)
-            switch (segment)
-            {
-                case S5_StopOffDetails s5:
-                    stop.WeightUnitCode = s5.WeightUnitCode;
-                    stop.StopSequenceNumber = s5.StopSequenceNumber;
-                    stop.StopReasonCode = s5.StopReasonCode;
-                    stop.Weight = s5.Weight;
-                    stop.WeightUnitCode = s5.WeightUnitCode;
-                    stop.NumberOfUnitsShipped = s5.NumberOfUnitsShipped;
-                    stop.UnitOrBasisForMeasurementCode = s5.UnitOrBasisForMeasurementCode;
-                    stop.Volume = s5.Volume;
-                    stop.VolumeUnitQualifier = s5.VolumeUnitQualifier;
-                    stop.Description = s5.Description;
-                    stop.StandardPointLocationCode = s5.StandardPointLocationCode;
-                    stop.AccomplishCode = s5.AccomplishCode;
-                    break;
+                switch (segment)
+                {
+                    case S5_StopOffDetails s5:
+                        stop.WeightUnitCode = s5.WeightUnitCode;
+                        stop.StopSequenceNumber = s5.StopSequenceNumber;
+                        stop.StopReasonCode = s5.StopReasonCode;
+                        stop.Weight = s5.Weight;
+                        stop.WeightUnitCode = s5.WeightUnitCode;
+                        stop.NumberOfUnitsShipped = s5.NumberOfUnitsShipped;
+                        stop.UnitOrBasisForMeasurementCode = s5.UnitOrBasisForMeasurementCode;
+                        stop.Volume = s5.Volume;
+                        stop.VolumeUnitQualifier = s5.VolumeUnitQualifier;
+                        stop.Description = s5.Description;
+                        stop.StandardPointLocationCode = s5.StandardPointLocationCode;
+                        stop.AccomplishCode = s5.AccomplishCode;
+                        break;
                     case L11_BusinessInstructionsAndReferenceNumber l11:
                         stop.ReferenceNumbers.Add(new KeyValuePair<string, string>(l11.ReferenceIdentificationQualifier, l11.ReferenceIdentification));
-                    break;
-                case G62_DateTime g62:
-                    stop.Dates.Add(Date.From(g62));
-                    break;
-                case NTE_Note nte:
-                    stop.Notes.Add(new Note() { Description = nte.Description, ReferenceCode = nte.NoteReferenceCode });
-                    break;
-                case AT8_ShipmentWeightPackagingAndQuantityData at8:
+                        break;
+                    case G62_DateTime g62:
+                        stop.Dates.Add(Date.From(g62));
+                        break;
+                    case NTE_Note nte:
+                        stop.Notes.Add(new Note { Description = nte.Description, ReferenceCode = nte.NoteReferenceCode });
+                        break;
+                    case AT8_ShipmentWeightPackagingAndQuantityData at8:
                         stop.ShipmentWeightPackagingAndQuantityData = at8;
-                    break;
-            }
+                        break;
+                }
 
-            var partyGroup = stopSegment.Children.FirstOrDefault(x => x.Rule == stopPartiesRules);
+            //var handlingRequirements= stopSegment.Children.FirstOrDefault(x => x.Rule.Name == "HandlingRequirements");
+
+            var partyGroup = stopSegment.Children.FirstOrDefault(x => x.Rule.Name == "StopParties");
             if (partyGroup != null)
             {
                 var entity = new Entity();
                 foreach (var segment in partyGroup.Segments)
-                {
                     switch (segment)
                     {
                         case N1_PartyIdentification n1:
@@ -313,9 +318,8 @@ public class Edi204_MotorCarrierLoadTender
                         case N2_AdditionalNameInformation n2:
                             //additional name is this used?
                             break;
-                        case N3_PartyLocation n3: //n3 can be here twice so maybe an address3/address4?
-                            entity.Address1 = n3.AddressInformation;
-                            entity.Address2 = n3.AddressInformation2;
+                        case N3_PartyLocation n3:
+                            entity.Add(n3);
                             break;
                         case N4_GeographicLocation n4:
                             entity.City = n4.CityName;
@@ -329,16 +333,42 @@ public class Edi204_MotorCarrierLoadTender
                             entity.AddContact(g61);
                             break;
                     }
-                }
+
                 stop.Entity = entity;
             }
 
-            foreach (var stopDetails in stopSegment.Children.Where(x => x.Rule == stopOrderInfoRule))
+            foreach (var shipmentData in stopSegment.Children.Where(x=>x.Rule.Name== "ShipmentDetail"))
             {
-                var detail = new StopDetails();
-
-                foreach (var segment in stopDetails.Segments)
+                var detail = new ShipmentInformationDetail();
+                foreach (var segment in shipmentData.Segments)
                 {
+                    switch (segment)
+                    {
+                        case L5_DescriptionMarksAndNumbers l5:
+                            detail.DescriptionMarksAndNumbers = l5;
+                            break;
+                        case AT8_ShipmentWeightPackagingAndQuantityData at8:
+                            detail.ShipmentWeightPackagingQuantity = at8;
+                            break;
+                        case L11_BusinessInstructionsAndReferenceNumber l11:
+                            detail.ReferenceNumbers.Add(l11);
+                            break;
+                        case MEA_Measurements mea:
+                            detail.Measurements.Add(mea);
+                            break;
+                        case L4_Measurement l4:
+                            detail.Measuresment = l4;
+                            break;
+                    }
+                }
+                stop.ShipmentDetails.Add(detail);
+            }
+
+            foreach (var orderInfo in stopSegment.Children.Where(x => x.Rule.Name == "OrderInformationDetail"))
+            {
+                var detail = new OrderInformationDetail();
+
+                foreach (var segment in orderInfo.Segments)
                     switch (segment)
                     {
                         case OID_OrderInformationDetail oid:
@@ -352,144 +382,29 @@ public class Edi204_MotorCarrierLoadTender
                         case G62_DateTime g62:
                             break;
                         case LAD_LadingDetail lad: //this looks to mirror the OID but use different codes, it can repeat though
-                            detail.LadingInformation.Add(LadingInformation.FromLAD(lad)); 
+                            detail.LadingInformation.Add(LadingInformation.FromLAD(lad));
                             break;
                     }
-                }
 
-                foreach (var l5Group in stopDetails.Children.Where(x=>x.Rule == orderDetailRules))
-                {
-                    foreach (var segment in l5Group.Segments)
+                foreach (var l5Group in orderInfo.Children.Where(x => x.Rule.Name == "OrderDetails"))
+                foreach (var segment in l5Group.Segments)
+                    switch (segment)
                     {
-                        switch (segment)
-                        {
-                            case L5_DescriptionMarksAndNumbers l5:
-                                detail.DescriptionAndMarks.Add(DescriptionMarksAndNumbers.CreateFromL5(l5));
-                                break;
-                            case AT8_ShipmentWeightPackagingAndQuantityData at8:
-                                detail.ShipmentWeightPackagingInformation = at8;
-                                break;
-                        }
+                        case L5_DescriptionMarksAndNumbers l5:
+                            detail.DescriptionAndMarks.Add(DescriptionMarksAndNumbers.CreateFromL5(l5));
+                            break;
+                        case AT8_ShipmentWeightPackagingAndQuantityData at8:
+                            //detail.ShipmentWeightPackagingInformation = at8;
+                            break;
                     }
-                }
 
                 stop.Details.Add(detail);
             }
-                this.Stops.Add(stop);
+
+            //var otherEquipmentDetails = stopSegment.Children.FirstOrDefault(x=>x.Rule.Name== "OtherEquipmentDetails")
+            Stops.Add(stop);
         }
-
-                //contacts can go N1,N2,N3,N4,L11,G61
-                //equipment details can go //n7,n7a,n7b,MEA,M7
-
-
-                // var N1 = (N1_PartyIdentification)document.Sections[0].Segments.First(x => x.GetType() == typeof(N1_PartyIdentification));
-                //
-                // if (N1.EntityIdentifierCode == "SH") //shipper 
-                // {
-                //
-                // }
-                //
-                //
-                // if (N1.EntityIdentifierCode == "QD" || N1!.EntityIdentifierCode == "BT")  //Responsible Party / Bill To Party
-                // {
-                //     // this.ResponsiblePartyEntityName = N1.Name;
-                //     // this.ResponsiblePartyEntityIDCode = N1.IdentificationCode;
-                //     //this.ResponsiblePartyAddress1 = N3.[01]
-                //     //this.ResponsiblePartyAddress2 = N3.[02]
-                //     //     public string ResponsiblePartyAddress3 { get; set; }
-                //     //     public string ResponsiblePartyAddress4 { get; set; }
-                //     //this.ResponsiblePartyCity = N4.Name
-                //     //this.ResponsiblePartyState_Province = N4.[02]
-                //     //this.ResponsiblePartyPostalCode = N4.[03]
-                //     //this.ResponsiblePartyPostalCountry= N4.[04]
-                //     // var G61 = (G61_Contact)document.Sections[0].Segments.First(x => x.GetType() == typeof(G61_Contact));
-                //     // this.ResponsiblePartyPhoneNumber = G61.ContactFunctionCode + G61.CommunicationNumberQualifier + G61.CommunicationNumber
-                //     //     public string ResponsiblePartyContactCountry { get; set; }
-                //     //     public string ResponsiblePartyContactEmail { get; set; }
-                //     //     public string ResponsiblePartyContactFax { get; set; }
-                //     //     public string ResponsiblePartyContactFaxCode { get; set; }
-                //     //     public string ResponsiblePartyContactName { get; set; }
-                //     //     public string ResponsiblePartyContactPhone { get; set; }
-                //     //     public string ResponsiblePartyContactPhoneCode { get; set; }
-                //     //     public string ResponsiblePartyEntityIdCode { get; set; }
-                //     //     public string ResponsiblePartyEntityName { get; set; }
-                //     //     public string ResponsiblePartyFaxCode { get; set; }
-                //     //     public string ResponsiblePartyFaxNumber { get; set; }
-                //     //     public string ResponsiblePartyPhoneCode { get; set; }
-                //     //     public string ResponsiblePartyPhoneNumber { get; set; }
-                //
-                //
-                //
-                // }
-                // if (new[] { "RM", "VI", "PF", "OB" }.Contains(N1.EntityIdentifierCode)) //Remittance Party, (VI) Contact Person, (PF) Part to receive freight bill, (OB) Ordered By
-                // {
-                //     // this.ResponsiblePartyLocationEntityName = N1.Name;
-                //     // this.ResponsiblePartyLocationEntityIDCode = N1.IdentificationCode;
-                //     //this.ResponsiblePartyLocationAddress1 = N3.[01]
-                //     //this.ResponsiblePartyLocationAddress2 = N3.[02]
-                //     //this.ResponsiblePartyLocationCity = N4.[01]
-                //     //this.ResponsiblePartyLocationState_Province = N4.[02]
-                //     //ResponsiblePartyLocationPostalCode = N4.[03]
-                //     //ResponsiblePartyLocationCountry = N4.[04]
-                //
-                //     //     public string ResponsiblePartyLocationContactCountry { get; set; }
-                //     //     public string ResponsiblePartyLocationContactEmail { get; set; }
-                //     //     public string ResponsiblePartyLocationContactFax { get; set; }
-                //     //     public string ResponsiblePartyLocationContactFaxCode { get; set; }
-                //     //     public string ResponsiblePartyLocationContactName { get; set; }
-                //     //     public string ResponsiblePartyLocationContactPhone { get; set; }
-                //     //     public string ResponsiblePartyLocationContactPhoneCode { get; set; }
-                //
-                //     //     public string ResponsiblePartyLocationFaxCode { get; set; }
-                //     //     public string ResponsiblePartyLocationFaxNumber { get; set; }
-                //     //     public string ResponsiblePartyLocationPhoneCode { get; set; }
-                //     //     public string ResponsiblePartyLocationPhoneNumber { get; set; }
-                //     //     public string ResponsiblePartyLocationPostalCode { get; set; }
-                //     //     public string ResponsiblePartyLocationState_Province { get; set; }
-                //     //     public string ResponsiblePartyLocationTimeZone { get; set; }
-                // }
-
-
-                //if in a stop
-                // switch (l11.ReferenceIdentificationQualifier)
-                // {
-                //     case "P8":
-                //         StopReferenceId = l11.ReferenceIdentification;
-                //         break;
-                //     case "CMNA":
-                //         ShipToAddress3 = l11.ReferenceIdentification;
-                //         break;
-                //     case "11":
-                //     case "BM":
-                //         BillOfLading = l11.ReferenceIdentification;
-                //         break;
-                //     case "PO":
-                //         PurchaseOrder = l11.ReferenceIdentification;
-                //         break;
-                //     case "PK":
-                //         PackingSlipNumber = l11.ReferenceIdentification;
-                //         break;
-                //     case "4H":
-                //         ComercialInvoice = l11.ReferenceIdentification;
-                //         break;
-                //     case "2I":
-                //         ShipmentStopTrackingID = l11.ReferenceIdentification;
-                //         break;
-                //     case "BB":
-                //         PickupAuthorizationNumber = l11.ReferenceIdentification;
-                //
-                //
-                // }
-
-
-                //            if (l11.ReferenceIdentificationQualifier == "RU")
-        }
-
-    public string ApplicationType { get; set; }
-
-    public PLD_PalletShipmentInformation PalletInformation { get; set; }
-
-    public string ShipmentWeightCode { get; set; }
+    }
 
 
     public Section ToDocumentSection(string transactionSetControlNumber)
@@ -497,89 +412,78 @@ public class Edi204_MotorCarrierLoadTender
         var s = new Section();
         s.SectionType = "204";
         s.TransactionSetControlNumber = transactionSetControlNumber;
-        s.Segments.Add(new B2_BeginningSegmentForShipmentInformationTransaction
-        {
-            StandardCarrierAlphaCode = CarrierStandardCarrierAlphaCode,
-            ShipmentIdentificationNumber = ShipmentIdentificationNumber,
-            ShipmentMethodOfPaymentCode = ShipmentMethodOfPaymentCode,
-            PaymentMethodCode = PaymentMethodCode,
-            ShipmentWeightCode = ShipmentWeightCode,
-        });
+        s.Segments.Add(ShipmentInformation);
+
         s.Segments.Add(new B2A_SetPurpose
         {
             TransactionSetPurposeCode = Purpose,
             ApplicationTypeCode = ApplicationType
         });
-        
+
         //s.Segments.Add(new C3_CurrencyIdentifier());
 
-        foreach (var referenceNumber in ReferenceNumbers)
+        foreach (var referenceNumber in ReferenceNumbers) s.Segments.Add(referenceNumber);
+
+        if (OrderDate != null)
+            s.Segments.Add(OrderDate.ToG62());
+        if (InterlineInformation != null)
+            s.Segments.Add(InterlineInformation.ToMS3());
+
+        foreach (var billOfLadingHandlingInfo in BillOfLadingHandlingInfo)
         {
-            var l11 = new L11_BusinessInstructionsAndReferenceNumber()
-            {
-                ReferenceIdentificationQualifier = referenceNumber.Key,
-                ReferenceIdentification = referenceNumber.Value
-            };
-            s.Segments.Add(l11);
+            s.Segments.Add(billOfLadingHandlingInfo.HandlingRequirements);
+            s.Segments.Add(billOfLadingHandlingInfo.FreightRateInformation);
+            s.Segments.Add(billOfLadingHandlingInfo.Currency);
         }
-
-        if (this.OrderDate != null) 
-            s.Segments.Add(this.OrderDate.ToG62());
-        if (this.InterlineInformation != null)
-            s.Segments.Add(this.InterlineInformation.ToMS3());
-
 
         //s.Segments.Add(new G62_DateTime());
         //s.Segments.Add(new MS3_InterlineInformation());
-
         //AT5 loop
-        
-        if (PalletInformation!=null) 
+
+        if (PalletInformation != null)
             s.Segments.Add(PalletInformation);
 
-        //LH6
+        //TODO LH6
 
-
-        foreach (var note in Notes)
-        {
-            s.Segments.Add(new NTE_Note
-            {
-                Description = note.Description,
-                NoteReferenceCode = note.ReferenceCode
-            });
-        }
+        foreach (var note in Notes) s.Segments.Add(note);
 
         foreach (var entity in Entities)
         {
-            var n1 = new N1_PartyIdentification()
+            var n1 = new N1_PartyIdentification
             {
                 Name = entity.Name,
                 EntityIdentifierCode = entity.EntityIdentifierCode,
                 IdentificationCodeQualifier = entity.IdentificationCodeQualifier,
-                IdentificationCode = entity.IdentificationCode,
+                IdentificationCode = entity.IdentificationCode
             };
             s.Segments.Add(n1);
 
             //TODO: N2
-            var n2 = new N2_AdditionalNameInformation()
-            {
+            var n2 = new N2_AdditionalNameInformation();
 
-            };
-
-            if (!string.IsNullOrEmpty(entity.Address1) || !string.IsNullOrEmpty(entity.Address1))
+            if (!IsNullOrEmpty(entity.Address1) || !IsNullOrEmpty(entity.Address2))
             {
-                var n3 = new N3_PartyLocation()
+                var n3 = new N3_PartyLocation
                 {
                     AddressInformation = entity.Address1,
                     AddressInformation2 = entity.Address2
-                    
-            };
+                };
+                s.Segments.Add(n3);
+            }
+
+            if (!IsNullOrEmpty(entity.Address3) || !IsNullOrEmpty(entity.Address4))
+            {
+                var n3 = new N3_PartyLocation
+                {
+                    AddressInformation = entity.Address3,
+                    AddressInformation2 = entity.Address4
+                };
                 s.Segments.Add(n3);
             }
 
             if (!IsNullOrEmpty(entity.City) || !IsNullOrEmpty(entity.Country) || !IsNullOrEmpty(entity.PostalZip) || !IsNullOrEmpty(entity.ProvinceState))
             {
-                var n4 = new N4_GeographicLocation()
+                var n4 = new N4_GeographicLocation
                 {
                     CityName = entity.City,
                     CountryCode = entity.Country,
@@ -588,27 +492,21 @@ public class Edi204_MotorCarrierLoadTender
                 };
                 s.Segments.Add(n4);
             }
-            foreach (var contact in entity.Contacts)
-            {
-                s.Segments.Add(contact.ToG61());
-            }
 
+            foreach (var contact in entity.Contacts) s.Segments.Add(contact.ToG61());
         }
 
         foreach (var equipmentDetail in EquipmentDetails)
         {
             s.Segments.Add(equipmentDetail.LineData);
-            foreach (var equipmentDetailSealNumber in equipmentDetail.SealNumbers)
-            {
-                s.Segments.Add(new M7_SealNumbers() { SealNumber = equipmentDetailSealNumber});
-            }
+            foreach (var equipmentDetailSealNumber in equipmentDetail.SealNumbers) s.Segments.Add(new M7_SealNumbers { SealNumber = equipmentDetailSealNumber });
         }
 
         foreach (var stop in Stops)
         {
-            s.Segments.Add(new S5_StopOffDetails()
+            s.Segments.Add(new S5_StopOffDetails
             {
-                StopSequenceNumber = stop.StopSequenceNumber, 
+                StopSequenceNumber = stop.StopSequenceNumber,
                 StopReasonCode = stop.StopReasonCode,
                 Weight = stop.Weight,
                 WeightUnitCode = stop.WeightUnitCode,
@@ -618,88 +516,89 @@ public class Edi204_MotorCarrierLoadTender
                 VolumeUnitQualifier = stop.VolumeUnitQualifier,
                 Description = stop.Description,
                 StandardPointLocationCode = stop.StandardPointLocationCode,
-                AccomplishCode = stop.AccomplishCode,
+                AccomplishCode = stop.AccomplishCode
             });
 
-            foreach (var stopReferenceNumber in stop.ReferenceNumbers)
-            {
-                s.Segments.Add(new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentification = stopReferenceNumber.Value, ReferenceIdentificationQualifier = stopReferenceNumber.Key});
-            }
+            foreach (var stopReferenceNumber in stop.ReferenceNumbers) s.Segments.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentification = stopReferenceNumber.Value, ReferenceIdentificationQualifier = stopReferenceNumber.Key });
 
-            foreach (var date in stop.Dates)
-            {
-                s.Segments.Add(date.ToG62());
-            }
+            foreach (var date in stop.Dates) s.Segments.Add(date.ToG62());
 
-            if (stop.ShipmentWeightPackagingAndQuantityData != null)
-            {
-                s.Segments.Add(stop.ShipmentWeightPackagingAndQuantityData);
-            }
+            if (stop.ShipmentWeightPackagingAndQuantityData != null) s.Segments.Add(stop.ShipmentWeightPackagingAndQuantityData);
 
-            foreach (var stopNote in stop.Notes)
-            {
-                s.Segments.Add(new NTE_Note() { Description = stopNote.Description, NoteReferenceCode = stopNote.ReferenceCode });
-            }
+            foreach (var stopNote in stop.Notes) s.Segments.Add(new NTE_Note { Description = stopNote.Description, NoteReferenceCode = stopNote.ReferenceCode });
 
             if (stop.Entity != null)
             {
-                var n1 = new N1_PartyIdentification()
+                var n1 = new N1_PartyIdentification
                 {
                     Name = stop.Entity.Name,
                     EntityIdentifierCode = stop.Entity.EntityIdentifierCode,
                     IdentificationCodeQualifier = stop.Entity.IdentificationCodeQualifier,
-                    IdentificationCode = stop.Entity.IdentificationCode,
+                    IdentificationCode = stop.Entity.IdentificationCode
                 };
+                s.Segments.Add(n1);
 
                 //TODO: N2
-                var n2 = new N2_AdditionalNameInformation()
-                {
-
-                };
-                var n3 = new N3_PartyLocation()
+                var n2 = new N2_AdditionalNameInformation();
+                s.Segments.Add(new N3_PartyLocation
                 {
                     AddressInformation = stop.Entity.Address1,
                     AddressInformation2 = stop.Entity.Address2
-                };
+                });
 
-                var n4 = new N4_GeographicLocation()
+                if (stop.Entity.Address3 != null)
+                {
+                    s.Segments.Add(new N3_PartyLocation
+                    {
+                        AddressInformation = stop.Entity.Address3,
+                        AddressInformation2 = stop.Entity.Address4
+                    });
+                }
+
+                s.Segments.Add(new N4_GeographicLocation
                 {
                     CityName = stop.Entity.City,
                     CountryCode = stop.Entity.Country,
                     PostalCode = stop.Entity.PostalZip,
                     StateOrProvinceCode = stop.Entity.ProvinceState
-                };
+                });
 
-                s.Segments.Add(n1);
-                s.Segments.Add(n3);
-                s.Segments.Add(n4);
+                foreach (var contact in stop.Entity.Contacts) s.Segments.Add(contact.ToG61());
 
-                foreach (var contact in stop.Entity.Contacts)
+           
+            }
+
+            foreach (var detail in stop.ShipmentDetails)
+            {
+                s.Segments.Add(detail.DescriptionMarksAndNumbers);
+                s.Segments.Add(detail.ShipmentWeightPackagingQuantity);
+                //323
+                foreach (var referenceNumber in detail.ReferenceNumbers)
                 {
-                    s.Segments.Add(contact.ToG61());
+                    s.Segments.Add(referenceNumber);
                 }
 
-                foreach (var stopDetail in stop.Details)
+                foreach (var measurement in detail.Measurements)
                 {
-                    s.Segments.Add(new OID_OrderInformationDetail() { ReferenceIdentification = stopDetail.ReferenceIdentification, PackagingFormCode = stopDetail.PackagingFormCode, Weight = stopDetail.Weight, WeightUnitCode = stopDetail.WeightUnitCode, Quantity = stopDetail.Quantity, PurchaseOrderNumber = stopDetail.PurchaseOrderNumber});
-                    foreach (var ladingInformation in stopDetail.LadingInformation)
-                    {
-                        s.Segments.Add(ladingInformation.ToLAD());                        
-                    }
-                    foreach (var descriptionAndMark in stopDetail.DescriptionAndMarks)
-                    {
-                        s.Segments.Add(descriptionAndMark.ToL5());
-                    }
+                    s.Segments.Add(measurement);
                 }
+
+                if (detail.Measuresment != null)
+                    s.Segments.Add(detail.Measuresment);
+            }
+
+            foreach (var stopDetail in stop.Details)
+            {
+                s.Segments.Add(new OID_OrderInformationDetail { ReferenceIdentification = stopDetail.ReferenceIdentification, PackagingFormCode = stopDetail.PackagingFormCode, Weight = stopDetail.Weight, WeightUnitCode = stopDetail.WeightUnitCode, Quantity = stopDetail.Quantity, PurchaseOrderNumber = stopDetail.PurchaseOrderNumber });
+                foreach (var ladingInformation in stopDetail.LadingInformation) s.Segments.Add(ladingInformation.ToLAD());
+                foreach (var descriptionAndMark in stopDetail.DescriptionAndMarks) s.Segments.Add(descriptionAndMark.ToL5());
             }
         }
 
-        s.Segments.Add(this.Totals);
+        s.Segments.Add(Totals);
 
         return s;
     }
-
-    public string PaymentMethodCode { get; set; }
 
     public void Validate()
     {

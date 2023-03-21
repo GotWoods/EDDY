@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using EdiParser.x12.DomainModels._210;
 
-namespace EdiParser.x12.DomainModels._210;
+namespace EdiParser.x12.DomainModels._204;
 
-public class StopDetails
+public class OrderInformationDetail
 {
     public string ReferenceIdentification { get; set; }
     public string PackagingFormCode { get; set; }
