@@ -11,10 +11,11 @@ public class GroupedSectionReader
     private int _depth;
     private int _groupDepth;
 
-    public GroupedSectionReader(Section section)
+    public GroupedSectionReader(Section section, GroupingRule rule)
     {
         _segments = section.Segments.ToArray();
         _logger = Logging.Logger<GroupedSectionReader>();
+        _root = new Group(null, rule);
     }
 
     private int CurrentLineIndex { get; set; }
@@ -35,12 +36,11 @@ public class GroupedSectionReader
         }
     }
 
-    public Group Read(GroupingRule rule)
+    public Group Read()
     {
         _depth = 0;
         _groupDepth = 0;
-        _root = new Group(null, rule);
-        Read2(_root, rule, true);
+        Read2(_root, _root.Rule, true);
         return _root.Children[0];
     }
 

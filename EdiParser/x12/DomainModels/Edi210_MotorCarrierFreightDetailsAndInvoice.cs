@@ -75,7 +75,7 @@ public class Edi210_MotorCarrierFreightDetailsAndInvoice
 
 
         var section = document.Sections[0]; //it is possible a document contains multiple instructions
-        var groupReader = new GroupedSectionReader(section);
+        //var groupReader = new GroupedSectionReader(section);
 
         // var groupedSection = groupReader.Read(partyRules, equipmentDetailsRules, orderInformationRules, stopRules, transactionSetRules);
         //

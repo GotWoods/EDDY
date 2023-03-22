@@ -26,7 +26,7 @@ public class Edi204MotorCarrierLoadTenderTests
             ShipmentIdentificationNumber = "32523432",
             ShipmentMethodOfPaymentCode = "PP"
         };
-        sourceModel.Purpose = "04";
+        sourceModel.SetPurpose = new B2A_SetPurpose() { TransactionSetPurposeCode = "04" };
         sourceModel.Entities.Add(new Entity
         {
             Name = "123 Company", EntityIdentifierCode = "5334532", Address1 = "123 street", City = "City", ProvinceState = "PS", PostalZip = "H0H0H0"
@@ -44,7 +44,7 @@ public class Edi204MotorCarrierLoadTenderTests
 
         var expected = new Section();
         expected.Segments.Add(new B2_BeginningSegmentForShipmentInformationTransaction { StandardCarrierAlphaCode = sourceModel.ShipmentInformation.StandardCarrierAlphaCode, ShipmentIdentificationNumber = sourceModel.ShipmentInformation.ShipmentIdentificationNumber, ShipmentMethodOfPaymentCode = sourceModel.ShipmentInformation.ShipmentMethodOfPaymentCode });
-        expected.Segments.Add(new B2A_SetPurpose { TransactionSetPurposeCode = sourceModel.Purpose });
+        expected.Segments.Add(new B2A_SetPurpose { TransactionSetPurposeCode = sourceModel.SetPurpose.TransactionSetPurposeCode });
         expected.Segments.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentification = sourceModel.ReferenceNumbers[0].ReferenceIdentification, ReferenceIdentificationQualifier = sourceModel.ReferenceNumbers[0].ReferenceIdentificationQualifier });
         expected.Segments.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentification = sourceModel.ReferenceNumbers[1].ReferenceIdentification, ReferenceIdentificationQualifier = sourceModel.ReferenceNumbers[1].ReferenceIdentificationQualifier });
         expected.Segments.Add(new NTE_Note { Description = sourceModel.Notes[0].Description, NoteReferenceCode = sourceModel.Notes[0].NoteReferenceCode });
@@ -108,7 +108,7 @@ public class Edi204MotorCarrierLoadTenderTests
         expected.ShipmentInformation.StandardCarrierAlphaCode = "XXXX";
         expected.ShipmentInformation.ShipmentIdentificationNumber = "9999955559";
         expected.ShipmentInformation.ShipmentMethodOfPaymentCode = "PP";
-        expected.Purpose = "04";
+        expected.SetPurpose = new B2A_SetPurpose() { TransactionSetPurposeCode = "04" };
         expected.InterlineInformation = new MS3_InterlineInformation { StandardCarrierAlphaCode = "XXXX", TransportationMethodTypeCode = "M", RoutingSequenceCode = "B" };
         // expected.Receiver = "123456789012345";
         // expected.Sender = "ABCDEFGHIJKLMNO";

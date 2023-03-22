@@ -27,7 +27,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
         expected.ShipmentInformation.StandardCarrierAlphaCode = "PNII";
         expected.ShipmentInformation.ShipmentIdentificationNumber = "340186303";
         expected.ShipmentInformation.ShipmentMethodOfPaymentCode = "TP";
-        expected.Purpose = "00";
+        expected.SetPurpose = new B2A_SetPurpose() { TransactionSetPurposeCode = "00" };
 
         expected.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentificationQualifier = "VD", ReferenceIdentification = "T5227893" });
         expected.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentificationQualifier = "SI", ReferenceIdentification = "1032301-FW62-FW62-LTL-20201117" });
@@ -193,7 +193,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
         expected.ShipmentInformation.StandardCarrierAlphaCode = "CCNI";
         expected.ShipmentInformation.ShipmentIdentificationNumber = "L11005765";
         expected.ShipmentInformation.ShipmentMethodOfPaymentCode = "TP";
-        expected.Purpose = "00";
+        expected.SetPurpose = new B2A_SetPurpose() { TransactionSetPurposeCode = "00" };
 
         expected.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentificationQualifier = "BN", ReferenceIdentification = "30722781" });
         expected.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentificationQualifier = "RU", ReferenceIdentification = "MID508v1" });

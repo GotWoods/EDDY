@@ -10,13 +10,8 @@ namespace EdiParser.x12.DomainModels;
 
 public class Edi204_MotorCarrierLoadTender
 {
-    //public string CarrierStandardCarrierAlphaCode { get; set; }
-    //public string ShipmentIdentificationNumber { get; set; }
-    //public string ShipmentMethodOfPaymentCode { get; set; }
     public Date OrderDate { get; set; }
-    public string Purpose { get; set; }
-
-
+    public B2A_SetPurpose SetPurpose { get; set; }
     public List<Entity> Entities { get; set; } = new();
     public List<StopOffDetails> Stops { get; set; } = new();
     public List<L11_BusinessInstructionsAndReferenceNumber> ReferenceNumbers { get; set; } = new();
@@ -26,14 +21,57 @@ public class Edi204_MotorCarrierLoadTender
     public List<BillOfLadingHandlingInfo> BillOfLadingHandlingInfo { get; set; } = new();
     public L3_TotalWeightAndCharges Totals { get; set; }
     public B2_BeginningSegmentForShipmentInformationTransaction ShipmentInformation { get; set; } = new();
-
-    public string ApplicationType { get; set; }
-
     public PLD_PalletShipmentInformation PalletInformation { get; set; }
+    
+  
 
-    //public string ShipmentWeightCode { get; set; }
+    public void LoadFrom(Section section)
+    {
+        if (section.SectionType != "204")
+            throw new ArgumentOutOfRangeException("Expected a section type of 204 but was provied a type of " + section.SectionType);
 
-    //public string PaymentMethodCode { get; set; }
+        //TODO: L11/MEA/PER/L4 exists between some loops
+        var root = new GroupingRule("Root", new[] { "B2", "B2A", "C3", "L11", "G62", "MS3", "PLD", "LH6", "NTE", "L3" }, new List<GroupingRule>
+        {
+            new("BillOfLading", new[] { "AT5", "RTT", "C3" }), //0050
+            new("Parties", new[] { "N1", "N2", "N3", "N4", "L11", "G61" }), //0100
+            new("EquipmentDetails", new[] { "N7", "N7A", "N7B", "MEA", "M7" }), //0200
+            new("StopOffDetails", new[] { "S5", "L11", "G62", "AT8", "LAD", "NTE", "PLD" },
+                new List<GroupingRule>
+                {
+                    new("HandlingRequirements", new[] { "AT5", "RTT", "C3" }), //0305
+                    new("StopParties", new[] { "N1", "N2", "N3", "N4", "G61" }), //0310
+                    new("ShipmentDetail", new[] { "L5", "AT8", "L11", "MEA", "L4" }, new List<GroupingRule>() //0320 //TODO: PER code implementation
+                    {
+                        new("OrderDetails", new[] { "AT5", "RTT", "C3" }), //323
+                        new("Contact", new[] { "G61", "L11", "LH6" }, new List<GroupingRule>() //325
+                        {
+                            new("HazMat", new[] { "LH1", "LH2", "LH3", "LFH", "LEP", "LH4", "LHT" }) //330
+                        })
+                    }),
+                    new("OrderInformationDetail", new[] { "OID", "G62", "LAD" }, new List<GroupingRule>() //0350
+                    {
+                        new("OrderData", new[] { "L5", "AT8", "L4" }, new List<GroupingRule>() //360
+                        {
+                            new("Contact", new[] { "G61", "L11", "LH6" }, new List<GroupingRule>() //365
+                            {
+                                new("HazMat", new[] { "LH1", "LH2", "LH3", "LFH", "LEP", "LH4", "LHT" }) //370
+                            })
+                        })
+                    }),
+                    new("OtherEquipmentDetails", new[] { "N7", "N7A", "N7B", "MEA", "M7" }) //0380
+                }),
+            new("Summary", new[] { "LX", "L4" }) //1000
+        });
+
+
+        var groupReader = new GroupedSectionReader(section, root);
+        var groupedSection = groupReader.Read();
+
+
+        ReadHeader(groupedSection);
+        ReadDetail(groupedSection);
+    }
 
     private void ReadHeader(Group groupedSection)
     {
@@ -44,8 +82,7 @@ public class Edi204_MotorCarrierLoadTender
                     ShipmentInformation = b2;
                     break;
                 case B2A_SetPurpose b2a:
-                    Purpose = b2a.TransactionSetPurposeCode;
-                    ApplicationType = b2a.ApplicationTypeCode;
+                    SetPurpose = b2a;
                     break;
                 case G62_DateTime g62:
                     OrderDate = Date.From(g62);
@@ -145,56 +182,7 @@ public class Edi204_MotorCarrierLoadTender
             EquipmentDetails.Add(details);
         }
     }
-
-
-    public void LoadFrom(Section section)
-    {
-        if (section.SectionType != "204")
-            throw new ArgumentOutOfRangeException("Expected a section type of 204 but was provied a type of " + section.SectionType);
-
-        //TODO: L11/MEA/PER/L4 exists between some loops
-        var root = new GroupingRule("Root", new[] { "B2", "B2A", "C3", "L11", "G62", "MS3", "PLD", "LH6", "NTE", "L3" }, new List<GroupingRule>
-        {
-            new("BillOfLading", new[] { "AT5", "RTT", "C3" }), //0050
-            new("Parties", new[] { "N1", "N2", "N3", "N4", "L11", "G61" }), //0100
-            new("EquipmentDetails", new[] { "N7", "N7A", "N7B", "MEA", "M7" }), //0200
-            new("StopOffDetails", new[] { "S5", "L11", "G62", "AT8", "LAD", "NTE", "PLD" },
-                new List<GroupingRule>
-                {
-                    new("HandlingRequirements", new[] { "AT5", "RTT", "C3" }), //0305
-                    new("StopParties", new[] { "N1", "N2", "N3", "N4", "G61" }), //0310
-                    new("ShipmentDetail", new[] { "L5", "AT8", "L11", "MEA", "L4" }, new List<GroupingRule>() //0320 //TODO: PER code implementation
-                    {
-                        new("OrderDetails", new[] { "AT5", "RTT", "C3" }), //323
-                        new("Contact", new[] { "G61", "L11", "LH6" }, new List<GroupingRule>() //325
-                        {
-                            new("HazMat", new[] { "LH1", "LH2", "LH3", "LFH", "LEP", "LH4", "LHT" }) //330
-                        })
-                    }),
-                    new("OrderInformationDetail", new[] { "OID", "G62", "LAD" }, new List<GroupingRule>() //0350
-                    {
-                        new("OrderData", new[] { "L5", "AT8", "L4" }, new List<GroupingRule>() //360
-                        {
-                            new("Contact", new[] { "G61", "L11", "LH6" }, new List<GroupingRule>() //365
-                            {
-                                new("HazMat", new[] { "LH1", "LH2", "LH3", "LFH", "LEP", "LH4", "LHT" }) //370
-                            })
-                        })
-                    }),
-                    new("OtherEquipmentDetails", new[] { "N7", "N7A", "N7B", "MEA", "M7" }) //0380
-                }),
-            new("Summary", new[] { "LX", "L4" }) //1000
-        });
-
-
-        var groupReader = new GroupedSectionReader(section);
-        var groupedSection = groupReader.Read(root);
-
-
-        ReadHeader(groupedSection);
-        ReadDetail(groupedSection);
-    }
-
+    
     private void ReadDetail(Group groupedSection)
     {
         //StopOffDetails
@@ -489,13 +477,8 @@ public class Edi204_MotorCarrierLoadTender
         s.SectionType = "204";
         s.TransactionSetControlNumber = transactionSetControlNumber;
         s.Segments.Add(ShipmentInformation);
-
-        s.Segments.Add(new B2A_SetPurpose
-        {
-            TransactionSetPurposeCode = Purpose,
-            ApplicationTypeCode = ApplicationType
-        });
-
+        s.Segments.Add(SetPurpose);
+        
         //s.Segments.Add(new C3_CurrencyIdentifier());
 
         foreach (var referenceNumber in ReferenceNumbers) s.Segments.Add(referenceNumber);

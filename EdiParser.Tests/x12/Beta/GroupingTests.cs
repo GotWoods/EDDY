@@ -44,14 +44,12 @@ public class GroupingTests
         section.Segments.Add(new N1_PartyIdentification());
         section.Segments.Add(new N3_PartyLocation());
 
-        var subject = new GroupedSectionReader(section);
-
         var root = new GroupingRule("Root", new[] { "B3" }, new List<GroupingRule>()
         {
             _entityInfoGroupRules, _transactionSetGroupingRule
         });
-
-        var actual = subject.Read(root);
+        var subject = new GroupedSectionReader(section, root);
+        var actual = subject.Read();
 
 
         var expected = new Group();
@@ -81,14 +79,14 @@ public class GroupingTests
         //core data
         section.Segments.Add(new B3_BeginningSegmentForCarriersInvoice());
 
-        var subject = new GroupedSectionReader(section);
+       
 
         var root = new GroupingRule("Root", new[] { "B3" }, new List<GroupingRule>()
         {
             _entityInfoGroupRules, _transactionSetGroupingRule
         });
-
-        var actual =  subject.Read(root);
+        var subject = new GroupedSectionReader(section, root);
+        var actual =  subject.Read();
 
         var expected = new Group();
         expected.Segments.Add(new B3_BeginningSegmentForCarriersInvoice());
@@ -108,12 +106,12 @@ public class GroupingTests
         section.Segments.Add(new N3_PartyLocation());
 
 
-        var subject = new GroupedSectionReader(section);
         var root = new GroupingRule("Root", new[] { "B3" }, new List<GroupingRule>()
         {
             _entityInfoGroupRules
         });
-        var actual = subject.Read(root);
+        var subject = new GroupedSectionReader(section, root);
+        var actual = subject.Read();
         
         var expected = new Group();
         expected.Segments.Add(new B3_BeginningSegmentForCarriersInvoice());
@@ -141,14 +139,15 @@ public class GroupingTests
         section.Segments.Add(new N2_AdditionalNameInformation());
         section.Segments.Add(new N3_PartyLocation());
 
-        var subject = new GroupedSectionReader(section);
+        
 
         var root = new GroupingRule("Root", new[] { "B3" }, new List<GroupingRule>()
         {
             _entityInfoGroupRules, _transactionSetGroupingRule
         });
 
-        var actual = subject.Read(root);
+        var subject = new GroupedSectionReader(section, root);
+        var actual = subject.Read();
         
 
         var expected = new Group();
@@ -195,13 +194,14 @@ public class GroupingTests
 
         //g2.SubGroups.Add(new GroupingRule(typeof(OID_OrderInformationDetail), typeof(SDQ_DestinationQuantity)));
 
-        var subject = new GroupedSectionReader(section);
+        
         var root = new GroupingRule("Root", new[] { "B3" }, new List<GroupingRule>()
         {
             _entityInfoGroupRules, _transactionSetGroupingRule
         });
-        var actual = subject.Read(root);
-        
+        var subject = new GroupedSectionReader(section, root);
+        var actual = subject.Read();
+
         var expected = new Group();
         expected.Segments.Add(new B3_BeginningSegmentForCarriersInvoice());
 
@@ -241,14 +241,15 @@ public class GroupingTests
 
 
 
-        var subject = new GroupedSectionReader(section);
+        
 
         var root = new GroupingRule("Root", new[] { "B3" }, new List<GroupingRule>()
         {
             _transactionSetGroupingRule
         });
 
-        var actual = subject.Read(root);
+        var subject = new GroupedSectionReader(section, root);
+        var actual = subject.Read();
 
         var expected = new Group();
         expected.Segments.Add(new B3_BeginningSegmentForCarriersInvoice());
@@ -290,12 +291,13 @@ public class GroupingTests
         section.Segments.Add(new OID_OrderInformationDetail());
         section.Segments.Add(new SDQ_DestinationQuantity());
 
-        var subject = new GroupedSectionReader(section);
+        
         var root = new GroupingRule("Root", new[] { "B3" }, new List<GroupingRule>()
         {
             _entityInfoGroupRules, _transactionSetGroupingRule
         });
-        var actual = subject.Read(root);
+        var subject = new GroupedSectionReader(section, root);
+        var actual = subject.Read();
 
         var expected = new Group();
         expected.Segments.Add(new B3_BeginningSegmentForCarriersInvoice());
@@ -340,7 +342,7 @@ public class GroupingTests
         section.Segments.Add(new N1_PartyIdentification());
         section.Segments.Add(new N3_PartyLocation());
 
-        var subject = new GroupedSectionReader(section);
+        
 
         var stopDetailsRules = new GroupingRule("StopOffDetails", typeof(S5_StopOffDetails), typeof(L11_BusinessInstructionsAndReferenceNumber), typeof(G62_DateTime), typeof(AT8_ShipmentWeightPackagingAndQuantityData), typeof(LAD_LadingDetail));
         stopDetailsRules.AddSubRule("Stop Parties", typeof(N1_PartyIdentification), typeof(N2_AdditionalNameInformation), typeof(N3_PartyLocation), typeof(N4_GeographicLocation), typeof(G61_Contact));
@@ -349,7 +351,8 @@ public class GroupingTests
         {
             _entityInfoGroupRules, stopDetailsRules
         });
-        var actual = subject.Read(root);
+        var subject = new GroupedSectionReader(section, root);
+        var actual = subject.Read();
 
         var expected = new Group();
         expected.Segments.Add(new B3_BeginningSegmentForCarriersInvoice());
@@ -400,12 +403,13 @@ public class GroupingTests
         stopsRules.AddSubRule("Stop Entity", typeof(N1_PartyIdentification), typeof(N2_AdditionalNameInformation), typeof(N3_PartyLocation));
         stopsRules.AddSubRule("OID rule", typeof(OID_OrderInformationDetail));
 
-        var subject = new GroupedSectionReader(section);
+        
         var root = new GroupingRule("Root", new[] { "B3" }, new List<GroupingRule>()
         {
             _entityInfoGroupRules, stopsRules
         });
-        var actual = subject.Read(root);
+        var subject = new GroupedSectionReader(section, root);
+        var actual = subject.Read();
 
         var expected = new Group();
         expected.Segments.Add(new B3_BeginningSegmentForCarriersInvoice());
@@ -473,12 +477,14 @@ public class GroupingTests
         var oidRule = stopsRules.AddSubRule("OID rule", typeof(OID_OrderInformationDetail), typeof(LAD_LadingDetail));
         oidRule.AddSubRule("L5 Rule", typeof(L5_DescriptionMarksAndNumbers));
 
-        var subject = new GroupedSectionReader(section);
+        
         var root = new GroupingRule("Root", new[] { "B3" }, new List<GroupingRule>()
         {
             _entityInfoGroupRules, stopsRules
         });
-        var actual = subject.Read(root);
+        var subject = new GroupedSectionReader(section, root);
+        var actual = subject.Read();
+        
 
         var expected = new Group();
         expected.Segments.Add(new B3_BeginningSegmentForCarriersInvoice());
@@ -611,14 +617,15 @@ public class GroupingTests
         section.Segments.Add(new SDQ_DestinationQuantity());
 
 
-        var subject = new GroupedSectionReader(section);
+        
         var root = new GroupingRule("Root", new[] { "B3" }, new List<GroupingRule>()
         {
             _entityInfoGroupRules, _transactionSetGroupingRule
         });
 
-        var actual = subject.Read(root);
-        
+        var subject = new GroupedSectionReader(section, root);
+        var actual = subject.Read();
+
         var expected = new Group();
         expected.Segments.Add(new B3_BeginningSegmentForCarriersInvoice());
 
