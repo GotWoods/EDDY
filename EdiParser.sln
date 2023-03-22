@@ -14,7 +14,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EdiParser.ClassGenerator", "EdiParser.ClassGenerator\EdiParser.ClassGenerator.csproj", "{ACB06F72-B5CA-4124-9CF4-CE58DAE6EF14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdiParser.ClassGenerator.Lib", "EdiParser.ClassGenerator.Lib\EdiParser.ClassGenerator.Lib.csproj", "{AE199C3F-3F66-4880-8196-82C4947FB2DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EdiParser.ClassGenerator.Lib", "EdiParser.ClassGenerator.Lib\EdiParser.ClassGenerator.Lib.csproj", "{AE199C3F-3F66-4880-8196-82C4947FB2DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdiParser.Tests.Functional", "EdiParser.Tests.Functional\EdiParser.Tests.Functional.csproj", "{A451B438-2CFF-4FD7-8D75-44FF21740807}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +40,10 @@ Global
 		{AE199C3F-3F66-4880-8196-82C4947FB2DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE199C3F-3F66-4880-8196-82C4947FB2DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE199C3F-3F66-4880-8196-82C4947FB2DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A451B438-2CFF-4FD7-8D75-44FF21740807}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A451B438-2CFF-4FD7-8D75-44FF21740807}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A451B438-2CFF-4FD7-8D75-44FF21740807}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A451B438-2CFF-4FD7-8D75-44FF21740807}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
