@@ -39,7 +39,6 @@ public class GroupedSectionReader
     {
         _depth = 0;
         _groupDepth = 0;
-        //TODO: reset all the positional counters/groups/etc and start from the beginning
         _root = new Group(null, rule);
         Read2(_root, rule, true);
         return _root.Children[0];

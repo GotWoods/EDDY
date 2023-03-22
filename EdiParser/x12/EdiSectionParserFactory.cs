@@ -4,18 +4,18 @@ using System.Linq;
 using System.Reflection;
 using EdiParser.Attributes;
 using EdiParser.x12.Mapping;
-using EdiParser.x12.Models;
 using EdiParser.x12.Models.Internals;
 
 namespace EdiParser.x12;
 
 public class EdiSectionParserFactory
 {
-    private static bool _isInitialized = false;
+    private static readonly bool _isInitialized = false;
     private static Dictionary<string, Type> _parsers;
+
     public static EdiX12Segment Parse(string line, MapOptions mapOptions)
     {
-        var identifier = line.Substring(0,  line.IndexOf(mapOptions.Separator));
+        var identifier = line.Substring(0, line.IndexOf(mapOptions.Separator));
         return Map.MapObject(GetSegmentFor(identifier), line, mapOptions);
     }
 
@@ -44,6 +44,7 @@ public class EdiSectionParserFactory
             var name = segmentProvider.GetCustomAttribute<Segment>().Name;
             matches.Add(name, segmentProvider);
         }
+
         return matches;
     }
 }

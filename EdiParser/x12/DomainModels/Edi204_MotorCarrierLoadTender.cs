@@ -21,7 +21,7 @@ public class Edi204_MotorCarrierLoadTender
     public List<StopOffDetails> Stops { get; set; } = new();
     public List<L11_BusinessInstructionsAndReferenceNumber> ReferenceNumbers { get; set; } = new();
     public List<EquipmentDetails> EquipmentDetails { get; set; } = new();
-    public InterlineInformation InterlineInformation { get; set; }
+    public MS3_InterlineInformation InterlineInformation { get; set; }
     public List<NTE_Note> Notes { get; set; } = new();
     public List<BillOfLadingHandlingInfo> BillOfLadingHandlingInfo { get; set; } = new();
     public L3_TotalWeightAndCharges Totals { get; set; }
@@ -54,7 +54,7 @@ public class Edi204_MotorCarrierLoadTender
                     ReferenceNumbers.Add(l11);
                     break;
                 case MS3_InterlineInformation ms3:
-                    InterlineInformation = InterlineInformation.FromMS3(ms3);
+                    InterlineInformation = ms3;
                     break;
                 case PLD_PalletShipmentInformation pld:
                     PalletInformation = pld;
@@ -406,7 +406,7 @@ public class Edi204_MotorCarrierLoadTender
                 case G62_DateTime g62:
                     break;
                 case LAD_LadingDetail lad: //this looks to mirror the OID but use different codes, it can repeat though
-                    detail.LadingInformation.Add(LadingInformation.FromLAD(lad));
+                    detail.LadingInformation.Add(lad);
                     break;
             }
 
@@ -503,7 +503,7 @@ public class Edi204_MotorCarrierLoadTender
         if (OrderDate != null)
             s.Segments.Add(OrderDate.ToG62());
         if (InterlineInformation != null)
-            s.Segments.Add(InterlineInformation.ToMS3());
+            s.Segments.Add(InterlineInformation);
 
         foreach (var billOfLadingHandlingInfo in BillOfLadingHandlingInfo)
         {
@@ -708,7 +708,7 @@ public class Edi204_MotorCarrierLoadTender
             foreach (var stopDetail in stop.Details)
             {
                 s.Segments.Add(stopDetail.Summary);
-                foreach (var ladingInformation in stopDetail.LadingInformation) s.Segments.Add(ladingInformation.ToLAD());
+                foreach (var ladingInformation in stopDetail.LadingInformation) s.Segments.Add(ladingInformation);
                 foreach (var detail in stopDetail.OrderDetails)
                 {
                     s.Segments.Add(detail.DescriptionMarksAndNumbers);

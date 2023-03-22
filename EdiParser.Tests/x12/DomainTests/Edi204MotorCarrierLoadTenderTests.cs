@@ -109,7 +109,7 @@ public class Edi204MotorCarrierLoadTenderTests
         expected.ShipmentInformation.ShipmentIdentificationNumber = "9999955559";
         expected.ShipmentInformation.ShipmentMethodOfPaymentCode = "PP";
         expected.Purpose = "04";
-        expected.InterlineInformation = new InterlineInformation { StandardCarrierAlphaCode = "XXXX", TransportationMethod = "M", RoutingSequenceCode = "B" };
+        expected.InterlineInformation = new MS3_InterlineInformation { StandardCarrierAlphaCode = "XXXX", TransportationMethodTypeCode = "M", RoutingSequenceCode = "B" };
         // expected.Receiver = "123456789012345";
         // expected.Sender = "ABCDEFGHIJKLMNO";
         //MS3 should be SCAC XXXX

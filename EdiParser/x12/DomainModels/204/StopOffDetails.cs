@@ -30,7 +30,6 @@ namespace EdiParser.x12.DomainModels._204
 
         public List<Note> Notes { get; set; } = new();
         public List<OrderInformationDetail> Details { get; set; } = new();
-        public List<DescriptionMarksAndNumbers> DescriptionAndMarks { get; set; } = new();
         public AT8_ShipmentWeightPackagingAndQuantityData ShipmentWeightPackagingAndQuantityData { get; set; }
         public List<ShipmentInformationDetail> ShipmentDetails { get; set; } = new();
 
