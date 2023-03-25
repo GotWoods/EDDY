@@ -7,7 +7,7 @@ namespace EdiParser.x12.DomainModels._204;
 public class OrderInformationDetail2
 {
     [SectionPosition(1)]
-    public OID_OrderInformationDetail OrderInformationDetail { get; set; }
+    public OID_OrderInformationDetail Detail { get; set; }
     [SectionPosition(2)]
     public List<G62_DateTime> Dates { get; set; } = new();
     

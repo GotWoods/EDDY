@@ -5,51 +5,38 @@ using EdiParser.Attributes;
 using EdiParser.x12.DomainModels._204;
 using EdiParser.x12.Models;
 using EdiParser.x12.Models.Internals;
-using static System.String;
 
 namespace EdiParser.x12.DomainModels;
 
 public class Edi204_MotorCarrierLoadTender
 {
-    [SectionPosition(1)]
-    public B2_BeginningSegmentForShipmentInformationTransaction ShipmentInformation { get; set; } = new();
+    [SectionPosition(1)] public B2_BeginningSegmentForShipmentInformationTransaction ShipmentInformation { get; set; } = new();
 
-    [SectionPosition(2)]
-    public B2A_SetPurpose SetPurpose { get; set; }
+    [SectionPosition(2)] public B2A_SetPurpose SetPurpose { get; set; }
 
-    [SectionPosition(3)]
-    public List<L11_BusinessInstructionsAndReferenceNumber> ReferenceNumbers { get; set; } = new();
+    [SectionPosition(3)] public List<L11_BusinessInstructionsAndReferenceNumber> ReferenceNumbers { get; set; } = new();
 
-    [SectionPosition(4)] //Needs special Map
-    public G62_DateTime OrderDate { get; set; }
+    [SectionPosition(4)] public G62_DateTime OrderDate { get; set; }
 
-    [SectionPosition(5)] 
-    public MS3_InterlineInformation InterlineInformation { get; set; }
-    
+    [SectionPosition(5)] public MS3_InterlineInformation InterlineInformation { get; set; }
+
     [SectionPosition(6)] //AT5
     public List<BillOfLadingHandlingInfo> BillOfLadingHandlingInfo { get; set; } = new();
-    
-    [SectionPosition(7)]
-    public PLD_PalletShipmentInformation PalletInformation { get; set; }
 
-    [SectionPosition(8)]
-    public List<LH6_HazardousCertification> HazardousCertifications { get; set; } = new();
+    [SectionPosition(7)] public PLD_PalletShipmentInformation PalletInformation { get; set; }
 
-    [SectionPosition(9)]
-    public List<NTE_Note> Notes { get; set; } = new();
+    [SectionPosition(8)] public List<LH6_HazardousCertification> HazardousCertifications { get; set; } = new();
+
+    [SectionPosition(9)] public List<NTE_Note> Notes { get; set; } = new();
 
     [SectionPosition(10)] //Special Map
     public List<Entity> Entities { get; set; } = new();
 
-    [SectionPosition(11)] 
-    public List<EquipmentDetails> EquipmentDetails { get; set; } = new();
+    [SectionPosition(11)] public List<EquipmentDetails> EquipmentDetails { get; set; } = new();
 
-    [SectionPosition(12)]
-    public List<StopOffDetails> Stops { get; set; } = new();
+    [SectionPosition(12)] public List<StopOffDetails> Stops { get; set; } = new();
 
-    [SectionPosition(13)]
-    public L3_TotalWeightAndCharges Totals { get; set; }
-    
+    [SectionPosition(13)] public L3_TotalWeightAndCharges Totals { get; set; }
 
 
     /*
@@ -69,7 +56,6 @@ public class Edi204_MotorCarrierLoadTender
             throw new ArgumentOutOfRangeException("Expected a section type of 204 but was provied a type of " + section.SectionType);
 
         //TODO: L11/MEA/PER/L4 exists between some loops
-
 
 
         var root = new GroupingRule("Root", new[] { "B2", "B2A", "C3", "L11", "G62", "MS3", "PLD", "LH6", "NTE", "L3" }, new List<GroupingRule>
@@ -126,7 +112,7 @@ public class Edi204_MotorCarrierLoadTender
                     SetPurpose = b2a;
                     break;
                 case G62_DateTime g62:
-                    OrderDate =g62;
+                    OrderDate = g62;
                     break;
                 case L11_BusinessInstructionsAndReferenceNumber l11:
                     ReferenceNumbers.Add(l11);
@@ -173,27 +159,21 @@ public class Edi204_MotorCarrierLoadTender
                 switch (segment)
                 {
                     case N1_PartyIdentification n1:
-                        entity.EntityIdentifierCode = n1.EntityIdentifierCode;
-                        entity.Name = n1.Name;
-                        entity.IdentificationCodeQualifier = n1.IdentificationCodeQualifier;
-                        entity.IdentificationCode = n1.IdentificationCode;
+                        entity.PartyIdentification = n1;
                         break;
                     case N2_AdditionalNameInformation n2:
                         //additional name is this used?
                         break;
                     case N3_PartyLocation n3: //n3 can be here twice so maybe an address3/address4?
-                        entity.Add(n3);
+                        entity.PartyLocation.Add(n3);
                         break;
                     case N4_GeographicLocation n4:
-                        entity.City = n4.CityName;
-                        entity.ProvinceState = n4.StateOrProvinceCode;
-                        entity.Country = n4.CountryCode;
-                        entity.PostalZip = n4.PostalCode;
+                        entity.GeographicLocation = n4;
                         break;
                     case L11_BusinessInstructionsAndReferenceNumber l11:
                         break;
                     case G61_Contact g61: //there can be 3 of these
-                        entity.AddContact(g61);
+//                        entity.AddContact(g61); //TODO: re-introduce contact
                         break;
                 }
 
@@ -217,7 +197,7 @@ public class Edi204_MotorCarrierLoadTender
             EquipmentDetails.Add(details);
         }
     }
-    
+
     private void ReadDetail(Group groupedSection)
     {
         //StopOffDetails
@@ -277,27 +257,21 @@ public class Edi204_MotorCarrierLoadTender
                     switch (segment)
                     {
                         case N1_PartyIdentification n1:
-                            entity.EntityIdentifierCode = n1.EntityIdentifierCode;
-                            entity.Name = n1.Name;
-                            entity.IdentificationCodeQualifier = n1.IdentificationCodeQualifier;
-                            entity.IdentificationCode = n1.IdentificationCode;
+                            entity.PartyIdentification = n1;
                             break;
                         case N2_AdditionalNameInformation n2:
-                            //additional name is this used?
+                            entity.AdditionalNameInformation = n2;
                             break;
                         case N3_PartyLocation n3:
-                            entity.Add(n3);
+                            entity.PartyLocation.Add(n3);
                             break;
                         case N4_GeographicLocation n4:
-                            entity.City = n4.CityName;
-                            entity.ProvinceState = n4.StateOrProvinceCode;
-                            entity.Country = n4.CountryCode;
-                            entity.PostalZip = n4.PostalCode;
+                            entity.GeographicLocation = n4;
                             break;
                         case L11_BusinessInstructionsAndReferenceNumber l11:
                             break;
                         case G61_Contact g61: //there can be 3 of these
-                            entity.AddContact(g61);
+                            //entity.AddContact(g61); //TODO: contact
                             break;
                     }
 
@@ -305,7 +279,7 @@ public class Edi204_MotorCarrierLoadTender
             }
 
             //started by an L5
-            foreach (var shipmentData in stopSegment.Children.Where(x => x.Rule.Name == "ShipmentDetail")) 
+            foreach (var shipmentData in stopSegment.Children.Where(x => x.Rule.Name == "ShipmentDetail"))
                 stop.ShipmentDetails.Add(ProcessShipmentInformationDetail(shipmentData));
 
             //started by an OID
@@ -350,7 +324,7 @@ public class Edi204_MotorCarrierLoadTender
             }
 
         //TODO: this is pretty the same as the OrderDetails
-        foreach (var contactGroup in shipmentData.Children.Where(x=>x.Rule.Name == "Contact"))
+        foreach (var contactGroup in shipmentData.Children.Where(x => x.Rule.Name == "Contact"))
         {
             var contact = new ShipmentDetailContact();
             foreach (var contactSegment in contactGroup.Segments)
@@ -369,7 +343,6 @@ public class Edi204_MotorCarrierLoadTender
             {
                 var hazMatInfo = new HazMatInfo();
                 foreach (var hazMatSegment in hazMatGroup.Segments)
-                {
                     switch (hazMatSegment)
                     {
                         case LH1_HazardousIdentificationInformation lh1:
@@ -394,15 +367,14 @@ public class Edi204_MotorCarrierLoadTender
                             hazMatInfo.TransborderRequirements.Add(lht);
                             break;
                     }
-                }
+
                 contact.HazMatInfo.Add(hazMatInfo);
             }
 
             detail.Detail.Add(contact);
         }
-        return detail;
-       
 
+        return detail;
     }
 
     private OrderInformationDetail ProcessOrderInformationDetail(Group orderInfo)
@@ -452,11 +424,10 @@ public class Edi204_MotorCarrierLoadTender
                             break;
                     }
 
-                foreach (var hazMatGroup in contactGroup.Children.Where(x=>x.Rule.Name== "HazMat"))
+                foreach (var hazMatGroup in contactGroup.Children.Where(x => x.Rule.Name == "HazMat"))
                 {
                     var hazMatInfo = new HazMatInfo();
                     foreach (var hazMatSegment in hazMatGroup.Segments)
-                    {
                         switch (hazMatSegment)
                         {
                             case LH1_HazardousIdentificationInformation lh1:
@@ -481,7 +452,7 @@ public class Edi204_MotorCarrierLoadTender
                                 hazMatInfo.TransborderRequirements.Add(lht);
                                 break;
                         }
-                    }
+
                     contact.HazMatInfo.Add(hazMatInfo);
                 }
 
@@ -502,10 +473,11 @@ public class Edi204_MotorCarrierLoadTender
         s.TransactionSetControlNumber = transactionSetControlNumber;
         s.Segments.Add(ShipmentInformation);
         s.Segments.Add(SetPurpose);
-        
+
         //s.Segments.Add(new C3_CurrencyIdentifier());
 
-        foreach (var referenceNumber in ReferenceNumbers) s.Segments.Add(referenceNumber);
+        foreach (var referenceNumber in ReferenceNumbers) 
+            s.Segments.Add(referenceNumber);
 
         if (OrderDate != null)
             s.Segments.Add(OrderDate);
@@ -532,64 +504,31 @@ public class Edi204_MotorCarrierLoadTender
 
         foreach (var entity in Entities)
         {
-            var n1 = new N1_PartyIdentification
-            {
-                Name = entity.Name,
-                EntityIdentifierCode = entity.EntityIdentifierCode,
-                IdentificationCodeQualifier = entity.IdentificationCodeQualifier,
-                IdentificationCode = entity.IdentificationCode
-            };
-            s.Segments.Add(n1);
+            s.Segments.Add(entity.PartyIdentification);
 
-            //TODO: N2
-            var n2 = new N2_AdditionalNameInformation();
+            if (entity.AdditionalNameInformation != null)
+                s.Segments.Add(entity.AdditionalNameInformation);
 
-            if (!IsNullOrEmpty(entity.Address1) || !IsNullOrEmpty(entity.Address2))
-            {
-                var n3 = new N3_PartyLocation
-                {
-                    AddressInformation = entity.Address1,
-                    AddressInformation2 = entity.Address2
-                };
-                s.Segments.Add(n3);
-            }
+            foreach (var n3PartyLocation in entity.PartyLocation) s.Segments.Add(n3PartyLocation);
 
-            if (!IsNullOrEmpty(entity.Address3) || !IsNullOrEmpty(entity.Address4))
-            {
-                var n3 = new N3_PartyLocation
-                {
-                    AddressInformation = entity.Address3,
-                    AddressInformation2 = entity.Address4
-                };
-                s.Segments.Add(n3);
-            }
+            if (entity.GeographicLocation != null)
+                s.Segments.Add(entity.GeographicLocation);
 
-            if (!IsNullOrEmpty(entity.City) || !IsNullOrEmpty(entity.Country) || !IsNullOrEmpty(entity.PostalZip) || !IsNullOrEmpty(entity.ProvinceState))
-            {
-                var n4 = new N4_GeographicLocation
-                {
-                    CityName = entity.City,
-                    CountryCode = entity.Country,
-                    PostalCode = entity.PostalZip,
-                    StateOrProvinceCode = entity.ProvinceState
-                };
-                s.Segments.Add(n4);
-            }
-
-            foreach (var contact in entity.Contacts) s.Segments.Add(contact.ToG61());
+            //TODO: contacts
+            //foreach (var contact in entity.Contacts) s.Segments.Add(contact.ToG61());
         }
 
         foreach (var equipmentDetail in EquipmentDetails)
         {
             s.Segments.Add(equipmentDetail.Details);
-            foreach (var equipmentDetailSealNumber in equipmentDetail.SealNumbers) 
+            foreach (var equipmentDetailSealNumber in equipmentDetail.SealNumbers)
                 s.Segments.Add(equipmentDetailSealNumber);
         }
 
         foreach (var stop in Stops)
         {
             s.Segments.Add(stop.Detail);
-            
+
             foreach (var stopReferenceNumber in stop.ReferenceNumbers) s.Segments.Add(stopReferenceNumber);
 
             foreach (var date in stop.Dates) s.Segments.Add(date);
@@ -600,39 +539,19 @@ public class Edi204_MotorCarrierLoadTender
 
             if (stop.Entity != null)
             {
-                var n1 = new N1_PartyIdentification
-                {
-                    Name = stop.Entity.Name,
-                    EntityIdentifierCode = stop.Entity.EntityIdentifierCode,
-                    IdentificationCodeQualifier = stop.Entity.IdentificationCodeQualifier,
-                    IdentificationCode = stop.Entity.IdentificationCode
-                };
-                s.Segments.Add(n1);
+                s.Segments.Add(stop.Entity.PartyIdentification);
 
-                //TODO: N2
-                var n2 = new N2_AdditionalNameInformation();
-                s.Segments.Add(new N3_PartyLocation
-                {
-                    AddressInformation = stop.Entity.Address1,
-                    AddressInformation2 = stop.Entity.Address2
-                });
+                if (stop.Entity.AdditionalNameInformation != null)
+                    s.Segments.Add(stop.Entity.AdditionalNameInformation);
 
-                if (stop.Entity.Address3 != null)
-                    s.Segments.Add(new N3_PartyLocation
-                    {
-                        AddressInformation = stop.Entity.Address3,
-                        AddressInformation2 = stop.Entity.Address4
-                    });
+                foreach (var partyLocation in stop.Entity.PartyLocation) 
+                    s.Segments.Add(partyLocation);
 
-                s.Segments.Add(new N4_GeographicLocation
-                {
-                    CityName = stop.Entity.City,
-                    CountryCode = stop.Entity.Country,
-                    PostalCode = stop.Entity.PostalZip,
-                    StateOrProvinceCode = stop.Entity.ProvinceState
-                });
+                if (stop.Entity.GeographicLocation != null )
+                    s.Segments.Add(stop.Entity.GeographicLocation);
 
-                foreach (var contact in stop.Entity.Contacts) s.Segments.Add(contact.ToG61());
+                //TODO: Contacts
+                //foreach (var contact in stop.Entity.Contacts) s.Segments.Add(contact.ToG61());
             }
 
             foreach (var detail in stop.ShipmentDetails)
@@ -646,63 +565,40 @@ public class Edi204_MotorCarrierLoadTender
                     s.Segments.Add(shipmentDetailContact.Info);
                     //TODO: Reference numbers L11
 
-                    foreach (var certification in shipmentDetailContact.HazardosCertifications)
-                    {
-                        s.Segments.Add(certification);
-                    }
+                    foreach (var certification in shipmentDetailContact.HazardosCertifications) s.Segments.Add(certification);
 
                     //TODO: this is the same as the orderinfo
                     foreach (var hazMatInfo in shipmentDetailContact.HazMatInfo)
                     {
                         if (hazMatInfo.IdentificationInfo != null)
                             s.Segments.Add(hazMatInfo.IdentificationInfo);
-                        foreach (var classificationInformation in hazMatInfo.Classification)
-                        {
-                            s.Segments.Add(classificationInformation);
-                        }
+                        foreach (var classificationInformation in hazMatInfo.Classification) s.Segments.Add(classificationInformation);
 
-                        foreach (var shippingNameInformation in hazMatInfo.ShippingName)
-                        {
-                            s.Segments.Add(shippingNameInformation);
-                        }
+                        foreach (var shippingNameInformation in hazMatInfo.ShippingName) s.Segments.Add(shippingNameInformation);
 
-                        foreach (var freeFormHazardousMaterialInformation in hazMatInfo.FreeFormInfo)
-                        {
-                            s.Segments.Add(freeFormHazardousMaterialInformation);
-                        }
+                        foreach (var freeFormHazardousMaterialInformation in hazMatInfo.FreeFormInfo) s.Segments.Add(freeFormHazardousMaterialInformation);
 
-                        foreach (var lepEpaRequiredData in hazMatInfo.EpaData)
-                        {
-                            s.Segments.Add(lepEpaRequiredData);
-                        }
+                        foreach (var lepEpaRequiredData in hazMatInfo.EpaData) s.Segments.Add(lepEpaRequiredData);
 
 
                         if (hazMatInfo.CanadianRequierments != null)
                             s.Segments.Add(hazMatInfo.CanadianRequierments);
 
-                        foreach (var transborderRequirement in hazMatInfo.TransborderRequirements)
-                        {
-                            s.Segments.Add(transborderRequirement);
-                        }
+                        foreach (var transborderRequirement in hazMatInfo.TransborderRequirements) s.Segments.Add(transborderRequirement);
                     }
-                        
-
                 }
 
                 foreach (var referenceNumber in detail.ReferenceNumbers) s.Segments.Add(referenceNumber);
 
                 foreach (var measurement in detail.Measurements) s.Segments.Add(measurement);
 
-                if (detail.Measurement!= null)
+                if (detail.Measurement != null)
                     s.Segments.Add(detail.Measurement);
-
-
-
             }
 
             foreach (var stopDetail in stop.Details)
             {
-                s.Segments.Add(stopDetail.OrderInformationDetail);
+                s.Segments.Add(stopDetail.Detail);
                 foreach (var ladingInformation in stopDetail.LadingInformation) s.Segments.Add(ladingInformation);
                 // foreach (var detail in stopDetail.OrderDetails)
                 // {
@@ -752,7 +648,7 @@ public class Edi204_MotorCarrierLoadTender
             }
         }
 
-        if (Totals!=null)
+        if (Totals != null)
             s.Segments.Add(Totals);
 
         return s;

@@ -29,7 +29,9 @@ public class Edi204MotorCarrierLoadTenderTests
         sourceModel.SetPurpose = new B2A_SetPurpose { TransactionSetPurposeCode = "04" };
         sourceModel.Entities.Add(new Entity
         {
-            Name = "123 Company", EntityIdentifierCode = "5334532", Address1 = "123 street", City = "City", ProvinceState = "PS", PostalZip = "H0H0H0"
+            PartyIdentification = new N1_PartyIdentification() { Name = "123 Company", EntityIdentifierCode = "5334532" },
+            PartyLocation = new List<N3_PartyLocation>() { new N3_PartyLocation() { AddressInformation = "123 street" } },
+            GeographicLocation = new N4_GeographicLocation() { CityName = "City", StateOrProvinceCode = "PS", PostalCode = "H0H0H0"}
         });
         sourceModel.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentificationQualifier = "OTH", ReferenceIdentification = "1st type" });
         sourceModel.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentificationQualifier = "ZZZ", ReferenceIdentification = "2nd type" });
@@ -54,20 +56,20 @@ public class Edi204MotorCarrierLoadTenderTests
         expected.Segments.Add(new NTE_Note { Description = sourceModel.Notes[1].Description, NoteReferenceCode = sourceModel.Notes[1].NoteReferenceCode });
         expected.Segments.Add(new N1_PartyIdentification
         {
-            EntityIdentifierCode = sourceModel.Entities[0].EntityIdentifierCode,
-            Name = sourceModel.Entities[0].Name
+            EntityIdentifierCode = sourceModel.Entities[0].PartyIdentification.EntityIdentifierCode,
+            Name = sourceModel.Entities[0].PartyIdentification.Name
         });
 
         expected.Segments.Add(new N3_PartyLocation
         {
-            AddressInformation = sourceModel.Entities[0].Address1
+            AddressInformation = sourceModel.Entities[0].PartyLocation[0].AddressInformation
         });
 
         expected.Segments.Add(new N4_GeographicLocation
         {
-            CityName = sourceModel.Entities[0].City,
-            StateOrProvinceCode = sourceModel.Entities[0].ProvinceState,
-            PostalCode = sourceModel.Entities[0].PostalZip
+            CityName = sourceModel.Entities[0].GeographicLocation.CityName,
+            StateOrProvinceCode = sourceModel.Entities[0].GeographicLocation.StateOrProvinceCode,
+            PostalCode = sourceModel.Entities[0].GeographicLocation.PostalCode
         });
 
         expected.Segments.Add(new S5_StopOffDetails

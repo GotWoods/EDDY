@@ -150,7 +150,10 @@ public class Edi204MotorCarrierLoadTenderTests
         sourceModel.SetPurpose = new B2A_SetPurpose() { TransactionSetPurposeCode = "04" };
         sourceModel.Entities.Add(new Entity
         {
-            Name = "123 Company", EntityIdentifierCode = "5334532", Address1 = "123 street", City = "City", ProvinceState = "PS", PostalZip = "H0H0H0"
+            
+                PartyIdentification = new N1_PartyIdentification() { Name = "123 Company", EntityIdentifierCode = "5334532" },
+                PartyLocation = new List<N3_PartyLocation>() { new N3_PartyLocation() { AddressInformation = "123 street" } },
+                GeographicLocation = new N4_GeographicLocation() { CityName = "City", StateOrProvinceCode = "PS", PostalCode = "H0H0H0" }
         });
         sourceModel.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentificationQualifier = "OTH", ReferenceIdentification = "1st type" });
         sourceModel.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentificationQualifier = "ZZZ", ReferenceIdentification = "2nd type" });
@@ -158,44 +161,49 @@ public class Edi204MotorCarrierLoadTenderTests
         sourceModel.Notes.Add(new NTE_Note { NoteReferenceCode = "123", Description = "Note2" });
         sourceModel.Stops.Add(new StopOffDetails
         {
-            StopSequenceNumber = 1,
-            StopReasonCode = "AB"
+            Detail = new S5_StopOffDetails()
+            {
+                StopSequenceNumber = 1,
+                StopReasonCode = "AB"
+            }
         });
 
 
         var expected = new Section();
         expected.Segments.Add(new B2_BeginningSegmentForShipmentInformationTransaction { StandardCarrierAlphaCode = sourceModel.ShipmentInformation.StandardCarrierAlphaCode, ShipmentIdentificationNumber = sourceModel.ShipmentInformation.ShipmentIdentificationNumber, ShipmentMethodOfPaymentCode = sourceModel.ShipmentInformation.ShipmentMethodOfPaymentCode });
         expected.Segments.Add(new B2A_SetPurpose { TransactionSetPurposeCode = sourceModel.SetPurpose.TransactionSetPurposeCode });
-        expected.Segments.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentification = sourceModel.ReferenceNumbers[0].Description, ReferenceIdentificationQualifier = sourceModel.ReferenceNumbers[0].ReferenceIdentificationQualifier });
-        expected.Segments.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentification = sourceModel.ReferenceNumbers[1].Description, ReferenceIdentificationQualifier = sourceModel.ReferenceNumbers[1].ReferenceIdentificationQualifier });
+        expected.Segments.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentification = sourceModel.ReferenceNumbers[0].ReferenceIdentification, ReferenceIdentificationQualifier = sourceModel.ReferenceNumbers[0].ReferenceIdentificationQualifier });
+        expected.Segments.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentification = sourceModel.ReferenceNumbers[1].ReferenceIdentification, ReferenceIdentificationQualifier = sourceModel.ReferenceNumbers[1].ReferenceIdentificationQualifier });
         expected.Segments.Add(new NTE_Note { Description = sourceModel.Notes[0].Description, NoteReferenceCode = sourceModel.Notes[0].NoteReferenceCode });
         expected.Segments.Add(new NTE_Note { Description = sourceModel.Notes[1].Description, NoteReferenceCode = sourceModel.Notes[1].NoteReferenceCode });
         expected.Segments.Add(new N1_PartyIdentification
         {
-            EntityIdentifierCode = sourceModel.Entities[0].EntityIdentifierCode,
-            Name = sourceModel.Entities[0].Name
+            EntityIdentifierCode = sourceModel.Entities[0].PartyIdentification.EntityIdentifierCode,
+            Name = sourceModel.Entities[0].PartyIdentification.Name
         });
 
         expected.Segments.Add(new N3_PartyLocation
         {
-            AddressInformation = sourceModel.Entities[0].Address1
+            AddressInformation = sourceModel.Entities[0].PartyLocation[0].AddressInformation
         });
 
         expected.Segments.Add(new N4_GeographicLocation
         {
-            CityName = sourceModel.Entities[0].City,
-            StateOrProvinceCode = sourceModel.Entities[0].ProvinceState,
-            PostalCode = sourceModel.Entities[0].PostalZip
+            CityName = sourceModel.Entities[0].GeographicLocation.CityName,
+            StateOrProvinceCode = sourceModel.Entities[0].GeographicLocation.StateOrProvinceCode,
+            PostalCode = sourceModel.Entities[0].GeographicLocation.PostalCode
         });
 
         expected.Segments.Add(new S5_StopOffDetails
         {
-            StopSequenceNumber = sourceModel.Stops[0].StopSequenceNumber,
-            StopReasonCode = sourceModel.Stops[0].StopReasonCode
+            StopSequenceNumber = sourceModel.Stops[0].Detail.StopSequenceNumber,
+            StopReasonCode = sourceModel.Stops[0].Detail.StopReasonCode,
+            
         });
 
         var actual = sourceModel.ToDocumentSection("0001");
-        for (var i = 0; i < Math.Max(actual.Segments.Count, expected.Segments.Count); i++) Assert.Equivalent(expected.Segments[i], actual.Segments[i], true);
+        for (var i = 0; i < Math.Max(actual.Segments.Count, expected.Segments.Count); i++) 
+            Assert.Equivalent(expected.Segments[i], actual.Segments[i], true);
     }
 
     [Fact]
@@ -240,19 +248,21 @@ public class Edi204MotorCarrierLoadTenderTests
 
 
         expected.Stops.Add(new StopOffDetails());
-        expected.Stops[0].StopSequenceNumber = 1;
-        expected.Stops[0].StopReasonCode = "CL";
-        expected.Stops[0].Weight = 27800;
-        expected.Stops[0].WeightUnitCode = "L";
-        expected.Stops[0].NumberOfUnitsShipped = 2444;
-        expected.Stops[0].UnitOrBasisForMeasurementCode = "CA";
-        expected.Stops[0].Volume = 1016;
-        expected.Stops[0].VolumeUnitQualifier = "E";
-        expected.Stops[0].ReferenceNumbers.Add(new KeyValuePair<string, string>("DO", "9999001947"));
-        expected.Stops[0].ReferenceNumbers.Add(new KeyValuePair<string, string>("CR", "9999670098"));
-        expected.Stops[0].ReferenceNumbers.Add(new KeyValuePair<string, string>("DO", "9999001866"));
-        expected.Stops[0].ReferenceNumbers.Add(new KeyValuePair<string, string>("CR", "9999669887"));
-
+        expected.Stops[0].Detail = new S5_StopOffDetails()
+        {
+            StopSequenceNumber = 1,
+            StopReasonCode = "CL",
+            Weight = 27800,
+            WeightUnitCode = "L",
+            NumberOfUnitsShipped = 2444,
+            UnitOrBasisForMeasurementCode = "CA",
+            Volume = 1016,
+            VolumeUnitQualifier = "E"
+        };
+        expected.Stops[0].ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "DO", ReferenceIdentification = "9999001947" });
+        expected.Stops[0].ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "CR", ReferenceIdentification = "9999670098" });
+        expected.Stops[0].ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "DO", ReferenceIdentification = "9999001866" });
+        expected.Stops[0].ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "CR", ReferenceIdentification = "9999669887" });
 
         //checking the stop first gives easier to read failures then when a collection compare fails
         Assert.Equivalent(expected.Stops[0], edi204.Stops[0]);

@@ -40,21 +40,16 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
 
         expected.Notes.Add(new NTE_Note { NoteReferenceCode = "ZZZ", Description = "1387" });
 
-
         expected.Entities.Add(new Entity
         {
-            Name = "Protrans",
-            Address1 = "PO Box 42069",
-            City = "INDIANAPOLIS",
-            ProvinceState = "IN",
-            PostalZip = "46242",
-            EntityIdentifierCode = "BT"
+            PartyIdentification = new N1_PartyIdentification() { Name = "Protrans", EntityIdentifierCode = "BT" },
+            PartyLocation = new List<N3_PartyLocation>() { new N3_PartyLocation() { AddressInformation = "PO Box 42069" } },
+            GeographicLocation = new N4_GeographicLocation() { CityName = "INDIANAPOLIS", StateOrProvinceCode = "IN", PostalCode = "46242" }
         });
 
         expected.Entities.Add(new Entity
         {
-            Name = "CH ROBINSON CONTACT",
-            EntityIdentifierCode = "VI"
+            PartyIdentification = new N1_PartyIdentification() { Name = "CH ROBINSON CONTACT", EntityIdentifierCode = "VI" },
         });
 
         //g61
@@ -62,30 +57,25 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
 
         expected.Stops.Add(new StopOffDetails
         {
-            StopSequenceNumber = 1,
-            StopReasonCode = "LD",
+            Detail = new S5_StopOffDetails() { StopSequenceNumber = 1, StopReasonCode = "LD" },
             Entity = new Entity
             {
-                EntityIdentifierCode = "SF",
-                Name = "SHAWCOR LTD (8035865)",
-                Address1 = "173 Commerce Dr",
-                City = "LOVELAND",
-                ProvinceState = "OH",
-                Country = "US",
-                PostalZip = "45140-7727"
+                    PartyIdentification = new N1_PartyIdentification() { Name = "SHAWCOR LTD (8035865)", EntityIdentifierCode = "SF" },
+                    PartyLocation = new List<N3_PartyLocation>() { new N3_PartyLocation() { AddressInformation = "173 Commerce Dr" } },
+                    GeographicLocation = new N4_GeographicLocation() { CityName = "LOVELAND", StateOrProvinceCode = "OH", PostalCode = "45140-7727", CountryCode = "US" }
             },
-            ReferenceNumbers = new List<KeyValuePair<string, string>> { new("PU", "1032301") },
-            Notes = new List<Note>
+            ReferenceNumbers = new List<L11_BusinessInstructionsAndReferenceNumber> { new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentificationQualifier = "PU", ReferenceIdentification = "1032301" } },
+            Notes = new List<NTE_Note>
             {
-                new() { ReferenceCode = "OTH", Description = "No Touch" },
-                new() { ReferenceCode = "SPH", Description = "D120550 - 19 CTNS; D120127 - 33 CTNS 1 SKID W/ 17 CTNS 1 SKID W/ 16 CTNS" },
-                new() { ReferenceCode = "PKG", Description = "Dimensions H(in)40 W(in)42 L(ft)04 L(in)04" }
+                new() { NoteReferenceCode = "OTH", Description = "No Touch" },
+                new() { NoteReferenceCode = "SPH", Description = "D120550 - 19 CTNS; D120127 - 33 CTNS 1 SKID W/ 17 CTNS 1 SKID W/ 16 CTNS" },
+                new() { NoteReferenceCode = "PKG", Description = "Dimensions H(in)40 W(in)42 L(ft)04 L(in)04" }
             },
-            Details = new List<OrderInformationDetail>
+            Details = new List<OrderInformationDetail2>
             {
                 new()
                 {
-                    Summary = new OID_OrderInformationDetail
+                    Detail = new OID_OrderInformationDetail
                     {
                         PackagingFormCode = "PL",
                         ReferenceIdentification = "FW62",
@@ -96,7 +86,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
                 },
                 new()
                 {
-                    Summary = new OID_OrderInformationDetail
+                    Detail = new OID_OrderInformationDetail
                     {
                         PackagingFormCode = "PL",
                         ReferenceIdentification = "FW64",
@@ -107,7 +97,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
                 },
                 new()
                 {
-                    Summary = new OID_OrderInformationDetail
+                    Detail = new OID_OrderInformationDetail
                     {
                         PackagingFormCode = "PL",
                         ReferenceIdentification = "FW64",
@@ -122,28 +112,23 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
 
         expected.Stops.Add(new StopOffDetails
         {
-            StopSequenceNumber = 2,
-            StopReasonCode = "UL",
+            Detail = new S5_StopOffDetails() { StopSequenceNumber = 2, StopReasonCode = "UL" },
             Entity = new Entity
             {
-                EntityIdentifierCode = "ST",
-                Name = "Aptiv Vallecillos X-Dock (8139213)",
-                Address1 = "301 Vallecillo Rd",
-                City = "Laredo",
-                ProvinceState = "TX",
-                Country = "US",
-                PostalZip = "78045"
+                PartyIdentification = new N1_PartyIdentification() { Name = "Aptiv Vallecillos X-Dock (8139213)", EntityIdentifierCode = "ST" },
+                    PartyLocation = new List<N3_PartyLocation>() { new N3_PartyLocation() { AddressInformation = "301 Vallecillo Rd" } },
+                    GeographicLocation = new N4_GeographicLocation() { CityName = "Laredo", StateOrProvinceCode = "TX", PostalCode = "78045", CountryCode = "US" }
             },
-            Notes = new List<Note>
+            Notes = new List<NTE_Note>
             {
-                new() { ReferenceCode = "OTH", Description = "No Touch" },
-                new() { ReferenceCode = "PKG", Description = "Dimensions H(in)40 W(in)42 L(ft)04 L(in)04" }
+                new() { NoteReferenceCode = "OTH", Description = "No Touch" },
+                new() { NoteReferenceCode = "PKG", Description = "Dimensions H(in)40 W(in)42 L(ft)04 L(in)04" }
             },
-            Details = new List<OrderInformationDetail>
+            Details = new List<OrderInformationDetail2>
             {
                 new()
                 {
-                    Summary = new OID_OrderInformationDetail
+                    Detail = new OID_OrderInformationDetail
                     {
                         PackagingFormCode = "PL",
                         ReferenceIdentification = "FW62",
@@ -154,7 +139,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
                 },
                 new()
                 {
-                    Summary = new OID_OrderInformationDetail
+                    Detail = new OID_OrderInformationDetail
                     {
                         PackagingFormCode = "PL",
                         ReferenceIdentification = "FW64",
@@ -165,7 +150,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
                 },
                 new()
                 {
-                    Summary = new OID_OrderInformationDetail
+                    Detail = new OID_OrderInformationDetail
                     {
                         PackagingFormCode = "PL",
                         ReferenceIdentification = "FW64",
@@ -177,6 +162,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
             }
         });
 
+        expected.Totals = new L3_TotalWeightAndCharges();
         expected.Totals.Weight = 821;
         expected.Totals.WeightQualifier = "G";
         expected.Totals.FreightRate = "137.2917";
@@ -219,50 +205,51 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
         expected.Notes[4].NoteReferenceCode = "ECM";
 
         expected.Entities.Add(new Entity());
-        expected.Entities[0].Name = "Cabinetworks CO TRAX";
-        expected.Entities[0].Address1 = "Cabinetworks group co trax technologies po box 42903";
-        expected.Entities[0].City = "Indianapolis";
-        expected.Entities[0].ProvinceState = "IN";
-        expected.Entities[0].PostalZip = "46242";
-        expected.Entities[0].Country = "US";
-        expected.Entities[0].EntityIdentifierCode = "RM";
-        expected.Entities[0].Contacts.Add(new Contact { CommunicationNumber = "NA", CommunicationNumberQualifier = "TE", ContactFunctionCode = "AP", ContactInquiryReference = null, Name = "NA" });
 
-        expected.Entities.Add(new Entity());
-        expected.Entities[1].Name = "Cabinetworks MACA";
-        expected.Entities[1].Address1 = "Cabinetworks group co trax technologies po box 42903";
-        expected.Entities[1].City = "Indianapolis";
-        expected.Entities[1].ProvinceState = "IN";
-        expected.Entities[1].PostalZip = "46242";
-        expected.Entities[1].Country = "US";
-        expected.Entities[1].EntityIdentifierCode = "QD";
-        expected.Entities[1].Contacts.Add(new Contact { CommunicationNumber = "NA", CommunicationNumberQualifier = "TE", ContactFunctionCode = "RP", ContactInquiryReference = null, Name = "NA" });
+        expected.Entities.Add(new Entity
+        {
+            PartyIdentification = new N1_PartyIdentification() { Name = "Cabinetworks CO TRAX", EntityIdentifierCode = "RM" },
+            PartyLocation = new List<N3_PartyLocation>() { new N3_PartyLocation() { AddressInformation = "Cabinetworks group co trax technologies po box 42903" } },
+            GeographicLocation = new N4_GeographicLocation() { CityName = "Indianapolis", StateOrProvinceCode = "IN", PostalCode = "46242" }
+        });
+
+        expected.Entities.Add(new Entity
+        {
+            PartyIdentification = new N1_PartyIdentification() { Name = "Cabinetworks MACA", EntityIdentifierCode = "QD" },
+            PartyLocation = new List<N3_PartyLocation>() { new N3_PartyLocation() { AddressInformation = "Cabinetworks group co trax technologies po box 42903" } },
+            GeographicLocation = new N4_GeographicLocation() { CityName = "INDIANAPOLIS", StateOrProvinceCode = "IN", PostalCode = "46242", CountryCode = "US" }
+        });
+
+        //TODO: Contacts
+        //        expected.Entities[0].Contacts.Add(new Contact { CommunicationNumber = "NA", CommunicationNumberQualifier = "TE", ContactFunctionCode = "AP", ContactInquiryReference = null, Name = "NA" });
+        //      expected.Entities[1].Contacts.Add(new Contact { CommunicationNumber = "NA", CommunicationNumberQualifier = "TE", ContactFunctionCode = "RP", ContactInquiryReference = null, Name = "NA" });
 
         //g61
         //n7
 
         expected.Stops.Add(new StopOffDetails());
-        expected.Stops[0].StopSequenceNumber = 1;
-        expected.Stops[0].StopReasonCode = "LD";
-        expected.Stops[0].Weight = 2;
-        expected.Stops[0].WeightUnitCode = "L";
-        expected.Stops[0].NumberOfUnitsShipped = 2;
-        expected.Stops[0].UnitOrBasisForMeasurementCode = "PL";
-        expected.Stops[0].Notes.Add(new Note { ReferenceCode = "ALT", Description = "NA" });
-        expected.Stops[0].Entity = new Entity();
-        expected.Stops[0].Entity.EntityIdentifierCode = "SF";
-        expected.Stops[0].Entity.Name = "Cabinetworks Middlefield, Plant 2";
-        expected.Stops[0].Entity.Address1 = "15535 South State Avenue";
-        expected.Stops[0].Entity.City = "Middlefield";
-        expected.Stops[0].Entity.ProvinceState = "OH";
-        expected.Stops[0].Entity.Country = "US";
-        expected.Stops[0].Entity.PostalZip = "44062";
-        expected.Stops[0].Entity.IdentificationCodeQualifier = "93";
-        expected.Stops[0].Entity.IdentificationCode = "103043";
-        expected.Stops[0].Entity.Contacts.Add(new Contact { CommunicationNumber = "NA", CommunicationNumberQualifier = "TE", ContactFunctionCode = "SH", ContactInquiryReference = null, Name = "NA" });
+        expected.Stops[0].Detail = new S5_StopOffDetails()
+        {
+            StopSequenceNumber = 1,
+            StopReasonCode = "LD",
+            Weight = 2,
+            WeightUnitCode = "L",
+            NumberOfUnitsShipped = 2,
+            UnitOrBasisForMeasurementCode = "PL",
+        };
+        expected.Stops[0].Notes.Add(new NTE_Note() { NoteReferenceCode = "ALT", Description = "NA" });
+        expected.Stops[0].Entity = new Entity()
+        {
+            PartyIdentification = new N1_PartyIdentification() { Name = "Cabinetworks Middlefield, Plant 2", EntityIdentifierCode = "SF", IdentificationCodeQualifier = "93", IdentificationCode = "103043" },
+            PartyLocation = new List<N3_PartyLocation>() { new N3_PartyLocation() { AddressInformation = "15535 South State Avenue" } },
+            GeographicLocation = new N4_GeographicLocation() { CityName = "Middlefield", StateOrProvinceCode = "OH", PostalCode = "44062", CountryCode = "US" }
+        };
 
-        expected.Stops[0].Details.Add(new OrderInformationDetail());
-        expected.Stops[0].Details[0].Summary = new OID_OrderInformationDetail
+        //TODO: contacts
+        //expected.Stops[0].Entity.Contacts.Add(new Contact { CommunicationNumber = "NA", CommunicationNumberQualifier = "TE", ContactFunctionCode = "SH", ContactInquiryReference = null, Name = "NA" });
+
+        expected.Stops[0].Details.Add(new OrderInformationDetail2());
+        expected.Stops[0].Details[0].Detail = new OID_OrderInformationDetail
         {
             PackagingFormCode = "PL",
             ReferenceIdentification = "S14083098",
@@ -270,8 +257,8 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
             WeightUnitCode = "L",
             Quantity = 0
         };
-        expected.Stops[0].Details.Add(new OrderInformationDetail());
-        expected.Stops[0].Details[0].Summary = new OID_OrderInformationDetail
+        expected.Stops[0].Details.Add(new OrderInformationDetail2());
+        expected.Stops[0].Details[0].Detail = new OID_OrderInformationDetail
         {
             PackagingFormCode = "PL",
             ReferenceIdentification = "S14083099",
@@ -280,27 +267,33 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
             Quantity = 1
         };
 
-        expected.Stops[0].Dates.Add(new Date { DateQualifier = "10", DateTime = new DateTime(2023, 03, 06, 03, 00, 00), IncludeSecondsInDateTime = true, IncludeTime = true, TimeCode = "ET", TimeQualifer = "I" });
-        expected.Stops[0].Dates.Add(new Date { DateQualifier = "10", DateTime = new DateTime(2023, 03, 06, 03, 10, 00), IncludeSecondsInDateTime = true, IncludeTime = true, TimeCode = "ET", TimeQualifer = "K" });
+        expected.Stops[0].Dates.Add(new G62_DateTime() { DateQualifier = "10", Date = "20230306", Time = "030000", TimeCode = "ET", TimeQualifier = "I" });
+        expected.Stops[0].Dates.Add(new G62_DateTime() { DateQualifier = "10", Date = "20230306", Time = "031000", TimeCode = "ET", TimeQualifier = "K" });
 
-        expected.Stops.Add(new StopOffDetails());
-        expected.Stops[1].StopSequenceNumber = 2;
-        expected.Stops[1].StopReasonCode = "UL";
-        expected.Stops[1].Weight = 1;
-        expected.Stops[1].WeightUnitCode = "L";
-        expected.Stops[1].NumberOfUnitsShipped = 1;
-        expected.Stops[1].UnitOrBasisForMeasurementCode = "PL";
-        expected.Stops[1].Notes.Add(new Note { ReferenceCode = "ALT", Description = "NA" });
+        expected.Stops.Add(new StopOffDetails() {
+            Detail = new S5_StopOffDetails()
+            {
+                StopSequenceNumber = 2,
+                StopReasonCode = "UL",
+                Weight = 1,
+                WeightUnitCode = "L",
+                NumberOfUnitsShipped = 1,
+                UnitOrBasisForMeasurementCode = "PL",
+            }
+        });
+        expected.Stops[1].Notes.Add(new NTE_Note { NoteReferenceCode = "ALT", Description = "NA" });
         expected.Stops[1].Entity = new Entity();
-        expected.Stops[1].Entity.EntityIdentifierCode = "ST";
-        expected.Stops[1].Entity.Name = "Cabinetworks Sayre 100 Lamoka";
-        expected.Stops[1].Entity.Address1 = "100 Lamoka Road";
-        expected.Stops[1].Entity.City = "Sayre";
-        expected.Stops[1].Entity.ProvinceState = "PA";
-        expected.Stops[1].Entity.Country = "US";
-        expected.Stops[1].Entity.PostalZip = "18840";
-        expected.Stops[1].Details.Add(new OrderInformationDetail());
-        expected.Stops[1].Details[0].Summary = new OID_OrderInformationDetail
+
+        expected.Stops[1].Entity = new Entity
+        {
+            PartyIdentification = new N1_PartyIdentification() { Name = "Cabinetworks Sayre 100 Lamoka", EntityIdentifierCode = "ST" },
+            PartyLocation = new List<N3_PartyLocation>() { new N3_PartyLocation() { AddressInformation = "100 Lamoka Road" } },
+            GeographicLocation = new N4_GeographicLocation() { CityName = "Sayre", StateOrProvinceCode = "PA", PostalCode = "18840", CountryCode = "US"}
+        };
+
+
+        expected.Stops[1].Details.Add(new OrderInformationDetail2());
+        expected.Stops[1].Details[0].Detail = new OID_OrderInformationDetail
         {
             PackagingFormCode = "PL",
             ReferenceIdentification = "S14083098",
@@ -310,23 +303,26 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
         };
 
         expected.Stops.Add(new StopOffDetails());
-        expected.Stops[2].StopSequenceNumber = 3;
-        expected.Stops[2].StopReasonCode = "UL";
-        expected.Stops[2].Weight = 1;
-        expected.Stops[2].WeightUnitCode = "L";
-        expected.Stops[2].NumberOfUnitsShipped = 1;
-        expected.Stops[2].UnitOrBasisForMeasurementCode = "PL";
-        expected.Stops[2].Notes.Add(new Note { ReferenceCode = "ALT", Description = "NA" });
-        expected.Stops[2].Entity = new Entity();
-        expected.Stops[2].Entity.EntityIdentifierCode = "ST";
-        expected.Stops[2].Entity.Name = "Cabinetworks Orwell, Plant 3";
-        expected.Stops[2].Entity.Address1 = "150 Grand Valley Avenue";
-        expected.Stops[2].Entity.City = "Orwell";
-        expected.Stops[2].Entity.ProvinceState = "OH";
-        expected.Stops[2].Entity.Country = "US";
-        expected.Stops[2].Entity.PostalZip = "44076";
-        expected.Stops[2].Details.Add(new OrderInformationDetail());
-        expected.Stops[2].Details[0].Summary = new OID_OrderInformationDetail
+        expected.Stops[2].Detail = new S5_StopOffDetails()
+        {
+            StopSequenceNumber = 3,
+            StopReasonCode = "UL",
+            Weight = 1,
+            WeightUnitCode = "L",
+            NumberOfUnitsShipped = 1,
+            UnitOrBasisForMeasurementCode = "PL",
+        };
+
+        expected.Stops[2].Notes.Add(new NTE_Note() { NoteReferenceCode = "ALT", Description = "NA" });
+        expected.Stops[2].Entity = new Entity
+        {
+            PartyIdentification = new N1_PartyIdentification() { Name = "Cabinetworks Orwell, Plant 3", EntityIdentifierCode = "ST" },
+            PartyLocation = new List<N3_PartyLocation>() { new N3_PartyLocation() { AddressInformation = "150 Grand Valley Avenue" } },
+            GeographicLocation = new N4_GeographicLocation() { CityName = "Orwell", StateOrProvinceCode = "OH", PostalCode = "44076", CountryCode = "US" }
+        };
+
+        expected.Stops[2].Details.Add(new OrderInformationDetail2());
+        expected.Stops[2].Details[0].Detail = new OID_OrderInformationDetail
         {
             PackagingFormCode = "PL",
             ReferenceIdentification = "S14083099",
@@ -335,6 +331,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
             Quantity = 1
         };
 
+        expected.Totals = new L3_TotalWeightAndCharges();
         expected.Totals.Weight = 2;
         expected.Totals.WeightQualifier = "G";
         expected.Totals.LadingQuantity = "2";
