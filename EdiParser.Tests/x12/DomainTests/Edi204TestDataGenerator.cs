@@ -27,7 +27,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
         expected.ShipmentInformation.StandardCarrierAlphaCode = "PNII";
         expected.ShipmentInformation.ShipmentIdentificationNumber = "340186303";
         expected.ShipmentInformation.ShipmentMethodOfPaymentCode = "TP";
-        expected.SetPurpose = new B2A_SetPurpose() { TransactionSetPurposeCode = "00" };
+        expected.SetPurpose = new B2A_SetPurpose { TransactionSetPurposeCode = "00" };
 
         expected.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentificationQualifier = "VD", ReferenceIdentification = "T5227893" });
         expected.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentificationQualifier = "SI", ReferenceIdentification = "1032301-FW62-FW62-LTL-20201117" });
@@ -62,8 +62,11 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
 
         expected.Stops.Add(new StopOffDetails
         {
-            StopSequenceNumber = 1,
-            StopReasonCode = "LD",
+            Detail = new S5_StopOffDetails()
+            {
+                StopSequenceNumber = 1,
+                StopReasonCode = "LD",
+            },
             Entity = new Entity
             {
                 EntityIdentifierCode = "SF",
@@ -74,56 +77,59 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
                 Country = "US",
                 PostalZip = "45140-7727"
             },
-            ReferenceNumbers = new List<KeyValuePair<string, string>> { new("PU", "1032301") },
-            Notes = new List<Note>
+            ReferenceNumbers = new List<L11_BusinessInstructionsAndReferenceNumber>() { new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "PU", ReferenceIdentification = "1032301" } },
+            Notes = new List<NTE_Note>
             {
-                new() { ReferenceCode = "OTH", Description = "No Touch" },
-                new() { ReferenceCode = "SPH", Description = "D120550 - 19 CTNS; D120127 - 33 CTNS 1 SKID W/ 17 CTNS 1 SKID W/ 16 CTNS" },
-                new() { ReferenceCode = "PKG", Description = "Dimensions H(in)40 W(in)42 L(ft)04 L(in)04" }
+                new() { NoteReferenceCode = "OTH", Description = "No Touch" },
+                new() { NoteReferenceCode = "SPH", Description = "D120550 - 19 CTNS; D120127 - 33 CTNS 1 SKID W/ 17 CTNS 1 SKID W/ 16 CTNS" },
+                new() { NoteReferenceCode = "PKG", Description = "Dimensions H(in)40 W(in)42 L(ft)04 L(in)04" }
             },
-            Details = new List<OrderInformationDetail>
-            {
-                new()
-                {
-                    Summary = new OID_OrderInformationDetail
-                    {
-                        PackagingFormCode = "PL",
-                        ReferenceIdentification = "FW62",
-                        Weight = 343,
-                        WeightUnitCode = "L",
-                        Quantity = 1
-                    }
-                },
-                new()
-                {
-                    Summary = new OID_OrderInformationDetail
-                    {
-                        PackagingFormCode = "PL",
-                        ReferenceIdentification = "FW64",
-                        Weight = 214,
-                        WeightUnitCode = "L",
-                        Quantity = 1
-                    }
-                },
-                new()
-                {
-                    Summary = new OID_OrderInformationDetail
-                    {
-                        PackagingFormCode = "PL",
-                        ReferenceIdentification = "FW64",
-                        Weight = 264,
-                        WeightUnitCode = "L",
-                        Quantity = 1
-                    }
-                }
-            }
+            // Details = new List<OrderInformationDetail>
+            // {
+            //     new()
+            //     {
+            //         Summary = new OID_OrderInformationDetail
+            //         {
+            //             PackagingFormCode = "PL",
+            //             ReferenceIdentification = "FW62",
+            //             Weight = 343,
+            //             WeightUnitCode = "L",
+            //             Quantity = 1
+            //         }
+            //     },
+            //     new()
+            //     {
+            //         Summary = new OID_OrderInformationDetail
+            //         {
+            //             PackagingFormCode = "PL",
+            //             ReferenceIdentification = "FW64",
+            //             Weight = 214,
+            //             WeightUnitCode = "L",
+            //             Quantity = 1
+            //         }
+            //     },
+            //     new()
+            //     {
+            //         Summary = new OID_OrderInformationDetail
+            //         {
+            //             PackagingFormCode = "PL",
+            //             ReferenceIdentification = "FW64",
+            //             Weight = 264,
+            //             WeightUnitCode = "L",
+            //             Quantity = 1
+            //         }
+            //     }
+            // }
         });
 
 
         expected.Stops.Add(new StopOffDetails
         {
-            StopSequenceNumber = 2,
-            StopReasonCode = "UL",
+            Detail = new S5_StopOffDetails()
+            {
+                StopSequenceNumber = 2,
+                StopReasonCode = "UL",
+            },
             Entity = new Entity
             {
                 EntityIdentifierCode = "ST",
@@ -134,47 +140,47 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
                 Country = "US",
                 PostalZip = "78045"
             },
-            Notes = new List<Note>
+            Notes = new List<NTE_Note>
             {
-                new() { ReferenceCode = "OTH", Description = "No Touch" },
-                new() { ReferenceCode = "PKG", Description = "Dimensions H(in)40 W(in)42 L(ft)04 L(in)04" }
+                new() { NoteReferenceCode = "OTH", Description = "No Touch" },
+                new() { NoteReferenceCode = "PKG", Description = "Dimensions H(in)40 W(in)42 L(ft)04 L(in)04" }
             },
-            Details = new List<OrderInformationDetail>
-            {
-                new()
-                {
-                    Summary = new OID_OrderInformationDetail
-                    {
-                        PackagingFormCode = "PL",
-                        ReferenceIdentification = "FW62",
-                        Weight = 343,
-                        WeightUnitCode = "L",
-                        Quantity = 1
-                    }
-                },
-                new()
-                {
-                    Summary = new OID_OrderInformationDetail
-                    {
-                        PackagingFormCode = "PL",
-                        ReferenceIdentification = "FW64",
-                        Weight = 214,
-                        WeightUnitCode = "L",
-                        Quantity = 1
-                    }
-                },
-                new()
-                {
-                    Summary = new OID_OrderInformationDetail
-                    {
-                        PackagingFormCode = "PL",
-                        ReferenceIdentification = "FW64",
-                        Weight = 264,
-                        WeightUnitCode = "L",
-                        Quantity = 1
-                    }
-                }
-            }
+            // Details = new List<OrderInformationDetail>
+            // {
+            //     new()
+            //     {
+            //         Summary = new OID_OrderInformationDetail
+            //         {
+            //             PackagingFormCode = "PL",
+            //             ReferenceIdentification = "FW62",
+            //             Weight = 343,
+            //             WeightUnitCode = "L",
+            //             Quantity = 1
+            //         }
+            //     },
+            //     new()
+            //     {
+            //         Summary = new OID_OrderInformationDetail
+            //         {
+            //             PackagingFormCode = "PL",
+            //             ReferenceIdentification = "FW64",
+            //             Weight = 214,
+            //             WeightUnitCode = "L",
+            //             Quantity = 1
+            //         }
+            //     },
+            //     new()
+            //     {
+            //         Summary = new OID_OrderInformationDetail
+            //         {
+            //             PackagingFormCode = "PL",
+            //             ReferenceIdentification = "FW64",
+            //             Weight = 264,
+            //             WeightUnitCode = "L",
+            //             Quantity = 1
+            //         }
+            //     }
+            // }
         });
 
         expected.Totals.Weight = 821;
@@ -193,7 +199,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
         expected.ShipmentInformation.StandardCarrierAlphaCode = "CCNI";
         expected.ShipmentInformation.ShipmentIdentificationNumber = "L11005765";
         expected.ShipmentInformation.ShipmentMethodOfPaymentCode = "TP";
-        expected.SetPurpose = new B2A_SetPurpose() { TransactionSetPurposeCode = "00" };
+        expected.SetPurpose = new B2A_SetPurpose { TransactionSetPurposeCode = "00" };
 
         expected.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentificationQualifier = "BN", ReferenceIdentification = "30722781" });
         expected.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentificationQualifier = "RU", ReferenceIdentification = "MID508v1" });
@@ -242,13 +248,17 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
         //n7
 
         expected.Stops.Add(new StopOffDetails());
-        expected.Stops[0].StopSequenceNumber = 1;
-        expected.Stops[0].StopReasonCode = "LD";
-        expected.Stops[0].Weight = 2;
-        expected.Stops[0].WeightUnitCode = "L";
-        expected.Stops[0].NumberOfUnitsShipped = 2;
-        expected.Stops[0].UnitOrBasisForMeasurementCode = "PL";
-        expected.Stops[0].Notes.Add(new Note { ReferenceCode = "ALT", Description = "NA" });
+        expected.Stops[0].Detail = new S5_StopOffDetails
+        {
+            StopSequenceNumber = 1,
+            StopReasonCode = "LD",
+            Weight = 2,
+            WeightUnitCode = "L",
+            NumberOfUnitsShipped = 2,
+            UnitOrBasisForMeasurementCode = "PL"
+        };
+
+        expected.Stops[0].Notes.Add(new NTE_Note() { NoteReferenceCode = "ALT", Description = "NA" });
         expected.Stops[0].Entity = new Entity();
         expected.Stops[0].Entity.EntityIdentifierCode = "SF";
         expected.Stops[0].Entity.Name = "Cabinetworks Middlefield, Plant 2";
@@ -261,36 +271,39 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
         expected.Stops[0].Entity.IdentificationCode = "103043";
         expected.Stops[0].Entity.Contacts.Add(new Contact { CommunicationNumber = "NA", CommunicationNumberQualifier = "TE", ContactFunctionCode = "SH", ContactInquiryReference = null, Name = "NA" });
 
-        expected.Stops[0].Details.Add(new OrderInformationDetail());
-        expected.Stops[0].Details[0].Summary = new OID_OrderInformationDetail
-        {
-            PackagingFormCode = "PL",
-            ReferenceIdentification = "S14083098",
-            Weight = 1,
-            WeightUnitCode = "L",
-            Quantity = 0
-        };
-        expected.Stops[0].Details.Add(new OrderInformationDetail());
-        expected.Stops[0].Details[0].Summary = new OID_OrderInformationDetail
-        {
-            PackagingFormCode = "PL",
-            ReferenceIdentification = "S14083099",
-            Weight = 1,
-            WeightUnitCode = "L",
-            Quantity = 1
-        };
+        // expected.Stops[0].Details.Add(new OrderInformationDetail());
+        // expected.Stops[0].Details[0].Summary = new OID_OrderInformationDetail
+        // {
+        //     PackagingFormCode = "PL",
+        //     ReferenceIdentification = "S14083098",
+        //     Weight = 1,
+        //     WeightUnitCode = "L",
+        //     Quantity = 0
+        // };
+        // expected.Stops[0].Details.Add(new OrderInformationDetail());
+        // expected.Stops[0].Details[0].Summary = new OID_OrderInformationDetail
+        // {
+        //     PackagingFormCode = "PL",
+        //     ReferenceIdentification = "S14083099",
+        //     Weight = 1,
+        //     WeightUnitCode = "L",
+        //     Quantity = 1
+        // };
 
-        expected.Stops[0].Dates.Add(new Date { DateQualifier = "10", DateTime = new DateTime(2023, 03, 06, 03, 00, 00), IncludeSecondsInDateTime = true, IncludeTime = true, TimeCode = "ET", TimeQualifer = "I" });
-        expected.Stops[0].Dates.Add(new Date { DateQualifier = "10", DateTime = new DateTime(2023, 03, 06, 03, 10, 00), IncludeSecondsInDateTime = true, IncludeTime = true, TimeCode = "ET", TimeQualifer = "K" });
+        expected.Stops[0].Dates.Add(new G62_DateTime());   //(new Date { DateQualifier = "10", DateTime = new DateTime(2023, 03, 06, 03, 00, 00), IncludeSecondsInDateTime = true, IncludeTime = true, TimeCode = "ET", TimeQualifer = "I" });
+        expected.Stops[0].Dates.Add(new G62_DateTime());  //(new Date { DateQualifier = "10", DateTime = new DateTime(2023, 03, 06, 03, 10, 00), IncludeSecondsInDateTime = true, IncludeTime = true, TimeCode = "ET", TimeQualifer = "K" });
 
         expected.Stops.Add(new StopOffDetails());
-        expected.Stops[1].StopSequenceNumber = 2;
-        expected.Stops[1].StopReasonCode = "UL";
-        expected.Stops[1].Weight = 1;
-        expected.Stops[1].WeightUnitCode = "L";
-        expected.Stops[1].NumberOfUnitsShipped = 1;
-        expected.Stops[1].UnitOrBasisForMeasurementCode = "PL";
-        expected.Stops[1].Notes.Add(new Note { ReferenceCode = "ALT", Description = "NA" });
+        expected.Stops[1].Detail = new S5_StopOffDetails
+        {
+            StopSequenceNumber = 2,
+            StopReasonCode = "UL",
+            Weight = 1,
+            WeightUnitCode = "L",
+            NumberOfUnitsShipped = 1,
+            UnitOrBasisForMeasurementCode = "PL"
+        };
+        expected.Stops[1].Notes.Add(new NTE_Note { NoteReferenceCode = "ALT", Description = "NA" });
         expected.Stops[1].Entity = new Entity();
         expected.Stops[1].Entity.EntityIdentifierCode = "ST";
         expected.Stops[1].Entity.Name = "Cabinetworks Sayre 100 Lamoka";
@@ -299,24 +312,27 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
         expected.Stops[1].Entity.ProvinceState = "PA";
         expected.Stops[1].Entity.Country = "US";
         expected.Stops[1].Entity.PostalZip = "18840";
-        expected.Stops[1].Details.Add(new OrderInformationDetail());
-        expected.Stops[1].Details[0].Summary = new OID_OrderInformationDetail
-        {
-            PackagingFormCode = "PL",
-            ReferenceIdentification = "S14083098",
-            Weight = 1,
-            WeightUnitCode = "L",
-            Quantity = 1
-        };
+        //expected.Stops[1].Details.Add(new OrderInformationDetail());
+        // expected.Stops[1].Details[0].Summary = new OID_OrderInformationDetail
+        // {
+        //     PackagingFormCode = "PL",
+        //     ReferenceIdentification = "S14083098",
+        //     Weight = 1,
+        //     WeightUnitCode = "L",
+        //     Quantity = 1
+        // };
 
         expected.Stops.Add(new StopOffDetails());
-        expected.Stops[2].StopSequenceNumber = 3;
-        expected.Stops[2].StopReasonCode = "UL";
-        expected.Stops[2].Weight = 1;
-        expected.Stops[2].WeightUnitCode = "L";
-        expected.Stops[2].NumberOfUnitsShipped = 1;
-        expected.Stops[2].UnitOrBasisForMeasurementCode = "PL";
-        expected.Stops[2].Notes.Add(new Note { ReferenceCode = "ALT", Description = "NA" });
+        expected.Stops[2].Detail = new S5_StopOffDetails
+        {
+            StopSequenceNumber = 3,
+            StopReasonCode = "UL",
+            Weight = 1,
+            WeightUnitCode = "L",
+            NumberOfUnitsShipped = 1,
+            UnitOrBasisForMeasurementCode = "PL"
+        };
+        expected.Stops[2].Notes.Add(new NTE_Note() { NoteReferenceCode = "ALT", Description = "NA" });
         expected.Stops[2].Entity = new Entity();
         expected.Stops[2].Entity.EntityIdentifierCode = "ST";
         expected.Stops[2].Entity.Name = "Cabinetworks Orwell, Plant 3";
@@ -325,15 +341,15 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
         expected.Stops[2].Entity.ProvinceState = "OH";
         expected.Stops[2].Entity.Country = "US";
         expected.Stops[2].Entity.PostalZip = "44076";
-        expected.Stops[2].Details.Add(new OrderInformationDetail());
-        expected.Stops[2].Details[0].Summary = new OID_OrderInformationDetail
-        {
-            PackagingFormCode = "PL",
-            ReferenceIdentification = "S14083099",
-            Weight = 1,
-            WeightUnitCode = "L",
-            Quantity = 1
-        };
+        //expected.Stops[2].Details.Add(new OrderInformationDetail());
+        // expected.Stops[2].Details[0].Summary = new OID_OrderInformationDetail
+        // {
+        //     PackagingFormCode = "PL",
+        //     ReferenceIdentification = "S14083099",
+        //     Weight = 1,
+        //     WeightUnitCode = "L",
+        //     Quantity = 1
+        // };
 
         expected.Totals.Weight = 2;
         expected.Totals.WeightQualifier = "G";

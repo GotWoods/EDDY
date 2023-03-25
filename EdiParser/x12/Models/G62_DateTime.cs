@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using EdiParser.Attributes;
 using EdiParser.Validation;
@@ -42,6 +43,34 @@ namespace EdiParser.x12.Models
             return validator.Results;
         }
 
+
+        public DateTime GetDateTime()
+        {
+            //TODO: parse timezone
+            var format = "yyyyMMddHHmm";
+            var dateAndTime = Date + Time;
+
+            if (dateAndTime.Length == 16)
+            {
+                format = "yyyyMMddHHmmssff";
+                //dates.IncludeSecondsInDateTime = true;
+                //dates.IncludeMillisecondsInDateTime = true;
+            }
+
+            if (dateAndTime.Length == 14)
+            {
+                format = "yyyyMMddHHmmss";
+                //dates.IncludeSecondsInDateTime = true;
+            }
+            if (dateAndTime.Length == 8) //just date only
+            {
+                format = "yyyyMMdd";
+                //dates.IncludeTime = false;
+            }
+
+            return DateTime.ParseExact(dateAndTime, format, CultureInfo.InvariantCulture);
+            //dates.TimeCode = input.TimeCode;
+        }
 
     }
 

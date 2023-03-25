@@ -12,8 +12,8 @@ public class Edi997_FunctionalAcknowledgment
         var ak2GroupRule = new GroupingRule("AK2", typeof(AK2_TransactionSetResponseHeader), typeof(AK5_TransactionSetResponseTrailer));
         ak2GroupRule.AddSubRule("AK3", typeof(AK3_DataSegmentNote), typeof(AK4_DataElementNote));
 
-        var groupedReader = new GroupedSectionReader(section);
-        var grouped = groupedReader.Read(ak2GroupRule);
+        var groupedReader = new GroupedSectionReader(section, ak2GroupRule);
+        var grouped = groupedReader.Read();
         for (var rowIndex = 0; rowIndex < grouped.Segments.Count; rowIndex++)
         {
             var currentSegment = grouped.Segments[rowIndex];

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EdiParser.Attributes;
 using EdiParser.x12.DomainModels._204;
 using EdiParser.x12.Models;
 using EdiParser.x12.Models.Internals;
@@ -10,20 +11,57 @@ namespace EdiParser.x12.DomainModels;
 
 public class Edi204_MotorCarrierLoadTender
 {
-    public Date OrderDate { get; set; }
-    public B2A_SetPurpose SetPurpose { get; set; }
-    public List<Entity> Entities { get; set; } = new();
-    public List<StopOffDetails> Stops { get; set; } = new();
-    public List<L11_BusinessInstructionsAndReferenceNumber> ReferenceNumbers { get; set; } = new();
-    public List<EquipmentDetails> EquipmentDetails { get; set; } = new();
-    public MS3_InterlineInformation InterlineInformation { get; set; }
-    public List<NTE_Note> Notes { get; set; } = new();
-    public List<BillOfLadingHandlingInfo> BillOfLadingHandlingInfo { get; set; } = new();
-    public L3_TotalWeightAndCharges Totals { get; set; }
+    [SectionPosition(1)]
     public B2_BeginningSegmentForShipmentInformationTransaction ShipmentInformation { get; set; } = new();
-    public PLD_PalletShipmentInformation PalletInformation { get; set; }
+
+    [SectionPosition(2)]
+    public B2A_SetPurpose SetPurpose { get; set; }
+
+    [SectionPosition(3)]
+    public List<L11_BusinessInstructionsAndReferenceNumber> ReferenceNumbers { get; set; } = new();
+
+    [SectionPosition(4)] //Needs special Map
+    public G62_DateTime OrderDate { get; set; }
+
+    [SectionPosition(5)] 
+    public MS3_InterlineInformation InterlineInformation { get; set; }
     
-  
+    [SectionPosition(6)] //AT5
+    public List<BillOfLadingHandlingInfo> BillOfLadingHandlingInfo { get; set; } = new();
+    
+    [SectionPosition(7)]
+    public PLD_PalletShipmentInformation PalletInformation { get; set; }
+
+    [SectionPosition(8)]
+    public List<LH6_HazardousCertification> HazardousCertifications { get; set; } = new();
+
+    [SectionPosition(9)]
+    public List<NTE_Note> Notes { get; set; } = new();
+
+    [SectionPosition(10)] //Special Map
+    public List<Entity> Entities { get; set; } = new();
+
+    [SectionPosition(11)] 
+    public List<EquipmentDetails> EquipmentDetails { get; set; } = new();
+
+    [SectionPosition(12)]
+    public List<StopOffDetails> Stops { get; set; } = new();
+
+    [SectionPosition(13)]
+    public L3_TotalWeightAndCharges Totals { get; set; }
+    
+
+
+    /*
+     * list of segments aligns with "some" of these properties. Date needs a convert but others like Entity,EquipmentDetails, StopOffDetails, etc. are a list
+     *
+     *
+     * [CustomMap("G62")] //or could it just have a convertFrom and expect it to be a G62 and do a type check from within?
+     * public Date OrderDate { get; set;}
+     *
+     * [CustomMapList("N1")]
+     * public List<Entity> Entities { get; set; } = new();
+     */
 
     public void LoadFrom(Section section)
     {
@@ -31,6 +69,9 @@ public class Edi204_MotorCarrierLoadTender
             throw new ArgumentOutOfRangeException("Expected a section type of 204 but was provied a type of " + section.SectionType);
 
         //TODO: L11/MEA/PER/L4 exists between some loops
+
+
+
         var root = new GroupingRule("Root", new[] { "B2", "B2A", "C3", "L11", "G62", "MS3", "PLD", "LH6", "NTE", "L3" }, new List<GroupingRule>
         {
             new("BillOfLading", new[] { "AT5", "RTT", "C3" }), //0050
@@ -85,7 +126,7 @@ public class Edi204_MotorCarrierLoadTender
                     SetPurpose = b2a;
                     break;
                 case G62_DateTime g62:
-                    OrderDate = Date.From(g62);
+                    OrderDate =g62;
                     break;
                 case L11_BusinessInstructionsAndReferenceNumber l11:
                     ReferenceNumbers.Add(l11);
@@ -166,16 +207,10 @@ public class Edi204_MotorCarrierLoadTender
                 switch (segment)
                 {
                     case N7_EquipmentDetails n7:
-                        details.LineData = n7;
+                        details.Details = n7;
                         break;
                     case M7_SealNumbers m7:
-                        details.SealNumbers.Add(m7.SealNumber);
-                        if (!IsNullOrWhiteSpace(m7.SealNumber2))
-                            details.SealNumbers.Add(m7.SealNumber2);
-                        if (!IsNullOrWhiteSpace(m7.SealNumber3))
-                            details.SealNumbers.Add(m7.SealNumber3);
-                        if (!IsNullOrWhiteSpace(m7.SealNumber4))
-                            details.SealNumbers.Add(m7.SealNumber4);
+                        details.SealNumbers.Add(m7);
                         break;
                 }
 
@@ -216,27 +251,16 @@ public class Edi204_MotorCarrierLoadTender
                 switch (segment)
                 {
                     case S5_StopOffDetails s5:
-                        stop.WeightUnitCode = s5.WeightUnitCode;
-                        stop.StopSequenceNumber = s5.StopSequenceNumber;
-                        stop.StopReasonCode = s5.StopReasonCode;
-                        stop.Weight = s5.Weight;
-                        stop.WeightUnitCode = s5.WeightUnitCode;
-                        stop.NumberOfUnitsShipped = s5.NumberOfUnitsShipped;
-                        stop.UnitOrBasisForMeasurementCode = s5.UnitOrBasisForMeasurementCode;
-                        stop.Volume = s5.Volume;
-                        stop.VolumeUnitQualifier = s5.VolumeUnitQualifier;
-                        stop.Description = s5.Description;
-                        stop.StandardPointLocationCode = s5.StandardPointLocationCode;
-                        stop.AccomplishCode = s5.AccomplishCode;
+                        stop.Detail = s5;
                         break;
                     case L11_BusinessInstructionsAndReferenceNumber l11:
-                        stop.ReferenceNumbers.Add(new KeyValuePair<string, string>(l11.ReferenceIdentificationQualifier, l11.ReferenceIdentification));
+                        stop.ReferenceNumbers.Add(l11);
                         break;
                     case G62_DateTime g62:
-                        stop.Dates.Add(Date.From(g62));
+                        stop.Dates.Add(g62);
                         break;
                     case NTE_Note nte:
-                        stop.Notes.Add(new Note { Description = nte.Description, ReferenceCode = nte.NoteReferenceCode });
+                        stop.Notes.Add(nte);
                         break;
                     case AT8_ShipmentWeightPackagingAndQuantityData at8:
                         stop.ShipmentWeightPackagingAndQuantityData = at8;
@@ -285,8 +309,8 @@ public class Edi204_MotorCarrierLoadTender
                 stop.ShipmentDetails.Add(ProcessShipmentInformationDetail(shipmentData));
 
             //started by an OID
-            foreach (var orderInfo in stopSegment.Children.Where(x => x.Rule.Name == "OrderInformationDetail")) 
-                stop.Details.Add(ProcessOrderInformationDetail(orderInfo));
+            // foreach (var orderInfo in stopSegment.Children.Where(x => x.Rule.Name == "OrderInformationDetail")) 
+            //     stop.Details.Add(ProcessOrderInformationDetail(orderInfo));
 
             //var otherEquipmentDetails = stopSegment.Children.FirstOrDefault(x=>x.Rule.Name== "OtherEquipmentDetails")
             Stops.Add(stop);
@@ -321,7 +345,7 @@ public class Edi204_MotorCarrierLoadTender
                     detail.Measurements.Add(mea);
                     break;
                 case L4_Measurement l4:
-                    detail.Measuresment = l4;
+                    detail.Measurement = l4;
                     break;
             }
 
@@ -352,7 +376,7 @@ public class Edi204_MotorCarrierLoadTender
                             hazMatInfo.IdentificationInfo = lh1;
                             break;
                         case LH2_HazardousClassificationInformation lh2:
-                            hazMatInfo.Classiciation.Add(lh2);
+                            hazMatInfo.Classification.Add(lh2);
                             break;
                         case LH3_HazardousMaterialShippingNameInformation lh3:
                             hazMatInfo.ShippingName.Add(lh3);
@@ -439,7 +463,7 @@ public class Edi204_MotorCarrierLoadTender
                                 hazMatInfo.IdentificationInfo = lh1;
                                 break;
                             case LH2_HazardousClassificationInformation lh2:
-                                hazMatInfo.Classiciation.Add(lh2);
+                                hazMatInfo.Classification.Add(lh2);
                                 break;
                             case LH3_HazardousMaterialShippingNameInformation lh3:
                                 hazMatInfo.ShippingName.Add(lh3);
@@ -484,7 +508,7 @@ public class Edi204_MotorCarrierLoadTender
         foreach (var referenceNumber in ReferenceNumbers) s.Segments.Add(referenceNumber);
 
         if (OrderDate != null)
-            s.Segments.Add(OrderDate.ToG62());
+            s.Segments.Add(OrderDate);
         if (InterlineInformation != null)
             s.Segments.Add(InterlineInformation);
 
@@ -557,34 +581,22 @@ public class Edi204_MotorCarrierLoadTender
 
         foreach (var equipmentDetail in EquipmentDetails)
         {
-            s.Segments.Add(equipmentDetail.LineData);
-            foreach (var equipmentDetailSealNumber in equipmentDetail.SealNumbers) s.Segments.Add(new M7_SealNumbers { SealNumber = equipmentDetailSealNumber });
+            s.Segments.Add(equipmentDetail.Details);
+            foreach (var equipmentDetailSealNumber in equipmentDetail.SealNumbers) 
+                s.Segments.Add(equipmentDetailSealNumber);
         }
 
         foreach (var stop in Stops)
         {
-            s.Segments.Add(new S5_StopOffDetails
-            {
-                StopSequenceNumber = stop.StopSequenceNumber,
-                StopReasonCode = stop.StopReasonCode,
-                Weight = stop.Weight,
-                WeightUnitCode = stop.WeightUnitCode,
-                NumberOfUnitsShipped = stop.NumberOfUnitsShipped,
-                UnitOrBasisForMeasurementCode = stop.UnitOrBasisForMeasurementCode,
-                Volume = stop.Volume,
-                VolumeUnitQualifier = stop.VolumeUnitQualifier,
-                Description = stop.Description,
-                StandardPointLocationCode = stop.StandardPointLocationCode,
-                AccomplishCode = stop.AccomplishCode
-            });
+            s.Segments.Add(stop.Detail);
+            
+            foreach (var stopReferenceNumber in stop.ReferenceNumbers) s.Segments.Add(stopReferenceNumber);
 
-            foreach (var stopReferenceNumber in stop.ReferenceNumbers) s.Segments.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentification = stopReferenceNumber.Value, ReferenceIdentificationQualifier = stopReferenceNumber.Key });
-
-            foreach (var date in stop.Dates) s.Segments.Add(date.ToG62());
+            foreach (var date in stop.Dates) s.Segments.Add(date);
 
             if (stop.ShipmentWeightPackagingAndQuantityData != null) s.Segments.Add(stop.ShipmentWeightPackagingAndQuantityData);
 
-            foreach (var stopNote in stop.Notes) s.Segments.Add(new NTE_Note { Description = stopNote.Description, NoteReferenceCode = stopNote.ReferenceCode });
+            foreach (var stopNote in stop.Notes) s.Segments.Add(stopNote);
 
             if (stop.Entity != null)
             {
@@ -644,7 +656,7 @@ public class Edi204_MotorCarrierLoadTender
                     {
                         if (hazMatInfo.IdentificationInfo != null)
                             s.Segments.Add(hazMatInfo.IdentificationInfo);
-                        foreach (var classificationInformation in hazMatInfo.Classiciation)
+                        foreach (var classificationInformation in hazMatInfo.Classification)
                         {
                             s.Segments.Add(classificationInformation);
                         }
@@ -681,8 +693,8 @@ public class Edi204_MotorCarrierLoadTender
 
                 foreach (var measurement in detail.Measurements) s.Segments.Add(measurement);
 
-                if (detail.Measuresment != null)
-                    s.Segments.Add(detail.Measuresment);
+                if (detail.Measurement!= null)
+                    s.Segments.Add(detail.Measurement);
 
 
 
@@ -690,53 +702,53 @@ public class Edi204_MotorCarrierLoadTender
 
             foreach (var stopDetail in stop.Details)
             {
-                s.Segments.Add(stopDetail.Summary);
+                s.Segments.Add(stopDetail.OrderInformationDetail);
                 foreach (var ladingInformation in stopDetail.LadingInformation) s.Segments.Add(ladingInformation);
-                foreach (var detail in stopDetail.OrderDetails)
-                {
-                    s.Segments.Add(detail.DescriptionMarksAndNumbers);
-                    s.Segments.Add(detail.ShipmentWeightPackagingAndQuantityData);
-                    
-                    foreach (var contact in detail.Contacts)
-                    {
-                        s.Segments.Add(contact.Info);
-                        foreach (var hazMatInfo in contact.HazMatInfo)
-                        {
-                            if (hazMatInfo.IdentificationInfo != null)    
-                                s.Segments.Add(hazMatInfo.IdentificationInfo);
-                            foreach (var classificationInformation in hazMatInfo.Classiciation)
-                            {
-                                s.Segments.Add(classificationInformation);
-                            }
-
-                            foreach (var shippingNameInformation in hazMatInfo.ShippingName)
-                            {
-                                s.Segments.Add(shippingNameInformation);
-                            }
-
-                            foreach (var freeFormHazardousMaterialInformation in hazMatInfo.FreeFormInfo)
-                            {
-                                s.Segments.Add(freeFormHazardousMaterialInformation);
-                            }
-
-                            foreach (var lepEpaRequiredData in hazMatInfo.EpaData)
-                            {
-                                s.Segments.Add(lepEpaRequiredData);
-                            }
-
-
-                            if (hazMatInfo.CanadianRequierments != null)
-                                s.Segments.Add(hazMatInfo.CanadianRequierments);
-
-                            foreach (var transborderRequirement in hazMatInfo.TransborderRequirements)
-                            {
-                                s.Segments.Add(transborderRequirement);
-                            }
-                        }
-
-                        
-                    }
-                }
+                // foreach (var detail in stopDetail.OrderDetails)
+                // {
+                //     s.Segments.Add(detail.DescriptionMarksAndNumbers);
+                //     s.Segments.Add(detail.ShipmentWeightPackagingAndQuantityData);
+                //     
+                //     foreach (var contact in detail.Contacts)
+                //     {
+                //         s.Segments.Add(contact.Info);
+                //         foreach (var hazMatInfo in contact.HazMatInfo)
+                //         {
+                //             if (hazMatInfo.IdentificationInfo != null)    
+                //                 s.Segments.Add(hazMatInfo.IdentificationInfo);
+                //             foreach (var classificationInformation in hazMatInfo.Classiciation)
+                //             {
+                //                 s.Segments.Add(classificationInformation);
+                //             }
+                //
+                //             foreach (var shippingNameInformation in hazMatInfo.ShippingName)
+                //             {
+                //                 s.Segments.Add(shippingNameInformation);
+                //             }
+                //
+                //             foreach (var freeFormHazardousMaterialInformation in hazMatInfo.FreeFormInfo)
+                //             {
+                //                 s.Segments.Add(freeFormHazardousMaterialInformation);
+                //             }
+                //
+                //             foreach (var lepEpaRequiredData in hazMatInfo.EpaData)
+                //             {
+                //                 s.Segments.Add(lepEpaRequiredData);
+                //             }
+                //
+                //
+                //             if (hazMatInfo.CanadianRequierments != null)
+                //                 s.Segments.Add(hazMatInfo.CanadianRequierments);
+                //
+                //             foreach (var transborderRequirement in hazMatInfo.TransborderRequirements)
+                //             {
+                //                 s.Segments.Add(transborderRequirement);
+                //             }
+                //         }
+                //
+                //         
+                //     }
+                // }
             }
         }
 

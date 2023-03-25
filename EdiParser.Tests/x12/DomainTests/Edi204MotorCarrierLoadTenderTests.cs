@@ -26,7 +26,7 @@ public class Edi204MotorCarrierLoadTenderTests
             ShipmentIdentificationNumber = "32523432",
             ShipmentMethodOfPaymentCode = "PP"
         };
-        sourceModel.SetPurpose = new B2A_SetPurpose() { TransactionSetPurposeCode = "04" };
+        sourceModel.SetPurpose = new B2A_SetPurpose { TransactionSetPurposeCode = "04" };
         sourceModel.Entities.Add(new Entity
         {
             Name = "123 Company", EntityIdentifierCode = "5334532", Address1 = "123 street", City = "City", ProvinceState = "PS", PostalZip = "H0H0H0"
@@ -37,8 +37,11 @@ public class Edi204MotorCarrierLoadTenderTests
         sourceModel.Notes.Add(new NTE_Note { NoteReferenceCode = "123", Description = "Note2" });
         sourceModel.Stops.Add(new StopOffDetails
         {
-            StopSequenceNumber = 1,
-            StopReasonCode = "AB"
+            Detail = new S5_StopOffDetails()
+            {
+                StopSequenceNumber = 1,
+                StopReasonCode = "AB"
+            }
         });
 
 
@@ -69,8 +72,8 @@ public class Edi204MotorCarrierLoadTenderTests
 
         expected.Segments.Add(new S5_StopOffDetails
         {
-            StopSequenceNumber = sourceModel.Stops[0].StopSequenceNumber,
-            StopReasonCode = sourceModel.Stops[0].StopReasonCode
+            StopSequenceNumber = sourceModel.Stops[0].Detail.StopSequenceNumber,
+            StopReasonCode = sourceModel.Stops[0].Detail.StopReasonCode
         });
 
         var actual = sourceModel.ToDocumentSection("0001");
@@ -108,7 +111,7 @@ public class Edi204MotorCarrierLoadTenderTests
         expected.ShipmentInformation.StandardCarrierAlphaCode = "XXXX";
         expected.ShipmentInformation.ShipmentIdentificationNumber = "9999955559";
         expected.ShipmentInformation.ShipmentMethodOfPaymentCode = "PP";
-        expected.SetPurpose = new B2A_SetPurpose() { TransactionSetPurposeCode = "04" };
+        expected.SetPurpose = new B2A_SetPurpose { TransactionSetPurposeCode = "04" };
         expected.InterlineInformation = new MS3_InterlineInformation { StandardCarrierAlphaCode = "XXXX", TransportationMethodTypeCode = "M", RoutingSequenceCode = "B" };
         // expected.Receiver = "123456789012345";
         // expected.Sender = "ABCDEFGHIJKLMNO";
@@ -119,18 +122,21 @@ public class Edi204MotorCarrierLoadTenderTests
 
 
         expected.Stops.Add(new StopOffDetails());
-        expected.Stops[0].StopSequenceNumber = 1;
-        expected.Stops[0].StopReasonCode = "CL";
-        expected.Stops[0].Weight = 27800;
-        expected.Stops[0].WeightUnitCode = "L";
-        expected.Stops[0].NumberOfUnitsShipped = 2444;
-        expected.Stops[0].UnitOrBasisForMeasurementCode = "CA";
-        expected.Stops[0].Volume = 1016;
-        expected.Stops[0].VolumeUnitQualifier = "E";
-        expected.Stops[0].ReferenceNumbers.Add(new KeyValuePair<string, string>("DO", "9999001947"));
-        expected.Stops[0].ReferenceNumbers.Add(new KeyValuePair<string, string>("CR", "9999670098"));
-        expected.Stops[0].ReferenceNumbers.Add(new KeyValuePair<string, string>("DO", "9999001866"));
-        expected.Stops[0].ReferenceNumbers.Add(new KeyValuePair<string, string>("CR", "9999669887"));
+        expected.Stops[0].Detail = new S5_StopOffDetails
+        {
+            StopSequenceNumber = 1,
+            StopReasonCode = "CL",
+            Weight = 27800,
+            WeightUnitCode = "L",
+            NumberOfUnitsShipped = 2444,
+            UnitOrBasisForMeasurementCode = "CA",
+            Volume = 1016,
+            VolumeUnitQualifier = "E"
+        };
+        expected.Stops[0].ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber() {ReferenceIdentificationQualifier = "DO", ReferenceIdentification = "9999001947" });
+        expected.Stops[0].ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "CR", ReferenceIdentification = "9999670098" });
+        expected.Stops[0].ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "DO", ReferenceIdentification = "9999001866" });
+        expected.Stops[0].ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "CR", ReferenceIdentification = "9999669887" });
 
 
         //checking the stop first gives easier to read failures then when a collection compare fails
