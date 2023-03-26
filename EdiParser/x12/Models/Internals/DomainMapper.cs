@@ -52,6 +52,24 @@ public class DomainMapper
                     }
                 }
             }
+            else
+            {
+                var childPositions = propertyInfo.PropertyType.GetProperties().Where(prop => Attribute.IsDefined(prop, typeof(SectionPositionAttribute))).ToList();
+                if (childPositions.Any())
+                {
+                    dt.IsComplexType = true;
+                    foreach (var childPosition in childPositions)
+                    {
+                        if (childPosition.GetCustomAttribute<SectionPositionAttribute>()!.Position == 1)
+                        {
+                            //dt.TypeToGenerate = genericListType; //taken from the list args
+                            dt.MatchingSegmentType = childPosition.PropertyType; //AT5
+                            break;
+                        }
+                    }
+                }
+            }
+
             // if (DoesTypeImplementISegmentConverter(propertyInfo.PropertyType))
             // {
             //     dt.MatchingSegmentType = "";
@@ -125,28 +143,34 @@ public class DomainMapper
                     list.Add(CurrentSegment);
                 currentSegmetnIndex++;
             }
+            else if (prop.IsComplexType)
+            {
+                var complexType = Map(prop.TypeToGenerate);
+                prop.Property.SetValue(result, complexType);
+                firstInstanceFound = true;
+            }
             else
             {
-                var converted = false;
+                //var converted = false;
                 
-                if (prop.Property.PropertyType.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ISegmentConverter<>)))
-                {
-                    var convertableObject = Activator.CreateInstance(prop.Property.PropertyType);
-                    // convertableObject.GetType().InvokeMember("CanConvert", BindingFlags.CreateInstance, null, )
+                // if (prop.Property.PropertyType.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ISegmentConverter<>)))
+                // {
+                //     var convertableObject = Activator.CreateInstance(prop.Property.PropertyType);
+                //     // convertableObject.GetType().InvokeMember("CanConvert", BindingFlags.CreateInstance, null, )
+                //
+                //     var method = typeof(ISegmentConverter<>).GetMethod("CanConvert");
+                //     if ((bool)method.Invoke(convertableObject, null))
+                //     {
+                //         prop.Property.SetValue(result, convertableObject);
+                //         converted = true;
+                //     }
+                // }
 
-                    var method = typeof(ISegmentConverter<>).GetMethod("CanConvert");
-                    if ((bool)method.Invoke(convertableObject, null))
-                    {
-                        prop.Property.SetValue(result, convertableObject);
-                        converted = true;
-                    }
-                }
-
-                if (!converted)
-                {
+                // if (!converted)
+                // {
                     prop.Property.SetValue(result, CurrentSegment);
                     firstInstanceFound = true;
-                }
+                //}
 
                 currentSegmetnIndex++;
             }

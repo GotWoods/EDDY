@@ -19,6 +19,9 @@ public class Entity
     [SectionPosition(4)]
     public N4_GeographicLocation GeographicLocation { get; set; }
 
+    [SectionPosition(5)]
+    public List<G61_Contact> Contacts { get; set; } = new();
+
     // public string EntityIdentifierCode { get; set; }
     // public string Name { get; set; }
     // public string Address1 { get; set; }

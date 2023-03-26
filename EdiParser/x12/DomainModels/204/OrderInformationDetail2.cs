@@ -13,4 +13,7 @@ public class OrderInformationDetail2
     
     [SectionPosition(3)]
     public List<LAD_LadingDetail> LadingInformation { get; set; } = new();
+
+    [SectionPosition(4)]
+    public List<OrderInformationShipmentData> OrderInformationShipmentData { get; set; } = new();
 }

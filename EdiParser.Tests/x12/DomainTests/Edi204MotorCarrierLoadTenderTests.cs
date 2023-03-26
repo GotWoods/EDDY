@@ -2,6 +2,7 @@
 using EdiParser.x12.DomainModels;
 using EdiParser.x12.DomainModels._204;
 using EdiParser.x12.Models;
+using EdiParser.x12.Models.Internals;
 using Xunit.Abstractions;
 
 namespace EdiParser.Tests.x12.DomainTests;
@@ -105,9 +106,10 @@ public class Edi204MotorCarrierLoadTenderTests
 
         var document = x12Document.Parse(data);
 
-        var edi204 = new Edi204_MotorCarrierLoadTender();
-        edi204.LoadFrom(document.Sections[0]);
-
+        // var edi204 = new Edi204_MotorCarrierLoadTender();
+        // edi204.LoadFrom(document.Sections[0]);
+        var mapper = new DomainMapper(document.Sections[0].Segments);
+        var edi204 = mapper.Map<Edi204_MotorCarrierLoadTender>();
 
         var expected = new Edi204_MotorCarrierLoadTender();
         expected.ShipmentInformation.StandardCarrierAlphaCode = "XXXX";

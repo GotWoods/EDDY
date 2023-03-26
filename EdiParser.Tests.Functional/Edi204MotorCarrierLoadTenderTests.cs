@@ -3,6 +3,7 @@ using EdiParser.x12.DomainModels;
 using EdiParser.x12.DomainModels._204;
 using EdiParser.x12.Mapping;
 using EdiParser.x12.Models;
+using EdiParser.x12.Models.Internals;
 using Xunit.Abstractions;
 
 namespace EdiParser.Tests.x12.DomainTests;
@@ -24,8 +25,10 @@ public class Edi204MotorCarrierLoadTenderTests
         var data = File.ReadAllText(fileName);
         var document = x12Document.Parse(data);
 
-        var edi204 = new Edi204_MotorCarrierLoadTender();
-        edi204.LoadFrom(document.Sections[0]);
+        var mapper = new DomainMapper(document.Sections[0].Segments);
+        var edi204 = mapper.Map<Edi204_MotorCarrierLoadTender>();
+        //var edi204 = new Edi204_MotorCarrierLoadTender();
+        //edi204.LoadFrom(document.Sections[0]);
 
         Assert.Equivalent(expected.Entities[0], edi204.Entities[0], true);
         Assert.Equivalent(expected.Entities[1], edi204.Entities[1], true);
@@ -86,8 +89,10 @@ public class Edi204MotorCarrierLoadTenderTests
                 var documentSections = new List<Section>();
                 foreach (var section in document.Sections)
                 {
-                    var edi204 = new Edi204_MotorCarrierLoadTender();
-                    edi204.LoadFrom(section);
+                    // var edi204 = new Edi204_MotorCarrierLoadTender();
+                    // edi204.LoadFrom(section);
+                    var mapper = new DomainMapper(section.Segments);
+                    var edi204 = mapper.Map<Edi204_MotorCarrierLoadTender>();
                     documentSections.Add(edi204.ToDocumentSection(section.TransactionSetControlNumber));
                 }
 
@@ -207,6 +212,40 @@ public class Edi204MotorCarrierLoadTenderTests
     }
 
     [Fact]
+    public void LoadDocument2()
+    {
+        var data = @"ISA*01*0000000000*01*0000000000*ZZ*ABCDEFGHIJKLMNO*ZZ*123456789012345*101127*1719*U*00400*000003438*0*P*>~
+GS*SM*RBTW*PNII*20201117*1309*55970*X*004010~       
+ST*204*95009~
+B2**PNII**340186386**TP~
+B2A*00~
+L11*T5227893*VD~
+L11*1022519-FV38-FV38-LTL-20201117*SI~
+L11*-60838-INBOUND*CR~
+L11*TMC29316343*OW~
+L11*USD*RB~
+L11*TMC APTIV*TH~
+G62*64*20201117*1*1407~
+NTE*ZZZ*0~
+N1*BT*Protrans*93*39638~
+N3*PO Box 42069~
+N4*INDIANAPOLIS*IN*46242~
+N1*VI*CH ROBINSON CONTACT~
+G61*CN*GERARDO MARTINEZ*TE*8181335600~
+G61*IC*GERARDO MARTINEZ*EM*MARTGERA@CHROBINSON.COM~
+G61*ZZ*TMC APTIV~
+N7**ZZZZ*173*G*******TV****0100*****0*0~";
+
+        var document = x12Document.Parse(data);
+
+        // var edi204 = new Edi204_MotorCarrierLoadTender();
+        // edi204.LoadFrom(document.Sections[0]);
+        var mapper = new DomainMapper(document.Sections[0].Segments);
+        var edi204 = mapper.Map<Edi204_MotorCarrierLoadTender>();
+
+        Assert.Equal(1, edi204.EquipmentDetails.Count);
+    }
+    [Fact]
     public void LoadDocument()
     {
         var data = @"ISA*01*0000000000*01*0000000000*ZZ*ABCDEFGHIJKLMNO*ZZ*123456789012345*101127*1719*U*00400*000003438*0*P*>~
@@ -229,9 +268,10 @@ public class Edi204MotorCarrierLoadTenderTests
 
         var document = x12Document.Parse(data);
 
-        var edi204 = new Edi204_MotorCarrierLoadTender();
-        edi204.LoadFrom(document.Sections[0]);
-
+        // var edi204 = new Edi204_MotorCarrierLoadTender();
+        // edi204.LoadFrom(document.Sections[0]);
+        var mapper = new DomainMapper(document.Sections[0].Segments);
+        var edi204 = mapper.Map<Edi204_MotorCarrierLoadTender>();
 
         var expected = new Edi204_MotorCarrierLoadTender();
         expected.ShipmentInformation.StandardCarrierAlphaCode = "XXXX";

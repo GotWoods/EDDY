@@ -1,6 +1,7 @@
 ﻿using EdiFact.Mapping;
 using EdiParser.x12;
 using EdiParser.x12.DomainModels;
+using EdiParser.x12.DomainModels._204;
 using EdiParser.x12.Models;
 using EdiParser.x12.Models.Internals;
 using Xunit.Abstractions;
@@ -231,5 +232,128 @@ public class DomainMapperTests
         //stop2
         Assert.Equivalent(input.Segments[3], result.Stops[1].Detail);
         Assert.Equivalent(input.Segments[4], result.Stops[1].ReferenceNumbers[0]);
+    }
+
+    [Fact]
+    public void MapComplexChild()
+    {
+        var input = new List<EdiX12Segment>();
+        input.Add(new S5_StopOffDetails());
+        input.Add(new N1_PartyIdentification());
+        input.Add(new N3_PartyLocation());
+        input.Add(new N4_GeographicLocation());
+        
+        var subject = new DomainMapper(input);
+        var result = subject.Map<StopOffDetails>();
+
+
+        Assert.NotNull(result);
+        Assert.NotNull(result.Entity);
+    }
+
+    [Fact]
+    public void MapBrokenFile()
+    {
+        var input = new List<EdiX12Segment>();
+        input.Add(new B2_BeginningSegmentForShipmentInformationTransaction());
+        input.Add(new B2A_SetPurpose());
+        input.Add(new L11_BusinessInstructionsAndReferenceNumber());
+        input.Add(new G62_DateTime());
+        input.Add(new NTE_Note());
+        input.Add(new N1_PartyIdentification());
+        input.Add(new N3_PartyLocation());
+        input.Add(new N4_GeographicLocation());
+        input.Add(new N1_PartyIdentification());
+        input.Add(new G61_Contact());
+        input.Add(new G61_Contact());
+        input.Add(new N7_EquipmentDetails());
+        
+        input.Add(new S5_StopOffDetails());
+        input.Add(new L11_BusinessInstructionsAndReferenceNumber());
+        input.Add(new G62_DateTime());
+        input.Add(new G62_DateTime());
+        input.Add(new NTE_Note());
+        input.Add(new NTE_Note());
+        input.Add(new N1_PartyIdentification());
+        input.Add(new N3_PartyLocation());
+        input.Add(new N4_GeographicLocation());
+        input.Add(new G61_Contact());
+        input.Add(new G61_Contact());
+
+        var subject = new DomainMapper(input);
+        var result = subject.Map<Edi204_MotorCarrierLoadTender>();
+
+
+        Assert.NotNull(result);
+        Assert.Equivalent(2, result.Entities.Count);
+        Assert.Equivalent(1, result.EquipmentDetails.Count);
+        Assert.Equivalent(1, result.Stops.Count);
+
+
+        // OID* FV38*121549266 * *PL * 1 * L * 173
+        // LAD******* LG*04.00 * W1 * 48 * HI * 48
+        // L5 * 1 * Auto Parts****** N*70
+        // S5 * 2 * UL
+        // G62 * 68 * 20201120 * 5 * 0000
+        // G62 * 54 * 20201120 * 5 * 0000
+        // NTE* OTH*No Touch
+        // NTE* PKG*Dimensions H(in)48 W(in)48 L(ft)04 L(in)00
+        // N1* ST*APTIV - El Paso X-Dock(8062021) * ZZ * W12109350
+        // N3 * 48 Walter Jones Blvd Spur Dr
+        // N4* El Paso* TX*79906 * US
+        // G61* CN*AV * TE * 8888888888
+        // G61* CN*AV * EM * Arturo.villanueva@delphi.com
+        // OID* FV38*121549266 * *PL * 1 * L * 173
+        // LAD******* LG*04.00 * W1 * 48 * HI * 48
+        // L5 * 1 * Auto Parts****** N*70
+        // L3 * 173 * G * 92.5 * FR * 9944 * 694 * ****1
+        // SE * 48 * 95009
+        // ST * 204 * 95010
+        // B2** PNII**340186386 * *TP
+        // B2A * 04
+        // L11* T5227893*VD
+        // L11 * 1022519 - FV38 - FV38 - LTL - 20201117 * SI
+        // L11 * -60838 - INBOUND * CR
+        // L11* TMC29316343*OW
+        // L11* USD*RB
+        // L11* TMC APTIV* TH
+        // G62 * 64 * 20201117 * 1 * 1407
+        // NTE* ZZZ*0
+        // N1* BT*Protrans * 93 * 39638
+        // N3* PO Box 42069
+        // N4* INDIANAPOLIS*IN * 46242
+        // N1* VI*CH ROBINSON CONTACT
+        // G61* CN*GERARDO MARTINEZ* TE*8181335600
+        // G61* IC*GERARDO MARTINEZ* EM*MARTGERA@CHROBINSON.COM
+        // G61* ZZ*TMC APTIV
+        // N7** ZZZZ*173 * G * ******TV * ***0100 * ****0 * 0
+        // S5 * 1 * LD
+        // L11 * 1022519 * PU
+        // G62 * 10 * 20201117 * 4 * 0800
+        // G62 * 38 * 20201117 * 4 * 1600
+        // NTE* OTH*No Touch
+        // NTE* PKG*Dimensions H(in)48 W(in)48 L(ft)04 L(in)00
+        // N1* SF*Hellermanntyton Corp(8036075) * ZZ * 1022519
+        // N3 * 1485 Normantown Rd
+        // N4* ROMEOVILLE*IL * 60446 * US
+        // G61* CN*Mathew Z Binden*TE * (815) 372 - 4280
+        // G61* CN*Mathew Z Binden*EM * MZbinden@htamericas.com
+        // OID* FV38*121549266 * *PL * 1 * L * 173
+        // LAD******* LG*04.00 * W1 * 48 * HI * 48
+        // L5 * 1 * Auto Parts****** N*70
+        // S5 * 2 * UL
+        // G62 * 68 * 20201120 * 5 * 0000
+        // G62 * 54 * 20201120 * 5 * 0000
+        // NTE* OTH*No Touch
+        // NTE* PKG*Dimensions H(in)48 W(in)48 L(ft)04 L(in)00
+        // N1* ST*APTIV - El Paso X-Dock(8062021) * ZZ * W12109350
+        // N3 * 48 Walter Jones Blvd Spur Dr
+        // N4* El Paso* TX*79906 * US
+        // G61* CN*AV * TE * 8888888888
+        // G61* CN*AV * EM * Arturo.villanueva@delphi.com
+        // OID* FV38*121549266 * *PL * 1 * L * 173
+        // LAD******* LG*04.00 * W1 * 48 * HI * 48
+        // L5 * 1 * Auto Parts****** N*70
+        // L3 * 173 * G * 92.5 * FR * 9944 * 694 * ****1
     }
 }

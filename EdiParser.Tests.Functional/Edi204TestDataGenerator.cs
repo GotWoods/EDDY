@@ -220,11 +220,10 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
             GeographicLocation = new N4_GeographicLocation() { CityName = "INDIANAPOLIS", StateOrProvinceCode = "IN", PostalCode = "46242", CountryCode = "US" }
         });
 
-        //TODO: Contacts
-        //        expected.Entities[0].Contacts.Add(new Contact { CommunicationNumber = "NA", CommunicationNumberQualifier = "TE", ContactFunctionCode = "AP", ContactInquiryReference = null, Name = "NA" });
-        //      expected.Entities[1].Contacts.Add(new Contact { CommunicationNumber = "NA", CommunicationNumberQualifier = "TE", ContactFunctionCode = "RP", ContactInquiryReference = null, Name = "NA" });
+        
+        expected.Entities[0].Contacts.Add(new G61_Contact() { CommunicationNumber = "NA", CommunicationNumberQualifier = "TE", ContactFunctionCode = "AP", ContactInquiryReference = null, Name = "NA" });
+        expected.Entities[1].Contacts.Add(new G61_Contact() { CommunicationNumber = "NA", CommunicationNumberQualifier = "TE", ContactFunctionCode = "RP", ContactInquiryReference = null, Name = "NA" });
 
-        //g61
         //n7
 
         expected.Stops.Add(new StopOffDetails());
@@ -245,8 +244,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
             GeographicLocation = new N4_GeographicLocation() { CityName = "Middlefield", StateOrProvinceCode = "OH", PostalCode = "44062", CountryCode = "US" }
         };
 
-        //TODO: contacts
-        //expected.Stops[0].Entity.Contacts.Add(new Contact { CommunicationNumber = "NA", CommunicationNumberQualifier = "TE", ContactFunctionCode = "SH", ContactInquiryReference = null, Name = "NA" });
+        expected.Stops[0].Entity.Contacts.Add(new G61_Contact() { CommunicationNumber = "NA", CommunicationNumberQualifier = "TE", ContactFunctionCode = "SH", ContactInquiryReference = null, Name = "NA" });
 
         expected.Stops[0].Details.Add(new OrderInformationDetail2());
         expected.Stops[0].Details[0].Detail = new OID_OrderInformationDetail
