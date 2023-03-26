@@ -15,7 +15,7 @@ public class OrderInformationShipmentData
     [SectionPosition(3)]
     public L4_Measurement Measurement { get; set; }
 
-    [SectionPosition(4)]
-    public List<HazMatInfo> HazMatInfo { get; set; } = new();
-}
 
+    [SectionPosition(4)]
+    public List<HazMatContact> HazMat { get; set; } = new();
+}

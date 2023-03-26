@@ -606,22 +606,27 @@ public class Edi204_MotorCarrierLoadTender
                     s.Segments.Add(orderInformationShipmentData.DescriptionMarksAndNumbers);
                     if (orderInformationShipmentData.ShipmentWeightPackagingAndQuantity != null) s.Segments.Add(orderInformationShipmentData.ShipmentWeightPackagingAndQuantity);
                     if (orderInformationShipmentData.Measurement != null) s.Segments.Add(orderInformationShipmentData.Measurement);
-                    foreach (var hazMatInfo in orderInformationShipmentData.HazMatInfo)
+                    foreach (var hazMat in orderInformationShipmentData.HazMat)
                     {
-                        if (hazMatInfo.IdentificationInfo != null)
-                            s.Segments.Add(hazMatInfo.IdentificationInfo);
-                        foreach (var classificationInformation in hazMatInfo.Classification) s.Segments.Add(classificationInformation);
+                        s.Segments.Add(hazMat.Contact);
 
-                        foreach (var shippingNameInformation in hazMatInfo.ShippingName) s.Segments.Add(shippingNameInformation);
+                        foreach (var hazMatInfo in hazMat.HazMatInfo)
+                        {
+                            if (hazMatInfo.IdentificationInfo != null)
+                                s.Segments.Add(hazMatInfo.IdentificationInfo);
+                            foreach (var classificationInformation in hazMatInfo.Classification) s.Segments.Add(classificationInformation);
 
-                        foreach (var freeFormHazardousMaterialInformation in hazMatInfo.FreeFormInfo) s.Segments.Add(freeFormHazardousMaterialInformation);
+                            foreach (var shippingNameInformation in hazMatInfo.ShippingName) s.Segments.Add(shippingNameInformation);
 
-                        foreach (var lepEpaRequiredData in hazMatInfo.EpaData) s.Segments.Add(lepEpaRequiredData);
-                        
-                        if (hazMatInfo.CanadianRequierments != null)
-                            s.Segments.Add(hazMatInfo.CanadianRequierments);
+                            foreach (var freeFormHazardousMaterialInformation in hazMatInfo.FreeFormInfo) s.Segments.Add(freeFormHazardousMaterialInformation);
 
-                        foreach (var transborderRequirement in hazMatInfo.TransborderRequirements) s.Segments.Add(transborderRequirement);
+                            foreach (var lepEpaRequiredData in hazMatInfo.EpaData) s.Segments.Add(lepEpaRequiredData);
+
+                            if (hazMatInfo.CanadianRequierments != null)
+                                s.Segments.Add(hazMatInfo.CanadianRequierments);
+
+                            foreach (var transborderRequirement in hazMatInfo.TransborderRequirements) s.Segments.Add(transborderRequirement);
+                        }
                     }
                 }
                 // foreach (var detail in stopDetail.OrderDetails)
