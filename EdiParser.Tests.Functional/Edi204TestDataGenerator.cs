@@ -71,7 +71,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
                 new() { NoteReferenceCode = "SPH", Description = "D120550 - 19 CTNS; D120127 - 33 CTNS 1 SKID W/ 17 CTNS 1 SKID W/ 16 CTNS" },
                 new() { NoteReferenceCode = "PKG", Description = "Dimensions H(in)40 W(in)42 L(ft)04 L(in)04" }
             },
-            Details = new List<OrderInformationDetail2>
+            Details = new List<OrderInformationDetail>
             {
                 new()
                 {
@@ -124,7 +124,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
                 new() { NoteReferenceCode = "OTH", Description = "No Touch" },
                 new() { NoteReferenceCode = "PKG", Description = "Dimensions H(in)40 W(in)42 L(ft)04 L(in)04" }
             },
-            Details = new List<OrderInformationDetail2>
+            Details = new List<OrderInformationDetail>
             {
                 new()
                 {
@@ -246,7 +246,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
 
         expected.Stops[0].Entity.Contacts.Add(new G61_Contact() { CommunicationNumber = "NA", CommunicationNumberQualifier = "TE", ContactFunctionCode = "SH", ContactInquiryReference = null, Name = "NA" });
 
-        expected.Stops[0].Details.Add(new OrderInformationDetail2());
+        expected.Stops[0].Details.Add(new OrderInformationDetail());
         expected.Stops[0].Details[0].Detail = new OID_OrderInformationDetail
         {
             PackagingFormCode = "PL",
@@ -255,7 +255,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
             WeightUnitCode = "L",
             Quantity = 0
         };
-        expected.Stops[0].Details.Add(new OrderInformationDetail2());
+        expected.Stops[0].Details.Add(new OrderInformationDetail());
         expected.Stops[0].Details[0].Detail = new OID_OrderInformationDetail
         {
             PackagingFormCode = "PL",
@@ -290,7 +290,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
         };
 
 
-        expected.Stops[1].Details.Add(new OrderInformationDetail2());
+        expected.Stops[1].Details.Add(new OrderInformationDetail());
         expected.Stops[1].Details[0].Detail = new OID_OrderInformationDetail
         {
             PackagingFormCode = "PL",
@@ -319,7 +319,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
             GeographicLocation = new N4_GeographicLocation() { CityName = "Orwell", StateOrProvinceCode = "OH", PostalCode = "44076", CountryCode = "US" }
         };
 
-        expected.Stops[2].Details.Add(new OrderInformationDetail2());
+        expected.Stops[2].Details.Add(new OrderInformationDetail());
         expected.Stops[2].Details[0].Detail = new OID_OrderInformationDetail
         {
             PackagingFormCode = "PL",

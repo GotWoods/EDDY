@@ -41,7 +41,7 @@ namespace EdiParser.x12.DomainModels._204
 
 
         [SectionPosition(11)] /*OID, G62, LAD*/
-        public List<OrderInformationDetail2> Details { get; set; } = new();
+        public List<OrderInformationDetail> Details { get; set; } = new();
 
         
         [SectionPosition(12)]

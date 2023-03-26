@@ -93,7 +93,9 @@ public class Edi204MotorCarrierLoadTenderTests
                     // edi204.LoadFrom(section);
                     var mapper = new DomainMapper(section.Segments);
                     var edi204 = mapper.Map<Edi204_MotorCarrierLoadTender>();
+                    
                     documentSections.Add(edi204.ToDocumentSection(section.TransactionSetControlNumber));
+                    
                 }
 
 

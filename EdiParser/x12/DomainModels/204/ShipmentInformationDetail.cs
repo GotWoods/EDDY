@@ -13,7 +13,7 @@ public class ShipmentInformationDetail
     public AT8_ShipmentWeightPackagingAndQuantityData ShipmentWeightPackagingQuantity { get; set; }
 
     [SectionPosition(3)]
-    public List<AT5_BillOfLadingHandlingRequirements> BillOfLadingHandlingRequirements { get; set; }
+    public List<AT5_BillOfLadingHandlingRequirements> BillOfLadingHandlingRequirements { get; set; } = new();
 
     [SectionPosition(4)]
     public List<L11_BusinessInstructionsAndReferenceNumber> ReferenceNumbers { get; set; } = new();
