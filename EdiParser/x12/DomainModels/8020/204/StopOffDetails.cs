@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using EdiParser.Attributes;
-using EdiParser.x12.DomainModels._210;
 using EdiParser.x12.Models;
 
 namespace EdiParser.x12.DomainModels._204

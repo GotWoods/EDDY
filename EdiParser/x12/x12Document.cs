@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Text;
+using System.Text.RegularExpressions;
 using EdiParser.x12.Mapping;
 using EdiParser.x12.Models;
+using Microsoft.Extensions.Logging;
 
 namespace EdiParser.x12;
 
@@ -45,8 +47,24 @@ public class x12Document
         sb.Append(Map.SegmentToString(isaEnd, options));
         return sb.ToString();
     }
+
+
+
     public static x12Document Parse(string data)
     {
+        var allowedChars = "A-Za-z0-9!\"&'()*~+,\\-./:;?=\" ";
+        var asciiChars = "\x07\x09\x0A\x0B\x0C\x0D\x1C\x1D\x1E\x1F\x01\x02\x03\x04\x05\x06\x11\x12\x13\x14\x15\x16\x17";
+        var pattern = $"^[{allowedChars}{asciiChars}]*$"; // + asciiChars1 + asciiChars2 + "]*$";
+        var regex = new Regex(pattern);
+        var match = regex.Match(data);
+
+        
+
+        // if (!match.Success)
+        //     throw new InvalidFileFormatException("Non ASCII characters detected in file at position " + (match.Index + match.Length));
+        //
+
+
         data = data.Replace("\r\n", "\n"); //normalize newlines
         //var lines = data.Split('\n');
 
@@ -54,6 +72,9 @@ public class x12Document
         options.Separator = "*"; //x12 standard
 
         var result = new x12Document();
+
+        if (data.Length < 106)
+            throw new InvalidFileFormatException($"Expected file to be at least 106 characters long but was {data.Length} characters");
 
         var isa = data.Substring(0, 106); //fixed length string
 
