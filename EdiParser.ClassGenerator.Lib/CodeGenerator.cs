@@ -298,7 +298,7 @@ public class CodeGenerator
         }
         sbTest.AppendLine("\t};");
         sbTest.AppendLine("");
-        sbTest.AppendLine($"\tvar actual = Map.MapObject<{className}>(x12Line, MapOptionsForTesting.x12Default);");
+        sbTest.AppendLine($"\tvar actual = Map.MapObject<{className}>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);");
         sbTest.AppendLine("\tAssert.Equivalent(expected, actual);");
         sbTest.AppendLine("\t}");
         

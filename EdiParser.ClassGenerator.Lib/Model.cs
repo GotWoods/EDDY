@@ -36,7 +36,7 @@ public class Model
                 }
                 else
                 {
-                    for (int i = 0; i < Max; i++)
+                    for (int i = 0; i < Min; i++)
                     {
                         result += RandomLetter();
                     }

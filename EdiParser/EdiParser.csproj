@@ -9,4 +9,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="x12\DomainModels\4010\830\" />
+  </ItemGroup>
+
 </Project>
