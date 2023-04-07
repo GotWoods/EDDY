@@ -32,7 +32,7 @@ public class Detail
 
 
     [SectionPosition(8)]
-    public List<Parties> Parties { get; set; } = new();
+    public List<Party> Parties { get; set; } = new();
 
 
     [SectionPosition(8)]

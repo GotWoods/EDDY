@@ -4,7 +4,7 @@ using EdiParser.x12.Models;
 
 namespace EdiParser.x12.DomainModels._8020._214;
 
-public class Parties
+public class Party
 {
     [SectionPosition(1)]
     public N1_PartyIdentification PartyIdentification { get; set; }
