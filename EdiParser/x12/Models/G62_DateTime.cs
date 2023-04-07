@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Text;
 using EdiParser.Attributes;
 using EdiParser.Validation;
-using EdiParser.x12.Models.Internals;
+using EdiParser.x12.Internals;
 
 namespace EdiParser.x12.Models
 {

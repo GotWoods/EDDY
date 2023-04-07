@@ -1,6 +1,6 @@
 ﻿using EdiParser.x12.DomainModels;
+using EdiParser.x12.Internals;
 using EdiParser.x12.Models;
-using EdiParser.x12.Models.Internals;
 
 namespace EdiParser.Tests.x12.Beta;
 

@@ -5,7 +5,6 @@ using System.Reflection;
 using EdiParser.Attributes;
 using EdiParser.EdiFact.Models.Elements;
 using EdiParser.x12.Mapping;
-using EdiParser.x12.Models.Internals;
 
 namespace EdiFact.Mapping;
 

@@ -1,5 +1,5 @@
 ﻿using EdiParser.Validation;
-using EdiParser.x12.Models.Internals;
+using EdiParser.x12.Internals;
 using static System.String;
 
 namespace EdiParser.Tests.x12;

@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using EdiParser.Validation;
+﻿using EdiParser.Validation;
 
-namespace EdiParser.x12.Models.Internals;
+namespace EdiParser.x12.Internals;
 
 public abstract class EdiX12Segment
 {

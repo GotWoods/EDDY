@@ -33,7 +33,7 @@ public class Q7Tests
     [Theory]
     [InlineData("", 0, true)]
     [InlineData("", 1, true)]
-    [InlineData("v1", 0, false)]
+    [InlineData("v11", 0, false)]
     public void Validation_ARequiresBPackagingFormCode(string packagingFormCode, int ladingQuantity, bool isValidExpected)
     {
         var subject = new Q7_LadingExceptionStatus();

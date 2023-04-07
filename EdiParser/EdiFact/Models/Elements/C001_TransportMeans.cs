@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using EdiParser.Attributes;
 using EdiParser.Validation;
-using EdiParser.x12.Models.Internals;
 
 namespace EdiParser.EdiFact.Models.Elements
 {

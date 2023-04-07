@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using EdiParser.Attributes;
-using EdiParser.x12.Models.Internals;
+using EdiParser.x12.Internals;
 
 namespace EdiParser.x12.Mapping;
 

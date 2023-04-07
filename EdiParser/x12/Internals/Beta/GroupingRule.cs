@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EdiParser.x12.Models.Internals;
+namespace EdiParser.x12.Internals.Beta;
 
 public class GroupingRule
 {
@@ -50,7 +50,7 @@ public class GroupingRule
     public void AddSubRule(GroupingRule rule)
     {
         rule.Parent = this;
-        this._subRules.Add(rule);
+        _subRules.Add(rule);
     }
 
     public GroupingRule AddSubRule(string name, params string[] allowedTypes)

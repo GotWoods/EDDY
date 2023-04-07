@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.Extensions.Logging;
 
-namespace EdiParser.x12.Models.Internals;
+namespace EdiParser.x12.Internals.Beta;
 
 public class GroupedSectionReader
 {

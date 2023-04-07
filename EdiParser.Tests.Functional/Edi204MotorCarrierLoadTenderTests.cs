@@ -1,9 +1,9 @@
 ﻿using EdiParser.x12;
 using EdiParser.x12.DomainModels;
 using EdiParser.x12.DomainModels._204;
+using EdiParser.x12.Internals;
 using EdiParser.x12.Mapping;
 using EdiParser.x12.Models;
-using EdiParser.x12.Models.Internals;
 using Xunit.Abstractions;
 
 namespace EdiParser.Tests.x12.DomainTests;

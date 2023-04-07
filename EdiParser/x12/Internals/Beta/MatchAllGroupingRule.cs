@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EdiParser.x12.Models.Internals;
+namespace EdiParser.x12.Internals.Beta;
 
 public class MatchAllGroupingRule : GroupingRule
 {

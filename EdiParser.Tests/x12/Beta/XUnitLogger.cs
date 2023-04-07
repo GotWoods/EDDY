@@ -97,7 +97,14 @@ internal class XUnitLogger : ILogger
             state.Append(scope);
         }, sb);
 
-        _testOutputHelper.WriteLine(sb.ToString());
+        try
+        {
+            _testOutputHelper.WriteLine(sb.ToString());
+        }
+        catch (InvalidOperationException ex)
+        {
+            //this can happen when running multiple tests for some reason
+        }
     }
 
     private static string GetLogLevelString(LogLevel logLevel)

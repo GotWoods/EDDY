@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace EdiParser.x12.Models.Internals;
+namespace EdiParser.x12.Internals;
 
 internal class DomainTypeMap
 {

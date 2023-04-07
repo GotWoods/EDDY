@@ -1,9 +1,9 @@
-﻿using EdiParser.x12.Models.Internals;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using EdiParser.Attributes;
 using EdiParser.Validation;
+using EdiParser.x12.Internals;
 
 namespace EdiParser.x12.Models
 {

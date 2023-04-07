@@ -3,8 +3,8 @@ using System.Globalization;
 using System.Text;
 using EdiParser.Attributes;
 using EdiParser.Validation;
+using EdiParser.x12.Internals;
 using EdiParser.x12.Mapping;
-using EdiParser.x12.Models.Internals;
 
 namespace EdiParser.x12.Models;
 

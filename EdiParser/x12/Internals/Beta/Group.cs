@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace EdiParser.x12.Models.Internals;
+namespace EdiParser.x12.Internals.Beta;
 
 public class Group : IGroupable
 {
@@ -17,7 +17,7 @@ public class Group : IGroupable
     }
 
     private List<Group> _children = new();
-    
+
     [XmlIgnore]
     public List<EdiX12Segment> Segments { get; set; } = new();
     public IReadOnlyList<Group> Children => _children.AsReadOnly();
@@ -50,7 +50,7 @@ public class Group : IGroupable
             if (Rule == null)
                 return "";
             var name = Rule.Name;
-            
+
             var curRule = Rule;
             while (curRule.Parent != null)
             {

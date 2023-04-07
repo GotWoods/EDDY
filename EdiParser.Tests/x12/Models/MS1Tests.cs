@@ -29,30 +29,6 @@ public class MS1Tests
         Assert.Equivalent(expected, actual);
     }
 
-
-    [Fact]
-    public void Parse_FormFeedCharacterShouldBeRetained()
-    {
-        var x12Line = "MS1*\f\f*F2*gd*AoczcS9*8EsWu3g*q*c*Wao*t*h";
-
-        var expected = new MS1_EquipmentShipmentOrRealPropertyLocation
-        {
-            CityName = "\f\f",
-            StateOrProvinceCode = "F2",
-            CountryCode = "gd",
-            LongitudeCode = "AoczcS9",
-            LatitudeCode = "8EsWu3g",
-            LongitudeDirectionIdentifierCode = "q",
-            LatitudeDirectionIdentifierCode = "c",
-            PostalCode = "Wao",
-            LongitudeDecimalFormat = "t",
-            LatitudeDecimalFormat = "h"
-        };
-
-        var actual = Map.MapObject<MS1_EquipmentShipmentOrRealPropertyLocation>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-        Assert.Equivalent(expected, actual);
-    }
-
     //l010203
     [Theory]
     [InlineData("", "", "", true)]

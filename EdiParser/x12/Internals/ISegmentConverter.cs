@@ -1,4 +1,4 @@
-﻿namespace EdiParser.x12.Models.Internals;
+﻿namespace EdiParser.x12.Internals;
 
 public interface ISegmentConverter<T>
 {

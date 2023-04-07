@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using EdiParser.x12.Internals;
 using EdiParser.x12.Models;
-using EdiParser.x12.Models.Internals;
 
 namespace EdiParser.x12;
 

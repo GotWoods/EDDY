@@ -1,5 +1,5 @@
 ﻿using EdiParser.x12;
-using EdiParser.x12.Models.Internals;
+using EdiParser.x12.Internals.Beta;
 
 namespace EdiParser.Tests.x12.Beta;
 

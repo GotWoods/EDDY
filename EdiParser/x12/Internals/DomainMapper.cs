@@ -3,12 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using EdiParser.Attributes;
-using EdiParser.x12.Mapping;
 using Microsoft.Extensions.Logging;
 
-namespace EdiParser.x12.Models.Internals;
+namespace EdiParser.x12.Internals;
 
 public class DomainMapper
 {
@@ -197,6 +195,8 @@ public class DomainMapper
             if (map.IsComplexType && map.IsListType)
             {
                 var list = map.Property.GetValue(input) as IList; //e.g. list of entity
+                if (list == null)
+                    throw new NullReferenceException(map.Property.Name + " was expected to be an IList type that is initialized but it was null");
                 //need to get all properties of this
                 foreach (var item in list)
                 {
@@ -218,6 +218,8 @@ public class DomainMapper
             else if (map.IsComplexType)
             {
                 var complexType = map.Property.GetValue(input); //e.g. single entity
+                if (complexType == null)
+                    continue;
                 result.AddRange(MapToSegments(complexType));
             }
             else

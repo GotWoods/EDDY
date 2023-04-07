@@ -1,8 +1,9 @@
 ﻿using System.Text.Json;
 using System.Xml.Serialization;
 using EdiParser.x12;
+using EdiParser.x12.Internals;
+using EdiParser.x12.Internals.Beta;
 using EdiParser.x12.Models;
-using EdiParser.x12.Models.Internals;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 

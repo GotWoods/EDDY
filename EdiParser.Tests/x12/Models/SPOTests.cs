@@ -1,5 +1,6 @@
 ﻿using EdiParser.Validation;
 using EdiParser.x12.Mapping;
+using EdiParser.x12.Models;
 
 namespace EdiParser.Tests.x12.Models;
 
@@ -22,7 +23,7 @@ public class SPOTests
             ReferenceIdentification2 = "rNCMLYcN0g2U06tZztCTYThxTyqe9c",
         };
 
-        var actual = Map.MapObject<SPO_ShipmentPurchaseOrderDetail>(x12Line, MapOptionsForTesting.x12Default);
+        var actual = Map.MapObject<SPO_ShipmentPurchaseOrderDetail>(x12Line, MapOptionsForTesting.x12DefaultEndsWithTilde);
         Assert.Equivalent(expected, actual);
     }
     [Theory]
@@ -35,10 +36,10 @@ public class SPOTests
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
     }
     [Theory]
-    [InlineData("", "", true)]
-    [InlineData("v1", "v2", true)]
-    [InlineData("", "v2", false)]
-    [InlineData("v1", "", false)]
+    [InlineData("", 0, true)]
+    [InlineData("v1", 1, true)]
+    [InlineData("", 1, false)]
+    [InlineData("v1", 0, false)]
     public void Validation_AllAreRequiredUnitOrBasisForMeasurementCode(string unitOrBasisForMeasurementCode, decimal quantity, bool isValidExpected)
     {
         var subject = new SPO_ShipmentPurchaseOrderDetail();
@@ -49,11 +50,12 @@ public class SPOTests
 
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
     }
+
     [Theory]
-    [InlineData("", "", true)]
-    [InlineData("v1", "v2", true)]
-    [InlineData("", "v2", false)]
-    [InlineData("v1", "", false)]
+    [InlineData("", 0, true)]
+    [InlineData("1", 1, true)]
+    [InlineData("", 1, false)]
+    [InlineData("1", 0, false)]
     public void Validation_AllAreRequiredWeightUnitCode(string weightUnitCode, decimal weight, bool isValidExpected)
     {
         var subject = new SPO_ShipmentPurchaseOrderDetail();
