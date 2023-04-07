@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using EdiParser.Attributes;
 using EdiParser.x12.DomainModels._8020._210;
-using EdiParser.x12.Internals;
-using EdiParser.x12.Internals.Beta;
 using EdiParser.x12.Models;
-using static System.String;
 
-namespace EdiParser.x12.DomainModels;
+namespace EdiParser.x12.DomainModels._8020;
 
 public class Edi210_MotorCarrierFreightDetailsAndInvoice
 {
@@ -28,4 +23,10 @@ public class Edi210_MotorCarrierFreightDetailsAndInvoice
 
     //Detail
     [SectionPosition(13)] public List<StopOffDetails> Stops { get; set; } = new();
+    [SectionPosition(13)] public List<EdiParser.x12.DomainModels._8020._210.TransactionSet> Transactions { get; set; } = new();
+
+    //Summary
+    [SectionPosition(14)] public L3_TotalWeightAndCharges TotalWeightAndCharges { get; set; }
+
+    
 }
