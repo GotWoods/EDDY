@@ -127,7 +127,7 @@ public partial class Form1 : Form
             File.WriteAllText(testPath + "\\" + type + "Tests.cs", results.Test);
 
 
-            if (counter >= 5)
+            if (counter >= 20)
                 break;
         }
 

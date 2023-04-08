@@ -313,7 +313,7 @@ public class CodeGenerator
         sbTest.AppendLine($"\t\tvar actual = Map.MapObject<{className}>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);");
         sbTest.AppendLine("\t\tAssert.Equivalent(expected, actual);");
         sbTest.AppendLine("\t}");
-        
+        sbTest.AppendLine();
 
         foreach (var model in items) 
         {
@@ -358,7 +358,7 @@ public class CodeGenerator
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, false)]");
                 sbTest.Append($"\tpublic void Validation_AllAreRequired{model.Name}(");
                 sbTest.AppendLine(GenerateTestBody(model.IfOneIsFilledAllAreRequiredValidations, items, className));
-                sbTest.AppendLine($"\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.IfOneIsFilledAllAreRequired)});");
+                sbTest.AppendLine($"\t\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.IfOneIsFilledAllAreRequired)});");
                 sbTest.AppendLine("\t}");
                 sbTest.AppendLine();
             }
@@ -372,7 +372,7 @@ public class CodeGenerator
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, false)]");
                 sbTest.Append($"\tpublic void Validation_ARequiresB{model.Name}(");
                 sbTest.AppendLine(GenerateTestBody(model.ARequiresBValidation, items, className));
-                sbTest.AppendLine($"\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.ARequiresB)});");
+                sbTest.AppendLine($"\t\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.ARequiresB)});");
                 sbTest.AppendLine("\t}");
                 sbTest.AppendLine();
             }
@@ -387,7 +387,7 @@ public class CodeGenerator
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]");
                 sbTest.Append($"\tpublic void Validation_AtLeastOne{model.Name}(");
                 sbTest.AppendLine(GenerateTestBody(model.AtLeastOneValidations, items, className));
-                sbTest.AppendLine($"\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.AtLeastOneIsRequired)});");
+                sbTest.AppendLine($"\t\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.AtLeastOneIsRequired)});");
                 sbTest.AppendLine("\t}");
                 sbTest.AppendLine();
             }
@@ -402,7 +402,7 @@ public class CodeGenerator
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]");
                 sbTest.Append($"\tpublic void Validation_OnlyOneOf{model.Name}(");
                 sbTest.AppendLine(GenerateTestBody(model.OnlyOneOfValidations, items, className));
-                sbTest.AppendLine($"\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.OnlyOneOf)});");
+                sbTest.AppendLine($"\t\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.OnlyOneOf)});");
                 sbTest.AppendLine("\t}");
                 sbTest.AppendLine();
             }
@@ -417,7 +417,7 @@ public class CodeGenerator
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]");
                 sbTest.Append($"\tpublic void Validation_NEW{model.Name}(");
                 sbTest.AppendLine(GenerateTestBody(model.IfOneIsFilledThenAtLeastOne, items, className));
-                sbTest.AppendLine($"\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.IfOneIsFilledThenAtLeastOne)});");
+                sbTest.AppendLine($"\t\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.IfOneIsFilledThenAtLeastOne)});");
                 sbTest.AppendLine("\t}");
                 sbTest.AppendLine();
             }
