@@ -202,6 +202,12 @@ public class CodeGenerator
         var sb = new StringBuilder();
         if (parseType == ParseType.x12)
         {
+            sb.AppendLine("using EdiParser.Attributes;");
+            sb.AppendLine("using EdiParser.Validation;");
+            sb.AppendLine("using EdiParser.x12.Internals;");
+            sb.AppendLine();
+            sb.AppendLine("namespace EdiParser.x12.Models;");
+            sb.AppendLine();
             sb.AppendLine($"[Segment(\"{segmentType}\")]");
             sb.AppendLine($"public class {className} : EdiX12Segment ");
         }
@@ -275,6 +281,12 @@ public class CodeGenerator
       
 
         var sbTest = new StringBuilder();
+        sbTest.AppendLine("using EdiParser.Validation;");
+        sbTest.AppendLine("using EdiParser.x12.Mapping;");
+        sbTest.AppendLine("using EdiParser.x12.Models;");
+        sbTest.AppendLine();
+        sbTest.AppendLine("namespace EdiParser.Tests.x12.Models;");
+        sbTest.AppendLine();
         sbTest.AppendLine($"public class {segmentType}Tests");
         sbTest.AppendLine("{");
         sbTest.AppendLine("\t[Fact]");
