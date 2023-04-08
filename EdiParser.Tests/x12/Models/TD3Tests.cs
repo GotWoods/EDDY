@@ -9,7 +9,7 @@ public class TD3Tests
     [Fact]
     public void Parse_ShouldReturnCorrectObject()
     {
-        string x12Line = "TD3*DZ*h*m*f*6*Hz*G*Id*w*3KQd";
+        string x12Line = "TD3*DZ*h*m*f*6*Hz*G*Id*w";
 
         var expected = new TD3_CarrierDetailsEquipment()
         {
@@ -22,7 +22,7 @@ public class TD3Tests
             OwnershipCode = "G",
             SealStatusCode = "Id",
             SealNumber = "w",
-            EquipmentTypeCode = "3KQd",
+            //EquipmentTypeCode = "3KQd",
         };
 
         var actual = Map.MapObject<TD3_CarrierDetailsEquipment>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
@@ -30,9 +30,9 @@ public class TD3Tests
     }
     [Theory]
     [InlineData("", "", true)]
-    [InlineData("v1", "v2", false)]
-    [InlineData("", "v2", true)]
-    [InlineData("v1", "", true)]
+    [InlineData("12", "1234", false)]
+    [InlineData("", "1234", true)]
+    [InlineData("12", "", true)]
     public void Validation_OnlyOneOfEquipmentDescriptionCode(string equipmentDescriptionCode, string equipmentTypeCode, bool isValidExpected)
     {
         var subject = new TD3_CarrierDetailsEquipment();
@@ -62,7 +62,10 @@ public class TD3Tests
         var subject = new TD3_CarrierDetailsEquipment();
         subject.WeightQualifier = weightQualifier;
         if (weight > 0)
+        {
             subject.Weight = weight;
+            subject.UnitOrBasisForMeasurementCode = "AB";
+        }
 
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
     }

@@ -62,7 +62,10 @@ public class TD1Tests
 		var subject = new TD1_CarrierDetailsQuantityAndWeight();
 		subject.WeightQualifier = weightQualifier;
 		if (weight > 0)
+		{
 			subject.Weight = weight;
+			subject.UnitOrBasisForMeasurementCode = "AB";
+		}
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
@@ -75,7 +78,9 @@ public class TD1Tests
 	{
 		var subject = new TD1_CarrierDetailsQuantityAndWeight();
 		if (weight > 0)
+		{
 			subject.Weight = weight;
+		}
 		subject.UnitOrBasisForMeasurementCode = unitOrBasisForMeasurementCode;
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);

@@ -41,6 +41,8 @@ public class TAXTests
 		var subject = new TAX_TaxReference();
 		subject.TaxIdentificationNumber = taxIdentificationNumber;
 		subject.LocationIdentifier = locationIdentifier;
+		if (locationIdentifier != "")
+			subject.LocationQualifier = "AB";
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}
@@ -54,6 +56,7 @@ public class TAXTests
 		var subject = new TAX_TaxReference();
 		subject.LocationQualifier = locationQualifier;
 		subject.LocationIdentifier = locationIdentifier;
+		subject.TaxIdentificationNumber = "123";
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
@@ -67,7 +70,7 @@ public class TAXTests
 		var subject = new TAX_TaxReference();
 		subject.LocationQualifier2 = locationQualifier2;
 		subject.LocationIdentifier2 = locationIdentifier2;
-
+        subject.TaxIdentificationNumber = "123";
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 	[Theory]
@@ -80,7 +83,7 @@ public class TAXTests
 		var subject = new TAX_TaxReference();
 		subject.LocationQualifier3 = locationQualifier3;
 		subject.LocationIdentifier3 = locationIdentifier3;
-
+        subject.TaxIdentificationNumber = "123";
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 	[Theory]
@@ -93,7 +96,7 @@ public class TAXTests
 		var subject = new TAX_TaxReference();
 		subject.LocationQualifier4 = locationQualifier4;
 		subject.LocationIdentifier4 = locationIdentifier4;
-
+        subject.TaxIdentificationNumber = "123";
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 	[Theory]
@@ -106,7 +109,7 @@ public class TAXTests
 		var subject = new TAX_TaxReference();
 		subject.LocationQualifier5 = locationQualifier5;
 		subject.LocationIdentifier5 = locationIdentifier5;
-
+        subject.TaxIdentificationNumber = "123";
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 }

@@ -91,6 +91,8 @@ public class TD5Tests
         var subject = new TD5_CarrierDetailsRoutingSequenceTransitTime();
         subject.ServiceLevelCode3 = serviceLevelCode3;
         subject.ServiceLevelCode2 = serviceLevelCode2;
+        if (subject.ServiceLevelCode2 != "")
+            subject.ServiceLevelCode = "AB";
 
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
     }
