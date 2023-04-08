@@ -66,14 +66,15 @@ public class PIDTests
     [Theory]
     [InlineData("", "", true)]
     [InlineData("", "v2", true)]
-    [InlineData("v1", "", false)]
+    [InlineData("1", "", false)]
     public void Validation_ARequiresBYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, string productDescriptionCode, bool isValidExpected)
     {
         var subject = new PID_ProductItemDescription();
         subject.ItemDescriptionTypeCode = "c";
         subject.YesNoConditionOrResponseCode = yesNoConditionOrResponseCode;
         subject.ProductDescriptionCode = productDescriptionCode;
-
+        if (productDescriptionCode != "")
+            subject.AgencyQualifierCode = "AC";
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
     }
     [Theory]

@@ -42,6 +42,7 @@ public class BFRTests
         subject.Date = "YNiOM2hT";
         subject.Date3 = "Wfu9FFDY";
         subject.TransactionSetPurposeCode = transactionSetPurposeCode;
+        subject.ReleaseNumber = "124";
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
     }
     [Theory]
@@ -73,6 +74,7 @@ public class BFRTests
         subject.Date = "YNiOM2hT";
         subject.Date3 = "Wfu9FFDY";
         subject.ScheduleTypeQualifier = scheduleTypeQualifier;
+        subject.ReleaseNumber = "124";
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
     }
     [Theory]
@@ -86,6 +88,7 @@ public class BFRTests
         subject.Date = "YNiOM2hT";
         subject.Date3 = "Wfu9FFDY";
         subject.ScheduleQuantityQualifier = scheduleQuantityQualifier;
+        subject.ReleaseNumber = "124";
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
     }
     [Theory]
@@ -99,6 +102,7 @@ public class BFRTests
         subject.ScheduleQuantityQualifier = "o";
         subject.Date3 = "Wfu9FFDY";
         subject.Date = date;
+        subject.ReleaseNumber = "124";
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
     }
     [Theory]
@@ -112,6 +116,7 @@ public class BFRTests
         subject.ScheduleQuantityQualifier = "o";
         subject.Date = "YNiOM2hT";
         subject.Date3 = date3;
+        subject.ReleaseNumber = "124";
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
     }
 }
