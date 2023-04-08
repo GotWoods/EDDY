@@ -78,9 +78,10 @@ public partial class Form1 : Form
         txtTest.Text = results.Test;
     }
 
+    private string projectBasePath = @"C:\Source\EdiParser\";
     private List<string> GetExistingFiles()
     {
-        var path = @"C:\source\EDDY\EdiParser\x12\Models";
+        var path = projectBasePath +  @"EdiParser\x12\Models";
         var results = new List<string>();
         foreach (var file in Directory.GetFiles(path))
         {
@@ -104,8 +105,8 @@ public partial class Form1 : Form
         var existingFiles = GetExistingFiles();
 
         var counter = 0;
-        var modelPath = @"C:\source\EDDY\EdiParser\x12\Models";
-        var testPath = @"C:\source\EDDY\EdiParser.Tests\x12\Models";
+        var modelPath = projectBasePath + @"EdiParser\x12\Models";
+        var testPath = projectBasePath + @"EdiParser.Tests\x12\Models";
         foreach (var item in items)
         {
             var link = item.SelectSingleNode("a");
@@ -126,7 +127,7 @@ public partial class Form1 : Form
             File.WriteAllText(testPath + "\\" + type + "Tests.cs", results.Test);
 
 
-            if (counter > 10)
+            if (counter >= 5)
                 break;
         }
 

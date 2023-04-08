@@ -350,42 +350,42 @@ public class CodeGenerator
             if (model.IfOneIsFilledAllAreRequiredValidations.Any())
             {
                 var orderedFields = OrderFieldsForTestSignature(model.IfOneIsFilledAllAreRequiredValidations, items);
-                sbTest.AppendLine("[Theory]");
-                sbTest.AppendLine($"[InlineData({GenerateInlineDataValue(orderedFields[0], true)},{GenerateInlineDataValue(orderedFields[1], true)}, true)]"); 
-                sbTest.AppendLine($"[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], false)}, true)]");
-                sbTest.AppendLine($"[InlineData({GenerateInlineDataValue(orderedFields[0], true)}, {GenerateInlineDataValue(orderedFields[1], false)}, false)]");
-                sbTest.AppendLine($"[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, false)]");
-                sbTest.Append($"public void Validation_AllAreRequired{model.Name}(");
+                sbTest.AppendLine("\t[Theory]");
+                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)},{GenerateInlineDataValue(orderedFields[1], true)}, true)]"); 
+                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], false)}, true)]");
+                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)}, {GenerateInlineDataValue(orderedFields[1], false)}, false)]");
+                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, false)]");
+                sbTest.Append($"\tpublic void Validation_AllAreRequired{model.Name}(");
                 sbTest.AppendLine(GenerateTestBody(model.IfOneIsFilledAllAreRequiredValidations, items, className));
-                sbTest.AppendLine($"TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.IfOneIsFilledAllAreRequired)});");
-                sbTest.AppendLine("}");
+                sbTest.AppendLine($"\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.IfOneIsFilledAllAreRequired)});");
+                sbTest.AppendLine("\t}");
             }
 
             if (model.ARequiresBValidation.Any())
             {
                 var orderedFields = OrderFieldsForTestSignature(model.ARequiresBValidation, items);
-                sbTest.AppendLine("[Theory]");
-                sbTest.AppendLine($"[InlineData({GenerateInlineDataValue(orderedFields[0], true)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]");
-                sbTest.AppendLine($"[InlineData({GenerateInlineDataValue(orderedFields[0], true)}, {GenerateInlineDataValue(orderedFields[1], false)}, true)]");
-                sbTest.AppendLine($"[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, false)]");
-                sbTest.Append($"public void Validation_ARequiresB{model.Name}(");
+                sbTest.AppendLine("\t[Theory]");
+                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]");
+                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)}, {GenerateInlineDataValue(orderedFields[1], false)}, true)]");
+                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, false)]");
+                sbTest.Append($"\tpublic void Validation_ARequiresB{model.Name}(");
                 sbTest.AppendLine(GenerateTestBody(model.ARequiresBValidation, items, className));
-                sbTest.AppendLine($"TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.ARequiresB)});");
-                sbTest.AppendLine("}");
+                sbTest.AppendLine($"\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.ARequiresB)});");
+                sbTest.AppendLine("\t}");
             }
 
             if (model.AtLeastOneValidations.Any())
             {
                 var orderedFields = OrderFieldsForTestSignature(model.AtLeastOneValidations, items);
-                sbTest.AppendLine("[Theory]");
-                sbTest.AppendLine($"[InlineData({GenerateInlineDataValue(orderedFields[0], true)},{GenerateInlineDataValue(orderedFields[1], true)}, false)]");
-                sbTest.AppendLine($"[InlineData({GenerateInlineDataValue(orderedFields[0], false)},{GenerateInlineDataValue(orderedFields[1], false)}, true)]");
-                sbTest.AppendLine($"[InlineData({GenerateInlineDataValue(orderedFields[0], true)}, {GenerateInlineDataValue(orderedFields[1], false)}, true)]");
-                sbTest.AppendLine($"[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]");
-                sbTest.Append($"public void Validation_AtLeastOne{model.Name}(");
+                sbTest.AppendLine("\t[Theory]");
+                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)},{GenerateInlineDataValue(orderedFields[1], true)}, false)]");
+                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)},{GenerateInlineDataValue(orderedFields[1], false)}, true)]");
+                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)}, {GenerateInlineDataValue(orderedFields[1], false)}, true)]");
+                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]");
+                sbTest.Append($"\tpublic void Validation_AtLeastOne{model.Name}(");
                 sbTest.AppendLine(GenerateTestBody(model.AtLeastOneValidations, items, className));
-                sbTest.AppendLine($"TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.AtLeastOneIsRequired)});");
-                sbTest.AppendLine("}");
+                sbTest.AppendLine($"\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.AtLeastOneIsRequired)});");
+                sbTest.AppendLine("\t}");
 
                 // [Theory]
                 // [InlineData("", 0, true)]
@@ -398,29 +398,29 @@ public class CodeGenerator
             if (model.OnlyOneOfValidations.Any())
             {
                 var orderedFields = OrderFieldsForTestSignature(model.OnlyOneOfValidations, items);
-                sbTest.AppendLine("[Theory]");
-                sbTest.AppendLine($"[InlineData({GenerateInlineDataValue(orderedFields[0], true)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]");
-                sbTest.AppendLine($"[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], false)}, false)]");
-                sbTest.AppendLine($"[InlineData({GenerateInlineDataValue(orderedFields[0], true)}, {GenerateInlineDataValue(orderedFields[1], false)}, true)]");
-                sbTest.AppendLine($"[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]");
-                sbTest.Append($"public void Validation_OnlyOneOf{model.Name}(");
+                sbTest.AppendLine("\t[Theory]");
+                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]");
+                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], false)}, false)]");
+                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)}, {GenerateInlineDataValue(orderedFields[1], false)}, true)]");
+                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]");
+                sbTest.Append($"\tpublic void Validation_OnlyOneOf{model.Name}(");
                 sbTest.AppendLine(GenerateTestBody(model.OnlyOneOfValidations, items, className));
-                sbTest.AppendLine($"TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.OnlyOneOf)});");
-                sbTest.AppendLine("}");
+                sbTest.AppendLine($"\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.OnlyOneOf)});");
+                sbTest.AppendLine("\t}");
             }
             
             if (model.IfOneIsFilledThenAtLeastOne.Any())
             {
                 var orderedFields = OrderFieldsForTestSignature(model.IfOneIsFilledThenAtLeastOne, items);
-                sbTest.AppendLine("[Theory]");
-                sbTest.AppendLine($"[InlineData({GenerateInlineDataValue(orderedFields[0], true)},{GenerateInlineDataValue(orderedFields[1], true)}, true)]");
-                sbTest.AppendLine($"[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], false)}, false)]");
-                sbTest.AppendLine($"[InlineData({GenerateInlineDataValue(orderedFields[0], true)},{GenerateInlineDataValue(orderedFields[1], false)}, true)]");
-                sbTest.AppendLine($"[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]");
-                sbTest.Append($"public void Validation_NEW{model.Name}(");
+                sbTest.AppendLine("\t[Theory]");
+                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)},{GenerateInlineDataValue(orderedFields[1], true)}, true)]");
+                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], false)}, false)]");
+                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)},{GenerateInlineDataValue(orderedFields[1], false)}, true)]");
+                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]");
+                sbTest.Append($"\tpublic void Validation_NEW{model.Name}(");
                 sbTest.AppendLine(GenerateTestBody(model.IfOneIsFilledThenAtLeastOne, items, className));
-                sbTest.AppendLine($"TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.IfOneIsFilledThenAtLeastOne)});");
-                sbTest.AppendLine("}");
+                sbTest.AppendLine($"\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.IfOneIsFilledThenAtLeastOne)});");
+                sbTest.AppendLine("\t}");
             }
         }
         sbTest.AppendLine("}");
@@ -468,15 +468,15 @@ public class CodeGenerator
         }
         sbTest.AppendLine($"bool isValidExpected)");
         sbTest.AppendLine("{");
-        sbTest.AppendLine($"var subject = new {className}();");
+        sbTest.AppendLine($"\t\tvar subject = new {className}();");
         
         //may impact the test if the variable is used in a validation
         foreach (var requiredItem in items.Where(x => x.IsRequired))
         {
             if (requiredItem.IsDataTypeNumeric)
-                sbTest.AppendLine($"subject.{requiredItem.Name} = {requiredItem.TestValue};");
+                sbTest.AppendLine($"\t\tsubject.{requiredItem.Name} = {requiredItem.TestValue};");
             else
-                sbTest.AppendLine($"subject.{requiredItem.Name} = \"{requiredItem.TestValue}\";");
+                sbTest.AppendLine($"\t\tsubject.{requiredItem.Name} = \"{requiredItem.TestValue}\";");
         }
 
         foreach (var validationData in validations)
@@ -487,9 +487,9 @@ public class CodeGenerator
                 
                 if (otherField.IsDataTypeNumeric)
                 {
-                    sbTest.AppendLine($"if ({FirstCharToLowerCase(otherField.Name)} > 0)");
+                    sbTest.AppendLine($"\t\tif ({FirstCharToLowerCase(otherField.Name)} > 0)");
                 }
-                sbTest.AppendLine($"subject.{otherField.Name} = {FirstCharToLowerCase(otherField.Name)};");
+                sbTest.AppendLine($"\t\tsubject.{otherField.Name} = {FirstCharToLowerCase(otherField.Name)};");
             }
         }
 
