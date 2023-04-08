@@ -220,41 +220,41 @@ public class CodeGenerator
         foreach (var item in items) sb.AppendLine(item.ToString());
 
 
-        sb.AppendLine("public override ValidationResult Validate()");
-        sb.AppendLine("{");
-        sb.AppendLine($"var validator = new BasicValidator<{className}>(this);");
+        sb.AppendLine("\tpublic override ValidationResult Validate()");
+        sb.AppendLine("\t{");
+        sb.AppendLine($"\t\tvar validator = new BasicValidator<{className}>(this);");
 
         //required validations
         foreach (var model in items)
         {
             if (model.IsRequired)
             {
-                sb.AppendLine($"validator.Required(x=>x.{model.Name});");
+                sb.AppendLine($"\t\tvalidator.Required(x=>x.{model.Name});");
             }
 
             foreach (var x in model.AtLeastOneValidations)
             {
-                sb.AppendLine($"validator.AtLeastOneIsRequired(x=>x.{FindFieldByPosition(x.FirstFieldPosition, items).Name}, x=>x.{FindFieldByPosition(x.OtherFields[0], items).Name});");
+                sb.AppendLine($"\t\tvalidator.AtLeastOneIsRequired(x=>x.{FindFieldByPosition(x.FirstFieldPosition, items).Name}, x=>x.{FindFieldByPosition(x.OtherFields[0], items).Name});");
             }
 
             foreach (var x in model.IfOneIsFilledAllAreRequiredValidations)
             {
-                sb.AppendLine($"validator.IfOneIsFilled_AllAreRequired(x=>x.{FindFieldByPosition(x.FirstFieldPosition, items).Name}, x=>x.{FindFieldByPosition(x.OtherFields[0], items).Name});");
+                sb.AppendLine($"\t\tvalidator.IfOneIsFilled_AllAreRequired(x=>x.{FindFieldByPosition(x.FirstFieldPosition, items).Name}, x=>x.{FindFieldByPosition(x.OtherFields[0], items).Name});");
             }
 
             foreach (var x in model.ARequiresBValidation)
             {
-                sb.AppendLine($"validator.ARequiresB(x=>x.{FindFieldByPosition(x.FirstFieldPosition, items).Name}, x=>x.{FindFieldByPosition(x.OtherFields[0], items).Name});");
+                sb.AppendLine($"\t\tvalidator.ARequiresB(x=>x.{FindFieldByPosition(x.FirstFieldPosition, items).Name}, x=>x.{FindFieldByPosition(x.OtherFields[0], items).Name});");
             }
 
             foreach (var x in model.OnlyOneOfValidations)
             {
-                sb.AppendLine($"validator.OnlyOneOf(x=>x.{FindFieldByPosition(x.FirstFieldPosition, items).Name}, x=>x.{FindFieldByPosition(x.OtherFields[0], items).Name});");
+                sb.AppendLine($"\t\tvalidator.OnlyOneOf(x=>x.{FindFieldByPosition(x.FirstFieldPosition, items).Name}, x=>x.{FindFieldByPosition(x.OtherFields[0], items).Name});");
             }
 
             foreach (var x in model.IfOneIsFilledThenAtLeastOne)
             {
-                sb.Append($"validator.IfOneIsFilledThenAtLeastOne(x=>x.{FindFieldByPosition(x.FirstFieldPosition, items).Name}");
+                sb.Append($"\t\tvalidator.IfOneIsFilledThenAtLeastOne(x=>x.{FindFieldByPosition(x.FirstFieldPosition, items).Name}");
                 foreach (var otherField in x.OtherFields)
                 {
                     sb.Append($", x=>x.{FindFieldByPosition(otherField, items).Name}");
@@ -269,13 +269,13 @@ public class CodeGenerator
             if (model.Min == 0 && model.Max == 0) //it is a complex type and should not be validated
                 continue;
             else if (model.Min == model.Max)
-                sb.AppendLine($"validator.Length(x => x.{model.Name}, {model.Min});");
+                sb.AppendLine($"\t\tvalidator.Length(x => x.{model.Name}, {model.Min});");
             else
-                sb.AppendLine($"validator.Length(x => x.{model.Name}, {model.Min}, {model.Max});");
+                sb.AppendLine($"\t\tvalidator.Length(x => x.{model.Name}, {model.Min}, {model.Max});");
         }
 
-        sb.AppendLine("return validator.Results;");
-        sb.AppendLine("}");
+        sb.AppendLine("\t\treturn validator.Results;");
+        sb.AppendLine("\t}");
 
         sb.AppendLine("}");
       
@@ -320,8 +320,8 @@ public class CodeGenerator
             if (model.IsRequired)
             {
                 sbTest.AppendLine("[Theory]");
-                sbTest.AppendLine("[InlineData(\"\", false)]");
-                sbTest.AppendLine($"[InlineData(\"{model.TestValue}\", true)]");
+                sbTest.AppendLine($"[InlineData({GenerateInlineDataValue(model, true)}, false)]");
+                sbTest.AppendLine($"[InlineData({GenerateInlineDataValue(model, false)}, true)]");
                 sbTest.Append($"public void Validatation_Required{model.Name}(");
                 sbTest.Append($"{model.DataType.Replace("?", "")} {FirstCharToLowerCase(model.Name)}, "); //can not pass in a nullable with inline data
                 sbTest.AppendLine($"bool isValidExpected)");
