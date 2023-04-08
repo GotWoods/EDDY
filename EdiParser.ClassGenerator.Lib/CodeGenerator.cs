@@ -343,6 +343,7 @@ public class CodeGenerator
                 sbTest.AppendLine($"\t\tsubject.{model.Name} = {FirstCharToLowerCase(model.Name)};");
                 sbTest.AppendLine("\t\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);");
                 sbTest.AppendLine("\t}");
+                sbTest.AppendLine();
             }
 
             
@@ -359,6 +360,7 @@ public class CodeGenerator
                 sbTest.AppendLine(GenerateTestBody(model.IfOneIsFilledAllAreRequiredValidations, items, className));
                 sbTest.AppendLine($"\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.IfOneIsFilledAllAreRequired)});");
                 sbTest.AppendLine("\t}");
+                sbTest.AppendLine();
             }
 
             if (model.ARequiresBValidation.Any())
@@ -372,6 +374,7 @@ public class CodeGenerator
                 sbTest.AppendLine(GenerateTestBody(model.ARequiresBValidation, items, className));
                 sbTest.AppendLine($"\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.ARequiresB)});");
                 sbTest.AppendLine("\t}");
+                sbTest.AppendLine();
             }
 
             if (model.AtLeastOneValidations.Any())
@@ -386,13 +389,7 @@ public class CodeGenerator
                 sbTest.AppendLine(GenerateTestBody(model.AtLeastOneValidations, items, className));
                 sbTest.AppendLine($"\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.AtLeastOneIsRequired)});");
                 sbTest.AppendLine("\t}");
-
-                // [Theory]
-                // [InlineData("", 0, true)]
-                // [InlineData("2kO", 4, true)]
-                // [InlineData("", 4, false)]
-                // [InlineData("2kO", 0, false)]
-                // public void Validation_AllAreRequiredWeight(decimal weight, string unitOrBasisForMeasurementCode, bool isValidExpected)
+                sbTest.AppendLine();
             }
 
             if (model.OnlyOneOfValidations.Any())
@@ -407,6 +404,7 @@ public class CodeGenerator
                 sbTest.AppendLine(GenerateTestBody(model.OnlyOneOfValidations, items, className));
                 sbTest.AppendLine($"\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.OnlyOneOf)});");
                 sbTest.AppendLine("\t}");
+                sbTest.AppendLine();
             }
             
             if (model.IfOneIsFilledThenAtLeastOne.Any())
@@ -421,6 +419,7 @@ public class CodeGenerator
                 sbTest.AppendLine(GenerateTestBody(model.IfOneIsFilledThenAtLeastOne, items, className));
                 sbTest.AppendLine($"\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.IfOneIsFilledThenAtLeastOne)});");
                 sbTest.AppendLine("\t}");
+                sbTest.AppendLine();
             }
         }
         sbTest.AppendLine("}");
@@ -467,7 +466,7 @@ public class CodeGenerator
             }
         }
         sbTest.AppendLine($"bool isValidExpected)");
-        sbTest.AppendLine("{");
+        sbTest.AppendLine("\t{");
         sbTest.AppendLine($"\t\tvar subject = new {className}();");
         
         //may impact the test if the variable is used in a validation
