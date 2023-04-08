@@ -20,7 +20,7 @@ public class AAATests
 	ErrorReasonCode = "Yl",
 	};
 
-	var actual = Map.MapObject<AAA_RequestValidation>(x12Line, MapOptionsForTesting.x12Default);
+	var actual = Map.MapObject<AAA_RequestValidation>(x12Line, MapOptionsForTesting.x12DefaultEndsWithTilde);
 	Assert.Equivalent(expected, actual);
 	}
 [Theory]

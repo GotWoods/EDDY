@@ -121,12 +121,12 @@
             // 
             // button1
             // 
-            button1.Location = new Point(285, 216);
+            button1.Location = new Point(12, 163);
             button1.Margin = new Padding(3, 4, 3, 4);
             button1.Name = "button1";
-            button1.Size = new Size(109, 31);
+            button1.Size = new Size(414, 31);
             button1.TabIndex = 12;
-            button1.Text = "Convert >>";
+            button1.Text = "Generate Next 10 EDI x12 Segments";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 

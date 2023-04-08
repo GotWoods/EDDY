@@ -39,7 +39,7 @@ public partial class Form1 : Form
         ParseData(newNode, ParseType.x12);
     }
 
-    
+
     private async Task<string> GetPage(string url)
     {
         var fetcher = new BrowserFetcher();
@@ -82,12 +82,12 @@ public partial class Form1 : Form
     {
         var path = @"C:\source\EDDY\EdiParser\x12\Models";
         var results = new List<string>();
-        foreach(var file in Directory.GetFiles(path))
+        foreach (var file in Directory.GetFiles(path))
         {
             if (file.IndexOf("_") > -1)
             {
                 var filename = file.Substring(0, file.IndexOf("_"));
-                filename = filename.Substring(file.LastIndexOf('\\')+1);
+                filename = filename.Substring(file.LastIndexOf('\\') + 1);
                 results.Add(filename);
             }
         }
@@ -96,40 +96,40 @@ public partial class Form1 : Form
 
     private async void button1_Click(object sender, EventArgs e)
     {
-            var page = await GetPage("https://www.stedi.com/edi/x12-008020/segment");
+        var page = await GetPage("https://www.stedi.com/edi/x12-008020/segment");
         var pageText = "<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + page + Environment.NewLine + "</div>";
         var newNode = HtmlNode.CreateNode(pageText);
-            var items = newNode.SelectNodes("/div/div/ul/li");
+        var items = newNode.SelectNodes("/div/div/ul/li");
 
-            var existingFiles = GetExistingFiles();
+        var existingFiles = GetExistingFiles();
 
         var counter = 0;
         var modelPath = @"C:\source\EDDY\EdiParser\x12\Models";
         var testPath = @"C:\source\EDDY\EdiParser.Tests\x12\Models";
         foreach (var item in items)
-            {
-                var link = item.SelectSingleNode("a");
-                var type = link.SelectSingleNode("h2/span").InnerText;
+        {
+            var link = item.SelectSingleNode("a");
+            var type = link.SelectSingleNode("h2/span").InnerText;
 
             if (existingFiles.Contains(type))
                 continue;
 
-                var s = await GetPage("https://www.stedi.com" + link.GetAttributeValue("href", ""));
-                var text = "<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + s + Environment.NewLine + "</div>";
-                var newNode2 = HtmlNode.CreateNode(text);
+            var s = await GetPage("https://www.stedi.com" + link.GetAttributeValue("href", ""));
+            var text = "<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + s + Environment.NewLine + "</div>";
+            var newNode2 = HtmlNode.CreateNode(text);
             //     ParseData(newNode2, ParseType.x12);
-                var generator = new CodeGenerator();
-                var results = generator.ParseData(newNode2, ParseType.x12);
-                counter++;
+            var generator = new CodeGenerator();
+            var results = generator.ParseData(newNode2, ParseType.x12);
+            counter++;
 
-                File.WriteAllText(modelPath + "\\" + type + "_new.cs", results.Code);
-                File.WriteAllText(testPath + "\\" + type + "Tests.cs", results.Test);
+            File.WriteAllText(modelPath + "\\" + type + "_new.cs", results.Code);
+            File.WriteAllText(testPath + "\\" + type + "Tests.cs", results.Test);
 
 
             if (counter > 10)
                 break;
-            }
-
         }
 
     }
+
+}
