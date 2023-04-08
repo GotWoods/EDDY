@@ -304,14 +304,14 @@ public class CodeGenerator
         foreach (var model in items)
         {
             if (model.IsDataTypeNumeric)
-                sbTest.AppendLine($"\t{model.Name} = {model.TestValue},");
+                sbTest.AppendLine($"\t\t\t{model.Name} = {model.TestValue},");
             else
-                sbTest.AppendLine($"\t{model.Name} = \"{model.TestValue}\",");
+                sbTest.AppendLine($"\t\t\t{model.Name} = \"{model.TestValue}\",");
         }
-        sbTest.AppendLine("\t};");
+        sbTest.AppendLine("\t\t};");
         sbTest.AppendLine("");
-        sbTest.AppendLine($"\tvar actual = Map.MapObject<{className}>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);");
-        sbTest.AppendLine("\tAssert.Equivalent(expected, actual);");
+        sbTest.AppendLine($"\t\tvar actual = Map.MapObject<{className}>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);");
+        sbTest.AppendLine("\t\tAssert.Equivalent(expected, actual);");
         sbTest.AppendLine("\t}");
         
 
@@ -319,30 +319,30 @@ public class CodeGenerator
         {
             if (model.IsRequired)
             {
-                sbTest.AppendLine("[Theory]");
-                sbTest.AppendLine($"[InlineData({GenerateInlineDataValue(model, true)}, false)]");
-                sbTest.AppendLine($"[InlineData({GenerateInlineDataValue(model, false)}, true)]");
-                sbTest.Append($"public void Validatation_Required{model.Name}(");
+                sbTest.AppendLine("\t[Theory]");
+                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(model, true)}, false)]");
+                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(model, false)}, true)]");
+                sbTest.Append($"\tpublic void Validatation_Required{model.Name}(");
                 sbTest.Append($"{model.DataType.Replace("?", "")} {FirstCharToLowerCase(model.Name)}, "); //can not pass in a nullable with inline data
                 sbTest.AppendLine($"bool isValidExpected)");
-                sbTest.AppendLine("{");
-                sbTest.AppendLine($"var subject = new {className}();");
+                sbTest.AppendLine("\t{");
+                sbTest.AppendLine($"\t\tvar subject = new {className}();");
                 foreach (var requiredItem in items.Where(x=>x.IsRequired && x.Name != model.Name))
                 {
                     if (requiredItem.IsDataTypeNumeric)
-                        sbTest.AppendLine($"subject.{requiredItem.Name} = {requiredItem.TestValue};");
+                        sbTest.AppendLine($"\t\tsubject.{requiredItem.Name} = {requiredItem.TestValue};");
                     else
-                        sbTest.AppendLine($"subject.{requiredItem.Name} = \"{requiredItem.TestValue}\";");
+                        sbTest.AppendLine($"\t\tsubject.{requiredItem.Name} = \"{requiredItem.TestValue}\";");
                     
                 }
 
                 if (model.IsDataTypeNumeric)
                 {
-                    sbTest.AppendLine($"if ({FirstCharToLowerCase(model.Name)} > 0)");
+                    sbTest.AppendLine($"\t\tif ({FirstCharToLowerCase(model.Name)} > 0)");
                 }
-                sbTest.AppendLine($"subject.{model.Name} = {FirstCharToLowerCase(model.Name)};");
-                sbTest.AppendLine("TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);");
-                sbTest.AppendLine("}");
+                sbTest.AppendLine($"\t\tsubject.{model.Name} = {FirstCharToLowerCase(model.Name)};");
+                sbTest.AppendLine("\t\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);");
+                sbTest.AppendLine("\t}");
             }
 
             
