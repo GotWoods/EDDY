@@ -42,7 +42,8 @@ public class MEATests
         var subject = new MEA_Measurements();
         if (rangeMinimum > 0)
             subject.RangeMinimum = rangeMinimum;
-        subject.CompositeUnitOfMeasure = compositeUnitOfMeasure;
+        if (compositeUnitOfMeasure != "") 
+            subject.CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure() { UnitOrBasisForMeasurementCode = compositeUnitOfMeasure };
         subject.IndustryCode = industryCode;
         if (industryCode != "")
             subject.CodeListQualifierCode = "AA";
@@ -61,7 +62,8 @@ public class MEATests
         var subject = new MEA_Measurements();
         if (rangeMaximum > 0)
             subject.RangeMaximum = rangeMaximum;
-        subject.CompositeUnitOfMeasure = compositeUnitOfMeasure;
+        if (compositeUnitOfMeasure != "") 
+            subject.CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure() { UnitOrBasisForMeasurementCode = compositeUnitOfMeasure };
         subject.IndustryCode = industryCode;
         if (industryCode != "")
             subject.CodeListQualifierCode = "AB";
@@ -84,12 +86,12 @@ public class MEATests
         if (rangeMinimum > 0)
         {
             subject.RangeMinimum = rangeMinimum;
-            subject.CompositeUnitOfMeasure = "A";
+            subject.CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure() { UnitOrBasisForMeasurementCode = "A" };
         }
         if (rangeMaximum > 0)
         {
             subject.RangeMaximum = rangeMaximum;
-            subject.CompositeUnitOfMeasure = "A";
+            subject.CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure() { UnitOrBasisForMeasurementCode = "A" };
         }
 
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOne);
