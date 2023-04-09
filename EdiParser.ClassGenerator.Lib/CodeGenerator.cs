@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -113,7 +113,14 @@ public class CodeGenerator
         if (!string.IsNullOrEmpty(columns[5 + offset].InnerText))
             min = int.Parse(columns[5 + offset].InnerText);
         if (!string.IsNullOrEmpty(columns[6 + offset].InnerText))
-            max = int.Parse(columns[6 + offset].InnerText.Replace(",", ""));
+        {
+            var maxAsString = columns[6 + offset].InnerText;
+            if (maxAsString == "∞")
+                max = int.MaxValue;
+            else
+                max = int.Parse(columns[6 + offset].InnerText.Replace(",", ""));
+        }
+            
         var model = new Model(position, name, type, min, max);
 
         var requirement = columns[4 + offset].InnerText;

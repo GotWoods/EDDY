@@ -10,7 +10,7 @@ public class C002Tests
     [Fact]
     public void Parse_ShouldReturnCorrectObject()
     {
-        string x12Line = "*N*M*L*C*H";
+        string x12Line = "N*M*L*C*H";
 
         var expected = new C002_ActionsIndicated()
         {

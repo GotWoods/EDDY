@@ -9,7 +9,7 @@ public class C040Tests
     [Fact]
     public void Parse_ShouldReturnCorrectObject()
     {
-        string x12Line = "*Pc*e*ko*U*vm*j";
+        string x12Line = "Pc*e*ko*U*vm*j";
 
         var expected = new C040_ReferenceIdentifier()
         {

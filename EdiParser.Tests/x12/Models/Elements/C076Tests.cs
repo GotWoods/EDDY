@@ -9,7 +9,7 @@ public class C076Tests
     [Fact]
     public void Parse_ShouldReturnCorrectObject()
     {
-        string x12Line = "*F*MQ*g*DM*g*G6";
+        string x12Line = "F*MQ*g*DM*g*G6";
 
         var expected = new C076_CompositeIdentificationCodes()
         {
