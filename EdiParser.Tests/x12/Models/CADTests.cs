@@ -42,6 +42,9 @@ public class CADTests
 	{
 		var subject = new CAD_CarrierDetails();
 		subject.TransportationMethodTypeCode = transportationMethodTypeCode;
+
+		subject.StandardCarrierAlphaCode = "ABCD";
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
@@ -70,8 +73,10 @@ public class CADTests
 		subject.TransportationMethodTypeCode = "d";
 		subject.ReferenceIdentificationQualifier = referenceIdentificationQualifier;
 		subject.ReferenceIdentification = referenceIdentification;
+        
+        subject.StandardCarrierAlphaCode = "ABCD";
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
 }

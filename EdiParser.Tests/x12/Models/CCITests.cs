@@ -87,6 +87,9 @@ public class CCITests
 		subject.DateTimePeriodFormatQualifier = dateTimePeriodFormatQualifier;
 		subject.CounselingStatusCode = counselingStatusCode;
 
+		if (dateTimePeriodFormatQualifier!= "")
+		    subject.DateTimePeriod = "2020";
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 
@@ -111,15 +114,19 @@ public class CCITests
 
 	[Theory]
 	[InlineData("", "", true)]
-	[InlineData("", "9Z", true)]
+	[InlineData("", "9Z", false)]
 	[InlineData("3", "", false)]
-	public void Validation_ARequiresBDateTimePeriod(string dateTimePeriod, string dateTimePeriodFormatQualifier, bool isValidExpected)
+    [InlineData("3", "9Z", true)]
+    public void Validation_ARequiresBDateTimePeriod(string dateTimePeriod, string dateTimePeriodFormatQualifier, bool isValidExpected)
 	{
 		var subject = new CCI_CreditCounselingInformation();
 		subject.IdentificationCode = "pR";
 		subject.ReferenceIdentification = "5";
 		subject.DateTimePeriod = dateTimePeriod;
 		subject.DateTimePeriodFormatQualifier = dateTimePeriodFormatQualifier;
+		
+        if (dateTimePeriodFormatQualifier != "")
+			subject.CounselingStatusCode = "AB";
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}

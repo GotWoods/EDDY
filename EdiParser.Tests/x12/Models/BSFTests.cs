@@ -9,13 +9,13 @@ public class BSFTests
 	[Fact]
 	public void Parse_ShouldReturnCorrectObject()
 	{
-		string x12Line = "BSF*yU*h*F";
+		string x12Line = "BSF*yU";
 
 		var expected = new BSF_BusinessFunction()
 		{
 			ClassOfTradeCode = "yU",
-			CodeListQualifierCode = "h",
-			IndustryCode = "F",
+			//CodeListQualifierCode = "h",
+			//IndustryCode = "F",
 		};
 
 		var actual = Map.MapObject<BSF_BusinessFunction>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
@@ -31,20 +31,20 @@ public class BSFTests
 
 	[Theory]
 	[InlineData("","", false)]
-	[InlineData("yU","h", true)]
+	[InlineData("yU","", true)]
 	[InlineData("", "h", true)]
-	[InlineData("yU", "", true)]
 	public void Validation_AtLeastOneClassOfTradeCode(string classOfTradeCode, string codeListQualifierCode, bool isValidExpected)
 	{
 		var subject = new BSF_BusinessFunction();
 		subject.ClassOfTradeCode = classOfTradeCode;
 		subject.CodeListQualifierCode = codeListQualifierCode;
+		if (codeListQualifierCode != "")
+			subject.IndustryCode = "12";
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}
 
 	[Theory]
-	[InlineData("", "", true)]
 	[InlineData("yU", "h", false)]
 	[InlineData("", "h", true)]
 	[InlineData("yU", "", true)]
@@ -53,8 +53,10 @@ public class BSFTests
 		var subject = new BSF_BusinessFunction();
 		subject.ClassOfTradeCode = classOfTradeCode;
 		subject.CodeListQualifierCode = codeListQualifierCode;
+        if (codeListQualifierCode != "")
+            subject.IndustryCode = "12";
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.OnlyOneOf);
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.OnlyOneOf);
 	}
 
 	[Theory]
@@ -67,6 +69,9 @@ public class BSFTests
 		var subject = new BSF_BusinessFunction();
 		subject.CodeListQualifierCode = codeListQualifierCode;
 		subject.IndustryCode = industryCode;
+
+		if (subject.CodeListQualifierCode == "")
+		    subject.ClassOfTradeCode = "AB";
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}

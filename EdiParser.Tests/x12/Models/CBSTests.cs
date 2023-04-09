@@ -9,24 +9,24 @@ public class CBSTests
 	[Fact]
 	public void Parse_ShouldReturnCorrectObject()
 	{
-		string x12Line = "CBS*5*4*";
+		string x12Line = "CBS*5*4*11";
 
 		var expected = new CBS_CostBreakdownStructure()
 		{
 			AssignedIdentification = "5",
 			Quantity = 4,
-			CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure(),
+			CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure() { UnitOrBasisForMeasurementCode = "11"},
 		};
 
 		var actual = Map.MapObject<CBS_CostBreakdownStructure>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-		try
-		{
+		// try
+		// {
 			Assert.Equivalent(expected, actual);
-		}
-		catch
-		{
-			Assert.Fail(actual.ValidationResult.ToString());
-		}
+		// }
+		// catch
+		// {
+		// 	Assert.Fail(actual.ValidationResult.ToString());
+		// }
 	}
 
 	[Theory]

@@ -46,7 +46,9 @@ public class BVPTests
 		subject.IdentificationCodeQualifier = "0";
 		subject.IdentificationCode = "Lh";
 		subject.VehicleProductionStatus = vehicleProductionStatus;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+
+        subject.VehicleServiceCode = "AB";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
@@ -58,7 +60,9 @@ public class BVPTests
 		subject.VehicleProductionStatus = "X";
 		subject.IdentificationCode = "Lh";
 		subject.IdentificationCodeQualifier = identificationCodeQualifier;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+
+        subject.VehicleServiceCode = "AB";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
@@ -70,7 +74,9 @@ public class BVPTests
 		subject.VehicleProductionStatus = "X";
 		subject.IdentificationCodeQualifier = "0";
 		subject.IdentificationCode = identificationCode;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+
+        subject.VehicleServiceCode = "AB";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
@@ -87,7 +93,8 @@ public class BVPTests
 		subject.IdentificationCodeQualifier2 = identificationCodeQualifier2;
 		subject.IdentificationCode2 = identificationCode2;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
+        subject.VehicleServiceCode = "AB";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 
 	[Theory]
@@ -103,6 +110,9 @@ public class BVPTests
 		subject.IdentificationCode = "Lh";
 		subject.IdentificationCode2 = identificationCode2;
 		subject.VehicleServiceCode = vehicleServiceCode;
+
+		if (identificationCode2 != "")
+			subject.IdentificationCodeQualifier2 = "AB";
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}

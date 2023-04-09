@@ -70,6 +70,9 @@ public class CATTests
 		subject.IndustryCode2 = industryCode2;
 		subject.IndustryCode = industryCode;
 
+		if (industryCode != "")
+			subject.CodeListQualifierCode = "CA";
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
@@ -83,7 +86,10 @@ public class CATTests
 		subject.VersionIdentifier2 = versionIdentifier2;
 		subject.CodeListQualifierCode = codeListQualifierCode;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
+        if (codeListQualifierCode != "")
+            subject.IndustryCode = "CA";
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
 }

@@ -42,6 +42,7 @@ public class BSDTests
 	{
 		var subject = new BSD_BreakdownStructureDescription();
 		subject.ReferenceIdentificationQualifier = referenceIdentificationQualifier;
+		subject.Description = "ABC";
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 

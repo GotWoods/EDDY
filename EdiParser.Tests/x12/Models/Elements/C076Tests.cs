@@ -82,6 +82,11 @@ public class C076Tests
         subject.IdentificationCode = "MQ";
         subject.IdentificationCodeQualifier3 = identificationCodeQualifier3;
         subject.IdentificationCode3 = identificationCode3;
+        if (identificationCodeQualifier3 != "")
+        {
+            subject.IdentificationCodeQualifier2 = "AB";
+            subject.IdentificationCode2 = "CA";
+        }
 
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
     }
@@ -97,6 +102,12 @@ public class C076Tests
         subject.IdentificationCode = "MQ";
         subject.IdentificationCodeQualifier3 = identificationCodeQualifier3;
         subject.IdentificationCodeQualifier2 = identificationCodeQualifier2;
+
+        if (identificationCodeQualifier2 != "")
+            subject.IdentificationCode2 = "AQ";
+
+        if (identificationCodeQualifier3 != "")
+            subject.IdentificationCode3 = "AQ";
 
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
     }

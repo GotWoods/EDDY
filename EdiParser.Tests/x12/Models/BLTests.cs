@@ -50,6 +50,10 @@ public class BLTests
 	{
 		var subject = new BL_BillingInformation();
 		subject.RebillReasonCode = rebillReasonCode;
+
+		subject.FreightStationAccountingCode = "AA";
+		subject.FreightStationAccountingCode2 = "AA";
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
@@ -65,7 +69,9 @@ public class BLTests
 		subject.FreightStationAccountingCode = freightStationAccountingCode;
 		subject.CityName = cityName;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
+        subject.FreightStationAccountingCode2 = "ABC";
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}
 
 	[Theory]
@@ -80,7 +86,9 @@ public class BLTests
 		subject.FreightStationAccountingCode2 = freightStationAccountingCode2;
 		subject.CityName2 = cityName2;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
+        subject.FreightStationAccountingCode = "ABC";
+        
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}
 
 	[Theory]
@@ -94,7 +102,10 @@ public class BLTests
 		subject.StateOrProvinceCode = stateOrProvinceCode;
 		subject.CityName = cityName;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
+		subject.FreightStationAccountingCode = "ABC";
+        subject.FreightStationAccountingCode2 = "ABC";
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
 	[Theory]
@@ -108,7 +119,10 @@ public class BLTests
 		subject.StateOrProvinceCode2 = stateOrProvinceCode2;
 		subject.CityName2 = cityName2;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
+        subject.FreightStationAccountingCode = "ABC";
+        subject.FreightStationAccountingCode2 = "ABC";
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
 }

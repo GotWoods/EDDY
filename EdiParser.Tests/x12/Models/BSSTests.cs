@@ -49,7 +49,10 @@ public class BSSTests
 		subject.Date2 = "vQxEDxHL";
 		subject.Date3 = "Lm4cmzj6";
 		subject.TransactionSetPurposeCode = transactionSetPurposeCode;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+
+        subject.ReleaseNumber = "123";
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
@@ -64,7 +67,9 @@ public class BSSTests
 		subject.Date2 = "vQxEDxHL";
 		subject.Date3 = "Lm4cmzj6";
 		subject.ReferenceIdentification = referenceIdentification;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+        
+        subject.ReleaseNumber = "123";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
@@ -79,6 +84,9 @@ public class BSSTests
 		subject.Date2 = "vQxEDxHL";
 		subject.Date3 = "Lm4cmzj6";
 		subject.Date = date;
+
+		subject.ReleaseNumber = "123";
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
@@ -94,7 +102,9 @@ public class BSSTests
 		subject.Date2 = "vQxEDxHL";
 		subject.Date3 = "Lm4cmzj6";
 		subject.ScheduleTypeQualifier = scheduleTypeQualifier;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+
+        subject.ReleaseNumber = "123";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
@@ -109,7 +119,9 @@ public class BSSTests
 		subject.ScheduleTypeQualifier = "G5";
 		subject.Date3 = "Lm4cmzj6";
 		subject.Date2 = date2;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+
+        subject.ReleaseNumber = "123";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
@@ -124,7 +136,9 @@ public class BSSTests
 		subject.ScheduleTypeQualifier = "G5";
 		subject.Date2 = "vQxEDxHL";
 		subject.Date3 = date3;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+
+        subject.ReleaseNumber = "123";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]

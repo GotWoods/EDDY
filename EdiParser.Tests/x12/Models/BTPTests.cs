@@ -139,6 +139,9 @@ public class BTPTests
 		subject.Time2 = time2;
 		subject.Date2 = date2;
 
+		if (date2 != "")
+			subject.ReferenceIdentification2 = "ABC";
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 

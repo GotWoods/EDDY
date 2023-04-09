@@ -110,7 +110,10 @@ public class BLITests
 		subject.ProductServiceID = "x";
 		subject.UnitOrBasisForMeasurementCode2 = unitOrBasisForMeasurementCode2;
 		if (unitPrice > 0)
-		subject.UnitPrice = unitPrice;
+		{
+			subject.UnitPrice = unitPrice;
+			subject.PriceIdentifierCode = "AAA";
+		}
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}

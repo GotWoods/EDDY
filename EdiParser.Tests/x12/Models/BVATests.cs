@@ -62,7 +62,9 @@ public class BVATests
 		subject.IdentificationCode = "KL";
 		subject.Date = "gcrInKSt";
 		subject.PaymentTypeCode = paymentTypeCode;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+
+        subject.VehicleServiceCode = "AB";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
@@ -76,7 +78,9 @@ public class BVATests
 		subject.IdentificationCode = "KL";
 		subject.Date = "gcrInKSt";
 		subject.StandardCarrierAlphaCode = standardCarrierAlphaCode;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+
+        subject.VehicleServiceCode = "AB";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
@@ -90,7 +94,10 @@ public class BVATests
 		subject.IdentificationCode = "KL";
 		subject.Date = "gcrInKSt";
 		subject.IdentificationCodeQualifier = identificationCodeQualifier;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+
+        subject.VehicleServiceCode = "AB";
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
@@ -104,7 +111,9 @@ public class BVATests
 		subject.IdentificationCodeQualifier = "l";
 		subject.Date = "gcrInKSt";
 		subject.IdentificationCode = identificationCode;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+
+        subject.VehicleServiceCode = "AB"; 
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
@@ -118,6 +127,9 @@ public class BVATests
 		subject.IdentificationCodeQualifier = "l";
 		subject.IdentificationCode = "KL";
 		subject.Date = date;
+
+		subject.VehicleServiceCode = "AB";
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
@@ -137,7 +149,8 @@ public class BVATests
 		subject.IdentificationCodeQualifier2 = identificationCodeQualifier2;
 		subject.IdentificationCode2 = identificationCode2;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
+        subject.VehicleServiceCode = "AB";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 
 	[Theory]
@@ -155,6 +168,9 @@ public class BVATests
 		subject.Date = "gcrInKSt";
 		subject.IdentificationCode2 = identificationCode2;
 		subject.VehicleServiceCode = vehicleServiceCode;
+
+		if (identificationCode2 != "")
+			subject.IdentificationCodeQualifier2 = "l";
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}
@@ -175,7 +191,9 @@ public class BVATests
 		subject.IdentificationCodeQualifier3 = identificationCodeQualifier3;
 		subject.IdentificationCode3 = identificationCode3;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
+        subject.VehicleServiceCode = "AB";
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 
 }
