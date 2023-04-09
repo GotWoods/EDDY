@@ -1,6 +1,6 @@
 ﻿using EdiParser.Validation;
 
-namespace EdiParser.x12.Internals;
+namespace EdiParser.x12.Models;
 
 public abstract class EdiX12Segment
 {

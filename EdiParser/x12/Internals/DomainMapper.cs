@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using EdiParser.Attributes;
+using EdiParser.x12.Models;
 using Microsoft.Extensions.Logging;
 
 namespace EdiParser.x12.Internals;

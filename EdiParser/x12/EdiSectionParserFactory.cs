@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using EdiParser.Attributes;
-using EdiParser.x12.Internals;
 using EdiParser.x12.Mapping;
+using EdiParser.x12.Models;
 
 namespace EdiParser.x12;
 

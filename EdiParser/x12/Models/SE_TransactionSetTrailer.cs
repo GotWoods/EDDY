@@ -1,7 +1,6 @@
 ﻿using System;
 using EdiParser.Attributes;
 using EdiParser.Validation;
-using EdiParser.x12.Internals;
 
 namespace EdiParser.x12.Models;
 

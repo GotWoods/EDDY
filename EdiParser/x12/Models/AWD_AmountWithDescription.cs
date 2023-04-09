@@ -1,15 +1,14 @@
 using EdiParser.Attributes;
 using EdiParser.Validation;
-using EdiParser.x12.Internals;
 
 namespace EdiParser.x12.Models;
 
 [Segment("AWD")]
 public class AWD_AmountWithDescription : EdiX12Segment 
 {
-	//TODO: composite type (required validaiton)
-	// [Position(01)]
-	// public C007_AmountQualifyingDescription AmountQualifyingDescription { get; set; }
+	
+	[Position(01)]
+	public C007_AmountQualifyingDescription AmountQualifyingDescription { get; set; }
 
 	[Position(02)]
 	public decimal? MonetaryAmount { get; set; }
@@ -23,7 +22,8 @@ public class AWD_AmountWithDescription : EdiX12Segment
 	public override ValidationResult Validate()
 	{
 		var validator = new BasicValidator<AWD_AmountWithDescription>(this);
-		//validator.Required(x=>x.AmountQualifyingDescription);
+		//TODO: validate composite?
+//		validator.Required(x=>x.AmountQualifyingDescription);
 		validator.AtLeastOneIsRequired(x=>x.MonetaryAmount, x=>x.FreeFormInformation);
 		validator.OnlyOneOf(x=>x.MonetaryAmount, x=>x.FreeFormInformation);
 		validator.Length(x => x.MonetaryAmount, 1, 18);

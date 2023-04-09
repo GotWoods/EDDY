@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using EdiParser.x12.Models;
 using Microsoft.Extensions.Logging;
 
 namespace EdiParser.x12.Internals.Beta;

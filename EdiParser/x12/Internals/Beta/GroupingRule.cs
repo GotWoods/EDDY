@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EdiParser.x12.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 

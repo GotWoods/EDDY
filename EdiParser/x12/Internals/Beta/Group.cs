@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using EdiParser.x12.Models;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace EdiParser.x12.Internals.Beta;

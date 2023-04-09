@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using EdiParser.Attributes;
 using EdiParser.Validation;
-using EdiParser.x12.Internals;
 
 namespace EdiParser.x12.Models
 {
-	[Segment("SDQ")]
+    [Segment("SDQ")]
 	public class SDQ_DestinationQuantity : EdiX12Segment
 	{
 		[Position(01)]

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using EdiParser.Attributes;
-using EdiParser.x12.Internals;
+using EdiParser.x12.Models;
 
 namespace EdiParser.x12.Mapping;
 
@@ -10,7 +10,12 @@ public class Map
 {
     public static EdiX12Segment MapObject(Type t, string line, MapOptions options)
     {
-        var values = line.Split(options.Separator.ToCharArray())
+        return MapObject(t, line, options.Separator, options);
+    }
+    
+    private static EdiX12Segment MapObject(Type t, string line, string separator, MapOptions options) //seperator is explict here as we use the regular separator normally but can use the component element separator as well
+    {
+        var values = line.Split(separator.ToCharArray())
             .Select(x => x.Trim())
             .ToList();
 
@@ -26,8 +31,18 @@ public class Map
                 if (propertyValue.Trim().Length > 0)
                 {
                     var underlyingType = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
-                    var safeValue = propertyValue == null ? null : Convert.ChangeType(propertyValue, underlyingType);
-                    propertyInfo.SetValue(result, safeValue, null);
+                    //composite here
+                    if (underlyingType.BaseType == typeof(EdiX12Component))
+                    {
+                        var safeValue = MapObject(underlyingType, propertyValue.Trim(), options.ComponentElementSeparator, options);
+                        propertyInfo.SetValue(result, safeValue, null);
+                    }
+                    else
+                    {
+                        var safeValue = propertyValue == null ? null : Convert.ChangeType(propertyValue, underlyingType);
+                        propertyInfo.SetValue(result, safeValue, null);
+                    }
+                    
                 }
             }
         }

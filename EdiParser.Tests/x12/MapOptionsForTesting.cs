@@ -14,7 +14,7 @@ public static class MapOptionsForTesting
     {
         get
         {
-            return new MapOptions() { LineEnding = Environment.NewLine, Separator = "*", StandardsVersion = "8020" };
+            return new MapOptions() { LineEnding = Environment.NewLine, Separator = "*", StandardsVersion = "8020", ComponentElementSeparator = ">"};
         }
     }
 
@@ -22,7 +22,7 @@ public static class MapOptionsForTesting
     {
         get
         {
-            return new MapOptions() { LineEnding = "~", Separator = "*", StandardsVersion = "8020" };
+            return new MapOptions() { LineEnding = "~", Separator = "*", StandardsVersion = "8020", ComponentElementSeparator = ">" };
         }
     }
 }
