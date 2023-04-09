@@ -1,0 +1,44 @@
+using EdiParser.Attributes;
+using EdiParser.Validation;
+using EdiParser.x12.Internals;
+
+namespace EdiParser.x12.Models;
+
+[Segment("BAU")]
+public class BAU_BeginningSegmentForTheDebitAuthorization : EdiX12Segment 
+{
+	[Position(01)]
+	public string ReferenceIdentification { get; set; }
+
+	[Position(02)]
+	public string PaymentMethodCode { get; set; }
+
+	[Position(03)]
+	public string DFIIDNumberQualifier { get; set; }
+
+	[Position(04)]
+	public string DFIIdentificationNumber { get; set; }
+
+	[Position(05)]
+	public string AccountNumber { get; set; }
+
+	[Position(06)]
+	public string Name { get; set; }
+
+	public override ValidationResult Validate()
+	{
+		var validator = new BasicValidator<BAU_BeginningSegmentForTheDebitAuthorization>(this);
+		validator.Required(x=>x.ReferenceIdentification);
+		validator.Required(x=>x.PaymentMethodCode);
+		validator.Required(x=>x.DFIIDNumberQualifier);
+		validator.Required(x=>x.DFIIdentificationNumber);
+		validator.Required(x=>x.AccountNumber);
+		validator.Length(x => x.ReferenceIdentification, 1, 80);
+		validator.Length(x => x.PaymentMethodCode, 3);
+		validator.Length(x => x.DFIIDNumberQualifier, 2);
+		validator.Length(x => x.DFIIdentificationNumber, 3, 12);
+		validator.Length(x => x.AccountNumber, 1, 35);
+		validator.Length(x => x.Name, 1, 60);
+		return validator.Results;
+	}
+}

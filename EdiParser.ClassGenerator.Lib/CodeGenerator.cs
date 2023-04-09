@@ -126,7 +126,7 @@ public class CodeGenerator
 
     private string RemoveSpecialCharacters(string input)
     {
-        return input.Replace("/", "").Replace(" ", "").Replace("-", "").Replace(",", "").Replace("(", "").Replace(")", "");
+        return input.Replace("/", "").Replace(" ", "").Replace("-", "").Replace(",", "").Replace("(", "").Replace(")", "").Replace("'", "");
     }
 
     public (string Code, string Test) ParseData(HtmlNode document, ParseType parseType)
