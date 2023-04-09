@@ -21,9 +21,8 @@ public class ATV_StudentActivitiesAndAwards : EdiX12Segment
 	[Position(05)]
 	public decimal? Quantity { get; set; }
 
-	//TODO: composite type (validation too)
-	// [Position(06)]
-	// public C001_CompositeUnitOfMeasure CompositeUnitOfMeasure { get; set; }
+	[Position(06)]
+	public C001_CompositeUnitOfMeasure CompositeUnitOfMeasure { get; set; }
 
 	[Position(07)]
 	public string LevelOfIndividualTestOrCourseCode { get; set; }
@@ -41,6 +40,7 @@ public class ATV_StudentActivitiesAndAwards : EdiX12Segment
 	{
 		var validator = new BasicValidator<ATV_StudentActivitiesAndAwards>(this);
 		validator.IfOneIsFilled_AllAreRequired(x=>x.CodeListQualifierCode, x=>x.IndustryCode);
+		//TOOD: composite type
 		//validator.IfOneIsFilled_AllAreRequired(x=>x.Quantity, x=>x.CompositeUnitOfMeasure);
 		validator.Length(x => x.CodeListQualifierCode, 1, 3);
 		validator.Length(x => x.IndustryCode, 1, 30);

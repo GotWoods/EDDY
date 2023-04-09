@@ -21,9 +21,8 @@ public class ASO_AssetOwnership : EdiX12Segment
 	[Position(05)]
 	public string GeneralPropertyOwnershipCode { get; set; }
 
-	//TODO: composite type
-	//[Position(06)]
-	//public C007_AmountQualifyingDescription AmountQualifyingDescription { get; set; }
+	[Position(06)]
+	public C007_AmountQualifyingDescription AmountQualifyingDescription { get; set; }
 
 	[Position(07)]
 	public decimal? MonetaryAmount { get; set; }

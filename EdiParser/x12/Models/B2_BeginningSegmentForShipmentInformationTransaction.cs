@@ -51,7 +51,7 @@ namespace EdiParser.x12.Models
         public string ShipmentQualifier { get; set; }
 
         /// <summary>
-        /// The count of equipment (TODO: is this trailers or items like load bars?)
+        /// The count of equipment
         /// </summary>
         [Position(8)]
         public int? TotalEquipment { get; set; }

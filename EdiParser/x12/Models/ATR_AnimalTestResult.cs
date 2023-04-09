@@ -18,9 +18,8 @@ public class ATR_AnimalTestResult : EdiX12Segment
 	[Position(04)]
 	public decimal? MeasurementValue { get; set; }
 
-	//TODO: Composite type (part of a validation too)
-	//[Position(05)]
-	//public C001_CompositeUnitOfMeasure CompositeUnitOfMeasure { get; set; }
+	[Position(05)]
+	public C001_CompositeUnitOfMeasure CompositeUnitOfMeasure { get; set; }
 
 	[Position(06)]
 	public string NonNumericTestValue { get; set; }

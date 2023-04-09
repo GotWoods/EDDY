@@ -1,5 +1,6 @@
 ﻿using EdiParser.Attributes;
 using EdiParser.Validation;
+using EdiParser.x12.Models.Elements;
 
 namespace EdiParser.x12.Models;
 
@@ -27,9 +28,8 @@ public class PWK_Paperwork : EdiX12Segment
     [Position(07)]
     public string Description { get; set; }
 
-    //[Position(08)]
-    //TODO: how to implement composite
-    //public C002_ActionsIndicated ActionsIndicated { get; set; }
+    [Position(08)]
+    public C002_ActionsIndicated ActionsIndicated { get; set; }
 
     [Position(09)]
     public string RequestCategoryCode { get; set; }

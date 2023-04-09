@@ -28,138 +28,153 @@
         /// </summary>
         private void InitializeComponent()
         {
-            txtOutput = new TextBox();
-            txtEdifactElement = new TextBox();
-            button2 = new Button();
-            button3 = new Button();
-            txtEdifactSegment = new TextBox();
-            button4 = new Button();
-            txtX12 = new TextBox();
-            txtTest = new TextBox();
-            button1 = new Button();
-            SuspendLayout();
+            this.txtOutput = new System.Windows.Forms.TextBox();
+            this.txtEdifactElement = new System.Windows.Forms.TextBox();
+            this.btnEdifactElement = new System.Windows.Forms.Button();
+            this.btnEdifactSegment = new System.Windows.Forms.Button();
+            this.txtEdifactSegment = new System.Windows.Forms.TextBox();
+            this.btnx12Segment = new System.Windows.Forms.Button();
+            this.txtX12 = new System.Windows.Forms.TextBox();
+            this.txtTest = new System.Windows.Forms.TextBox();
+            this.btnx12BatchConvert = new System.Windows.Forms.Button();
+            this.btnx12Element = new System.Windows.Forms.Button();
+            this.txtx12Element = new System.Windows.Forms.TextBox();
+            this.SuspendLayout();
             // 
             // txtOutput
             // 
-            txtOutput.Location = new Point(560, 16);
-            txtOutput.Margin = new Padding(3, 4, 3, 4);
-            txtOutput.Multiline = true;
-            txtOutput.Name = "txtOutput";
-            txtOutput.ScrollBars = ScrollBars.Vertical;
-            txtOutput.Size = new Size(423, 567);
-            txtOutput.TabIndex = 1;
+            this.txtOutput.Location = new System.Drawing.Point(490, 12);
+            this.txtOutput.Multiline = true;
+            this.txtOutput.Name = "txtOutput";
+            this.txtOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtOutput.Size = new System.Drawing.Size(371, 426);
+            this.txtOutput.TabIndex = 1;
             // 
             // txtEdifactElement
             // 
-            txtEdifactElement.Location = new Point(14, 51);
-            txtEdifactElement.Margin = new Padding(3, 4, 3, 4);
-            txtEdifactElement.Name = "txtEdifactElement";
-            txtEdifactElement.Size = new Size(412, 27);
-            txtEdifactElement.TabIndex = 5;
-            txtEdifactElement.Text = "https://www.stedi.com/edi/edifact/elements/E017";
+            this.txtEdifactElement.Location = new System.Drawing.Point(12, 38);
+            this.txtEdifactElement.Name = "txtEdifactElement";
+            this.txtEdifactElement.Size = new System.Drawing.Size(361, 23);
+            this.txtEdifactElement.TabIndex = 5;
+            this.txtEdifactElement.Text = "https://www.stedi.com/edi/edifact/elements/E017";
             // 
-            // button2
+            // btnEdifactElement
             // 
-            button2.Location = new Point(433, 49);
-            button2.Margin = new Padding(3, 4, 3, 4);
-            button2.Name = "button2";
-            button2.Size = new Size(109, 31);
-            button2.TabIndex = 6;
-            button2.Text = "Convert >>";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            this.btnEdifactElement.Location = new System.Drawing.Point(379, 37);
+            this.btnEdifactElement.Name = "btnEdifactElement";
+            this.btnEdifactElement.Size = new System.Drawing.Size(95, 23);
+            this.btnEdifactElement.TabIndex = 6;
+            this.btnEdifactElement.Text = "Convert >>";
+            this.btnEdifactElement.UseVisualStyleBackColor = true;
+            this.btnEdifactElement.Click += new System.EventHandler(this.btnEdifactElement_Click);
             // 
-            // button3
+            // btnEdifactSegment
             // 
-            button3.Location = new Point(433, 88);
-            button3.Margin = new Padding(3, 4, 3, 4);
-            button3.Name = "button3";
-            button3.Size = new Size(109, 31);
-            button3.TabIndex = 8;
-            button3.Text = "Convert >>";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
+            this.btnEdifactSegment.Location = new System.Drawing.Point(379, 66);
+            this.btnEdifactSegment.Name = "btnEdifactSegment";
+            this.btnEdifactSegment.Size = new System.Drawing.Size(95, 23);
+            this.btnEdifactSegment.TabIndex = 8;
+            this.btnEdifactSegment.Text = "Convert >>";
+            this.btnEdifactSegment.UseVisualStyleBackColor = true;
+            this.btnEdifactSegment.Click += new System.EventHandler(this.btnEdifactSegment_Click);
             // 
             // txtEdifactSegment
             // 
-            txtEdifactSegment.Location = new Point(14, 89);
-            txtEdifactSegment.Margin = new Padding(3, 4, 3, 4);
-            txtEdifactSegment.Name = "txtEdifactSegment";
-            txtEdifactSegment.Size = new Size(412, 27);
-            txtEdifactSegment.TabIndex = 7;
-            txtEdifactSegment.Text = "https://www.stedi.com/edi/edifact/segments/BGM";
+            this.txtEdifactSegment.Location = new System.Drawing.Point(12, 67);
+            this.txtEdifactSegment.Name = "txtEdifactSegment";
+            this.txtEdifactSegment.Size = new System.Drawing.Size(361, 23);
+            this.txtEdifactSegment.TabIndex = 7;
+            this.txtEdifactSegment.Text = "https://www.stedi.com/edi/edifact/segments/BGM";
             // 
-            // button4
+            // btnx12Segment
             // 
-            button4.Location = new Point(433, 127);
-            button4.Margin = new Padding(3, 4, 3, 4);
-            button4.Name = "button4";
-            button4.Size = new Size(109, 31);
-            button4.TabIndex = 10;
-            button4.Text = "Convert >>";
-            button4.UseVisualStyleBackColor = true;
-            button4.Click += button4_Click;
+            this.btnx12Segment.Location = new System.Drawing.Point(379, 95);
+            this.btnx12Segment.Name = "btnx12Segment";
+            this.btnx12Segment.Size = new System.Drawing.Size(95, 23);
+            this.btnx12Segment.TabIndex = 10;
+            this.btnx12Segment.Text = "Convert >>";
+            this.btnx12Segment.UseVisualStyleBackColor = true;
+            this.btnx12Segment.Click += new System.EventHandler(this.btnx12Segment_Click);
             // 
             // txtX12
             // 
-            txtX12.Location = new Point(14, 128);
-            txtX12.Margin = new Padding(3, 4, 3, 4);
-            txtX12.Name = "txtX12";
-            txtX12.Size = new Size(412, 27);
-            txtX12.TabIndex = 9;
-            txtX12.Text = "https://www.stedi.com/edi/x12-008020/segment/MS1";
+            this.txtX12.Location = new System.Drawing.Point(12, 96);
+            this.txtX12.Name = "txtX12";
+            this.txtX12.Size = new System.Drawing.Size(361, 23);
+            this.txtX12.TabIndex = 9;
+            this.txtX12.Text = "https://www.stedi.com/edi/x12-008020/segment/MS1";
             // 
             // txtTest
             // 
-            txtTest.Location = new Point(1013, 16);
-            txtTest.Margin = new Padding(3, 4, 3, 4);
-            txtTest.Multiline = true;
-            txtTest.Name = "txtTest";
-            txtTest.ScrollBars = ScrollBars.Vertical;
-            txtTest.Size = new Size(423, 567);
-            txtTest.TabIndex = 11;
+            this.txtTest.Location = new System.Drawing.Point(886, 12);
+            this.txtTest.Multiline = true;
+            this.txtTest.Name = "txtTest";
+            this.txtTest.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtTest.Size = new System.Drawing.Size(371, 426);
+            this.txtTest.TabIndex = 11;
             // 
-            // button1
+            // btnx12BatchConvert
             // 
-            button1.Location = new Point(12, 163);
-            button1.Margin = new Padding(3, 4, 3, 4);
-            button1.Name = "button1";
-            button1.Size = new Size(414, 31);
-            button1.TabIndex = 12;
-            button1.Text = "Generate Next 10 EDI x12 Segments";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            this.btnx12BatchConvert.Location = new System.Drawing.Point(11, 150);
+            this.btnx12BatchConvert.Name = "btnx12BatchConvert";
+            this.btnx12BatchConvert.Size = new System.Drawing.Size(362, 23);
+            this.btnx12BatchConvert.TabIndex = 12;
+            this.btnx12BatchConvert.Text = "Generate Next 10 EDI x12 Segments";
+            this.btnx12BatchConvert.UseVisualStyleBackColor = true;
+            this.btnx12BatchConvert.Click += new System.EventHandler(this.btnx12BatchConvert_Click);
+            // 
+            // btnx12Element
+            // 
+            this.btnx12Element.Location = new System.Drawing.Point(379, 124);
+            this.btnx12Element.Name = "btnx12Element";
+            this.btnx12Element.Size = new System.Drawing.Size(95, 23);
+            this.btnx12Element.TabIndex = 14;
+            this.btnx12Element.Text = "Convert >>";
+            this.btnx12Element.UseVisualStyleBackColor = true;
+            this.btnx12Element.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // txtx12Element
+            // 
+            this.txtx12Element.Location = new System.Drawing.Point(12, 125);
+            this.txtx12Element.Name = "txtx12Element";
+            this.txtx12Element.Size = new System.Drawing.Size(361, 23);
+            this.txtx12Element.TabIndex = 13;
+            this.txtx12Element.Text = "https://www.stedi.com/edi/x12-008020/element/C030";
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1510, 617);
-            Controls.Add(button1);
-            Controls.Add(txtTest);
-            Controls.Add(button4);
-            Controls.Add(txtX12);
-            Controls.Add(button3);
-            Controls.Add(txtEdifactSegment);
-            Controls.Add(button2);
-            Controls.Add(txtEdifactElement);
-            Controls.Add(txtOutput);
-            Margin = new Padding(3, 4, 3, 4);
-            Name = "Form1";
-            Text = "Form1";
-            ResumeLayout(false);
-            PerformLayout();
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(1321, 463);
+            this.Controls.Add(this.btnx12Element);
+            this.Controls.Add(this.txtx12Element);
+            this.Controls.Add(this.btnx12BatchConvert);
+            this.Controls.Add(this.txtTest);
+            this.Controls.Add(this.btnx12Segment);
+            this.Controls.Add(this.txtX12);
+            this.Controls.Add(this.btnEdifactSegment);
+            this.Controls.Add(this.txtEdifactSegment);
+            this.Controls.Add(this.btnEdifactElement);
+            this.Controls.Add(this.txtEdifactElement);
+            this.Controls.Add(this.txtOutput);
+            this.Name = "Form1";
+            this.Text = "Form1";
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion
         private TextBox txtOutput;
         private TextBox txtEdifactElement;
-        private Button button2;
-        private Button button3;
+        private Button btnEdifactElement;
+        private Button btnEdifactSegment;
         private TextBox txtEdifactSegment;
-        private Button button4;
+        private Button btnx12Segment;
         private TextBox txtX12;
         private TextBox txtTest;
-        private Button button1;
+        private Button btnx12BatchConvert;
+        private Button btnx12Element;
+        private TextBox txtx12Element;
     }
 }

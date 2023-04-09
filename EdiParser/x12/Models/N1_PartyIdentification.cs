@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using EdiParser.Attributes;
 using EdiParser.Validation;
+using EdiParser.x12.Models.Elements;
 
 namespace EdiParser.x12.Models
 {
@@ -26,11 +27,9 @@ namespace EdiParser.x12.Models
 
         [Position(06)]
         public string EntityIdentifierCode2 { get; set; }
-
-
-        //TODO: How to handle composites in x12
-        //[Position(07)]
-        //public C076_CompositeIdentificationCodes CompositeIdentificationCodes { get; set; }
+        
+        [Position(07)]
+        public C076_CompositeIdentificationCodes CompositeIdentificationCodes { get; set; }
 
         public override ValidationResult Validate()
         {
@@ -46,8 +45,5 @@ namespace EdiParser.x12.Models
             validator.Length(x => x.EntityIdentifierCode, 2, 3);
             return validator.Results;
         }
-
-        
     }
-
 }

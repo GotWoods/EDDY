@@ -1,5 +1,6 @@
 ﻿using EdiParser.Attributes;
 using EdiParser.Validation;
+using EdiParser.x12.Models.Elements;
 
 namespace EdiParser.x12.Models;
 
@@ -24,9 +25,8 @@ public class N9_ExtendedReferenceInformation : EdiX12Segment
     [Position(06)]
     public string TimeCode { get; set; }
 
-    //TODO: composite type
-    //[Position(07)]
-    //public C040_ReferenceIdentifier ReferenceIdentifier { get; set; }
+    [Position(07)]
+    public C040_ReferenceIdentifier ReferenceIdentifier { get; set; }
 
     public override ValidationResult Validate()
     {

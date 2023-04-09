@@ -1,15 +1,14 @@
 ﻿using EdiParser.Attributes;
 using EdiParser.Validation;
+using EdiParser.x12.Models.Elements;
 
 namespace EdiParser.x12.Models;
 
 [Segment("AK4")]
 public class AK4_DataElementNote : EdiX12Segment
 {
-
-    //TODO: C030_PositionInSegment
     [Position(01)]
-    public string PositionInSegment { get; set; }
+    public C030_PositionInSegment PositionInSegment { get; set; }
 
     [Position(02)]
     public string DataElementReferenceCode { get; set; }

@@ -15,9 +15,8 @@ public class MEA_Measurements : EdiX12Segment
     [Position(03)]
     public decimal? MeasurementValue { get; set; }
 
-    //TODO: C001_CompositeUnitOfMeasure
     [Position(04)]
-    public string CompositeUnitOfMeasure { get; set; }
+    public C001_CompositeUnitOfMeasure CompositeUnitOfMeasure { get; set; }
 
     [Position(05)]
     public decimal? RangeMinimum { get; set; }

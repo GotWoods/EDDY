@@ -51,7 +51,7 @@ public class CodeGenerator
         var textInfo = new CultureInfo("en-US", false).TextInfo;
 
         Regex matcherRegex;
-        if (parseType == ParseType.x12)
+        if (parseType == ParseType.x12Element || parseType == ParseType.x12Segment)
             matcherRegex = new Regex(@"[A-Z0-9]{2,3}-\d+");
         else if (parseType == ParseType.ediFactElement || parseType == ParseType.ediFactSegment)
             matcherRegex = new Regex(@"\d{3}");
@@ -155,7 +155,7 @@ public class CodeGenerator
 
         Model? currentItem = null;
 
-        var elementNameRegEx = new Regex("^[A-Za-z0-9]{1,3}-\\d{2}");
+        var elementNameRegEx = new Regex("^[A-Za-z0-9]{1,4}-\\d{2}");
 
         foreach (var row in tableRoot.SelectNodes("div").Skip(1)) //skip the header row
         {
@@ -200,16 +200,20 @@ public class CodeGenerator
         }
 
         var sb = new StringBuilder();
-        if (parseType == ParseType.x12)
+        if (parseType == ParseType.x12Segment || parseType == ParseType.x12Element)
         {
             sb.AppendLine("using EdiParser.Attributes;");
             sb.AppendLine("using EdiParser.Validation;");
             sb.AppendLine("using EdiParser.x12.Internals;");
             sb.AppendLine();
-            sb.AppendLine("namespace EdiParser.x12.Models;");
+            if (parseType == ParseType.x12Element)
+                sb.AppendLine("namespace EdiParser.x12.Models.Elements;");
+            else
+                sb.AppendLine("namespace EdiParser.x12.Models;");
             sb.AppendLine();
             sb.AppendLine($"[Segment(\"{segmentType}\")]");
-            sb.AppendLine($"public class {className} : EdiX12Segment ");
+            sb.Append($"public class {className} : ");
+            sb.AppendLine(parseType == ParseType.x12Element ? "EdiX12Component" : "EdiX12Segment");
         }
         else if (parseType == ParseType.ediFactElement)
             sb.AppendLine($"public class {className} : IElement ");
@@ -239,7 +243,7 @@ public class CodeGenerator
 
             foreach (var x in model.IfOneIsFilledAllAreRequiredValidations)
             {
-                sb.AppendLine($"\t\tvalidator.IfOneIsFilled_AllAreRequired(x=>x.{FindFieldByPosition(x.FirstFieldPosition, items).Name}, x=>x.{FindFieldByPosition(x.OtherFields[0], items).Name});");
+               sb.AppendLine($"\t\tvalidator.IfOneIsFilled_AllAreRequired(x=>x.{FindFieldByPosition(x.FirstFieldPosition, items).Name}, x=>x.{FindFieldByPosition(x.OtherFields[0], items).Name});");
             }
 
             foreach (var x in model.ARequiresBValidation)
@@ -292,7 +296,14 @@ public class CodeGenerator
         sbTest.AppendLine("\t[Fact]");
         sbTest.AppendLine("\tpublic void Parse_ShouldReturnCorrectObject()");
         sbTest.AppendLine("\t{");
-        sbTest.Append($"\t\tstring x12Line = \"{segmentType}");
+        if (parseType == ParseType.x12Element)
+        {
+            sbTest.Append($"\t\tstring x12Line = \"");
+        }
+        else
+        {
+            sbTest.Append($"\t\tstring x12Line = \"{segmentType}");
+        }
         foreach (var model in items)
         {
             sbTest.Append("*" + model.TestValue);
