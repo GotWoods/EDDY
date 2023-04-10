@@ -51,8 +51,9 @@ public class CERTests
 		var subject = new CER_Certification();
 		subject.IdentificationCodeQualifier = identificationCodeQualifier;
 		subject.IdentificationCode = identificationCode;
+		subject.NameLastOrOrganizationName = "ABCD";
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 
 }

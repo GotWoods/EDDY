@@ -55,6 +55,7 @@ public class CSETests
 		var subject = new CSE_EducationalCourseInformation();
 		subject.IdentificationCodeQualifier = identificationCodeQualifier;
 		subject.IdentificationCode = identificationCode;
+		subject.Name = "ABCD";
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
