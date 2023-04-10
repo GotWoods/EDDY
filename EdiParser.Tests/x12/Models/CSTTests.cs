@@ -9,13 +9,13 @@ public class CSTTests
 	[Fact]
 	public void Parse_ShouldReturnCorrectObject()
 	{
-		string x12Line = "CST*rPW*3**5";
+		string x12Line = "CST*rPW*3*AA*5";
 
 		var expected = new CST_CostAnalysis()
 		{
 			CostCode = "rPW",
 			MonetaryAmount = 3,
-			CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure(),
+			CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure() { UnitOrBasisForMeasurementCode = "AA"},
 			Quantity = 5,
 		};
 

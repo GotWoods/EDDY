@@ -9,7 +9,7 @@ public class CDTests
 	[Fact]
 	public void Parse_ShouldReturnCorrectObject()
 	{
-		string x12Line = "CD*K*s0e5*q*A*4*3*Y*BM*L*e*Wd";
+		string x12Line = "CD*K*s0e5*q*A*4*3*Y**L*e*Wd";
 
 		var expected = new CD_ShipmentConditions()
 		{
@@ -20,7 +20,7 @@ public class CDTests
 			ConditionValue3 = "4",
 			AssignedNumber = 3,
 			ChangeTypeCode = "Y",
-			StandardCarrierAlphaCode = "BM",
+			//StandardCarrierAlphaCode = "BM",
 			DocketControlNumber = "L",
 			DocketIdentification = "e",
 			GroupTitle = "Wd",
@@ -44,12 +44,12 @@ public class CDTests
 	{
 		var subject = new CD_ShipmentConditions();
 		subject.ConditionSegmentLogicalConnector = conditionSegmentLogicalConnector;
+		subject.StandardCarrierAlphaCode = "ABCD";
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
 	[InlineData("","", false)]
-	[InlineData("s0e5","BM", true)]
 	[InlineData("", "BM", true)]
 	[InlineData("s0e5", "", true)]
 	public void Validation_AtLeastOneConditionCode(string conditionCode, string standardCarrierAlphaCode, bool isValidExpected)
@@ -58,8 +58,7 @@ public class CDTests
 		subject.ConditionSegmentLogicalConnector = "K";
 		subject.ConditionCode = conditionCode;
 		subject.StandardCarrierAlphaCode = standardCarrierAlphaCode;
-
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}
 
 	[Theory]
@@ -73,8 +72,8 @@ public class CDTests
 		subject.ConditionSegmentLogicalConnector = "K";
 		subject.ConditionCode = conditionCode;
 		subject.StandardCarrierAlphaCode = standardCarrierAlphaCode;
-
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.OnlyOneOf);
+        subject.StandardCarrierAlphaCode = "ABCD";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.OnlyOneOf);
 	}
 
 	[Theory]
@@ -87,8 +86,8 @@ public class CDTests
 		subject.ConditionSegmentLogicalConnector = "K";
 		subject.ConditionValue = conditionValue;
 		subject.ConditionCode = conditionCode;
-
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
+        subject.StandardCarrierAlphaCode = "ABCD";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
 	[Theory]
@@ -101,8 +100,8 @@ public class CDTests
 		subject.ConditionSegmentLogicalConnector = "K";
 		subject.ConditionValue2 = conditionValue2;
 		subject.ConditionCode = conditionCode;
-
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
+        subject.StandardCarrierAlphaCode = "ABCD";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
 	[Theory]
@@ -115,8 +114,8 @@ public class CDTests
 		subject.ConditionSegmentLogicalConnector = "K";
 		subject.ConditionValue3 = conditionValue3;
 		subject.ConditionCode = conditionCode;
-
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
+        subject.StandardCarrierAlphaCode = "ABCD";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
 }

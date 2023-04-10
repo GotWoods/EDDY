@@ -9,7 +9,7 @@ public class CTBTests
 	[Fact]
 	public void Parse_ShouldReturnCorrectObject()
 	{
-		string x12Line = "CTB*hB*Y*kZ*5*p*f*";
+		string x12Line = "CTB*hB*Y*kZ*5*p*f*AA";
 
 		var expected = new CTB_RestrictionsConditions()
 		{
@@ -19,7 +19,7 @@ public class CTBTests
 			Quantity = 5,
 			AmountQualifierCode = "p",
 			Amount = "f",
-			CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure(),
+			CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure() { UnitOrBasisForMeasurementCode = "AA"},
 		};
 
 		var actual = Map.MapObject<CTB_RestrictionsConditions>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
