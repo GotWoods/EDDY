@@ -69,22 +69,22 @@ public class CDATests
 
 	[Theory]
 	[InlineData("", "", true)]
-	[InlineData("", "Cz", true)]
+	[InlineData("AA", "Cz", true)]
 	[InlineData("S", "", false)]
 	public void Validation_ARequiresBDateTimePeriod(string dateTimePeriod, string dateTimePeriodFormatQualifier, bool isValidExpected)
 	{
 		var subject = new CDA_ConsumerCreditAccount();
 		subject.DateTimePeriod = dateTimePeriod;
 		subject.DateTimePeriodFormatQualifier = dateTimePeriodFormatQualifier;
-
+		
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
 	[Theory]
 	[InlineData("", "", true)]
-	[InlineData("", "Cz", true)]
+	[InlineData("AA", "Cz", true)]
 	[InlineData("5", "", false)]
-	public void Validation_ARequiresBDateTimePeriod2(string dateTimePeriod2, string dateTimePeriodFormatQualifier, bool isValidExpected)
+    public void Validation_ARequiresBDateTimePeriod2(string dateTimePeriod2, string dateTimePeriodFormatQualifier, bool isValidExpected)
 	{
 		var subject = new CDA_ConsumerCreditAccount();
 		subject.DateTimePeriod2 = dateTimePeriod2;
@@ -95,7 +95,7 @@ public class CDATests
 
 	[Theory]
 	[InlineData("", "", true)]
-	[InlineData("", "Cz", true)]
+	[InlineData("aa", "Cz", true)]
 	[InlineData("s", "", false)]
 	public void Validation_ARequiresBDateTimePeriod3(string dateTimePeriod3, string dateTimePeriodFormatQualifier, bool isValidExpected)
 	{
@@ -108,7 +108,7 @@ public class CDATests
 
 	[Theory]
 	[InlineData("", "", true)]
-	[InlineData("", "Cz", true)]
+	[InlineData("aa", "Cz", true)]
 	[InlineData("l", "", false)]
 	public void Validation_ARequiresBDateTimePeriod4(string dateTimePeriod4, string dateTimePeriodFormatQualifier, bool isValidExpected)
 	{
@@ -121,7 +121,7 @@ public class CDATests
 
 	[Theory]
 	[InlineData("", "", true)]
-	[InlineData("", "Cz", true)]
+	[InlineData("aa", "Cz", true)]
 	[InlineData("H", "", false)]
 	public void Validation_ARequiresBDateTimePeriod5(string dateTimePeriod5, string dateTimePeriodFormatQualifier, bool isValidExpected)
 	{

@@ -9,7 +9,7 @@ public class C033Tests
     [Fact]
     public void Parse_ShouldReturnCorrectObject()
     {
-        string x12Line = "*mnq*4";
+        string x12Line = "mnq*4";
 
         var expected = new C033_SecurityTokenValue()
         {

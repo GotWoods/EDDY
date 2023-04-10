@@ -305,7 +305,7 @@ public class CodeGenerator
         sbTest.AppendLine("\t{");
         if (parseType == ParseType.x12Element)
         {
-            sbTest.Append($"\t\tstring x12Line = \"");
+            sbTest.Append($"\t\tvar x12Line = \"");
         }
         else
         {

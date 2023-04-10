@@ -9,7 +9,7 @@ public class C050Tests
     [Fact]
     public void Parse_ShouldReturnCorrectObject()
     {
-        string x12Line = "*0X*aJp*d*f*Zr*uig*c*B*tc*oCD*d*d";
+        string x12Line = "0X*aJp*d*f*Zr*uig*c*B*tc*oCD*d*d";
 
         var expected = new C050_CertificateLookUpInformation()
         {

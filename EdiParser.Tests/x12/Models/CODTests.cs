@@ -10,23 +10,17 @@ public class CODTests
 	[Fact]
 	public void Parse_ShouldReturnCorrectObject()
 	{
-		string x12Line = "COD*fE*";
+		string x12Line = "COD*fE*aa";
 
 		var expected = new COD_ChannelOfDistribution()
 		{
 			AgencyQualifierCode = "fE",
-			CompositeChannelOfDistribution = new C070_CompositeChannelOfDistribution() {},
+			CompositeChannelOfDistribution = new C070_CompositeChannelOfDistribution() { ChannelOfDistribution = "aa" },
 		};
 
 		var actual = Map.MapObject<COD_ChannelOfDistribution>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-		try
-		{
-			Assert.Equivalent(expected, actual);
-		}
-		catch
-		{
-			Assert.Fail(actual.ValidationResult.ToString());
-		}
+		Assert.Equivalent(expected, actual);
+		
 	}
 
 	[Theory]
@@ -42,7 +36,7 @@ public class CODTests
 
 	[Theory]
 	[InlineData("", false)]
-	[InlineData("", true)]
+	[InlineData("aa", true)]
 	public void Validatation_RequiredCompositeChannelOfDistribution(string compositeChannelOfDistribution, bool isValidExpected)
 	{
 		var subject = new COD_ChannelOfDistribution();

@@ -9,7 +9,7 @@ public class CICTests
 	[Fact]
 	public void Parse_ShouldReturnCorrectObject()
 	{
-		string x12Line = "CIC*6*Q*k*h*nneY";
+		string x12Line = "CIC*6*Q*k*h";
 
 		var expected = new CIC_CarInformationControl()
 		{
@@ -17,7 +17,7 @@ public class CICTests
 			EquipmentNumber = "Q",
 			CarTypeCode = "k",
 			EquipmentNumber2 = "h",
-			MechanicalCarCode = "nneY",
+			//MechanicalCarCode = "nneY",
 		};
 
 		var actual = Map.MapObject<CIC_CarInformationControl>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);

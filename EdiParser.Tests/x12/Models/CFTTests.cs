@@ -9,12 +9,12 @@ public class CFTTests
 	[Fact]
 	public void Parse_ShouldReturnCorrectObject()
 	{
-		string x12Line = "CFT*aP**Wd*bbu*Gmv8Gv5j*1zt*NGY102EF*pD*a";
+		string x12Line = "CFT*aP*AA*Wd*bbu*Gmv8Gv5j*1zt*NGY102EF*pD*a";
 
 		var expected = new CFT_CostReportingFormatType()
 		{
 			ReportTypeCode = "aP",
-			CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure() {},
+			CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure() { UnitOrBasisForMeasurementCode = "AA"},
 			ContractingFundingCode = "Wd",
 			DateTimeQualifier = "bbu",
 			Date = "Gmv8Gv5j",
