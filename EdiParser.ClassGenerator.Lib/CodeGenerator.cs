@@ -329,16 +329,7 @@ public class CodeGenerator
         sbTest.AppendLine("\t\t};");
         sbTest.AppendLine("");
         sbTest.AppendLine($"\t\tvar actual = Map.MapObject<{className}>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);");
-
-        sbTest.AppendLine("\t\ttry");
-        sbTest.AppendLine("\t\t{");
-        sbTest.AppendLine("\t\t\tAssert.Equivalent(expected, actual);");
-        sbTest.AppendLine("\t\t}");
-        sbTest.AppendLine("\t\tcatch");
-        sbTest.AppendLine("\t\t{");
-        sbTest.AppendLine("\t\t\tAssert.Fail(actual.ValidationResult.ToString());");
-        sbTest.AppendLine("\t\t}");
-        
+        sbTest.AppendLine("\t\tAssert.Equivalent(expected, actual);");
         sbTest.AppendLine("\t}");
         sbTest.AppendLine();
 

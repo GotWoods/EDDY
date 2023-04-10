@@ -30,6 +30,8 @@ public class CRDTests
 	{
 		var subject = new CRD_ContentReportingDetail();
 		subject.CountryCode = countryCode;
+		subject.MonetaryAmount = 12;
+		subject.AmountQualifierCode = "AB";
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
@@ -44,7 +46,9 @@ public class CRDTests
 		subject.CountryCode = "Yo";
 		subject.AmountQualifierCode = amountQualifierCode;
 		if (monetaryAmount > 0)
-		subject.MonetaryAmount = monetaryAmount;
+			subject.MonetaryAmount = monetaryAmount;
+		else
+			subject.PercentIntegerFormat = 1;
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
@@ -59,7 +63,10 @@ public class CRDTests
 		var subject = new CRD_ContentReportingDetail();
 		subject.CountryCode = "Yo";
 		if (monetaryAmount > 0)
-		subject.MonetaryAmount = monetaryAmount;
+		{
+			subject.MonetaryAmount = monetaryAmount;
+			subject.AmountQualifierCode = "AB";
+		}
 		if (percentIntegerFormat > 0)
 		subject.PercentIntegerFormat = percentIntegerFormat;
 

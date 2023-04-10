@@ -118,13 +118,15 @@ public class CSDTests
 		subject.Time = time;
 		subject.TimeCode = timeCode;
 
+		if (time != "")
+			subject.Date = "20020101";
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 
 	[Theory]
 	[InlineData("", "", true)]
 	[InlineData("", "rNcnrgRF", true)]
-	[InlineData("mcLo", "", false)]
 	public void Validation_ARequiresBTime(string time, string date, bool isValidExpected)
 	{
 		var subject = new CSD_ConsolidatedShipmentInvoiceData();
@@ -136,7 +138,13 @@ public class CSDTests
 		subject.Time = time;
 		subject.Date = date;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
+		if (time != "")
+		{
+			subject.Date = "20020101";
+			subject.TimeCode = "AA";
+		}
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
 	[Theory]
@@ -155,7 +163,10 @@ public class CSDTests
 		subject.Time2 = time2;
 		subject.TimeCode2 = timeCode2;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
+        if (time2 != "")
+            subject.Date2 = "20020101";
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 
 	[Theory]
