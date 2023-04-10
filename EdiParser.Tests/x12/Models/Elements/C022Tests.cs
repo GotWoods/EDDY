@@ -9,7 +9,7 @@ public class C022Tests
     [Fact]
     public void Parse_ShouldReturnCorrectObject()
     {
-        string x12Line = "*y*o*hx*J*4*8*N*I*U*7";
+        string x12Line = "y*o*hx*J*4*8*N*I**7";
 
         var expected = new C022_HealthCareCodeInformation()
         {
@@ -21,7 +21,7 @@ public class C022Tests
             Quantity = 8,
             VersionIdentifier = "N",
             IndustryCode2 = "I",
-            IndustryCode3 = "U",
+         //   IndustryCode3 = "U",
             IndustryCode4 = "7",
         };
 

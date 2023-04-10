@@ -9,7 +9,7 @@ public class C057Tests
     [Fact]
     public void Parse_ShouldReturnCorrectObject()
     {
-        string x12Line = "*Bt*X";
+        string x12Line = "Bt*X";
 
         var expected = new C057_CommunicationNumberComponent()
         {
