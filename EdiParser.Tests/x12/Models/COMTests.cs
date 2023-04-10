@@ -10,26 +10,19 @@ public class COMTests
 	[Fact]
 	public void Parse_ShouldReturnCorrectObject()
 	{
-		string x12Line = "COM*h7*u**LE*J";
+		string x12Line = "COM*h7*u*aa*LE*J";
 
 		var expected = new COM_CommunicationContactInformation()
 		{
 			CommunicationNumberQualifier = "h7",
 			CommunicationNumber = "u",
-			CommunicationNumberComponent = new C057_CommunicationNumberComponent() {},
+			CommunicationNumberComponent = new C057_CommunicationNumberComponent() { CommunicationNumberQualifier ="aa"},
 			LanguageCode = "LE",
 			AssignedIdentification = "J",
 		};
 
 		var actual = Map.MapObject<COM_CommunicationContactInformation>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-		try
-		{
-			Assert.Equivalent(expected, actual);
-		}
-		catch
-		{
-			Assert.Fail(actual.ValidationResult.ToString());
-		}
+		Assert.Equivalent(expected, actual);
 	}
 
 	[Theory]
