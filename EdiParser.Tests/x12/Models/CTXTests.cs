@@ -1,6 +1,7 @@
 using EdiParser.Validation;
 using EdiParser.x12.Mapping;
 using EdiParser.x12.Models;
+using EdiParser.x12.Models.Elements;
 
 namespace EdiParser.Tests.x12.Models;
 
