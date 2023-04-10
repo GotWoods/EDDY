@@ -10,7 +10,7 @@ public class CLPTests
 	[Fact]
 	public void Parse_ShouldReturnCorrectObject()
 	{
-		string x12Line = "CLP*d*Q*6*8*2*Z*V*A*V*F**8*6*X*3384*L2";
+		string x12Line = "CLP*d*Q*6*8*2*Z*V*A*V*F*AA>BB*8*6*X*3384*L2";
 
 		var expected = new CLP_ClaimLevelData()
 		{
@@ -24,7 +24,7 @@ public class CLPTests
 			FacilityCodeValue = "A",
 			ClaimFrequencyTypeCode = "V",
 			PatientDischargeStatus = "F",
-			HealthCareCodeInformation = new C022_HealthCareCodeInformation() {},
+			HealthCareCodeInformation = new C022_HealthCareCodeInformation() { CodeListQualifierCode = "AA", IndustryCode = "BB"},
 			Quantity = 8,
 			PercentageAsDecimal = 6,
 			YesNoConditionOrResponseCode = "X",
@@ -33,14 +33,10 @@ public class CLPTests
 		};
 
 		var actual = Map.MapObject<CLP_ClaimLevelData>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-		try
-		{
-			Assert.Equivalent(expected, actual);
-		}
-		catch
-		{
-			Assert.Fail(actual.ValidationResult.ToString());
-		}
+		if (!actual.HealthCareCodeInformation.ValidationResult.IsValid)
+			Assert.Fail(actual.HealthCareCodeInformation.ValidationResult.ToString());
+		Assert.Equivalent(expected, actual);
+		
 	}
 
 	[Theory]

@@ -22,7 +22,7 @@ public class CSUTests
 			InstructionalSettingCode = "X",
 			AcademicCreditTypeCode = "H",
 			Quantity = 1,
-			CompositeUnitOfMeasure = "",
+			CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure(),
 		};
 
 		var actual = Map.MapObject<CSU_SupplementalCourseData>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
@@ -69,12 +69,13 @@ public class CSUTests
 	[InlineData(1, "", true)]
 	[InlineData(0, "", false)]
 	[InlineData(1, "", false)]
-	public void Validation_AllAreRequiredQuantity(decimal quantity, C001_CompositeUnitOfMeasure compositeUnitOfMeasure, bool isValidExpected)
+	public void Validation_AllAreRequiredQuantity(decimal quantity, string compositeUnitOfMeasure, bool isValidExpected)
 	{
 		var subject = new CSU_SupplementalCourseData();
 		if (quantity > 0)
 		subject.Quantity = quantity;
-		subject.CompositeUnitOfMeasure = compositeUnitOfMeasure;
+		if (compositeUnitOfMeasure != "")
+		    subject.CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure() { UnitOrBasisForMeasurementCode = compositeUnitOfMeasure};
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}

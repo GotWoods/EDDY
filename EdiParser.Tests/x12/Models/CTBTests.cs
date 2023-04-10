@@ -19,7 +19,7 @@ public class CTBTests
 			Quantity = 5,
 			AmountQualifierCode = "p",
 			Amount = "f",
-			CompositeUnitOfMeasure = "",
+			CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure(),
 		};
 
 		var actual = Map.MapObject<CTB_RestrictionsConditions>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);

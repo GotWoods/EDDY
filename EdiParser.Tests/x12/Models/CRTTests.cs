@@ -9,13 +9,13 @@ public class CRTTests
 	[Fact]
 	public void Parse_ShouldReturnCorrectObject()
 	{
-		string x12Line = "CRT*Hx***e3*6*D*jQ*g7*d*PZ";
+		string x12Line = "CRT*Hx*A1*A2*e3*6*D*jQ*g7*d*PZ";
 
 		var expected = new CRT_ContractorReportType()
 		{
 			ReportTypeCode = "Hx",
-			CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure(),
-			CompositeUnitOfMeasure2 = new C001_CompositeUnitOfMeasure(),
+			CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure() {UnitOrBasisForMeasurementCode = "A1"},
+			CompositeUnitOfMeasure2 = new C001_CompositeUnitOfMeasure() {UnitOrBasisForMeasurementCode = "A2"},
 			BreakdownStructureDetailCode = "e3",
 			ActionCode = "6",
 			RateOrValueTypeCode = "D",
@@ -26,14 +26,13 @@ public class CRTTests
 		};
 
 		var actual = Map.MapObject<CRT_ContractorReportType>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-		try
-		{
-			Assert.Equivalent(expected, actual);
-		}
-		catch
-		{
-			Assert.Fail(actual.ValidationResult.ToString());
-		}
+
+        if (!actual.CompositeUnitOfMeasure.ValidationResult.IsValid)
+            Assert.Fail(actual.CompositeUnitOfMeasure.ValidationResult.ToString());
+
+
+        Assert.Equivalent(expected, actual);
+		
 	}
 
 	[Theory]

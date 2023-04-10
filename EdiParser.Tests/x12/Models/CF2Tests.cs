@@ -88,8 +88,10 @@ public class CF2Tests
 		subject.NetAmountDue = "T";
 		subject.WeightUnitCode = weightUnitCode;
 		if (weight > 0)
-		subject.Weight = weight;
-
+		{
+			subject.Weight = weight;
+			subject.WeightQualifier = "AB";
+		}
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
