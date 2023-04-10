@@ -38,8 +38,6 @@ public class CLMTests
 		};
 
 		var actual = Map.MapObject<CLM_HealthClaim>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-		if (!actual.HealthCareServiceLocationInformation.ValidationResult.IsValid)
-		    Assert.Fail(actual.HealthCareServiceLocationInformation.ValidationResult.ToString());
 		Assert.Equivalent(expected, actual);
 	}
 

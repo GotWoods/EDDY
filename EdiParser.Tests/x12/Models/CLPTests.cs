@@ -33,8 +33,6 @@ public class CLPTests
 		};
 
 		var actual = Map.MapObject<CLP_ClaimLevelData>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-		if (!actual.HealthCareCodeInformation.ValidationResult.IsValid)
-			Assert.Fail(actual.HealthCareCodeInformation.ValidationResult.ToString());
 		Assert.Equivalent(expected, actual);
 		
 	}

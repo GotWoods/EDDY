@@ -26,14 +26,7 @@ public class CCITests
 		};
 
 		var actual = Map.MapObject<CCI_CreditCounselingInformation>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-		try
-		{
-			Assert.Equivalent(expected, actual);
-		}
-		catch
-		{
-			Assert.Fail(actual.ValidationResult.ToString());
-		}
+		Assert.Equivalent(expected, actual);
 	}
 
 	[Theory]

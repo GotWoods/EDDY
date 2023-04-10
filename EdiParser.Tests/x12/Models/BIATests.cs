@@ -22,14 +22,7 @@ public class BIATests
 		};
 
 		var actual = Map.MapObject<BIA_BeginningSegmentForInventoryInquiryAdvice>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-		try
-		{
-			Assert.Equivalent(expected, actual);
-		}
-		catch
-		{
-			Assert.Fail(actual.ValidationResult.ToString());
-		}
+		Assert.Equivalent(expected, actual);
 	}
 
 	[Theory]

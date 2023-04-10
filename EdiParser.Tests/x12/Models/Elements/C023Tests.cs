@@ -19,14 +19,7 @@ public class C023Tests
         };
 
         var actual = Map.MapObject<C023_HealthCareServiceLocationInformation>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-        try
-        {
-            Assert.Equivalent(expected, actual);
-        }
-        catch
-        {
-            Assert.Fail(actual.ValidationResult.ToString());
-        }
+        Assert.Equivalent(expected, actual);
     }
 
     [Theory]

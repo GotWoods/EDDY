@@ -21,14 +21,7 @@ public class BRCTests
 		};
 
 		var actual = Map.MapObject<BRC_BeginningSegmentForResponseToProductTransferAccountAdjustment>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-		try
-		{
-			Assert.Equivalent(expected, actual);
-		}
-		catch
-		{
-			Assert.Fail(actual.ValidationResult.ToString());
-		}
+		Assert.Equivalent(expected, actual);
 	}
 
 	[Theory]

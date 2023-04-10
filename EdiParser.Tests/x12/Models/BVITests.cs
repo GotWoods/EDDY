@@ -21,14 +21,7 @@ public class BVITests
 		};
 
 		var actual = Map.MapObject<BVI_BeverageInformation>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-		try
-		{
-			Assert.Equivalent(expected, actual);
-		}
-		catch
-		{
-			Assert.Fail(actual.ValidationResult.ToString());
-		}
+		Assert.Equivalent(expected, actual);
 	}
 
 	[Theory]

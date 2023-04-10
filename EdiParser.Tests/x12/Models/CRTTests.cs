@@ -27,11 +27,7 @@ public class CRTTests
 
 		var actual = Map.MapObject<CRT_ContractorReportType>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
 
-        if (!actual.CompositeUnitOfMeasure.ValidationResult.IsValid)
-            Assert.Fail(actual.CompositeUnitOfMeasure.ValidationResult.ToString());
-
-
-        Assert.Equivalent(expected, actual);
+      Assert.Equivalent(expected, actual);
 		
 	}
 

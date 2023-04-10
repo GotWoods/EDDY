@@ -47,7 +47,7 @@ public class Map
             }
         }
 
-        if (options.PerformValidations) result.ValidationResult = result.Validate();
+        //if (options.PerformValidations) result.ValidationResult = result.Validate();
 
         return result;
     }

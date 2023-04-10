@@ -20,14 +20,7 @@ public class ALGTests
         };
 
         var actual = Map.MapObject<ALG_Allergen>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-        try
-        {
-            Assert.Equivalent(expected, actual);
-        }
-        catch (Exception ex)
-        {
-            Assert.Fail(actual.ValidationResult.ToString());
-        }
+        Assert.Equivalent(expected, actual);
     }
 
     [Theory]

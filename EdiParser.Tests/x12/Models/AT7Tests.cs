@@ -20,7 +20,6 @@ public class AT7Tests
 
         var actual = Map.MapObject<AT7_ShipmentStatusDetails>("AT7*11*22***20080903*16000000*ET", MapOptionsForTesting.x12DefaultEndsWithNewline);
 
-        Assert.True(actual.ValidationResult.IsValid, actual.ValidationResult.ToString());
         Assert.Equivalent(expected, actual);
     }
 

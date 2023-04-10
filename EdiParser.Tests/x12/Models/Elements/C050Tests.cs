@@ -28,14 +28,7 @@ public class C050Tests
         };
 
         var actual = Map.MapObject<C050_CertificateLookUpInformation>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-        try
-        {
-            Assert.Equivalent(expected, actual);
-        }
-        catch
-        {
-            Assert.Fail(actual.ValidationResult.ToString());
-        }
+        Assert.Equivalent(expected, actual);
     }
 
     [Theory]

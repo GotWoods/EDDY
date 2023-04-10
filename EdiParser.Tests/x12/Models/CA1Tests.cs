@@ -18,14 +18,7 @@ public class CA1Tests
 		};
 
 		var actual = Map.MapObject<CA1_RateRequestIdentifier>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-		try
-		{
-			Assert.Equivalent(expected, actual);
-		}
-		catch
-		{
-			Assert.Fail(actual.ValidationResult.ToString());
-		}
+		Assert.Equivalent(expected, actual);
 	}
 
 	[Theory]

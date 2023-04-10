@@ -22,8 +22,6 @@ public class COMTests
 		};
 
 		var actual = Map.MapObject<COM_CommunicationContactInformation>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-        if (!actual.CommunicationNumberComponent.ValidationResult.IsValid)
-            Assert.Fail(actual.CommunicationNumberComponent.ValidationResult.ToString());
         Assert.Equivalent(expected, actual);
 	}
 

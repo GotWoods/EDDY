@@ -19,14 +19,7 @@ public class ARCTests
         };
 
         var actual = Map.MapObject<ARC_AnimalResultsCounts>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-        try
-        {
-            Assert.Equivalent(expected, actual);
-        } 
-        catch (Exception ex)
-        {
-            Assert.Fail(actual.ValidationResult.ToString());
-        }
+        Assert.Equivalent(expected, actual);
     }
 
     [Theory]

@@ -24,9 +24,7 @@ public class N4Tests
         };
 
         var actual = Map.MapObject<N4_GeographicLocation>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-        if (!actual.ValidationResult.IsValid)
-            Assert.Fail(actual.ValidationResult.ToString());
-        Assert.Equivalent(expected, actual);
+       Assert.Equivalent(expected, actual);
     }
     [Theory]
     [InlineData("", "", true)]

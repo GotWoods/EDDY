@@ -21,14 +21,7 @@ public class C024Tests
         };
 
         var actual = Map.MapObject<C024_RelatedCausesInformation>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-        try
-        {
-            Assert.Equivalent(expected, actual);
-        }
-        catch
-        {
-            Assert.Fail(actual.ValidationResult.ToString());
-        }
+        Assert.Equivalent(expected, actual);
     }
 
     [Theory]

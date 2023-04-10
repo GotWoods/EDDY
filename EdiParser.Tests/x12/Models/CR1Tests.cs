@@ -26,14 +26,7 @@ public class CR1Tests
 		};
 
 		var actual = Map.MapObject<CR1_AmbulanceCertification>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-		try
-		{
-			Assert.Equivalent(expected, actual);
-		}
-		catch
-		{
-			Assert.Fail(actual.ValidationResult.ToString());
-		}
+		Assert.Equivalent(expected, actual);
 	}
 
 	[Theory]

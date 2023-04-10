@@ -23,15 +23,8 @@ public class CSSTests
 		};
 
 		var actual = Map.MapObject<CSS_ConditionalSamplingSequence>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-		try
-		{
-			Assert.Equivalent(expected, actual);
-		}
-		catch
-		{
-			Assert.Fail(actual.ValidationResult.ToString());
-		}
-	}
+        Assert.Equivalent(expected, actual);
+    }
 
 	[Theory]
 	[InlineData("", false)]

@@ -18,14 +18,7 @@ public class C057Tests
         };
 
         var actual = Map.MapObject<C057_CommunicationNumberComponent>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-        try
-        {
-            Assert.Equivalent(expected, actual);
-        }
-        catch
-        {
-            Assert.Fail(actual.ValidationResult.ToString());
-        }
+        Assert.Equivalent(expected, actual);
     }
 
     [Theory]

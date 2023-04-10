@@ -22,15 +22,8 @@ public class BAUTests
 		};
 
 		var actual = Map.MapObject<BAU_BeginningSegmentForTheDebitAuthorization>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-		try
-		{
-			Assert.Equivalent(expected, actual);
-		}
-		catch
-		{
-			Assert.Fail(actual.ValidationResult.ToString());
-		}
-	}
+        Assert.Equivalent(expected, actual);
+    }
 
 	[Theory]
 	[InlineData("", false)]

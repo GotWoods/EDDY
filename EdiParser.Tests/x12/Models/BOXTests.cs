@@ -31,15 +31,8 @@ public class BOXTests
 		};
 
 		var actual = Map.MapObject<BOX_BoxOfficeDetail>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-		try
-		{
-			Assert.Equivalent(expected, actual);
-		}
-		catch
-		{
-			Assert.Fail(actual.ValidationResult.ToString());
-		}
-	}
+        Assert.Equivalent(expected, actual);
+    }
 
 	[Theory]
 	[InlineData("", false)]

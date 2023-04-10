@@ -21,14 +21,7 @@ public class CEDTests
 		};
 
 		var actual = Map.MapObject<CED_AdministrationOfJusticeEventDescription>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-		try
-		{
-			Assert.Equivalent(expected, actual);
-		}
-		catch
-		{
-			Assert.Fail(actual.ValidationResult.ToString());
-		}
+		Assert.Equivalent(expected, actual);
 	}
 
 	[Theory]

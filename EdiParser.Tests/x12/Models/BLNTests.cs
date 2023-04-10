@@ -22,15 +22,8 @@ public class BLNTests
 		};
 
 		var actual = Map.MapObject<BLN_BalanceInformation>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-		try
-		{
-			Assert.Equivalent(expected, actual);
-		}
-		catch
-		{
-			Assert.Fail(actual.ValidationResult.ToString());
-		}
-	}
+        Assert.Equivalent(expected, actual);
+    }
 
 	[Theory]
 	[InlineData("", false)]

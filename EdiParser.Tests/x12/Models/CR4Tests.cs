@@ -45,14 +45,7 @@ public class CR4Tests
 		};
 
 		var actual = Map.MapObject<CR4_EnteralOrParenteralTherapyCertification>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
-		try
-		{
-			Assert.Equivalent(expected, actual);
-		}
-		catch
-		{
-			Assert.Fail(actual.ValidationResult.ToString());
-		}
+		Assert.Equivalent(expected, actual);
 	}
 
 	[Theory]

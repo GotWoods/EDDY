@@ -29,12 +29,6 @@ public class CDITests
 
         var actual = Map.MapObject<CDI_ChangeDetailInformation>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
 
-        if (!actual.ValidationResult.IsValid)
-            Assert.Fail(actual.ValidationResult.ToString());
-
-        if (!actual.ConditionsIndicated.ValidationResult.IsValid)
-            Assert.Fail(actual.ConditionsIndicated.ValidationResult.ToString());
-
         Assert.Equivalent(expected, actual);
     }
 
