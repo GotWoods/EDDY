@@ -1,7 +1,6 @@
-using System.Text;
 using Eddy.Core.Attributes;
 using Eddy.Core.Validation;
-using Eddy.x12.Mapping;
+using Eddy.x12.Internals;
 
 namespace Eddy.x12.Models;
 
@@ -21,16 +20,16 @@ public class ISA_InterchangeControlHeader : EdiX12Segment
 	public string SecurityInformation { get; set; }
 
 	[Position(05)]
-	public string InterchangeSenderIdQualifier { get; set; }
+	public string InterchangeIDQualifier { get; set; }
 
 	[Position(06)]
-	public string InterchangeSenderId { get; set; }
+	public string InterchangeSenderID { get; set; }
 
 	[Position(07)]
-	public string InterchangeReceiverIdQualifier { get; set; }
+	public string InterchangeIDQualifier2 { get; set; }
 
 	[Position(08)]
-	public string InterchangeReceiverId { get; set; }
+	public string InterchangeReceiverID { get; set; }
 
 	[Position(09)]
 	public string InterchangeDate { get; set; }
@@ -42,10 +41,10 @@ public class ISA_InterchangeControlHeader : EdiX12Segment
 	public string RepetitionSeparator { get; set; }
 
 	[Position(12)]
-	public int InterchangeControlVersionNumberCode { get; set; }
+	public string InterchangeControlVersionNumberCode { get; set; }
 
 	[Position(13)]
-	public string InterchangeControlNumber { get; set; }
+	public int? InterchangeControlNumber { get; set; }
 
 	[Position(14)]
 	public string AcknowledgmentRequestedCode { get; set; }
@@ -56,60 +55,33 @@ public class ISA_InterchangeControlHeader : EdiX12Segment
 	[Position(16)]
 	public string ComponentElementSeparator { get; set; }
 
-	//ISA is fixed width so we don't use the default mapper for this
-	public string ToString(MapOptions options)
-    {
-		var result = new StringBuilder();
-		result.Append("ISA" + options.Separator);
-		result.Append(AuthorizationInformationQualifier + options.Separator);  //2 characters
-        result.Append(ToFixedLengthString(AuthorizationInformation,10, ' ') + options.Separator);  //10 characters
-        result.Append(ToFixedLengthString(SecurityInformationQualifier,2, ' ') + options.Separator);  //2 characters
-        result.Append(ToFixedLengthString(SecurityInformation,10, ' ') + options.Separator);  //10 characters
-        result.Append(ToFixedLengthString(InterchangeSenderIdQualifier,2, ' ') + options.Separator);  //2 characters
-        result.Append(ToFixedLengthString(InterchangeSenderId,15, ' ') + options.Separator);  //15 characters
-        result.Append(ToFixedLengthString(InterchangeReceiverIdQualifier,2, ' ') + options.Separator);  //2 characters
-        result.Append(ToFixedLengthString(InterchangeReceiverId,15, ' ') + options.Separator);  //15 characters
-        result.Append(ToFixedLengthString(InterchangeDate,6, ' ') + options.Separator);  //6 characters
-        result.Append(ToFixedLengthString(InterchangeTime,4, ' ') + options.Separator);  //4 characters
-        result.Append(ToFixedLengthString(RepetitionSeparator,1, ' ') + options.Separator);  //1 characters (should this be options.Seperator
-        result.Append(ToFixedLengthString(InterchangeControlVersionNumberCode.ToString(),5, '0') + options.Separator);  //5 characters
-        result.Append(ToFixedLengthString(InterchangeControlNumber.ToString(),9, '0') + options.Separator);  //9 characters
-        result.Append(ToFixedLengthString(AcknowledgmentRequestedCode,1, ' ') + options.Separator);  //1 characters
-        result.Append(InterchangeUsageIndicatorCode + options.Separator);  //1 characters
-        result.Append(ComponentElementSeparator);  //1 characters
-        var resultAsString = result.ToString();
-		if (!resultAsString.EndsWith(options.LineEnding))
-		    resultAsString += options.LineEnding;
-        return resultAsString;
-
-		/*
-		 * Assert.Equal() Failure
-	Expected: ISA*00*          *00*          *02*PNII           *02*FGHT           *230301*1506*U*00401*000011501*0*P*:
-	Actual:   ISA*00**00**02*PNII*02*FGHT*230301*1506*U*00401*000011501*0*P*:
-		 */
-	}
-
-	private string ToFixedLengthString(string input, int length, char paddingCharacter)
-    {
-		if (string.IsNullOrEmpty(input))
-			return "".PadRight(length, paddingCharacter);
-		if (paddingCharacter == ' ')//strings get padded right but numbers get padded left
-		    return input.PadRight(length, paddingCharacter);
-        
-        return input.PadLeft(length, paddingCharacter);
-    }
-
 	public override ValidationResult Validate()
 	{
 		var validator = new BasicValidator<ISA_InterchangeControlHeader>(this);
+		validator.Required(x=>x.AuthorizationInformationQualifier);
+		validator.Required(x=>x.AuthorizationInformation);
+		validator.Required(x=>x.SecurityInformationQualifier);
+		validator.Required(x=>x.SecurityInformation);
+		validator.Required(x=>x.InterchangeIDQualifier);
+		validator.Required(x=>x.InterchangeSenderID);
+		validator.Required(x=>x.InterchangeIDQualifier2);
+		validator.Required(x=>x.InterchangeReceiverID);
+		validator.Required(x=>x.InterchangeDate);
+		validator.Required(x=>x.InterchangeTime);
+		validator.Required(x=>x.RepetitionSeparator);
+		validator.Required(x=>x.InterchangeControlVersionNumberCode);
+		validator.Required(x=>x.InterchangeControlNumber);
+		validator.Required(x=>x.AcknowledgmentRequestedCode);
+		validator.Required(x=>x.InterchangeUsageIndicatorCode);
+		validator.Required(x=>x.ComponentElementSeparator);
 		validator.Length(x => x.AuthorizationInformationQualifier, 2);
 		validator.Length(x => x.AuthorizationInformation, 10);
 		validator.Length(x => x.SecurityInformationQualifier, 2);
 		validator.Length(x => x.SecurityInformation, 10);
-		validator.Length(x => x.InterchangeSenderIdQualifier, 2);
-		validator.Length(x => x.InterchangeSenderId, 15);
-		validator.Length(x => x.InterchangeReceiverIdQualifier, 2);
-		validator.Length(x => x.InterchangeReceiverId, 15);
+		validator.Length(x => x.InterchangeIDQualifier, 2);
+		validator.Length(x => x.InterchangeSenderID, 15);
+		validator.Length(x => x.InterchangeIDQualifier2, 2);
+		validator.Length(x => x.InterchangeReceiverID, 15);
 		validator.Length(x => x.InterchangeDate, 6);
 		validator.Length(x => x.InterchangeTime, 4);
 		validator.Length(x => x.RepetitionSeparator, 1);
@@ -120,6 +92,4 @@ public class ISA_InterchangeControlHeader : EdiX12Segment
 		validator.Length(x => x.ComponentElementSeparator, 1);
 		return validator.Results;
 	}
-
-    
 }

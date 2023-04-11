@@ -92,7 +92,7 @@ public partial class Form1 : Form
 
         var counter = 0;
         var modelPath = projectBasePath + @"Eddy.x12\Models";
-        var testPath = projectBasePath + @"Eddy.Tests\x12\Models";
+        var testPath = projectBasePath + @"Eddy.Tests.x12\Models";
         foreach (var item in items)
         {
             var link = item.SelectSingleNode("a");
@@ -113,7 +113,7 @@ public partial class Form1 : Form
             File.WriteAllText(testPath + "\\" + type + "Tests.cs", results.Test);
 
 
-            if (counter >= 20)
+            if (counter >= int.Parse(txtBatchCount.Text))
                 break;
         }
     }
