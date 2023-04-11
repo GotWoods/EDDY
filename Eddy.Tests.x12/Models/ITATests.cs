@@ -48,10 +48,10 @@ public class ITATests
 	}
 
 	[Theory]
-	[InlineData("","", true)]
-	[InlineData("4D", "CQ", false)]
-	[InlineData("","CQ", true)]
-	[InlineData("4D", "", true)]
+	[InlineData("","", "", "",true)]
+	[InlineData("4D", "CQ", "", "", false)]
+    [InlineData("", "CQ", "", "", true)]
+	[InlineData("4D", "", "", "", true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_AgencyQualifierCode(string agencyQualifierCode, string specialServicesCode, string description, string specialChargeOrAllowanceCode, bool isValidExpected)
 	{
 		var subject = new ITA_AllowanceChargeOrService();

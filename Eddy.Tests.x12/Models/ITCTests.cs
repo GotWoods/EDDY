@@ -142,10 +142,10 @@ public class ITCTests
 	}
 
 	[Theory]
-	[InlineData("","", true)]
-	[InlineData("6G", "H", false)]
-	[InlineData("","H", true)]
-	[InlineData("6G", "", true)]
+	[InlineData("", "", "", true)]
+	[InlineData("6G", "H",  "", false)]
+	[InlineData("", "H", "", true)]
+	[InlineData("6G", "", "", true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_UnitOfTimePeriodOrIntervalCode(string unitOfTimePeriodOrIntervalCode, string financialInformationTypeCode, string freeFormInformation, bool isValidExpected)
 	{
 		var subject = new ITC_InformationTypeAndCommentResults();
@@ -158,10 +158,10 @@ public class ITCTests
 	}
 
 	[Theory]
-	[InlineData("","", true)]
-	[InlineData("b", "H", false)]
-	[InlineData("","H", true)]
-	[InlineData("b", "", true)]
+	[InlineData("","", "",true)]
+	[InlineData("b", "H", "",false)]
+	[InlineData("", "H", "", true)]
+	[InlineData("b", "", "",true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_Description(string description, string financialInformationTypeCode, string freeFormInformation, bool isValidExpected)
 	{
 		var subject = new ITC_InformationTypeAndCommentResults();

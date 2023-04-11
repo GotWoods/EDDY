@@ -99,6 +99,9 @@ public class G76Tests
 		subject.OrderSizingFactor = orderSizingFactor;
 		subject.UnitOrBasisForMeasurementCode2 = unitOrBasisForMeasurementCode2;
 
+		if (unitOrBasisForMeasurementCode2 != "")
+			subject.Weight = 22;
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 

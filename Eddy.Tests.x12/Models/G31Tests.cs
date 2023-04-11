@@ -96,10 +96,15 @@ public class G31Tests
         var subject = new G31_TotalInvoiceQuantity();
         subject.NumberOfUnitsShipped = 9;
         subject.UnitOrBasisForMeasurementCode = "ye";
-        subject.Weight = 12;
+        // subject.Weight = 12;
+        // subject.UnitOrBasisForMeasurementCode2 = "AA";
         if (orderSizingFactor > 0)
             subject.OrderSizingFactor = orderSizingFactor;
+
         subject.UnitOrBasisForMeasurementCode2 = unitOrBasisForMeasurementCode2;
+
+        if (unitOrBasisForMeasurementCode2 != "")
+            subject.Weight = 12;
 
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
     }

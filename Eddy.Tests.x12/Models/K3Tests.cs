@@ -15,7 +15,7 @@ public class K3Tests
 		{
 			FixedFormatInformation = "8",
 			RecordFormatCode = "E",
-			CompositeUnitOfMeasure = "",
+			CompositeUnitOfMeasure = null,
 		};
 
 		var actual = Map.MapObject<K3_FileInformation>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);

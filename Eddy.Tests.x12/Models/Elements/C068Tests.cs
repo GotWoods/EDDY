@@ -9,7 +9,7 @@ public class C068Tests
     [Fact]
     public void Parse_ShouldReturnCorrectObject()
     {
-        var x12Line = "*S*4y*j*AF*u*Ru*U*ZY*t*5Y*P*RO*7*nx*F*o0";
+        var x12Line = "S*4y*j*AF*u*Ru*U*ZY*t*5Y*P*RO*7*nx*F*o0";
 
         var expected = new C068_CompositeIngredientInformation()
         {

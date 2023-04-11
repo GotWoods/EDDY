@@ -75,10 +75,10 @@ public class LC1Tests
 	}
 
 	[Theory]
-	[InlineData("",0, true)]
-	[InlineData("qG", 8, false)]
-	[InlineData("",8, true)]
-	[InlineData("qG", 0, true)]
+	[InlineData("",0, 0,true)]
+	[InlineData("qG", 8, 0, false)]
+	[InlineData("",8, 0, true)]
+	[InlineData("qG", 0, 0, true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_RateValueQualifier(string rateValueQualifier, decimal freightRate, decimal freightRate2, bool isValidExpected)
 	{
 		var subject = new LC1_LaneCommitments();

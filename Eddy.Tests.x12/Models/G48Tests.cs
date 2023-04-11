@@ -60,7 +60,13 @@ public class G48Tests
 		subject.InvoiceNumber = invoiceNumber;
 		subject.ReferenceIdentificationQualifier = referenceIdentificationQualifier;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
+		if (referenceIdentificationQualifier != "")
+			subject.ReferenceIdentification = "AB";
+
+		if (invoiceNumber!= "")
+            subject.Date = "20020101";
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}
 
 	[Theory]
@@ -74,6 +80,8 @@ public class G48Tests
 		subject.ReferenceIdentificationQualifier = referenceIdentificationQualifier;
 		subject.ReferenceIdentification = referenceIdentification;
 
+		subject.InvoiceNumber = "AB";
+		subject.Date = "20020101";
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 
