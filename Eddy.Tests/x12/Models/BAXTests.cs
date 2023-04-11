@@ -36,7 +36,7 @@ public class BAXTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("VO67ku", true)]
-	public void Validatation_RequiredStandardPointLocationCode(string standardPointLocationCode, bool isValidExpected)
+	public void Validation_RequiredStandardPointLocationCode(string standardPointLocationCode, bool isValidExpected)
 	{
 		var subject = new BAX_BeginningSegmentForAdvanceConsistAndTransportationAutomaticEquipmentId();
 		subject.TypeOfConsistCode = "W";
@@ -50,7 +50,7 @@ public class BAXTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("W", true)]
-	public void Validatation_RequiredTypeOfConsistCode(string typeOfConsistCode, bool isValidExpected)
+	public void Validation_RequiredTypeOfConsistCode(string typeOfConsistCode, bool isValidExpected)
 	{
 		var subject = new BAX_BeginningSegmentForAdvanceConsistAndTransportationAutomaticEquipmentId();
 		subject.StandardPointLocationCode = "VO67ku";
@@ -64,7 +64,7 @@ public class BAXTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Ill", true)]
-	public void Validatation_RequiredDateTimeQualifier(string dateTimeQualifier, bool isValidExpected)
+	public void Validation_RequiredDateTimeQualifier(string dateTimeQualifier, bool isValidExpected)
 	{
 		var subject = new BAX_BeginningSegmentForAdvanceConsistAndTransportationAutomaticEquipmentId();
 		subject.StandardPointLocationCode = "VO67ku";
@@ -78,7 +78,7 @@ public class BAXTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("uRcuS773", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BAX_BeginningSegmentForAdvanceConsistAndTransportationAutomaticEquipmentId();
 		subject.StandardPointLocationCode = "VO67ku";
@@ -92,7 +92,7 @@ public class BAXTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Pyhz", true)]
-	public void Validatation_RequiredTime(string time, bool isValidExpected)
+	public void Validation_RequiredTime(string time, bool isValidExpected)
 	{
 		var subject = new BAX_BeginningSegmentForAdvanceConsistAndTransportationAutomaticEquipmentId();
 		subject.StandardPointLocationCode = "VO67ku";

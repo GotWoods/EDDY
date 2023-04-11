@@ -23,7 +23,7 @@ public class IEATests
     [Theory]
     [InlineData(0, false)]
     [InlineData(1, true)]
-    public void Validatation_RequiredNumberOfIncludedFunctionalGroups(int numberOfIncludedFunctionalGroups, bool isValidExpected)
+    public void Validation_RequiredNumberOfIncludedFunctionalGroups(int numberOfIncludedFunctionalGroups, bool isValidExpected)
     {
         var subject = new IEA_InterchangeControlTrailer();
         subject.InterchangeControlNumber = 123456789.ToString();
@@ -35,7 +35,7 @@ public class IEATests
     [Theory]
     [InlineData(0, false)]
     [InlineData(123456789, true)]
-    public void Validatation_RequiredInterchangeControlNumber(int interchangeControlNumber, bool isValidExpected)
+    public void Validation_RequiredInterchangeControlNumber(int interchangeControlNumber, bool isValidExpected)
     {
         var subject = new IEA_InterchangeControlTrailer();
         subject.NumberOfIncludedFunctionalGroups = 1;

@@ -23,7 +23,7 @@ public class N3Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("v1", true)]
-    public void Validatation_RequiredAddressInformation(string addressInformation, bool isValidExpected)
+    public void Validation_RequiredAddressInformation(string addressInformation, bool isValidExpected)
     {
         var subject = new N3_PartyLocation();
         subject.AddressInformation = addressInformation;

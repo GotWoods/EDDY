@@ -28,7 +28,7 @@ public class CROTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Xv", true)]
-	public void Validatation_RequiredDateTimePeriodFormatQualifier(string dateTimePeriodFormatQualifier, bool isValidExpected)
+	public void Validation_RequiredDateTimePeriodFormatQualifier(string dateTimePeriodFormatQualifier, bool isValidExpected)
 	{
 		var subject = new CRO_CreditReportOrderDetails();
 		subject.DateTimePeriod = "0";
@@ -42,7 +42,7 @@ public class CROTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("0", true)]
-	public void Validatation_RequiredDateTimePeriod(string dateTimePeriod, bool isValidExpected)
+	public void Validation_RequiredDateTimePeriod(string dateTimePeriod, bool isValidExpected)
 	{
 		var subject = new CRO_CreditReportOrderDetails();
 		subject.DateTimePeriodFormatQualifier = "Xv";
@@ -56,7 +56,7 @@ public class CROTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("sb", true)]
-	public void Validatation_RequiredProductServiceIDQualifier(string productServiceIDQualifier, bool isValidExpected)
+	public void Validation_RequiredProductServiceIDQualifier(string productServiceIDQualifier, bool isValidExpected)
 	{
 		var subject = new CRO_CreditReportOrderDetails();
 		subject.DateTimePeriodFormatQualifier = "Xv";
@@ -70,7 +70,7 @@ public class CROTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("U", true)]
-	public void Validatation_RequiredProductServiceID(string productServiceID, bool isValidExpected)
+	public void Validation_RequiredProductServiceID(string productServiceID, bool isValidExpected)
 	{
 		var subject = new CRO_CreditReportOrderDetails();
 		subject.DateTimePeriodFormatQualifier = "Xv";
@@ -84,7 +84,7 @@ public class CROTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("X", true)]
-	public void Validatation_RequiredActionCode(string actionCode, bool isValidExpected)
+	public void Validation_RequiredActionCode(string actionCode, bool isValidExpected)
 	{
 		var subject = new CRO_CreditReportOrderDetails();
 		subject.DateTimePeriodFormatQualifier = "Xv";

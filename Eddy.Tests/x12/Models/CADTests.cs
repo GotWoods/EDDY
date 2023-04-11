@@ -31,7 +31,7 @@ public class CADTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("d", true)]
-	public void Validatation_RequiredTransportationMethodTypeCode(string transportationMethodTypeCode, bool isValidExpected)
+	public void Validation_RequiredTransportationMethodTypeCode(string transportationMethodTypeCode, bool isValidExpected)
 	{
 		var subject = new CAD_CarrierDetails();
 		subject.TransportationMethodTypeCode = transportationMethodTypeCode;

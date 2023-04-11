@@ -27,7 +27,7 @@ public class APETests
     [Theory]
     [InlineData("", false)]
     [InlineData("4eo", true)]
-    public void Validatation_RequiredBusinessPurposeOfAssuranceCode(string businessPurposeOfAssuranceCode, bool isValidExpected)
+    public void Validation_RequiredBusinessPurposeOfAssuranceCode(string businessPurposeOfAssuranceCode, bool isValidExpected)
     {
         var subject = new APE_AssuranceProtocolError();
         subject.DomainOfComputationOfAssuranceCode = "o";
@@ -39,7 +39,7 @@ public class APETests
     [Theory]
     [InlineData("", false)]
     [InlineData("o", true)]
-    public void Validatation_RequiredDomainOfComputationOfAssuranceCode(string domainOfComputationOfAssuranceCode, bool isValidExpected)
+    public void Validation_RequiredDomainOfComputationOfAssuranceCode(string domainOfComputationOfAssuranceCode, bool isValidExpected)
     {
         var subject = new APE_AssuranceProtocolError();
         subject.BusinessPurposeOfAssuranceCode = "4eo";
@@ -51,7 +51,7 @@ public class APETests
     [Theory]
     [InlineData("", false)]
     [InlineData("O", true)]
-    public void Validatation_RequiredSecurityOrAssuranceProtocolErrorCode(string securityOrAssuranceProtocolErrorCode, bool isValidExpected)
+    public void Validation_RequiredSecurityOrAssuranceProtocolErrorCode(string securityOrAssuranceProtocolErrorCode, bool isValidExpected)
     {
         var subject = new APE_AssuranceProtocolError();
         subject.BusinessPurposeOfAssuranceCode = "4eo";

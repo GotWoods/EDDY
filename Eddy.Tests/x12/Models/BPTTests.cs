@@ -32,7 +32,7 @@ public class BPTTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("F6", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BPT_BeginningSegmentForProductTransferAndResale();
 		subject.Date = "dCVcXvWB";
@@ -43,7 +43,7 @@ public class BPTTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("dCVcXvWB", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BPT_BeginningSegmentForProductTransferAndResale();
 		subject.TransactionSetPurposeCode = "F6";

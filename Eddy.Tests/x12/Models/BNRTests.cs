@@ -28,7 +28,7 @@ public class BNRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("oE", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BNR_BeginningSegmentForNonconformanceReport();
 		subject.ReferenceIdentification = "U";
@@ -40,7 +40,7 @@ public class BNRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("U", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new BNR_BeginningSegmentForNonconformanceReport();
 		subject.TransactionSetPurposeCode = "oE";
@@ -52,7 +52,7 @@ public class BNRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("NqETdjzl", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BNR_BeginningSegmentForNonconformanceReport();
 		subject.TransactionSetPurposeCode = "oE";

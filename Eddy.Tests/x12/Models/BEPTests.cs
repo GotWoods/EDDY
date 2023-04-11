@@ -24,7 +24,7 @@ public class BEPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("0", true)]
-	public void Validatation_RequiredProgramParticipationAndServicesCode(string programParticipationAndServicesCode, bool isValidExpected)
+	public void Validation_RequiredProgramParticipationAndServicesCode(string programParticipationAndServicesCode, bool isValidExpected)
 	{
 		var subject = new BEP_BorrowerEducationProgram();
 		subject.ProgramParticipationAndServicesCode = programParticipationAndServicesCode;

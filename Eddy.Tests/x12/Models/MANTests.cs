@@ -28,7 +28,7 @@ public class MANTests
     [Theory]
     [InlineData("", false)]
     [InlineData("5X", true)]
-    public void Validatation_RequiredMarksAndNumbersQualifier(string marksAndNumbersQualifier, bool isValidExpected)
+    public void Validation_RequiredMarksAndNumbersQualifier(string marksAndNumbersQualifier, bool isValidExpected)
     {
         var subject = new MAN_MarksAndNumbersInformation();
         subject.MarksAndNumbers = "AfC8SIKhfE9mbPo1vRDwRuIt5iI7i29Hwzk7yFJqNZVs3YSY";
@@ -39,7 +39,7 @@ public class MANTests
     [Theory]
     [InlineData("", false)]
     [InlineData("AfC8SIKhfE9mbPo1vRDwRuIt5iI7i29Hwzk7yFJqNZVs3YSY", true)]
-    public void Validatation_RequiredMarksAndNumbers(string marksAndNumbers, bool isValidExpected)
+    public void Validation_RequiredMarksAndNumbers(string marksAndNumbers, bool isValidExpected)
     {
         var subject = new MAN_MarksAndNumbersInformation();
         subject.MarksAndNumbersQualifier = "5X";

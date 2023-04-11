@@ -26,7 +26,7 @@ public class E01Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("P", true)]
-	public void Validatation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
+	public void Validation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
 	{
 		var subject = new E01_ElectronicFormMainHeading();
 		subject.ElectronicFormStandardsTypeCode = "7";
@@ -39,7 +39,7 @@ public class E01Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("7", true)]
-	public void Validatation_RequiredElectronicFormStandardsTypeCode(string electronicFormStandardsTypeCode, bool isValidExpected)
+	public void Validation_RequiredElectronicFormStandardsTypeCode(string electronicFormStandardsTypeCode, bool isValidExpected)
 	{
 		var subject = new E01_ElectronicFormMainHeading();
 		subject.MaintenanceOperationCode = "P";
@@ -52,7 +52,7 @@ public class E01Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("4", true)]
-	public void Validatation_RequiredVersionReleaseIndustryIdentifierCode(string versionReleaseIndustryIdentifierCode, bool isValidExpected)
+	public void Validation_RequiredVersionReleaseIndustryIdentifierCode(string versionReleaseIndustryIdentifierCode, bool isValidExpected)
 	{
 		var subject = new E01_ElectronicFormMainHeading();
 		subject.MaintenanceOperationCode = "P";
@@ -65,7 +65,7 @@ public class E01Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("1", true)]
-	public void Validatation_RequiredFullOrPartialIndicatorCode(string fullOrPartialIndicatorCode, bool isValidExpected)
+	public void Validation_RequiredFullOrPartialIndicatorCode(string fullOrPartialIndicatorCode, bool isValidExpected)
 	{
 		var subject = new E01_ElectronicFormMainHeading();
 		subject.MaintenanceOperationCode = "P";

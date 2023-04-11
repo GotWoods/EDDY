@@ -29,7 +29,7 @@ public class CRCTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Oc", true)]
-	public void Validatation_RequiredCodeCategory(string codeCategory, bool isValidExpected)
+	public void Validation_RequiredCodeCategory(string codeCategory, bool isValidExpected)
 	{
 		var subject = new CRC_ConditionsIndicator();
 		subject.YesNoConditionOrResponseCode = "V";
@@ -41,7 +41,7 @@ public class CRCTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("V", true)]
-	public void Validatation_RequiredYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, bool isValidExpected)
+	public void Validation_RequiredYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, bool isValidExpected)
 	{
 		var subject = new CRC_ConditionsIndicator();
 		subject.CodeCategory = "Oc";
@@ -53,7 +53,7 @@ public class CRCTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("GH", true)]
-	public void Validatation_RequiredConditionIndicatorCode(string conditionIndicatorCode, bool isValidExpected)
+	public void Validation_RequiredConditionIndicatorCode(string conditionIndicatorCode, bool isValidExpected)
 	{
 		var subject = new CRC_ConditionsIndicator();
 		subject.CodeCategory = "Oc";

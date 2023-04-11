@@ -26,7 +26,7 @@ public class CLRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("x", true)]
-	public void Validatation_RequiredIdentificationCodeQualifier(string identificationCodeQualifier, bool isValidExpected)
+	public void Validation_RequiredIdentificationCodeQualifier(string identificationCodeQualifier, bool isValidExpected)
 	{
 		var subject = new CLR_CarLocationRoutingRequest();
 		subject.IdentificationCode = "m6";
@@ -37,7 +37,7 @@ public class CLRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("m6", true)]
-	public void Validatation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
+	public void Validation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
 	{
 		var subject = new CLR_CarLocationRoutingRequest();
 		subject.IdentificationCodeQualifier = "x";

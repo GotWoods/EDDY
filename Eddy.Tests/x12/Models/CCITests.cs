@@ -32,7 +32,7 @@ public class CCITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("pR", true)]
-	public void Validatation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
+	public void Validation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
 	{
 		var subject = new CCI_CreditCounselingInformation();
 		subject.ReferenceIdentification = "5";
@@ -43,7 +43,7 @@ public class CCITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("5", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new CCI_CreditCounselingInformation();
 		subject.IdentificationCode = "pR";

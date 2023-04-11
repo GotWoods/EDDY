@@ -24,7 +24,7 @@ public class AVATests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(6, true)]
-	public void Validatation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
+	public void Validation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
 	{
 		var subject = new AVA_FundsAvailability();
 		subject.Availability = 8;
@@ -36,7 +36,7 @@ public class AVATests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(8, true)]
-	public void Validatation_RequiredAvailability(decimal availability, bool isValidExpected)
+	public void Validation_RequiredAvailability(decimal availability, bool isValidExpected)
 	{
 		var subject = new AVA_FundsAvailability();
 		subject.MonetaryAmount = 6;

@@ -27,7 +27,7 @@ public class ATHTests
     [Theory]
     [InlineData("", false)]
     [InlineData("n0", true)]
-    public void Validatation_RequiredResourceAuthorizationCode(string resourceAuthorizationCode, bool isValidExpected)
+    public void Validation_RequiredResourceAuthorizationCode(string resourceAuthorizationCode, bool isValidExpected)
     {
         var subject = new ATH_ResourceAuthorization();
         subject.ResourceAuthorizationCode = resourceAuthorizationCode;

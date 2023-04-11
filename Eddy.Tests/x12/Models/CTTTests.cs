@@ -29,7 +29,7 @@ public class CTTTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(3, true)]
-	public void Validatation_RequiredNumberOfLineItems(int numberOfLineItems, bool isValidExpected)
+	public void Validation_RequiredNumberOfLineItems(int numberOfLineItems, bool isValidExpected)
 	{
 		var subject = new CTT_TransactionTotals();
 		if (numberOfLineItems > 0)

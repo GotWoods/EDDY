@@ -25,7 +25,7 @@ public class E1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("G", true)]
-	public void Validatation_RequiredName(string name, bool isValidExpected)
+	public void Validation_RequiredName(string name, bool isValidExpected)
 	{
 		var subject = new E1_EmptyCarDispositionPendedDestinationConsignee();
 		subject.Name = name;

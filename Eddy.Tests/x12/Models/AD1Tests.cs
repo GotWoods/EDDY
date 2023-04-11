@@ -27,7 +27,7 @@ public class AD1Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("77", true)]
-    public void Validatation_RequiredAdjustmentReasonCode(string adjustmentReasonCode, bool isValidExpected)
+    public void Validation_RequiredAdjustmentReasonCode(string adjustmentReasonCode, bool isValidExpected)
     {
         var subject = new AD1_AdjustmentAmount();
         subject.AdjustmentReasonCode = adjustmentReasonCode;

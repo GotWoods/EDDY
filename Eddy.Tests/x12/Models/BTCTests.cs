@@ -34,7 +34,7 @@ public class BTCTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("iL", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BTC_BeginningSegmentForParameterTraceRegistration();
 		subject.ParameterTraceRegistrationTypeCode = "s";
@@ -48,7 +48,7 @@ public class BTCTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("s", true)]
-	public void Validatation_RequiredParameterTraceRegistrationTypeCode(string parameterTraceRegistrationTypeCode, bool isValidExpected)
+	public void Validation_RequiredParameterTraceRegistrationTypeCode(string parameterTraceRegistrationTypeCode, bool isValidExpected)
 	{
 		var subject = new BTC_BeginningSegmentForParameterTraceRegistration();
 		subject.TransactionSetPurposeCode = "iL";
@@ -62,7 +62,7 @@ public class BTCTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("D", true)]
-	public void Validatation_RequiredParameterTraceTypeCode(string parameterTraceTypeCode, bool isValidExpected)
+	public void Validation_RequiredParameterTraceTypeCode(string parameterTraceTypeCode, bool isValidExpected)
 	{
 		var subject = new BTC_BeginningSegmentForParameterTraceRegistration();
 		subject.TransactionSetPurposeCode = "iL";
@@ -76,7 +76,7 @@ public class BTCTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("q", true)]
-	public void Validatation_RequiredOutputEventSelectionCode(string outputEventSelectionCode, bool isValidExpected)
+	public void Validation_RequiredOutputEventSelectionCode(string outputEventSelectionCode, bool isValidExpected)
 	{
 		var subject = new BTC_BeginningSegmentForParameterTraceRegistration();
 		subject.TransactionSetPurposeCode = "iL";
@@ -90,7 +90,7 @@ public class BTCTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("7", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new BTC_BeginningSegmentForParameterTraceRegistration();
 		subject.TransactionSetPurposeCode = "iL";

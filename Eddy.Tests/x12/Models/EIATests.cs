@@ -28,7 +28,7 @@ public class EIATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("yW", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new EIA_BeginningSegmentForEquipmentInquiryOrAdvice();
 		subject.TransactionSetPurposeCode = transactionSetPurposeCode;

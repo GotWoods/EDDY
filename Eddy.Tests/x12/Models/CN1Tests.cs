@@ -28,7 +28,7 @@ public class CN1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Zo", true)]
-	public void Validatation_RequiredContractTypeCode(string contractTypeCode, bool isValidExpected)
+	public void Validation_RequiredContractTypeCode(string contractTypeCode, bool isValidExpected)
 	{
 		var subject = new CN1_ContractInformation();
 		subject.ContractTypeCode = contractTypeCode;

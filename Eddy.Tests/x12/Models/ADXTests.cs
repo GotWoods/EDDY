@@ -26,7 +26,7 @@ public class ADXTests
     [Theory]
     [InlineData(0, false)]
     [InlineData(1, true)]
-    public void Validatation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
+    public void Validation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
     {
         var subject = new ADX_Adjustment();
         subject.AdjustmentReasonCode = "Ul";
@@ -38,7 +38,7 @@ public class ADXTests
     [Theory]
     [InlineData("", false)]
     [InlineData("Ul", true)]
-    public void Validatation_RequiredAdjustmentReasonCode(string adjustmentReasonCode, bool isValidExpected)
+    public void Validation_RequiredAdjustmentReasonCode(string adjustmentReasonCode, bool isValidExpected)
     {
         var subject = new ADX_Adjustment();
         subject.MonetaryAmount = 1;

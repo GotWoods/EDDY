@@ -24,7 +24,7 @@ public class C034Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("NsB", true)]
-    public void Validatation_RequiredAssuranceAlgorithmCode(string assuranceAlgorithmCode, bool isValidExpected)
+    public void Validation_RequiredAssuranceAlgorithmCode(string assuranceAlgorithmCode, bool isValidExpected)
     {
         var subject = new C034_ComputationMethods();
         subject.HashingAlgorithmCode = "1Rk";
@@ -35,7 +35,7 @@ public class C034Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("1Rk", true)]
-    public void Validatation_RequiredHashingAlgorithmCode(string hashingAlgorithmCode, bool isValidExpected)
+    public void Validation_RequiredHashingAlgorithmCode(string hashingAlgorithmCode, bool isValidExpected)
     {
         var subject = new C034_ComputationMethods();
         subject.AssuranceAlgorithmCode = "NsB";

@@ -28,7 +28,7 @@ public class BLNTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("I", true)]
-	public void Validatation_RequiredCodeListQualifierCode(string codeListQualifierCode, bool isValidExpected)
+	public void Validation_RequiredCodeListQualifierCode(string codeListQualifierCode, bool isValidExpected)
 	{
 		var subject = new BLN_BalanceInformation();
 		subject.IndustryCode = "G";
@@ -40,7 +40,7 @@ public class BLNTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("G", true)]
-	public void Validatation_RequiredIndustryCode(string industryCode, bool isValidExpected)
+	public void Validation_RequiredIndustryCode(string industryCode, bool isValidExpected)
 	{
 		var subject = new BLN_BalanceInformation();
 		subject.CodeListQualifierCode = "I";
@@ -52,7 +52,7 @@ public class BLNTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(5, true)]
-	public void Validatation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
+	public void Validation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
 	{
 		var subject = new BLN_BalanceInformation();
 		subject.CodeListQualifierCode = "I";

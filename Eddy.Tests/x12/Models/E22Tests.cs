@@ -34,7 +34,7 @@ public class E22Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("N", true)]
-	public void Validatation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
+	public void Validation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
 	{
 		var subject = new E22_DataElementRelationshipsInASegmentOrComposite();
 		subject.RelationCode = "7";
@@ -46,7 +46,7 @@ public class E22Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("7", true)]
-	public void Validatation_RequiredRelationCode(string relationCode, bool isValidExpected)
+	public void Validation_RequiredRelationCode(string relationCode, bool isValidExpected)
 	{
 		var subject = new E22_DataElementRelationshipsInASegmentOrComposite();
 		subject.MaintenanceOperationCode = "N";
@@ -58,7 +58,7 @@ public class E22Tests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(6, true)]
-	public void Validatation_RequiredPositionInSegmentOrComposite(int positionInSegmentOrComposite, bool isValidExpected)
+	public void Validation_RequiredPositionInSegmentOrComposite(int positionInSegmentOrComposite, bool isValidExpected)
 	{
 		var subject = new E22_DataElementRelationshipsInASegmentOrComposite();
 		subject.MaintenanceOperationCode = "N";

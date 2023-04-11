@@ -31,7 +31,7 @@ public class ESITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("A", true)]
-	public void Validatation_RequiredYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, bool isValidExpected)
+	public void Validation_RequiredYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, bool isValidExpected)
 	{
 		var subject = new ESI_EmploymentStatusInformation();
 		subject.YesNoConditionOrResponseCode = yesNoConditionOrResponseCode;

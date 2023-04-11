@@ -27,7 +27,7 @@ public class ENETests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("BJ", true)]
-	public void Validatation_RequiredCommunicationsEnvironmentCode(string communicationsEnvironmentCode, bool isValidExpected)
+	public void Validation_RequiredCommunicationsEnvironmentCode(string communicationsEnvironmentCode, bool isValidExpected)
 	{
 		var subject = new ENE_ElectronicSystemsEnvironment();
 		subject.CommunicationNumberQualifier = "fi";
@@ -39,7 +39,7 @@ public class ENETests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("fi", true)]
-	public void Validatation_RequiredCommunicationNumberQualifier(string communicationNumberQualifier, bool isValidExpected)
+	public void Validation_RequiredCommunicationNumberQualifier(string communicationNumberQualifier, bool isValidExpected)
 	{
 		var subject = new ENE_ElectronicSystemsEnvironment();
 		subject.CommunicationsEnvironmentCode = "BJ";
@@ -51,7 +51,7 @@ public class ENETests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("H", true)]
-	public void Validatation_RequiredCommunicationNumber(string communicationNumber, bool isValidExpected)
+	public void Validation_RequiredCommunicationNumber(string communicationNumber, bool isValidExpected)
 	{
 		var subject = new ENE_ElectronicSystemsEnvironment();
 		subject.CommunicationsEnvironmentCode = "BJ";

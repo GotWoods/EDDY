@@ -26,7 +26,7 @@ public class C006Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("T", true)]
-    public void Validatation_RequiredOralCavityDesignationCode(string oralCavityDesignationCode, bool isValidExpected)
+    public void Validation_RequiredOralCavityDesignationCode(string oralCavityDesignationCode, bool isValidExpected)
     {
         var subject = new C006_OralCavityDesignation();
         subject.OralCavityDesignationCode = oralCavityDesignationCode;

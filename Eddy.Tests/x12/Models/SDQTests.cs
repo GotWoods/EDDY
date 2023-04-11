@@ -44,7 +44,7 @@ public class SDQTests
     [Theory]
     [InlineData("", false)]
     [InlineData("v1", true)]
-    public void Validatation_RequiredUnitOrBasisForMeasurementCode(string unitOrBasisForMeasurementCode, bool isValidExpected)
+    public void Validation_RequiredUnitOrBasisForMeasurementCode(string unitOrBasisForMeasurementCode, bool isValidExpected)
     {
         var subject = new SDQ_DestinationQuantity();
         subject.IdentificationCode = "V1";
@@ -57,7 +57,7 @@ public class SDQTests
     [Theory]
     [InlineData("", false)]
     [InlineData("v1", true)]
-    public void Validatation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
+    public void Validation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
     {
         var subject = new SDQ_DestinationQuantity();
         subject.IdentificationCode = identificationCode;
@@ -69,7 +69,7 @@ public class SDQTests
     [Theory]
     [InlineData(0, false)]
     [InlineData(1, true)]
-    public void Validatation_RequiredQuantity(decimal quantity, bool isValidExpected)
+    public void Validation_RequiredQuantity(decimal quantity, bool isValidExpected)
     {
         var subject = new SDQ_DestinationQuantity();
         subject.IdentificationCode = "V1";

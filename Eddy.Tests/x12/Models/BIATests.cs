@@ -28,7 +28,7 @@ public class BIATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Do", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BIA_BeginningSegmentForInventoryInquiryAdvice();
 		subject.ReportTypeCode = "Er";
@@ -41,7 +41,7 @@ public class BIATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Er", true)]
-	public void Validatation_RequiredReportTypeCode(string reportTypeCode, bool isValidExpected)
+	public void Validation_RequiredReportTypeCode(string reportTypeCode, bool isValidExpected)
 	{
 		var subject = new BIA_BeginningSegmentForInventoryInquiryAdvice();
 		subject.TransactionSetPurposeCode = "Do";
@@ -54,7 +54,7 @@ public class BIATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("J", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new BIA_BeginningSegmentForInventoryInquiryAdvice();
 		subject.TransactionSetPurposeCode = "Do";
@@ -67,7 +67,7 @@ public class BIATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("SBY1MtfF", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BIA_BeginningSegmentForInventoryInquiryAdvice();
 		subject.TransactionSetPurposeCode = "Do";

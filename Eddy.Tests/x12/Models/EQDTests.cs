@@ -25,7 +25,7 @@ public class EQDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Z", true)]
-	public void Validatation_RequiredLocationOnEquipmentCode(string locationOnEquipmentCode, bool isValidExpected)
+	public void Validation_RequiredLocationOnEquipmentCode(string locationOnEquipmentCode, bool isValidExpected)
 	{
 		var subject = new EQD_EQDEquipmentDamageInformation();
 		subject.TypeOfDamageCode = "T";
@@ -36,7 +36,7 @@ public class EQDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("T", true)]
-	public void Validatation_RequiredTypeOfDamageCode(string typeOfDamageCode, bool isValidExpected)
+	public void Validation_RequiredTypeOfDamageCode(string typeOfDamageCode, bool isValidExpected)
 	{
 		var subject = new EQD_EQDEquipmentDamageInformation();
 		subject.LocationOnEquipmentCode = "Z";

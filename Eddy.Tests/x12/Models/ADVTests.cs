@@ -29,7 +29,7 @@ public class ADVTests
     [Theory]
     [InlineData("", false)]
     [InlineData("ob", true)]
-    public void Validatation_RequiredAgencyQualifierCode(string agencyQualifierCode, bool isValidExpected)
+    public void Validation_RequiredAgencyQualifierCode(string agencyQualifierCode, bool isValidExpected)
     {
         var subject = new ADV_AdvertisingDemographicInformation();
         subject.ServiceCharacteristicsQualifier = "GV";
@@ -40,7 +40,7 @@ public class ADVTests
     [Theory]
     [InlineData("", false)]
     [InlineData("GV", true)]
-    public void Validatation_RequiredServiceCharacteristicsQualifier(string serviceCharacteristicsQualifier, bool isValidExpected)
+    public void Validation_RequiredServiceCharacteristicsQualifier(string serviceCharacteristicsQualifier, bool isValidExpected)
     {
         var subject = new ADV_AdvertisingDemographicInformation();
         subject.AgencyQualifierCode = "ob";

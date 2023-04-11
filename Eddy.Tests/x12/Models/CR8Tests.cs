@@ -31,7 +31,7 @@ public class CR8Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("K", true)]
-	public void Validatation_RequiredImplantTypeCode(string implantTypeCode, bool isValidExpected)
+	public void Validation_RequiredImplantTypeCode(string implantTypeCode, bool isValidExpected)
 	{
 		var subject = new CR8_ImplantCertification();
 		subject.ImplantStatusCode = "O";
@@ -42,7 +42,7 @@ public class CR8Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("O", true)]
-	public void Validatation_RequiredImplantStatusCode(string implantStatusCode, bool isValidExpected)
+	public void Validation_RequiredImplantStatusCode(string implantStatusCode, bool isValidExpected)
 	{
 		var subject = new CR8_ImplantCertification();
 		subject.ImplantTypeCode = "K";

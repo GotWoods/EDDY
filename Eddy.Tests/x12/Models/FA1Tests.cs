@@ -25,7 +25,7 @@ public class FA1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("bh", true)]
-	public void Validatation_RequiredAgencyQualifierCode(string agencyQualifierCode, bool isValidExpected)
+	public void Validation_RequiredAgencyQualifierCode(string agencyQualifierCode, bool isValidExpected)
 	{
 		var subject = new FA1_TypeOfFinancialAccountingData();
 		subject.AgencyQualifierCode = agencyQualifierCode;

@@ -29,7 +29,7 @@ public class BVBTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("I9", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
 	{
 		var subject = new BVB_BeginningSegmentForVehicleBayingOrder();
 		subject.IdentificationCodeQualifier = "k";
@@ -41,7 +41,7 @@ public class BVBTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("k", true)]
-	public void Validatation_RequiredIdentificationCodeQualifier(string identificationCodeQualifier, bool isValidExpected)
+	public void Validation_RequiredIdentificationCodeQualifier(string identificationCodeQualifier, bool isValidExpected)
 	{
 		var subject = new BVB_BeginningSegmentForVehicleBayingOrder();
 		subject.StandardCarrierAlphaCode = "I9";
@@ -53,7 +53,7 @@ public class BVBTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("oq", true)]
-	public void Validatation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
+	public void Validation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
 	{
 		var subject = new BVB_BeginningSegmentForVehicleBayingOrder();
 		subject.StandardCarrierAlphaCode = "I9";

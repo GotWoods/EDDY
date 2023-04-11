@@ -26,7 +26,7 @@ public class C031Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("F", true)]
-    public void Validatation_RequiredEncryptionKeyName(string encryptionKeyName, bool isValidExpected)
+    public void Validation_RequiredEncryptionKeyName(string encryptionKeyName, bool isValidExpected)
     {
         var subject = new C031_EncryptionKeyInformation();
         subject.EncryptionKeyName = encryptionKeyName;

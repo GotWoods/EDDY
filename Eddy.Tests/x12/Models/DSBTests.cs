@@ -30,7 +30,7 @@ public class DSBTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("A", true)]
-	public void Validatation_RequiredDisabilityTypeCode(string disabilityTypeCode, bool isValidExpected)
+	public void Validation_RequiredDisabilityTypeCode(string disabilityTypeCode, bool isValidExpected)
 	{
 		var subject = new DSB_DisabilityInformation();
 		subject.DisabilityTypeCode = disabilityTypeCode;

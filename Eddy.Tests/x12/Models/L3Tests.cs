@@ -40,7 +40,7 @@ public class L3Tests
     [InlineData(1, "v2", true)]
     [InlineData(0, "v2", false)]
     [InlineData(1, "", false)]
-    public void Validatation_RequiredWeight(decimal weight, string weightQualifier, bool isValidExpected)
+    public void Validation_RequiredWeight(decimal weight, string weightQualifier, bool isValidExpected)
     {
         var subject = new L3_TotalWeightAndCharges();
         if (weight > 0)
@@ -54,7 +54,7 @@ public class L3Tests
     [InlineData("v1", "v2", true)]
     [InlineData("", "v2", false)]
     [InlineData("v1", "", false)]
-    public void Validatation_RequiredFreightRate(string freightRate, string rateValueQualifier, bool isValidExpected)
+    public void Validation_RequiredFreightRate(string freightRate, string rateValueQualifier, bool isValidExpected)
     {
         var subject = new L3_TotalWeightAndCharges();
         subject.FreightRate = freightRate;
@@ -67,7 +67,7 @@ public class L3Tests
     [InlineData("v1", "v", true)]
     [InlineData("", "v", false)]
     [InlineData("v1", "", false)]
-    public void Validatation_RequiredVolume(string volume, string volumeUnitQualifier, bool isValidExpected)
+    public void Validation_RequiredVolume(string volume, string volumeUnitQualifier, bool isValidExpected)
     {
         var subject = new L3_TotalWeightAndCharges();
         subject.Volume = volume;
@@ -80,7 +80,7 @@ public class L3Tests
     [InlineData("v1", "v2", true)]
     [InlineData("", "v2", false)]
     [InlineData("v1", "", false)]
-    public void Validatation_RequiredDeclaredValue(string declaredValue, string rateValueQualifier, bool isValidExpected)
+    public void Validation_RequiredDeclaredValue(string declaredValue, string rateValueQualifier, bool isValidExpected)
     {
         var subject = new L3_TotalWeightAndCharges();
         subject.DeclaredValue = declaredValue;

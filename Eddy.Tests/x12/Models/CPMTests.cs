@@ -28,7 +28,7 @@ public class CPMTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Sc", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new CPM_CustomsProfileManagementInformation();
 		subject.IdentificationCodeQualifier = "l";
@@ -40,7 +40,7 @@ public class CPMTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("l", true)]
-	public void Validatation_RequiredIdentificationCodeQualifier(string identificationCodeQualifier, bool isValidExpected)
+	public void Validation_RequiredIdentificationCodeQualifier(string identificationCodeQualifier, bool isValidExpected)
 	{
 		var subject = new CPM_CustomsProfileManagementInformation();
 		subject.TransactionSetPurposeCode = "Sc";
@@ -52,7 +52,7 @@ public class CPMTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("v3", true)]
-	public void Validatation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
+	public void Validation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
 	{
 		var subject = new CPM_CustomsProfileManagementInformation();
 		subject.TransactionSetPurposeCode = "Sc";

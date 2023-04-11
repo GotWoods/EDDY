@@ -29,7 +29,7 @@ public class BCTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("4s", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BC_BeginningSegmentForContractCompletionStatus();
 		subject.TransactionSetPurposeCode = transactionSetPurposeCode;

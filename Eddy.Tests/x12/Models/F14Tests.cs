@@ -24,7 +24,7 @@ public class F14Tests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(1, true)]
-	public void Validatation_RequiredAssignedNumber(int assignedNumber, bool isValidExpected)
+	public void Validation_RequiredAssignedNumber(int assignedNumber, bool isValidExpected)
 	{
 		var subject = new F14_LineItemReject();
 		subject.DeclineAmendReasonCode = "IFK";
@@ -36,7 +36,7 @@ public class F14Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("IFK", true)]
-	public void Validatation_RequiredDeclineAmendReasonCode(string declineAmendReasonCode, bool isValidExpected)
+	public void Validation_RequiredDeclineAmendReasonCode(string declineAmendReasonCode, bool isValidExpected)
 	{
 		var subject = new F14_LineItemReject();
 		subject.AssignedNumber = 1;

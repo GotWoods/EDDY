@@ -25,7 +25,7 @@ public class ASITests
     [Theory]
     [InlineData("", false)]
     [InlineData("L", true)]
-    public void Validatation_RequiredActionCode(string actionCode, bool isValidExpected)
+    public void Validation_RequiredActionCode(string actionCode, bool isValidExpected)
     {
         var subject = new ASI_ActionOrStatusIndicator();
         subject.MaintenanceTypeCode = "4mI";
@@ -36,7 +36,7 @@ public class ASITests
     [Theory]
     [InlineData("", false)]
     [InlineData("4mI", true)]
-    public void Validatation_RequiredMaintenanceTypeCode(string maintenanceTypeCode, bool isValidExpected)
+    public void Validation_RequiredMaintenanceTypeCode(string maintenanceTypeCode, bool isValidExpected)
     {
         var subject = new ASI_ActionOrStatusIndicator();
         subject.ActionCode = "L";

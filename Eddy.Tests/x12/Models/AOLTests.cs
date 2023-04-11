@@ -30,7 +30,7 @@ public class AOLTests
     [Theory]
     [InlineData("", false)]
     [InlineData("Kq", true)]
-    public void Validatation_RequiredObservationTypeCode(string observationTypeCode, bool isValidExpected)
+    public void Validation_RequiredObservationTypeCode(string observationTypeCode, bool isValidExpected)
     {
         var subject = new AOL_AnimalObservationLocation();
         subject.Description = "l";
@@ -41,7 +41,7 @@ public class AOLTests
     [Theory]
     [InlineData("", false)]
     [InlineData("l", true)]
-    public void Validatation_RequiredDescription(string description, bool isValidExpected)
+    public void Validation_RequiredDescription(string description, bool isValidExpected)
     {
         var subject = new AOL_AnimalObservationLocation();
         subject.ObservationTypeCode = "Kq";

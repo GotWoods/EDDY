@@ -27,7 +27,7 @@ public class AK5Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("A", true)]
-    public void Validatation_RequiredTransactionSetAcknowledgmentCode(string transactionSetAcknowledgmentCode, bool isValidExpected)
+    public void Validation_RequiredTransactionSetAcknowledgmentCode(string transactionSetAcknowledgmentCode, bool isValidExpected)
     {
         var subject = new AK5_TransactionSetResponseTrailer();
         subject.TransactionSetAcknowledgmentCode = transactionSetAcknowledgmentCode;

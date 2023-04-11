@@ -31,7 +31,7 @@ public class E30Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("2", true)]
-	public void Validatation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
+	public void Validation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
 	{
 		var subject = new E30_DataElementAttributes();
 		subject.DataElementReferenceCode = "r";
@@ -45,7 +45,7 @@ public class E30Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("r", true)]
-	public void Validatation_RequiredDataElementReferenceCode(string dataElementReferenceCode, bool isValidExpected)
+	public void Validation_RequiredDataElementReferenceCode(string dataElementReferenceCode, bool isValidExpected)
 	{
 		var subject = new E30_DataElementAttributes();
 		subject.MaintenanceOperationCode = "2";
@@ -59,7 +59,7 @@ public class E30Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("n", true)]
-	public void Validatation_RequiredDataElementDataTypeCode(string dataElementDataTypeCode, bool isValidExpected)
+	public void Validation_RequiredDataElementDataTypeCode(string dataElementDataTypeCode, bool isValidExpected)
 	{
 		var subject = new E30_DataElementAttributes();
 		subject.MaintenanceOperationCode = "2";
@@ -73,7 +73,7 @@ public class E30Tests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(3, true)]
-	public void Validatation_RequiredMinimumLength(int minimumLength, bool isValidExpected)
+	public void Validation_RequiredMinimumLength(int minimumLength, bool isValidExpected)
 	{
 		var subject = new E30_DataElementAttributes();
 		subject.MaintenanceOperationCode = "2";
@@ -88,7 +88,7 @@ public class E30Tests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(9, true)]
-	public void Validatation_RequiredMaximumLength(int maximumLength, bool isValidExpected)
+	public void Validation_RequiredMaximumLength(int maximumLength, bool isValidExpected)
 	{
 		var subject = new E30_DataElementAttributes();
 		subject.MaintenanceOperationCode = "2";

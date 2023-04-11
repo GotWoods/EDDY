@@ -32,7 +32,7 @@ public class F11Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("3EMUWpR9", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new F11_Status();
 		subject.ReferenceIdentification = "M";
@@ -45,7 +45,7 @@ public class F11Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("M", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new F11_Status();
 		subject.Date = "3EMUWpR9";
@@ -111,7 +111,7 @@ public class F11Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Hk", true)]
-	public void Validatation_RequiredStatusCode(string statusCode, bool isValidExpected)
+	public void Validation_RequiredStatusCode(string statusCode, bool isValidExpected)
 	{
 		var subject = new F11_Status();
 		subject.Date = "3EMUWpR9";
@@ -124,7 +124,7 @@ public class F11Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("qMzecZJH", true)]
-	public void Validatation_RequiredDate2(string date2, bool isValidExpected)
+	public void Validation_RequiredDate2(string date2, bool isValidExpected)
 	{
 		var subject = new F11_Status();
 		subject.Date = "3EMUWpR9";

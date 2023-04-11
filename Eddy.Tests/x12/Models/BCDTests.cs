@@ -37,7 +37,7 @@ public class BCDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("AxuQNLuO", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BCD_BeginningCreditDebitAdjustment();
 		subject.CreditDebitAdjustmentNumber = "3";
@@ -51,7 +51,7 @@ public class BCDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("3", true)]
-	public void Validatation_RequiredCreditDebitAdjustmentNumber(string creditDebitAdjustmentNumber, bool isValidExpected)
+	public void Validation_RequiredCreditDebitAdjustmentNumber(string creditDebitAdjustmentNumber, bool isValidExpected)
 	{
 		var subject = new BCD_BeginningCreditDebitAdjustment();
 		subject.Date = "AxuQNLuO";
@@ -65,7 +65,7 @@ public class BCDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("5", true)]
-	public void Validatation_RequiredTransactionHandlingCode(string transactionHandlingCode, bool isValidExpected)
+	public void Validation_RequiredTransactionHandlingCode(string transactionHandlingCode, bool isValidExpected)
 	{
 		var subject = new BCD_BeginningCreditDebitAdjustment();
 		subject.Date = "AxuQNLuO";
@@ -79,7 +79,7 @@ public class BCDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("b", true)]
-	public void Validatation_RequiredAmount(string amount, bool isValidExpected)
+	public void Validation_RequiredAmount(string amount, bool isValidExpected)
 	{
 		var subject = new BCD_BeginningCreditDebitAdjustment();
 		subject.Date = "AxuQNLuO";
@@ -93,7 +93,7 @@ public class BCDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("q", true)]
-	public void Validatation_RequiredCreditDebitFlagCode(string creditDebitFlagCode, bool isValidExpected)
+	public void Validation_RequiredCreditDebitFlagCode(string creditDebitFlagCode, bool isValidExpected)
 	{
 		var subject = new BCD_BeginningCreditDebitAdjustment();
 		subject.Date = "AxuQNLuO";

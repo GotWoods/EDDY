@@ -45,7 +45,7 @@ public class N7Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("v1", true)]
-    public void Validatation_RequiredEquipmentNumber(string equipmentNumber, bool isValidExpected)
+    public void Validation_RequiredEquipmentNumber(string equipmentNumber, bool isValidExpected)
     {
         var subject = new N7_EquipmentDetails();
         subject.EquipmentNumber = equipmentNumber;

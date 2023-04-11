@@ -27,7 +27,7 @@ public class C070Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("ux", true)]
-    public void Validatation_RequiredChannelOfDistribution(string channelOfDistribution, bool isValidExpected)
+    public void Validation_RequiredChannelOfDistribution(string channelOfDistribution, bool isValidExpected)
     {
         var subject = new C070_CompositeChannelOfDistribution();
         subject.ChannelOfDistribution = channelOfDistribution;

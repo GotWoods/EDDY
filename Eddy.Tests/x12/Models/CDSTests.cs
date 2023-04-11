@@ -33,7 +33,7 @@ public class CDSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("o", true)]
-	public void Validatation_RequiredCaseTypeCode(string caseTypeCode, bool isValidExpected)
+	public void Validation_RequiredCaseTypeCode(string caseTypeCode, bool isValidExpected)
 	{
 		var subject = new CDS_CaseDescription();
 		subject.AdministrationOfJusticeOrganizationTypeCode = "c";
@@ -44,7 +44,7 @@ public class CDSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("c", true)]
-	public void Validatation_RequiredAdministrationOfJusticeOrganizationTypeCode(string administrationOfJusticeOrganizationTypeCode, bool isValidExpected)
+	public void Validation_RequiredAdministrationOfJusticeOrganizationTypeCode(string administrationOfJusticeOrganizationTypeCode, bool isValidExpected)
 	{
 		var subject = new CDS_CaseDescription();
 		subject.CaseTypeCode = "o";

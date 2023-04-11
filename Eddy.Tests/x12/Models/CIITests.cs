@@ -27,7 +27,7 @@ public class CIITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("P", true)]
-	public void Validatation_RequiredName(string name, bool isValidExpected)
+	public void Validation_RequiredName(string name, bool isValidExpected)
 	{
 		var subject = new CII_ConveyanceInsuranceInformation();
 		subject.ReferenceIdentification = "7";
@@ -40,7 +40,7 @@ public class CIITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("7", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new CII_ConveyanceInsuranceInformation();
 		subject.Name = "P";
@@ -53,7 +53,7 @@ public class CIITests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(5949, true)]
-	public void Validatation_RequiredYear(int year, bool isValidExpected)
+	public void Validation_RequiredYear(int year, bool isValidExpected)
 	{
 		var subject = new CII_ConveyanceInsuranceInformation();
 		subject.Name = "P";
@@ -67,7 +67,7 @@ public class CIITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Y", true)]
-	public void Validatation_RequiredAmount(string amount, bool isValidExpected)
+	public void Validation_RequiredAmount(string amount, bool isValidExpected)
 	{
 		var subject = new CII_ConveyanceInsuranceInformation();
 		subject.Name = "P";

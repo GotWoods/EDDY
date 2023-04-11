@@ -25,7 +25,7 @@ public class AMTTests
     [Theory]
     [InlineData("", false)]
     [InlineData("3", true)]
-    public void Validatation_RequiredAmountQualifierCode(string amountQualifierCode, bool isValidExpected)
+    public void Validation_RequiredAmountQualifierCode(string amountQualifierCode, bool isValidExpected)
     {
         var subject = new AMT_MonetaryAmountInformation();
         subject.MonetaryAmount = 8;
@@ -36,7 +36,7 @@ public class AMTTests
     [Theory]
     [InlineData(0, false)]
     [InlineData(1, true)]
-    public void Validatation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
+    public void Validation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
     {
         var subject = new AMT_MonetaryAmountInformation();
         subject.AmountQualifierCode = "3";

@@ -33,7 +33,7 @@ public class DLTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("W", true)]
-	public void Validatation_RequiredActionCode(string actionCode, bool isValidExpected)
+	public void Validation_RequiredActionCode(string actionCode, bool isValidExpected)
 	{
 		var subject = new DL_AutoClaimDetailLabor();
 		subject.ActionCode = actionCode;

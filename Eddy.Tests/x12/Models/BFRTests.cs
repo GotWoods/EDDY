@@ -34,7 +34,7 @@ public class BFRTests
     [Theory]
     [InlineData("", false)]
     [InlineData("zB", true)]
-    public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+    public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
     {
         var subject = new BFR_BeginningSegmentForPlanningSchedule();
         subject.ScheduleTypeQualifier = "Vc";
@@ -66,7 +66,7 @@ public class BFRTests
     [Theory]
     [InlineData("", false)]
     [InlineData("Vc", true)]
-    public void Validatation_RequiredScheduleTypeQualifier(string scheduleTypeQualifier, bool isValidExpected)
+    public void Validation_RequiredScheduleTypeQualifier(string scheduleTypeQualifier, bool isValidExpected)
     {
         var subject = new BFR_BeginningSegmentForPlanningSchedule();
         subject.TransactionSetPurposeCode = "zB";
@@ -80,7 +80,7 @@ public class BFRTests
     [Theory]
     [InlineData("", false)]
     [InlineData("o", true)]
-    public void Validatation_RequiredScheduleQuantityQualifier(string scheduleQuantityQualifier, bool isValidExpected)
+    public void Validation_RequiredScheduleQuantityQualifier(string scheduleQuantityQualifier, bool isValidExpected)
     {
         var subject = new BFR_BeginningSegmentForPlanningSchedule();
         subject.TransactionSetPurposeCode = "zB";
@@ -94,7 +94,7 @@ public class BFRTests
     [Theory]
     [InlineData("", false)]
     [InlineData("YNiOM2hT", true)]
-    public void Validatation_RequiredDate(string date, bool isValidExpected)
+    public void Validation_RequiredDate(string date, bool isValidExpected)
     {
         var subject = new BFR_BeginningSegmentForPlanningSchedule();
         subject.TransactionSetPurposeCode = "zB";
@@ -108,7 +108,7 @@ public class BFRTests
     [Theory]
     [InlineData("", false)]
     [InlineData("Wfu9FFDY", true)]
-    public void Validatation_RequiredDate3(string date3, bool isValidExpected)
+    public void Validation_RequiredDate3(string date3, bool isValidExpected)
     {
         var subject = new BFR_BeginningSegmentForPlanningSchedule();
         subject.TransactionSetPurposeCode = "zB";

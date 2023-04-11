@@ -29,7 +29,7 @@ public class CAITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("V4", true)]
-	public void Validatation_RequiredPublicRecordOrObligationCode(string publicRecordOrObligationCode, bool isValidExpected)
+	public void Validation_RequiredPublicRecordOrObligationCode(string publicRecordOrObligationCode, bool isValidExpected)
 	{
 		var subject = new CAI_CivilActionIncome();
 		subject.Name = "N";
@@ -40,7 +40,7 @@ public class CAITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("N", true)]
-	public void Validatation_RequiredName(string name, bool isValidExpected)
+	public void Validation_RequiredName(string name, bool isValidExpected)
 	{
 		var subject = new CAI_CivilActionIncome();
 		subject.PublicRecordOrObligationCode = "V4";

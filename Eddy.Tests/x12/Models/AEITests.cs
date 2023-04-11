@@ -25,7 +25,7 @@ public class AEITests
     [Theory]
     [InlineData("", false)]
     [InlineData("bC", true)]
-    public void Validatation_RequiredEquipmentDescriptionCode(string equipmentDescriptionCode, bool isValidExpected)
+    public void Validation_RequiredEquipmentDescriptionCode(string equipmentDescriptionCode, bool isValidExpected)
     {
         var subject = new AEI_EquipmentInformationSummary();
         subject.Quantity = 7;
@@ -37,7 +37,7 @@ public class AEITests
     [Theory]
     [InlineData(0, false)]
     [InlineData(1, true)]
-    public void Validatation_RequiredQuantity(decimal quantity, bool isValidExpected)
+    public void Validation_RequiredQuantity(decimal quantity, bool isValidExpected)
     {
         var subject = new AEI_EquipmentInformationSummary();
         subject.EquipmentDescriptionCode = "bC";
@@ -50,7 +50,7 @@ public class AEITests
     [Theory]
     [InlineData("", false)]
     [InlineData("k", true)]
-    public void Validatation_RequiredYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, bool isValidExpected)
+    public void Validation_RequiredYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, bool isValidExpected)
     {
         var subject = new AEI_EquipmentInformationSummary();
         subject.EquipmentDescriptionCode = "bC";

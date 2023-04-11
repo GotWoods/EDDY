@@ -35,7 +35,7 @@ public class AP1Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("mI", true)]
-    public void Validatation_RequiredConditionIndicatorCode(string conditionIndicatorCode, bool isValidExpected)
+    public void Validation_RequiredConditionIndicatorCode(string conditionIndicatorCode, bool isValidExpected)
     {
         var subject = new AP1_AlternateParts();
         subject.ConditionIndicatorCode = conditionIndicatorCode;

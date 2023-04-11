@@ -27,7 +27,7 @@ public class AOCTests
     [Theory]
     [InlineData("", false)]
     [InlineData("0a", true)]
-    public void Validatation_RequiredOffspringCountCode(string offspringCountCode, bool isValidExpected)
+    public void Validation_RequiredOffspringCountCode(string offspringCountCode, bool isValidExpected)
     {
         var subject = new AOC_AnimalOffspringCounts();
         subject.Count = 9;
@@ -39,7 +39,7 @@ public class AOCTests
     [Theory]
     [InlineData(0, false)]
     [InlineData(9, true)]
-    public void Validatation_RequiredCount(int count, bool isValidExpected)
+    public void Validation_RequiredCount(int count, bool isValidExpected)
     {
         var subject = new AOC_AnimalOffspringCounts();
         subject.OffspringCountCode = "0a";

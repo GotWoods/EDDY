@@ -29,7 +29,7 @@ public class BJFTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("ap", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BJF_BeginningSegmentRailroadJunctionsAndInterchangesUpdateActivity();
 		subject.TransactionTypeCode = "A7";
@@ -41,7 +41,7 @@ public class BJFTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("A7", true)]
-	public void Validatation_RequiredTransactionTypeCode(string transactionTypeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionTypeCode(string transactionTypeCode, bool isValidExpected)
 	{
 		var subject = new BJF_BeginningSegmentRailroadJunctionsAndInterchangesUpdateActivity();
 		subject.TransactionSetPurposeCode = "ap";
@@ -53,7 +53,7 @@ public class BJFTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("y", true)]
-	public void Validatation_RequiredRule260JunctionCode(string rule260JunctionCode, bool isValidExpected)
+	public void Validation_RequiredRule260JunctionCode(string rule260JunctionCode, bool isValidExpected)
 	{
 		var subject = new BJF_BeginningSegmentRailroadJunctionsAndInterchangesUpdateActivity();
 		subject.TransactionSetPurposeCode = "ap";

@@ -26,7 +26,7 @@ public class DPNTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(3, true)]
-	public void Validatation_RequiredNumber(int number, bool isValidExpected)
+	public void Validation_RequiredNumber(int number, bool isValidExpected)
 	{
 		var subject = new DPN_DependentInformation();
 		if (number > 0)

@@ -28,7 +28,7 @@ public class BAUTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("d", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new BAU_BeginningSegmentForTheDebitAuthorization();
 		subject.PaymentMethodCode = "pxP";
@@ -42,7 +42,7 @@ public class BAUTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("pxP", true)]
-	public void Validatation_RequiredPaymentMethodCode(string paymentMethodCode, bool isValidExpected)
+	public void Validation_RequiredPaymentMethodCode(string paymentMethodCode, bool isValidExpected)
 	{
 		var subject = new BAU_BeginningSegmentForTheDebitAuthorization();
 		subject.ReferenceIdentification = "d";
@@ -56,7 +56,7 @@ public class BAUTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Im", true)]
-	public void Validatation_RequiredDFIIDNumberQualifier(string dFIIDNumberQualifier, bool isValidExpected)
+	public void Validation_RequiredDFIIDNumberQualifier(string dFIIDNumberQualifier, bool isValidExpected)
 	{
 		var subject = new BAU_BeginningSegmentForTheDebitAuthorization();
 		subject.ReferenceIdentification = "d";
@@ -70,7 +70,7 @@ public class BAUTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("qvu", true)]
-	public void Validatation_RequiredDFIIdentificationNumber(string dFIIdentificationNumber, bool isValidExpected)
+	public void Validation_RequiredDFIIdentificationNumber(string dFIIdentificationNumber, bool isValidExpected)
 	{
 		var subject = new BAU_BeginningSegmentForTheDebitAuthorization();
 		subject.ReferenceIdentification = "d";
@@ -84,7 +84,7 @@ public class BAUTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("l", true)]
-	public void Validatation_RequiredAccountNumber(string accountNumber, bool isValidExpected)
+	public void Validation_RequiredAccountNumber(string accountNumber, bool isValidExpected)
 	{
 		var subject = new BAU_BeginningSegmentForTheDebitAuthorization();
 		subject.ReferenceIdentification = "d";

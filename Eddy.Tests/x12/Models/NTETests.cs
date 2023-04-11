@@ -23,7 +23,7 @@ public class NTETests
     [Theory]
     [InlineData("", false)]
     [InlineData("v1", true)]
-    public void Validatation_RequiredDescription(string description, bool isValidExpected)
+    public void Validation_RequiredDescription(string description, bool isValidExpected)
     {
         var subject = new NTE_Note();
         subject.Description = description;

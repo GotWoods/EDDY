@@ -26,7 +26,7 @@ public class ALGTests
     [Theory]
     [InlineData("", false)]
     [InlineData("z", true)]
-    public void Validatation_RequiredAllergenTypeCode(string allergenTypeCode, bool isValidExpected)
+    public void Validation_RequiredAllergenTypeCode(string allergenTypeCode, bool isValidExpected)
     {
         var subject = new ALG_Allergen();
         subject.YesNoConditionOrResponseCode = "q";
@@ -37,7 +37,7 @@ public class ALGTests
     [Theory]
     [InlineData("", false)]
     [InlineData("q", true)]
-    public void Validatation_RequiredYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, bool isValidExpected)
+    public void Validation_RequiredYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, bool isValidExpected)
     {
         var subject = new ALG_Allergen();
         subject.AllergenTypeCode = "z";

@@ -25,7 +25,7 @@ public class CTTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("D", true)]
-	public void Validatation_RequiredYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, bool isValidExpected)
+	public void Validation_RequiredYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, bool isValidExpected)
 	{
 		var subject = new CT_CarType();
 		subject.CarTypeCode = "3";
@@ -36,7 +36,7 @@ public class CTTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("3", true)]
-	public void Validatation_RequiredCarTypeCode(string carTypeCode, bool isValidExpected)
+	public void Validation_RequiredCarTypeCode(string carTypeCode, bool isValidExpected)
 	{
 		var subject = new CT_CarType();
 		subject.YesNoConditionOrResponseCode = "D";

@@ -28,7 +28,7 @@ public class COMTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("h7", true)]
-	public void Validatation_RequiredCommunicationNumberQualifier(string communicationNumberQualifier, bool isValidExpected)
+	public void Validation_RequiredCommunicationNumberQualifier(string communicationNumberQualifier, bool isValidExpected)
 	{
 		var subject = new COM_CommunicationContactInformation();
 		subject.CommunicationNumber = "u";
@@ -39,7 +39,7 @@ public class COMTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("u", true)]
-	public void Validatation_RequiredCommunicationNumber(string communicationNumber, bool isValidExpected)
+	public void Validation_RequiredCommunicationNumber(string communicationNumber, bool isValidExpected)
 	{
 		var subject = new COM_CommunicationContactInformation();
 		subject.CommunicationNumberQualifier = "h7";

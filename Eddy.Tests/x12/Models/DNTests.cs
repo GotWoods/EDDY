@@ -26,7 +26,7 @@ public class DNTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("iv", true)]
-	public void Validatation_RequiredDateQualifier(string dateQualifier, bool isValidExpected)
+	public void Validation_RequiredDateQualifier(string dateQualifier, bool isValidExpected)
 	{
 		var subject = new DN_DealerEffectivity();
 		subject.Date = "hfqOZoCE";
@@ -37,7 +37,7 @@ public class DNTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("hfqOZoCE", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new DN_DealerEffectivity();
 		subject.DateQualifier = "iv";

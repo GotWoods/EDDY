@@ -42,7 +42,7 @@ public class C028Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("5Y", true)]
-    public void Validatation_RequiredAssuranceTokenParameterCode(string assuranceTokenParameterCode, bool isValidExpected)
+    public void Validation_RequiredAssuranceTokenParameterCode(string assuranceTokenParameterCode, bool isValidExpected)
     {
         var subject = new C028_AssuranceTokenParameters();
         subject.AssuranceTokenParameterValue = "7";
@@ -53,7 +53,7 @@ public class C028Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("7", true)]
-    public void Validatation_RequiredAssuranceTokenParameterValue(string assuranceTokenParameterValue, bool isValidExpected)
+    public void Validation_RequiredAssuranceTokenParameterValue(string assuranceTokenParameterValue, bool isValidExpected)
     {
         var subject = new C028_AssuranceTokenParameters();
         subject.AssuranceTokenParameterCode = "5Y";

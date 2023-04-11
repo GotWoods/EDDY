@@ -23,7 +23,7 @@ public class B9ATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("wZ", true)]
-	public void Validatation_RequiredServiceRequestCode(string serviceRequestCode, bool isValidExpected)
+	public void Validation_RequiredServiceRequestCode(string serviceRequestCode, bool isValidExpected)
 	{
 		var subject = new B9A_ServiceRequest();
 		subject.ServiceRequestCode = serviceRequestCode;

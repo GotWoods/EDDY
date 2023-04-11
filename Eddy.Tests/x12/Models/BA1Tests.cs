@@ -34,7 +34,7 @@ public class BA1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("8", true)]
-	public void Validatation_RequiredRelatedCompanyIndicationCode(string relatedCompanyIndicationCode, bool isValidExpected)
+	public void Validation_RequiredRelatedCompanyIndicationCode(string relatedCompanyIndicationCode, bool isValidExpected)
 	{
 		var subject = new BA1_ExportShipmentIdentifyingInformation();
 		subject.ActionCode = "v";
@@ -49,7 +49,7 @@ public class BA1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("v", true)]
-	public void Validatation_RequiredActionCode(string actionCode, bool isValidExpected)
+	public void Validation_RequiredActionCode(string actionCode, bool isValidExpected)
 	{
 		var subject = new BA1_ExportShipmentIdentifyingInformation();
 		subject.RelatedCompanyIndicationCode = "8";
@@ -64,7 +64,7 @@ public class BA1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("m", true)]
-	public void Validatation_RequiredTransportationMethodTypeCode(string transportationMethodTypeCode, bool isValidExpected)
+	public void Validation_RequiredTransportationMethodTypeCode(string transportationMethodTypeCode, bool isValidExpected)
 	{
 		var subject = new BA1_ExportShipmentIdentifyingInformation();
 		subject.RelatedCompanyIndicationCode = "8";
@@ -79,7 +79,7 @@ public class BA1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("It", true)]
-	public void Validatation_RequiredCountryCode(string countryCode, bool isValidExpected)
+	public void Validation_RequiredCountryCode(string countryCode, bool isValidExpected)
 	{
 		var subject = new BA1_ExportShipmentIdentifyingInformation();
 		subject.RelatedCompanyIndicationCode = "8";
@@ -94,7 +94,7 @@ public class BA1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("j", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new BA1_ExportShipmentIdentifyingInformation();
 		subject.RelatedCompanyIndicationCode = "8";
@@ -109,7 +109,7 @@ public class BA1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("jH", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
 	{
 		var subject = new BA1_ExportShipmentIdentifyingInformation();
 		subject.RelatedCompanyIndicationCode = "8";

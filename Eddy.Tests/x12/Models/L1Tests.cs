@@ -76,7 +76,7 @@ public class L1Tests
     [InlineData("v1", "v2", true)]
     [InlineData("", "v2", false)]
     [InlineData("v1", "", false)]
-    public void Validatation_RequiredDeclaredValue(string declaredValue, string rateValueQualifier, bool isValidExpected)
+    public void Validation_RequiredDeclaredValue(string declaredValue, string rateValueQualifier, bool isValidExpected)
     {
         var subject = new L1_RateAndCharges();
         subject.AmountCharged = "25"; //needed to pass validation
@@ -90,7 +90,7 @@ public class L1Tests
     [InlineData("v1", "v2", true)]
     [InlineData("", "v2", false)]
     [InlineData("v1", "", false)]
-    public void Validatation_RequiredBilledRatedAsQuantity(string billedRatedAsQuantity, string billedRatedAsQualifier, bool isValidExpected)
+    public void Validation_RequiredBilledRatedAsQuantity(string billedRatedAsQuantity, string billedRatedAsQualifier, bool isValidExpected)
     {
         var subject = new L1_RateAndCharges();
         subject.AmountCharged = "25"; //needed to pass validation

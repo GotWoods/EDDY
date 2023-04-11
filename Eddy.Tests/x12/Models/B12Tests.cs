@@ -25,7 +25,7 @@ public class B12Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("o", true)]
-	public void Validatation_RequiredEquipmentInitial(string equipmentInitial, bool isValidExpected)
+	public void Validation_RequiredEquipmentInitial(string equipmentInitial, bool isValidExpected)
 	{
 		var subject = new B12_BeginningSegmentForConsolidationOfGoodsInContainer();
 		subject.EquipmentNumber = "7";
@@ -37,7 +37,7 @@ public class B12Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("7", true)]
-	public void Validatation_RequiredEquipmentNumber(string equipmentNumber, bool isValidExpected)
+	public void Validation_RequiredEquipmentNumber(string equipmentNumber, bool isValidExpected)
 	{
 		var subject = new B12_BeginningSegmentForConsolidationOfGoodsInContainer();
 		subject.EquipmentInitial = "o";
@@ -49,7 +49,7 @@ public class B12Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("WMiK", true)]
-	public void Validatation_RequiredEquipmentTypeCode(string equipmentTypeCode, bool isValidExpected)
+	public void Validation_RequiredEquipmentTypeCode(string equipmentTypeCode, bool isValidExpected)
 	{
 		var subject = new B12_BeginningSegmentForConsolidationOfGoodsInContainer();
 		subject.EquipmentInitial = "o";

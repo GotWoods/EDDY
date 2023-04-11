@@ -30,7 +30,7 @@ public class ENMTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("kHK", true)]
-	public void Validatation_RequiredStatusReasonCode(string statusReasonCode, bool isValidExpected)
+	public void Validation_RequiredStatusReasonCode(string statusReasonCode, bool isValidExpected)
 	{
 		var subject = new ENM_SchoolEnrollmentData();
 		subject.StatusReasonCode = statusReasonCode;

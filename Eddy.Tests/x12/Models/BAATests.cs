@@ -28,7 +28,7 @@ public class BAATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("iD", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BAA_BeginningSegmentForProductTransferAccountAdjustment();
 		subject.TransactionTypeCode = "Uq";
@@ -40,7 +40,7 @@ public class BAATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Uq", true)]
-	public void Validatation_RequiredTransactionTypeCode(string transactionTypeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionTypeCode(string transactionTypeCode, bool isValidExpected)
 	{
 		var subject = new BAA_BeginningSegmentForProductTransferAccountAdjustment();
 		subject.TransactionSetPurposeCode = "iD";
@@ -52,7 +52,7 @@ public class BAATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("QAFR8TO0", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BAA_BeginningSegmentForProductTransferAccountAdjustment();
 		subject.TransactionSetPurposeCode = "iD";

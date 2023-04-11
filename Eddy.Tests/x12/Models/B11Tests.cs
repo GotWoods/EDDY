@@ -33,7 +33,7 @@ public class B11Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("d", true)]
-	public void Validatation_RequiredIdentificationCodeQualifier(string identificationCodeQualifier, bool isValidExpected)
+	public void Validation_RequiredIdentificationCodeQualifier(string identificationCodeQualifier, bool isValidExpected)
 	{
 		var subject = new B11_BeginningSegmentForShipmentStatusInquiry();
 		subject.IdentificationCode = "xr";
@@ -44,7 +44,7 @@ public class B11Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("xr", true)]
-	public void Validatation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
+	public void Validation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
 	{
 		var subject = new B11_BeginningSegmentForShipmentStatusInquiry();
 		subject.IdentificationCodeQualifier = "d";

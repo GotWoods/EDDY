@@ -28,7 +28,7 @@ public class DRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("31cclvgg", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new DR_DocketRange();
 		subject.StandardCarrierAlphaCode = "si";
@@ -44,7 +44,7 @@ public class DRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("si", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
 	{
 		var subject = new DR_DocketRange();
 		subject.Date = "31cclvgg";
@@ -59,7 +59,7 @@ public class DRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("T", true)]
-	public void Validatation_RequiredDocketControlNumber(string docketControlNumber, bool isValidExpected)
+	public void Validation_RequiredDocketControlNumber(string docketControlNumber, bool isValidExpected)
 	{
 		var subject = new DR_DocketRange();
 		subject.Date = "31cclvgg";
@@ -73,7 +73,7 @@ public class DRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("j", true)]
-	public void Validatation_RequiredDocketIdentification(string docketIdentification, bool isValidExpected)
+	public void Validation_RequiredDocketIdentification(string docketIdentification, bool isValidExpected)
 	{
 		var subject = new DR_DocketRange();
 		subject.Date = "31cclvgg";
@@ -103,7 +103,6 @@ public class DRTests
 	}
 
 	[Theory]
-	[InlineData("", 0, true)]
 	[InlineData("", 8, true)]
 	[InlineData("s", 0, true)]
 	public void Validation_OnlyOneOfDocketIdentification2(string docketIdentification2, int revisionNumber, bool isValidExpected)

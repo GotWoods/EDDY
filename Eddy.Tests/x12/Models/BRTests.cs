@@ -33,7 +33,7 @@ public class BRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Xk", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BR_BeginningSegmentForMaterialManagement();
 		subject.TransactionTypeCode = "7U";
@@ -45,7 +45,7 @@ public class BRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("7U", true)]
-	public void Validatation_RequiredTransactionTypeCode(string transactionTypeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionTypeCode(string transactionTypeCode, bool isValidExpected)
 	{
 		var subject = new BR_BeginningSegmentForMaterialManagement();
 		subject.TransactionSetPurposeCode = "Xk";
@@ -57,7 +57,7 @@ public class BRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("xgGcpE2G", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BR_BeginningSegmentForMaterialManagement();
 		subject.TransactionSetPurposeCode = "Xk";

@@ -25,7 +25,7 @@ public class ARCTests
     [Theory]
     [InlineData(0, false)]
     [InlineData(6, true)]
-    public void Validatation_RequiredCount(int count, bool isValidExpected)
+    public void Validation_RequiredCount(int count, bool isValidExpected)
     {
         var subject = new ARC_AnimalResultsCounts();
         subject.TestTypeCode = "AB";

@@ -28,7 +28,7 @@ public class DEFTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("7", true)]
-	public void Validatation_RequiredDelayedRepaymentQualifierCode(string delayedRepaymentQualifierCode, bool isValidExpected)
+	public void Validation_RequiredDelayedRepaymentQualifierCode(string delayedRepaymentQualifierCode, bool isValidExpected)
 	{
 		var subject = new DEF_DelayedRepayment();
 		subject.DelayedRepaymentReasonCode = "b";
@@ -41,7 +41,7 @@ public class DEFTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("b", true)]
-	public void Validatation_RequiredDelayedRepaymentReasonCode(string delayedRepaymentReasonCode, bool isValidExpected)
+	public void Validation_RequiredDelayedRepaymentReasonCode(string delayedRepaymentReasonCode, bool isValidExpected)
 	{
 		var subject = new DEF_DelayedRepayment();
 		subject.DelayedRepaymentQualifierCode = "7";
@@ -54,7 +54,7 @@ public class DEFTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("aw", true)]
-	public void Validatation_RequiredDateTimePeriodFormatQualifier(string dateTimePeriodFormatQualifier, bool isValidExpected)
+	public void Validation_RequiredDateTimePeriodFormatQualifier(string dateTimePeriodFormatQualifier, bool isValidExpected)
 	{
 		var subject = new DEF_DelayedRepayment();
 		subject.DelayedRepaymentQualifierCode = "7";
@@ -67,7 +67,7 @@ public class DEFTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("I", true)]
-	public void Validatation_RequiredDateTimePeriod(string dateTimePeriod, bool isValidExpected)
+	public void Validation_RequiredDateTimePeriod(string dateTimePeriod, bool isValidExpected)
 	{
 		var subject = new DEF_DelayedRepayment();
 		subject.DelayedRepaymentQualifierCode = "7";

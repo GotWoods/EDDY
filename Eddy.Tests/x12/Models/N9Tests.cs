@@ -28,7 +28,7 @@ public class N9Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("v1", true)]
-    public void Validatation_RequiredReferenceIdentificationQualifier(string referenceIdentificationQualifier, bool isValidExpected)
+    public void Validation_RequiredReferenceIdentificationQualifier(string referenceIdentificationQualifier, bool isValidExpected)
     {
         var subject = new N9_ExtendedReferenceInformation();
         subject.ReferenceIdentification = "1";

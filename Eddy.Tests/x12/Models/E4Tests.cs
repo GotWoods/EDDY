@@ -27,7 +27,7 @@ public class E4Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("ti", true)]
-	public void Validatation_RequiredCityName(string cityName, bool isValidExpected)
+	public void Validation_RequiredCityName(string cityName, bool isValidExpected)
 	{
 		var subject = new E4_EmptyCarDispositionPendedDestinationCity();
 		subject.StateOrProvinceCode = "Vm";
@@ -38,7 +38,7 @@ public class E4Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Vm", true)]
-	public void Validatation_RequiredStateOrProvinceCode(string stateOrProvinceCode, bool isValidExpected)
+	public void Validation_RequiredStateOrProvinceCode(string stateOrProvinceCode, bool isValidExpected)
 	{
 		var subject = new E4_EmptyCarDispositionPendedDestinationCity();
 		subject.CityName = "ti";

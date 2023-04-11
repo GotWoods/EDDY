@@ -26,7 +26,7 @@ public class F10Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("QwhG4l7t", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new F10_IdentificationOfClaimTracer();
 		subject.ReferenceIdentification = "I";
@@ -37,7 +37,7 @@ public class F10Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("I", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new F10_IdentificationOfClaimTracer();
 		subject.Date = "QwhG4l7t";

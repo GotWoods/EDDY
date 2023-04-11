@@ -44,7 +44,7 @@ public class CLMTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("U", true)]
-	public void Validatation_RequiredClaimSubmittersIdentifier(string claimSubmittersIdentifier, bool isValidExpected)
+	public void Validation_RequiredClaimSubmittersIdentifier(string claimSubmittersIdentifier, bool isValidExpected)
 	{
 		var subject = new CLM_HealthClaim();
 		subject.ClaimSubmittersIdentifier = claimSubmittersIdentifier;

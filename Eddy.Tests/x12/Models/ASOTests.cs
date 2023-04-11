@@ -33,7 +33,7 @@ public class ASOTests
     [Theory]
     [InlineData("", false)]
     [InlineData("o", true)]
-    public void Validatation_RequiredPropertyOwnershipRightsCode(string propertyOwnershipRightsCode, bool isValidExpected)
+    public void Validation_RequiredPropertyOwnershipRightsCode(string propertyOwnershipRightsCode, bool isValidExpected)
     {
         var subject = new ASO_AssetOwnership();
         subject.TypeOfPersonalOrBusinessAssetCode = "BJ";
@@ -44,7 +44,7 @@ public class ASOTests
     [Theory]
     [InlineData("", false)]
     [InlineData("BJ", true)]
-    public void Validatation_RequiredTypeOfPersonalOrBusinessAssetCode(string typeOfPersonalOrBusinessAssetCode, bool isValidExpected)
+    public void Validation_RequiredTypeOfPersonalOrBusinessAssetCode(string typeOfPersonalOrBusinessAssetCode, bool isValidExpected)
     {
         var subject = new ASO_AssetOwnership();
         subject.PropertyOwnershipRightsCode = "o";

@@ -30,7 +30,7 @@ public class C032Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("x", true)]
-    public void Validatation_RequiredEncryptionServiceCode(string encryptionServiceCode, bool isValidExpected)
+    public void Validation_RequiredEncryptionServiceCode(string encryptionServiceCode, bool isValidExpected)
     {
         var subject = new C032_EncryptionServiceInformation();
         subject.EncryptionServiceCode = encryptionServiceCode;

@@ -25,7 +25,7 @@ public class CONTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Xg", true)]
-	public void Validatation_RequiredReferenceIdentificationQualifier(string referenceIdentificationQualifier, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentificationQualifier(string referenceIdentificationQualifier, bool isValidExpected)
 	{
 		var subject = new CON_ContractNumberDetail();
 		subject.ReferenceIdentification = "8";
@@ -37,7 +37,7 @@ public class CONTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("8", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new CON_ContractNumberDetail();
 		subject.ReferenceIdentificationQualifier = "Xg";
@@ -49,7 +49,7 @@ public class CONTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("ef", true)]
-	public void Validatation_RequiredContractStatusCode(string contractStatusCode, bool isValidExpected)
+	public void Validation_RequiredContractStatusCode(string contractStatusCode, bool isValidExpected)
 	{
 		var subject = new CON_ContractNumberDetail();
 		subject.ReferenceIdentificationQualifier = "Xg";

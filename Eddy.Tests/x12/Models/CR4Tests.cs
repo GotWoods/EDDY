@@ -51,7 +51,7 @@ public class CR4Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Q", true)]
-	public void Validatation_RequiredYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, bool isValidExpected)
+	public void Validation_RequiredYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, bool isValidExpected)
 	{
 		var subject = new CR4_EnteralOrParenteralTherapyCertification();
 		subject.YesNoConditionOrResponseCode = yesNoConditionOrResponseCode;

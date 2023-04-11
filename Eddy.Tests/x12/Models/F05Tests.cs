@@ -25,7 +25,7 @@ public class F05Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("cK", true)]
-	public void Validatation_RequiredChargeAllowanceQualifier(string chargeAllowanceQualifier, bool isValidExpected)
+	public void Validation_RequiredChargeAllowanceQualifier(string chargeAllowanceQualifier, bool isValidExpected)
 	{
 		var subject = new F05_AllowanceChargeClaim();
 		subject.Amount = "0";
@@ -37,7 +37,7 @@ public class F05Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("0", true)]
-	public void Validatation_RequiredAmount(string amount, bool isValidExpected)
+	public void Validation_RequiredAmount(string amount, bool isValidExpected)
 	{
 		var subject = new F05_AllowanceChargeClaim();
 		subject.ChargeAllowanceQualifier = "cK";
@@ -49,7 +49,7 @@ public class F05Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("T", true)]
-	public void Validatation_RequiredCreditDebitFlagCode(string creditDebitFlagCode, bool isValidExpected)
+	public void Validation_RequiredCreditDebitFlagCode(string creditDebitFlagCode, bool isValidExpected)
 	{
 		var subject = new F05_AllowanceChargeClaim();
 		subject.ChargeAllowanceQualifier = "cK";

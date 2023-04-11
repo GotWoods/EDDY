@@ -26,7 +26,7 @@ public class BMPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("U", true)]
-	public void Validatation_RequiredTransactionHandlingCode(string transactionHandlingCode, bool isValidExpected)
+	public void Validation_RequiredTransactionHandlingCode(string transactionHandlingCode, bool isValidExpected)
 	{
 		var subject = new BMP_BeginningSegmentForMarketDevelopmentFundSettlement();
 		subject.ReferenceIdentification = "k";
@@ -37,7 +37,7 @@ public class BMPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("k", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new BMP_BeginningSegmentForMarketDevelopmentFundSettlement();
 		subject.TransactionHandlingCode = "U";

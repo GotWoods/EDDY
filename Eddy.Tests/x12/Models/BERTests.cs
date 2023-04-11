@@ -24,7 +24,7 @@ public class BERTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("pW", true)]
-	public void Validatation_RequiredBeerStyle(string beerStyle, bool isValidExpected)
+	public void Validation_RequiredBeerStyle(string beerStyle, bool isValidExpected)
 	{
 		var subject = new BER_BeerInformation();
 		subject.BeerStyle = beerStyle;

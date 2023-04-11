@@ -37,7 +37,7 @@ public class C001Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("J4", true)]
-    public void Validatation_RequiredUnitOrBasisForMeasurementCode(string unitOrBasisForMeasurementCode, bool isValidExpected)
+    public void Validation_RequiredUnitOrBasisForMeasurementCode(string unitOrBasisForMeasurementCode, bool isValidExpected)
     {
         var subject = new C001_CompositeUnitOfMeasure();
         subject.UnitOrBasisForMeasurementCode = unitOrBasisForMeasurementCode;

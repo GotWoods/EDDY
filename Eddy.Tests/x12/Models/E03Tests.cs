@@ -29,7 +29,7 @@ public class E03Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("n", true)]
-	public void Validatation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
+	public void Validation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
 	{
 		var subject = new E03_InterchangeOrderOfSegments();
 		subject.LevelNumberCode = "I";
@@ -44,7 +44,7 @@ public class E03Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("I", true)]
-	public void Validatation_RequiredLevelNumberCode(string levelNumberCode, bool isValidExpected)
+	public void Validation_RequiredLevelNumberCode(string levelNumberCode, bool isValidExpected)
 	{
 		var subject = new E03_InterchangeOrderOfSegments();
 		subject.MaintenanceOperationCode = "n";
@@ -59,7 +59,7 @@ public class E03Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Xo", true)]
-	public void Validatation_RequiredSegmentIDCode(string segmentIDCode, bool isValidExpected)
+	public void Validation_RequiredSegmentIDCode(string segmentIDCode, bool isValidExpected)
 	{
 		var subject = new E03_InterchangeOrderOfSegments();
 		subject.MaintenanceOperationCode = "n";
@@ -74,7 +74,7 @@ public class E03Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("P", true)]
-	public void Validatation_RequiredEnvelopeIndicatorCode(string envelopeIndicatorCode, bool isValidExpected)
+	public void Validation_RequiredEnvelopeIndicatorCode(string envelopeIndicatorCode, bool isValidExpected)
 	{
 		var subject = new E03_InterchangeOrderOfSegments();
 		subject.MaintenanceOperationCode = "n";
@@ -89,7 +89,7 @@ public class E03Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("j", true)]
-	public void Validatation_RequiredRequirementDesignatorCode(string requirementDesignatorCode, bool isValidExpected)
+	public void Validation_RequiredRequirementDesignatorCode(string requirementDesignatorCode, bool isValidExpected)
 	{
 		var subject = new E03_InterchangeOrderOfSegments();
 		subject.MaintenanceOperationCode = "n";
@@ -104,7 +104,7 @@ public class E03Tests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(1, true)]
-	public void Validatation_RequiredMaximumUse(int maximumUse, bool isValidExpected)
+	public void Validation_RequiredMaximumUse(int maximumUse, bool isValidExpected)
 	{
 		var subject = new E03_InterchangeOrderOfSegments();
 		subject.MaintenanceOperationCode = "n";

@@ -27,7 +27,7 @@ public class E10Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("z", true)]
-	public void Validatation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
+	public void Validation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
 	{
 		var subject = new E10_TransactionSetGrouping();
 		subject.TransactionSetIdentifierCode = "8MV";
@@ -40,7 +40,7 @@ public class E10Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("8MV", true)]
-	public void Validatation_RequiredTransactionSetIdentifierCode(string transactionSetIdentifierCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetIdentifierCode(string transactionSetIdentifierCode, bool isValidExpected)
 	{
 		var subject = new E10_TransactionSetGrouping();
 		subject.MaintenanceOperationCode = "z";
@@ -53,7 +53,7 @@ public class E10Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("dE", true)]
-	public void Validatation_RequiredFunctionalIdentifierCode(string functionalIdentifierCode, bool isValidExpected)
+	public void Validation_RequiredFunctionalIdentifierCode(string functionalIdentifierCode, bool isValidExpected)
 	{
 		var subject = new E10_TransactionSetGrouping();
 		subject.MaintenanceOperationCode = "z";
@@ -66,7 +66,7 @@ public class E10Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("v", true)]
-	public void Validatation_RequiredDescription(string description, bool isValidExpected)
+	public void Validation_RequiredDescription(string description, bool isValidExpected)
 	{
 		var subject = new E10_TransactionSetGrouping();
 		subject.MaintenanceOperationCode = "z";

@@ -24,7 +24,7 @@ public class C033Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("mnq", true)]
-    public void Validatation_RequiredSecurityValueQualifier(string securityValueQualifier, bool isValidExpected)
+    public void Validation_RequiredSecurityValueQualifier(string securityValueQualifier, bool isValidExpected)
     {
         var subject = new C033_SecurityTokenValue();
         subject.EncodedSecurityValue = "4";
@@ -35,7 +35,7 @@ public class C033Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("4", true)]
-    public void Validatation_RequiredEncodedSecurityValue(string encodedSecurityValue, bool isValidExpected)
+    public void Validation_RequiredEncodedSecurityValue(string encodedSecurityValue, bool isValidExpected)
     {
         var subject = new C033_SecurityTokenValue();
         subject.SecurityValueQualifier = "mnq";

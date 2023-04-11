@@ -31,7 +31,7 @@ public class BMSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("fd", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BMS_BeginningSegmentForMaterialSafetyDataSheet();
 		subject.Date = "ucbCvBkg";
@@ -42,7 +42,7 @@ public class BMSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("ucbCvBkg", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BMS_BeginningSegmentForMaterialSafetyDataSheet();
 		subject.TransactionSetPurposeCode = "fd";

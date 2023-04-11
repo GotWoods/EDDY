@@ -28,7 +28,7 @@ public class ATNTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(3, true)]
-	public void Validatation_RequiredQuantity(decimal quantity, bool isValidExpected)
+	public void Validation_RequiredQuantity(decimal quantity, bool isValidExpected)
 	{
 		var subject = new ATN_Attendance();
 		if (quantity > 0)

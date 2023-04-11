@@ -25,7 +25,7 @@ public class C059Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("4C", true)]
-    public void Validatation_RequiredReasonForServiceCode(string reasonForServiceCode, bool isValidExpected)
+    public void Validation_RequiredReasonForServiceCode(string reasonForServiceCode, bool isValidExpected)
     {
         var subject = new C059_DrugUseReviewDUR();
         subject.ProfessionalServiceCode = "iz";
@@ -37,7 +37,7 @@ public class C059Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("iz", true)]
-    public void Validatation_RequiredProfessionalServiceCode(string professionalServiceCode, bool isValidExpected)
+    public void Validation_RequiredProfessionalServiceCode(string professionalServiceCode, bool isValidExpected)
     {
         var subject = new C059_DrugUseReviewDUR();
         subject.ReasonForServiceCode = "4C";
@@ -49,7 +49,7 @@ public class C059Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("nE", true)]
-    public void Validatation_RequiredResultOfServiceCode(string resultOfServiceCode, bool isValidExpected)
+    public void Validation_RequiredResultOfServiceCode(string resultOfServiceCode, bool isValidExpected)
     {
         var subject = new C059_DrugUseReviewDUR();
         subject.ReasonForServiceCode = "4C";

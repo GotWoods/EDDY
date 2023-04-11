@@ -38,7 +38,7 @@ public class BTSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("F", true)]
-	public void Validatation_RequiredInterchangeTrainIdentification(string interchangeTrainIdentification, bool isValidExpected)
+	public void Validation_RequiredInterchangeTrainIdentification(string interchangeTrainIdentification, bool isValidExpected)
 	{
 		var subject = new BTS_BeginningSegmentForTrainSheets();
 		subject.InterchangeTrainIdentification = interchangeTrainIdentification;

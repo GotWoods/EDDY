@@ -37,7 +37,7 @@ public class DADTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("0", true)]
-	public void Validatation_RequiredActionCode(string actionCode, bool isValidExpected)
+	public void Validation_RequiredActionCode(string actionCode, bool isValidExpected)
 	{
 		var subject = new DAD_DebitAuthorizationDetail();
 		subject.TransactionHandlingCode = "n";
@@ -49,7 +49,7 @@ public class DADTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("n", true)]
-	public void Validatation_RequiredTransactionHandlingCode(string transactionHandlingCode, bool isValidExpected)
+	public void Validation_RequiredTransactionHandlingCode(string transactionHandlingCode, bool isValidExpected)
 	{
 		var subject = new DAD_DebitAuthorizationDetail();
 		subject.ActionCode = "0";
@@ -61,7 +61,7 @@ public class DADTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("bXS3OgzZ", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new DAD_DebitAuthorizationDetail();
 		subject.ActionCode = "0";

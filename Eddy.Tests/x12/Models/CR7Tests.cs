@@ -25,7 +25,7 @@ public class CR7Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("kE", true)]
-	public void Validatation_RequiredDisciplineTypeCode(string disciplineTypeCode, bool isValidExpected)
+	public void Validation_RequiredDisciplineTypeCode(string disciplineTypeCode, bool isValidExpected)
 	{
 		var subject = new CR7_HomeHealthTreatmentPlanCertification();
 		subject.Number = 8;
@@ -37,7 +37,7 @@ public class CR7Tests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(8, true)]
-	public void Validatation_RequiredNumber(int number, bool isValidExpected)
+	public void Validation_RequiredNumber(int number, bool isValidExpected)
 	{
 		var subject = new CR7_HomeHealthTreatmentPlanCertification();
 		subject.DisciplineTypeCode = "kE";
@@ -50,7 +50,7 @@ public class CR7Tests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(7, true)]
-	public void Validatation_RequiredNumber2(int number2, bool isValidExpected)
+	public void Validation_RequiredNumber2(int number2, bool isValidExpected)
 	{
 		var subject = new CR7_HomeHealthTreatmentPlanCertification();
 		subject.DisciplineTypeCode = "kE";

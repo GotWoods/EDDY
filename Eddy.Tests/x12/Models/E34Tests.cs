@@ -26,7 +26,7 @@ public class E34Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("I", true)]
-	public void Validatation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
+	public void Validation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
 	{
 		var subject = new E34_CodeListValuesForADataElement();
 		subject.CodeValue = "X";
@@ -38,7 +38,7 @@ public class E34Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("X", true)]
-	public void Validatation_RequiredCodeValue(string codeValue, bool isValidExpected)
+	public void Validation_RequiredCodeValue(string codeValue, bool isValidExpected)
 	{
 		var subject = new E34_CodeListValuesForADataElement();
 		subject.MaintenanceOperationCode = "I";
@@ -50,7 +50,7 @@ public class E34Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("f", true)]
-	public void Validatation_RequiredDescription(string description, bool isValidExpected)
+	public void Validation_RequiredDescription(string description, bool isValidExpected)
 	{
 		var subject = new E34_CodeListValuesForADataElement();
 		subject.MaintenanceOperationCode = "I";

@@ -23,7 +23,7 @@ public class N2Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("v1", true)]
-    public void Validatation_RequiredName(string name, bool isValidExpected)
+    public void Validation_RequiredName(string name, bool isValidExpected)
     {
         var subject = new N2_AdditionalNameInformation();
         subject.Name = name;

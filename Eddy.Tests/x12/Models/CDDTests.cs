@@ -36,7 +36,7 @@ public class CDDTests
     [Theory]
     [InlineData("", false)]
     [InlineData("o9", true)]
-    public void Validatation_RequiredAdjustmentReasonCode(string adjustmentReasonCode, bool isValidExpected)
+    public void Validation_RequiredAdjustmentReasonCode(string adjustmentReasonCode, bool isValidExpected)
     {
         var subject = new CDD_CreditDebitAdjustmentDetail();
         subject.CreditDebitFlagCode = "x";
@@ -50,7 +50,7 @@ public class CDDTests
     [Theory]
     [InlineData("", false)]
     [InlineData("x", true)]
-    public void Validatation_RequiredCreditDebitFlagCode(string creditDebitFlagCode, bool isValidExpected)
+    public void Validation_RequiredCreditDebitFlagCode(string creditDebitFlagCode, bool isValidExpected)
     {
         var subject = new CDD_CreditDebitAdjustmentDetail();
         subject.AdjustmentReasonCode = "o9";

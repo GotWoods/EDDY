@@ -31,7 +31,7 @@ public class ERITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("G", true)]
-	public void Validatation_RequiredIdentificationCodeQualifier(string identificationCodeQualifier, bool isValidExpected)
+	public void Validation_RequiredIdentificationCodeQualifier(string identificationCodeQualifier, bool isValidExpected)
 	{
 		var subject = new ERI_EntityRelationship();
 		subject.IdentificationCode = "tL";
@@ -43,7 +43,7 @@ public class ERITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("tL", true)]
-	public void Validatation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
+	public void Validation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
 	{
 		var subject = new ERI_EntityRelationship();
 		subject.IdentificationCodeQualifier = "G";
@@ -55,7 +55,7 @@ public class ERITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("0I", true)]
-	public void Validatation_RequiredEntityRelationshipCode(string entityRelationshipCode, bool isValidExpected)
+	public void Validation_RequiredEntityRelationshipCode(string entityRelationshipCode, bool isValidExpected)
 	{
 		var subject = new ERI_EntityRelationship();
 		subject.IdentificationCodeQualifier = "G";

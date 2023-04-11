@@ -25,7 +25,7 @@ public class C075Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("Nj", true)]
-    public void Validatation_RequiredAddedFlavor(string addedFlavor, bool isValidExpected)
+    public void Validation_RequiredAddedFlavor(string addedFlavor, bool isValidExpected)
     {
         var subject = new C075_CompositeAddedFlavor();
         subject.AddedFlavor = addedFlavor;

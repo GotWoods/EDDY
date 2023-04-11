@@ -25,7 +25,7 @@ public class BLRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("i1", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
 	{
 		var subject = new BLR_TransportationCarrierIdentification();
 		subject.StandardCarrierAlphaCode = standardCarrierAlphaCode;

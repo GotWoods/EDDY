@@ -28,7 +28,7 @@ public class PRFTests
     [Theory]
     [InlineData("", false)]
     [InlineData("AUguQ3TimDSGxaJkGpKO0T", true)]
-    public void Validatation_RequiredPurchaseOrderNumber(string purchaseOrderNumber, bool isValidExpected)
+    public void Validation_RequiredPurchaseOrderNumber(string purchaseOrderNumber, bool isValidExpected)
     {
         var subject = new PRF_PurchaseOrderReference();
         subject.PurchaseOrderNumber = purchaseOrderNumber;

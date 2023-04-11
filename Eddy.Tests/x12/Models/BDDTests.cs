@@ -25,7 +25,7 @@ public class BDDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("q", true)]
-	public void Validatation_RequiredInvoiceNumber(string invoiceNumber, bool isValidExpected)
+	public void Validation_RequiredInvoiceNumber(string invoiceNumber, bool isValidExpected)
 	{
 		var subject = new BDD_BeginningSegmentForShipmentDeliveryDiscrepancyInformation();
 		subject.StandardCarrierAlphaCode = "Pz";
@@ -36,7 +36,7 @@ public class BDDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Pz", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
 	{
 		var subject = new BDD_BeginningSegmentForShipmentDeliveryDiscrepancyInformation();
 		subject.InvoiceNumber = "q";

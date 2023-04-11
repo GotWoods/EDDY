@@ -28,7 +28,7 @@ public class DN2Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("s", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new DN2_ToothSummary();
 		subject.CodeListQualifierCode = "L";
@@ -55,7 +55,7 @@ public class DN2Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("L", true)]
-	public void Validatation_RequiredCodeListQualifierCode(string codeListQualifierCode, bool isValidExpected)
+	public void Validation_RequiredCodeListQualifierCode(string codeListQualifierCode, bool isValidExpected)
 	{
 		var subject = new DN2_ToothSummary();
 		subject.ReferenceIdentification = "s";

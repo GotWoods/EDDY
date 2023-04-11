@@ -29,7 +29,7 @@ public class E24Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("W", true)]
-	public void Validatation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
+	public void Validation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
 	{
 		var subject = new E24_DataElementSequenceInASegmentOrComposite();
 		subject.PositionInSegmentOrComposite = 4;
@@ -42,7 +42,7 @@ public class E24Tests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(4, true)]
-	public void Validatation_RequiredPositionInSegmentOrComposite(int positionInSegmentOrComposite, bool isValidExpected)
+	public void Validation_RequiredPositionInSegmentOrComposite(int positionInSegmentOrComposite, bool isValidExpected)
 	{
 		var subject = new E24_DataElementSequenceInASegmentOrComposite();
 		subject.MaintenanceOperationCode = "W";
@@ -56,7 +56,7 @@ public class E24Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("O", true)]
-	public void Validatation_RequiredDataElementReferenceCode(string dataElementReferenceCode, bool isValidExpected)
+	public void Validation_RequiredDataElementReferenceCode(string dataElementReferenceCode, bool isValidExpected)
 	{
 		var subject = new E24_DataElementSequenceInASegmentOrComposite();
 		subject.MaintenanceOperationCode = "W";
@@ -69,7 +69,7 @@ public class E24Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("G", true)]
-	public void Validatation_RequiredRequirementDesignatorCode(string requirementDesignatorCode, bool isValidExpected)
+	public void Validation_RequiredRequirementDesignatorCode(string requirementDesignatorCode, bool isValidExpected)
 	{
 		var subject = new E24_DataElementSequenceInASegmentOrComposite();
 		subject.MaintenanceOperationCode = "W";

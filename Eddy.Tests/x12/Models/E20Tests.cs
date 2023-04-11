@@ -26,7 +26,7 @@ public class E20Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("J", true)]
-	public void Validatation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
+	public void Validation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
 	{
 		var subject = new E20_SegmentHeaderInformation();
 		subject.SegmentIDCode = "xv";
@@ -37,7 +37,7 @@ public class E20Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("xv", true)]
-	public void Validatation_RequiredSegmentIDCode(string segmentIDCode, bool isValidExpected)
+	public void Validation_RequiredSegmentIDCode(string segmentIDCode, bool isValidExpected)
 	{
 		var subject = new E20_SegmentHeaderInformation();
 		subject.MaintenanceOperationCode = "J";

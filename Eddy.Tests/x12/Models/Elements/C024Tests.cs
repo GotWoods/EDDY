@@ -27,7 +27,7 @@ public class C024Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("g6", true)]
-    public void Validatation_RequiredRelatedCausesCode(string relatedCausesCode, bool isValidExpected)
+    public void Validation_RequiredRelatedCausesCode(string relatedCausesCode, bool isValidExpected)
     {
         var subject = new C024_RelatedCausesInformation();
         subject.RelatedCausesCode = relatedCausesCode;

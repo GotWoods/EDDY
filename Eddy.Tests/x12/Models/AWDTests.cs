@@ -33,7 +33,7 @@ public class AWDTests
     // [Theory]
     // [InlineData("", false)]
     // [InlineData("", true)]
-    // public void Validatation_RequiredAmountQualifyingDescription(C007_AmountQualifyingDescription amountQualifyingDescription, bool isValidExpected)
+    // public void Validation_RequiredAmountQualifyingDescription(C007_AmountQualifyingDescription amountQualifyingDescription, bool isValidExpected)
     // {
     // 	var subject = new AWD_AmountWithDescription();
     // 	subject.AmountQualifyingDescription = amountQualifyingDescription;

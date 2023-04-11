@@ -27,7 +27,7 @@ public class ETDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("G", true)]
-	public void Validatation_RequiredExcessTransportationReasonCode(string excessTransportationReasonCode, bool isValidExpected)
+	public void Validation_RequiredExcessTransportationReasonCode(string excessTransportationReasonCode, bool isValidExpected)
 	{
 		var subject = new ETD_ExcessTransportationDetail();
 		subject.ExcessTransportationResponsibilityCode = "P";
@@ -38,7 +38,7 @@ public class ETDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("P", true)]
-	public void Validatation_RequiredExcessTransportationResponsibilityCode(string excessTransportationResponsibilityCode, bool isValidExpected)
+	public void Validation_RequiredExcessTransportationResponsibilityCode(string excessTransportationResponsibilityCode, bool isValidExpected)
 	{
 		var subject = new ETD_ExcessTransportationDetail();
 		subject.ExcessTransportationReasonCode = "G";

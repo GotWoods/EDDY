@@ -22,7 +22,7 @@ public class AT1Tests
     [Theory]
     [InlineData(0, false)]
     [InlineData(1, true)]
-    public void Validatation_RequiredLadingLineItemNumber(int ladingLineItemNumber, bool isValidExpected)
+    public void Validation_RequiredLadingLineItemNumber(int ladingLineItemNumber, bool isValidExpected)
     {
         var subject = new AT1_BillOfLadingLineItemNumber();
         if (ladingLineItemNumber > 0)

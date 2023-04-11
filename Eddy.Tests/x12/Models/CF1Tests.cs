@@ -28,7 +28,7 @@ public class CF1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("r", true)]
-	public void Validatation_RequiredMasterReferenceLinkNumber(string masterReferenceLinkNumber, bool isValidExpected)
+	public void Validation_RequiredMasterReferenceLinkNumber(string masterReferenceLinkNumber, bool isValidExpected)
 	{
 		var subject = new CF1_BeginningSegmentForSummaryFreightBillManifest();
 		subject.StandardCarrierAlphaCode = "vK";
@@ -39,7 +39,7 @@ public class CF1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("vK", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
 	{
 		var subject = new CF1_BeginningSegmentForSummaryFreightBillManifest();
 		subject.MasterReferenceLinkNumber = "r";

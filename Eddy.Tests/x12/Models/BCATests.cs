@@ -37,7 +37,7 @@ public class BCATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Lx", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BCA_BeginningSegmentForPurchaseOrderChangeAcknowledgment();
 		subject.PurchaseOrderNumber = "3";
@@ -49,7 +49,7 @@ public class BCATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("3", true)]
-	public void Validatation_RequiredPurchaseOrderNumber(string purchaseOrderNumber, bool isValidExpected)
+	public void Validation_RequiredPurchaseOrderNumber(string purchaseOrderNumber, bool isValidExpected)
 	{
 		var subject = new BCA_BeginningSegmentForPurchaseOrderChangeAcknowledgment();
 		subject.TransactionSetPurposeCode = "Lx";
@@ -61,7 +61,7 @@ public class BCATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("soQYymW1", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BCA_BeginningSegmentForPurchaseOrderChangeAcknowledgment();
 		subject.TransactionSetPurposeCode = "Lx";

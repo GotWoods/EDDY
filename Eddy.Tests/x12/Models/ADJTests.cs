@@ -41,7 +41,7 @@
 //     [Theory]
 //     [InlineData("", false)]
 //     [InlineData("4", true)]
-//     public void Validatation_RequiredAdjustmentApplicationCode(string adjustmentApplicationCode, bool isValidExpected)
+//     public void Validation_RequiredAdjustmentApplicationCode(string adjustmentApplicationCode, bool isValidExpected)
 //     {
 //         var subject = new ADJ_AdjustmentsToBalancesOrServices();
 //         subject.MonetaryAmount = 4;
@@ -54,7 +54,7 @@
 //     [Theory]
 //     [InlineData("", false)]
 //     [InlineData("4", true)]
-//     public void Validatation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
+//     public void Validation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
 //     {
 //         var subject = new ADJ_AdjustmentsToBalancesOrServices();
 //         subject.AdjustmentApplicationCode = "4";
@@ -68,7 +68,7 @@
 //     [Theory]
 //     [InlineData("", false)]
 //     [InlineData("0pQaXwqU", true)]
-//     public void Validatation_RequiredDate(string date, bool isValidExpected)
+//     public void Validation_RequiredDate(string date, bool isValidExpected)
 //     {
 //         var subject = new ADJ_AdjustmentsToBalancesOrServices();
 //         subject.AdjustmentApplicationCode = "4";
@@ -81,7 +81,7 @@
 //     [Theory]
 //     [InlineData("", false)]
 //     [InlineData("c4BNM00h", true)]
-//     public void Validatation_RequiredDate2(string date2, bool isValidExpected)
+//     public void Validation_RequiredDate2(string date2, bool isValidExpected)
 //     {
 //         var subject = new ADJ_AdjustmentsToBalancesOrServices();
 //         subject.AdjustmentApplicationCode = "4";

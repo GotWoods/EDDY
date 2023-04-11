@@ -27,7 +27,7 @@ public class CLDTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(3, true)]
-	public void Validatation_RequiredNumberOfLoads(int numberOfLoads, bool isValidExpected)
+	public void Validation_RequiredNumberOfLoads(int numberOfLoads, bool isValidExpected)
 	{
 		var subject = new CLD_LoadDetail();
 		subject.NumberOfUnitsShipped = 8;
@@ -39,7 +39,7 @@ public class CLDTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(8, true)]
-	public void Validatation_RequiredNumberOfUnitsShipped(decimal numberOfUnitsShipped, bool isValidExpected)
+	public void Validation_RequiredNumberOfUnitsShipped(decimal numberOfUnitsShipped, bool isValidExpected)
 	{
 		var subject = new CLD_LoadDetail();
 		subject.NumberOfLoads = 3;

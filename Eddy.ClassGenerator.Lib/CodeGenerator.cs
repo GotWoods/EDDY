@@ -340,7 +340,7 @@ public class CodeGenerator
                 sbTest.AppendLine("\t[Theory]");
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(model, true)}, false)]");
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(model, false)}, true)]");
-                sbTest.Append($"\tpublic void Validatation_Required{model.Name}(");
+                sbTest.Append($"\tpublic void Validation_Required{model.Name}(");
                 sbTest.Append($"{model.DataType.Replace("?", "")} {FirstCharToLowerCase(model.Name)}, "); //can not pass in a nullable with inline data
                 sbTest.AppendLine($"bool isValidExpected)");
                 sbTest.AppendLine("\t{");

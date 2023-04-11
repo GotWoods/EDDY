@@ -44,7 +44,7 @@ namespace Eddy.Tests.x12.Models;
 // 	[Theory]
 // 	[InlineData("", false)]
 // 	[InlineData("T", true)]
-// 	public void Validatation_RequiredClaimAdjustmentGroupCode(string claimAdjustmentGroupCode, bool isValidExpected)
+// 	public void Validation_RequiredClaimAdjustmentGroupCode(string claimAdjustmentGroupCode, bool isValidExpected)
 // 	{
 // 		var subject = new CAS_ClaimsAdjustment();
 // 		subject.ClaimAdjustmentReasonCode = "7";
@@ -56,7 +56,7 @@ namespace Eddy.Tests.x12.Models;
 // 	[Theory]
 // 	[InlineData("", false)]
 // 	[InlineData("7", true)]
-// 	public void Validatation_RequiredClaimAdjustmentReasonCode(string claimAdjustmentReasonCode, bool isValidExpected)
+// 	public void Validation_RequiredClaimAdjustmentReasonCode(string claimAdjustmentReasonCode, bool isValidExpected)
 // 	{
 // 		var subject = new CAS_ClaimsAdjustment();
 // 		subject.ClaimAdjustmentGroupCode = "T";
@@ -68,7 +68,7 @@ namespace Eddy.Tests.x12.Models;
 // 	[Theory]
 // 	[InlineData(0, false)]
 // 	[InlineData(6, true)]
-// 	public void Validatation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
+// 	public void Validation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
 // 	{
 // 		var subject = new CAS_ClaimsAdjustment();
 // 		subject.ClaimAdjustmentGroupCode = "T";

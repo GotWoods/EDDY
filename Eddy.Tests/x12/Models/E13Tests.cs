@@ -32,7 +32,7 @@ public class E13Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("M", true)]
-	public void Validatation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
+	public void Validation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
 	{
 		var subject = new E13_SegmentOrderInTransactionSet();
 		subject.PositionInSet = 7;
@@ -43,7 +43,7 @@ public class E13Tests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(7, true)]
-	public void Validatation_RequiredPositionInSet(int positionInSet, bool isValidExpected)
+	public void Validation_RequiredPositionInSet(int positionInSet, bool isValidExpected)
 	{
 		var subject = new E13_SegmentOrderInTransactionSet();
 		subject.MaintenanceOperationCode = "M";

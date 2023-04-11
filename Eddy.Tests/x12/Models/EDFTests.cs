@@ -33,7 +33,7 @@ public class EDFTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("p", true)]
-	public void Validatation_RequiredCodeListQualifierCode(string codeListQualifierCode, bool isValidExpected)
+	public void Validation_RequiredCodeListQualifierCode(string codeListQualifierCode, bool isValidExpected)
 	{
 		var subject = new EDF_EducationalFeeInformation();
 		subject.IndustryCode = "6";
@@ -44,7 +44,7 @@ public class EDFTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("6", true)]
-	public void Validatation_RequiredIndustryCode(string industryCode, bool isValidExpected)
+	public void Validation_RequiredIndustryCode(string industryCode, bool isValidExpected)
 	{
 		var subject = new EDF_EducationalFeeInformation();
 		subject.CodeListQualifierCode = "p";
@@ -79,6 +79,9 @@ public class EDFTests
 		subject.IndustryCode = "6";
 		subject.Description = description;
 		subject.CodeListQualifierCode2 = codeListQualifierCode2;
+
+		if (codeListQualifierCode2 != "")
+			subject.IndustryCode2 = "6";
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}

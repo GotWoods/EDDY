@@ -24,7 +24,7 @@ public class B3ATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("m7", true)]
-	public void Validatation_RequiredTransactionTypeCode(string transactionTypeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionTypeCode(string transactionTypeCode, bool isValidExpected)
 	{
 		var subject = new B3A_InvoiceType();
 		subject.TransactionTypeCode = transactionTypeCode;

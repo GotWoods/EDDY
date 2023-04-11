@@ -39,7 +39,7 @@ public class DPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("O", true)]
-	public void Validatation_RequiredActionCode(string actionCode, bool isValidExpected)
+	public void Validation_RequiredActionCode(string actionCode, bool isValidExpected)
 	{
 		var subject = new DP_AutoClaimDetailParts();
 		subject.ActionCode = actionCode;

@@ -38,7 +38,7 @@ public class BCHTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Hi", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BCH_BeginningSegmentForPurchaseOrderChange();
 		subject.PurchaseOrderTypeCode = "tu";
@@ -51,7 +51,7 @@ public class BCHTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("tu", true)]
-	public void Validatation_RequiredPurchaseOrderTypeCode(string purchaseOrderTypeCode, bool isValidExpected)
+	public void Validation_RequiredPurchaseOrderTypeCode(string purchaseOrderTypeCode, bool isValidExpected)
 	{
 		var subject = new BCH_BeginningSegmentForPurchaseOrderChange();
 		subject.TransactionSetPurposeCode = "Hi";
@@ -64,7 +64,7 @@ public class BCHTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("P", true)]
-	public void Validatation_RequiredPurchaseOrderNumber(string purchaseOrderNumber, bool isValidExpected)
+	public void Validation_RequiredPurchaseOrderNumber(string purchaseOrderNumber, bool isValidExpected)
 	{
 		var subject = new BCH_BeginningSegmentForPurchaseOrderChange();
 		subject.TransactionSetPurposeCode = "Hi";
@@ -77,7 +77,7 @@ public class BCHTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("2EAGCygq", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BCH_BeginningSegmentForPurchaseOrderChange();
 		subject.TransactionSetPurposeCode = "Hi";

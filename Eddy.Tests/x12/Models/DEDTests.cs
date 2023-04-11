@@ -31,7 +31,7 @@ public class DEDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("7k", true)]
-	public void Validatation_RequiredTypeOfDeductionCode(string typeOfDeductionCode, bool isValidExpected)
+	public void Validation_RequiredTypeOfDeductionCode(string typeOfDeductionCode, bool isValidExpected)
 	{
 		var subject = new DED_Deductions();
 		subject.ReferenceIdentification = "o";
@@ -46,7 +46,7 @@ public class DEDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("o", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new DED_Deductions();
 		subject.TypeOfDeductionCode = "7k";
@@ -61,7 +61,7 @@ public class DEDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("H6yGxmIb", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new DED_Deductions();
 		subject.TypeOfDeductionCode = "7k";
@@ -76,7 +76,7 @@ public class DEDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("m", true)]
-	public void Validatation_RequiredAmount(string amount, bool isValidExpected)
+	public void Validation_RequiredAmount(string amount, bool isValidExpected)
 	{
 		var subject = new DED_Deductions();
 		subject.TypeOfDeductionCode = "7k";
@@ -91,7 +91,7 @@ public class DEDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("c", true)]
-	public void Validatation_RequiredReferenceIdentification2(string referenceIdentification2, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification2(string referenceIdentification2, bool isValidExpected)
 	{
 		var subject = new DED_Deductions();
 		subject.TypeOfDeductionCode = "7k";
@@ -106,7 +106,7 @@ public class DEDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("K", true)]
-	public void Validatation_RequiredYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, bool isValidExpected)
+	public void Validation_RequiredYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, bool isValidExpected)
 	{
 		var subject = new DED_Deductions();
 		subject.TypeOfDeductionCode = "7k";

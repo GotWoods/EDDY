@@ -27,7 +27,7 @@ public class CEDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("u", true)]
-	public void Validatation_RequiredAdministrationOfJusticeEventTypeCode(string administrationOfJusticeEventTypeCode, bool isValidExpected)
+	public void Validation_RequiredAdministrationOfJusticeEventTypeCode(string administrationOfJusticeEventTypeCode, bool isValidExpected)
 	{
 		var subject = new CED_AdministrationOfJusticeEventDescription();
 		subject.AdministrationOfJusticeEventTypeCode = administrationOfJusticeEventTypeCode;

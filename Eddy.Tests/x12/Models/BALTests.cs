@@ -25,7 +25,7 @@ public class BALTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("K", true)]
-	public void Validatation_RequiredBalanceTypeCode(string balanceTypeCode, bool isValidExpected)
+	public void Validation_RequiredBalanceTypeCode(string balanceTypeCode, bool isValidExpected)
 	{
 		var subject = new BAL_BalanceDetail();
 		subject.AmountQualifierCode = "V";
@@ -37,7 +37,7 @@ public class BALTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("V", true)]
-	public void Validatation_RequiredAmountQualifierCode(string amountQualifierCode, bool isValidExpected)
+	public void Validation_RequiredAmountQualifierCode(string amountQualifierCode, bool isValidExpected)
 	{
 		var subject = new BAL_BalanceDetail();
 		subject.BalanceTypeCode = "K";
@@ -49,7 +49,7 @@ public class BALTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(3, true)]
-	public void Validatation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
+	public void Validation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
 	{
 		var subject = new BAL_BalanceDetail();
 		subject.BalanceTypeCode = "K";

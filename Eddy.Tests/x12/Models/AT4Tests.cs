@@ -22,7 +22,7 @@ public class AT4Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("gIRwPqK5VP5Ol6kVxuBimFLVqsGMYmtWWIjCQN8EBZ6cfSr1ZX", true)]
-    public void Validatation_RequiredLadingDescription(string ladingDescription, bool isValidExpected)
+    public void Validation_RequiredLadingDescription(string ladingDescription, bool isValidExpected)
     {
         var subject = new AT4_BillOfLadingDescription();
         subject.LadingDescription = ladingDescription;

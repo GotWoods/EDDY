@@ -28,7 +28,7 @@ public class BHTTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("zE1H", true)]
-	public void Validatation_RequiredHierarchicalStructureCode(string hierarchicalStructureCode, bool isValidExpected)
+	public void Validation_RequiredHierarchicalStructureCode(string hierarchicalStructureCode, bool isValidExpected)
 	{
 		var subject = new BHT_BeginningOfHierarchicalTransaction();
 		subject.TransactionSetPurposeCode = "UR";
@@ -39,7 +39,7 @@ public class BHTTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("UR", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BHT_BeginningOfHierarchicalTransaction();
 		subject.HierarchicalStructureCode = "zE1H";

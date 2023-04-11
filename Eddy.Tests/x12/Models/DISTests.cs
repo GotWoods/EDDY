@@ -28,7 +28,7 @@ public class DISTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Sa8", true)]
-	public void Validatation_RequiredDiscountTermsTypeCode(string discountTermsTypeCode, bool isValidExpected)
+	public void Validation_RequiredDiscountTermsTypeCode(string discountTermsTypeCode, bool isValidExpected)
 	{
 		var subject = new DIS_DiscountDetail();
 		subject.DiscountBaseQualifier = "rX";
@@ -42,7 +42,7 @@ public class DISTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("rX", true)]
-	public void Validatation_RequiredDiscountBaseQualifier(string discountBaseQualifier, bool isValidExpected)
+	public void Validation_RequiredDiscountBaseQualifier(string discountBaseQualifier, bool isValidExpected)
 	{
 		var subject = new DIS_DiscountDetail();
 		subject.DiscountTermsTypeCode = "Sa8";
@@ -56,7 +56,7 @@ public class DISTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(1, true)]
-	public void Validatation_RequiredDiscountBaseValue(decimal discountBaseValue, bool isValidExpected)
+	public void Validation_RequiredDiscountBaseValue(decimal discountBaseValue, bool isValidExpected)
 	{
 		var subject = new DIS_DiscountDetail();
 		subject.DiscountTermsTypeCode = "Sa8";
@@ -71,7 +71,7 @@ public class DISTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("zm", true)]
-	public void Validatation_RequiredDiscountControlLimitQualifier(string discountControlLimitQualifier, bool isValidExpected)
+	public void Validation_RequiredDiscountControlLimitQualifier(string discountControlLimitQualifier, bool isValidExpected)
 	{
 		var subject = new DIS_DiscountDetail();
 		subject.DiscountTermsTypeCode = "Sa8";
@@ -85,7 +85,7 @@ public class DISTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(5, true)]
-	public void Validatation_RequiredDiscountControlLimit(int discountControlLimit, bool isValidExpected)
+	public void Validation_RequiredDiscountControlLimit(int discountControlLimit, bool isValidExpected)
 	{
 		var subject = new DIS_DiscountDetail();
 		subject.DiscountTermsTypeCode = "Sa8";

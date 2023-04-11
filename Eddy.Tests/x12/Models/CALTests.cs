@@ -38,7 +38,7 @@ public class CALTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Y4", true)]
-	public void Validatation_RequiredReferenceIdentificationQualifier(string referenceIdentificationQualifier, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentificationQualifier(string referenceIdentificationQualifier, bool isValidExpected)
 	{
 		var subject = new CAL_Calendar();
 		subject.ReferenceIdentification = "O";
@@ -49,7 +49,7 @@ public class CALTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("O", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new CAL_Calendar();
 		subject.ReferenceIdentificationQualifier = "Y4";

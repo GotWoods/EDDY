@@ -26,7 +26,7 @@ public class ADITests
     [Theory]
     [InlineData("", false)]
     [InlineData("oV", true)]
-    public void Validatation_RequiredAnimalDispositionCode(string animalDispositionCode, bool isValidExpected)
+    public void Validation_RequiredAnimalDispositionCode(string animalDispositionCode, bool isValidExpected)
     {
         var subject = new ADI_AnimalDisposition();
         subject.Date = "QW7wVLZm";
@@ -37,7 +37,7 @@ public class ADITests
     [Theory]
     [InlineData("", false)]
     [InlineData("QW7wVLZm", true)]
-    public void Validatation_RequiredDate(string date, bool isValidExpected)
+    public void Validation_RequiredDate(string date, bool isValidExpected)
     {
         var subject = new ADI_AnimalDisposition();
         subject.AnimalDispositionCode = "oV";

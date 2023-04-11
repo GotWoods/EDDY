@@ -26,7 +26,7 @@ public class E41Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("l", true)]
-	public void Validatation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
+	public void Validation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
 	{
 		var subject = new E41_CompositeHeaderInformation();
 		subject.DataElementReferenceCode = "m";
@@ -37,7 +37,7 @@ public class E41Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("m", true)]
-	public void Validatation_RequiredDataElementReferenceCode(string dataElementReferenceCode, bool isValidExpected)
+	public void Validation_RequiredDataElementReferenceCode(string dataElementReferenceCode, bool isValidExpected)
 	{
 		var subject = new E41_CompositeHeaderInformation();
 		subject.MaintenanceOperationCode = "l";

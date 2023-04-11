@@ -25,7 +25,7 @@ public class C3Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("123", true)]
-    public void Validatation_RequiredCurrencyCode(string currencyCode, bool isValidExpected)
+    public void Validation_RequiredCurrencyCode(string currencyCode, bool isValidExpected)
     {
         var subject = new C3_CurrencyIdentifier();
         subject.CurrencyCode = currencyCode;

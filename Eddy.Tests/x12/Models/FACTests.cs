@@ -28,7 +28,7 @@ public class FACTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("7", true)]
-	public void Validatation_RequiredEquipmentInitial(string equipmentInitial, bool isValidExpected)
+	public void Validation_RequiredEquipmentInitial(string equipmentInitial, bool isValidExpected)
 	{
 		var subject = new FAC_FacingDirection();
 		subject.EquipmentNumber = "q";
@@ -39,7 +39,7 @@ public class FACTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("q", true)]
-	public void Validatation_RequiredEquipmentNumber(string equipmentNumber, bool isValidExpected)
+	public void Validation_RequiredEquipmentNumber(string equipmentNumber, bool isValidExpected)
 	{
 		var subject = new FAC_FacingDirection();
 		subject.EquipmentInitial = "7";

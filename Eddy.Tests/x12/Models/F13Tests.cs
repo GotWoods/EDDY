@@ -28,7 +28,7 @@ public class F13Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("T", true)]
-	public void Validatation_RequiredCheckNumber(string checkNumber, bool isValidExpected)
+	public void Validation_RequiredCheckNumber(string checkNumber, bool isValidExpected)
 	{
 		var subject = new F13_PaymentInformation();
 		subject.Date = "8KhhOZNB";
@@ -41,7 +41,7 @@ public class F13Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("8KhhOZNB", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new F13_PaymentInformation();
 		subject.CheckNumber = "T";
@@ -54,7 +54,7 @@ public class F13Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("0", true)]
-	public void Validatation_RequiredAmount(string amount, bool isValidExpected)
+	public void Validation_RequiredAmount(string amount, bool isValidExpected)
 	{
 		var subject = new F13_PaymentInformation();
 		subject.CheckNumber = "T";
@@ -67,7 +67,7 @@ public class F13Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("pa6", true)]
-	public void Validatation_RequiredCurrencyCode(string currencyCode, bool isValidExpected)
+	public void Validation_RequiredCurrencyCode(string currencyCode, bool isValidExpected)
 	{
 		var subject = new F13_PaymentInformation();
 		subject.CheckNumber = "T";

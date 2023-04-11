@@ -36,7 +36,7 @@ public class BTITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("WF", true)]
-	public void Validatation_RequiredReferenceIdentificationQualifier(string referenceIdentificationQualifier, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentificationQualifier(string referenceIdentificationQualifier, bool isValidExpected)
 	{
 		var subject = new BTI_BeginningTaxInformation();
 		subject.ReferenceIdentification = "d";
@@ -49,7 +49,7 @@ public class BTITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("d", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new BTI_BeginningTaxInformation();
 		subject.ReferenceIdentificationQualifier = "WF";
@@ -62,7 +62,7 @@ public class BTITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("j", true)]
-	public void Validatation_RequiredIdentificationCodeQualifier(string identificationCodeQualifier, bool isValidExpected)
+	public void Validation_RequiredIdentificationCodeQualifier(string identificationCodeQualifier, bool isValidExpected)
 	{
 		var subject = new BTI_BeginningTaxInformation();
 		subject.ReferenceIdentificationQualifier = "WF";
@@ -75,7 +75,7 @@ public class BTITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("BZ", true)]
-	public void Validatation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
+	public void Validation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
 	{
 		var subject = new BTI_BeginningTaxInformation();
 		subject.ReferenceIdentificationQualifier = "WF";

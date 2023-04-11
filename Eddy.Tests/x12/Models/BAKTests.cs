@@ -32,7 +32,7 @@ public class BAKTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("61", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BAK_BeginningSegmentForPurchaseOrderAcknowledgment();
 		subject.AcknowledgmentTypeCode = "p2";
@@ -45,7 +45,7 @@ public class BAKTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("p2", true)]
-	public void Validatation_RequiredAcknowledgmentTypeCode(string acknowledgmentTypeCode, bool isValidExpected)
+	public void Validation_RequiredAcknowledgmentTypeCode(string acknowledgmentTypeCode, bool isValidExpected)
 	{
 		var subject = new BAK_BeginningSegmentForPurchaseOrderAcknowledgment();
 		subject.TransactionSetPurposeCode = "61";
@@ -58,7 +58,7 @@ public class BAKTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("t", true)]
-	public void Validatation_RequiredPurchaseOrderNumber(string purchaseOrderNumber, bool isValidExpected)
+	public void Validation_RequiredPurchaseOrderNumber(string purchaseOrderNumber, bool isValidExpected)
 	{
 		var subject = new BAK_BeginningSegmentForPurchaseOrderAcknowledgment();
 		subject.TransactionSetPurposeCode = "61";
@@ -71,7 +71,7 @@ public class BAKTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("MKNC1ldw", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BAK_BeginningSegmentForPurchaseOrderAcknowledgment();
 		subject.TransactionSetPurposeCode = "61";

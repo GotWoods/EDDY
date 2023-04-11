@@ -28,7 +28,7 @@ public class DBTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("fr", true)]
-	public void Validatation_RequiredDateTimePeriodFormatQualifier(string dateTimePeriodFormatQualifier, bool isValidExpected)
+	public void Validation_RequiredDateTimePeriodFormatQualifier(string dateTimePeriodFormatQualifier, bool isValidExpected)
 	{
 		var subject = new DB_DisbursementInformation();
 		subject.DateTimePeriod = "U";
@@ -40,7 +40,7 @@ public class DBTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("U", true)]
-	public void Validatation_RequiredDateTimePeriod(string dateTimePeriod, bool isValidExpected)
+	public void Validation_RequiredDateTimePeriod(string dateTimePeriod, bool isValidExpected)
 	{
 		var subject = new DB_DisbursementInformation();
 		subject.DateTimePeriodFormatQualifier = "fr";
@@ -52,7 +52,7 @@ public class DBTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(3, true)]
-	public void Validatation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
+	public void Validation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
 	{
 		var subject = new DB_DisbursementInformation();
 		subject.DateTimePeriodFormatQualifier = "fr";

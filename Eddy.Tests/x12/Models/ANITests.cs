@@ -31,7 +31,7 @@ public class ANITests
     [Theory]
     [InlineData("", false)]
     [InlineData("3", true)]
-    public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+    public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
     {
         var subject = new ANI_AnimalIdentification();
         subject.Date = "T2qUplCm";
@@ -43,7 +43,7 @@ public class ANITests
     [Theory]
     [InlineData("", false)]
     [InlineData("T2qUplCm", true)]
-    public void Validatation_RequiredDate(string date, bool isValidExpected)
+    public void Validation_RequiredDate(string date, bool isValidExpected)
     {
         var subject = new ANI_AnimalIdentification();
         subject.ReferenceIdentification = "3";
@@ -55,7 +55,7 @@ public class ANITests
     [Theory]
     [InlineData("", false)]
     [InlineData("taGU3aow", true)]
-    public void Validatation_RequiredDate2(string date2, bool isValidExpected)
+    public void Validation_RequiredDate2(string date2, bool isValidExpected)
     {
         var subject = new ANI_AnimalIdentification();
         subject.ReferenceIdentification = "3";

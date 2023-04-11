@@ -27,7 +27,7 @@ public class C002Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("N", true)]
-    public void Validatation_RequiredPaperworkReportActionCode(string paperworkReportActionCode, bool isValidExpected)
+    public void Validation_RequiredPaperworkReportActionCode(string paperworkReportActionCode, bool isValidExpected)
     {
         var subject = new C002_ActionsIndicated();
         subject.PaperworkReportActionCode = paperworkReportActionCode;

@@ -30,7 +30,7 @@ public class AK9Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("2", true)]
-    public void Validatation_RequiredFunctionalGroupAcknowledgeCode(string functionalGroupAcknowledgeCode, bool isValidExpected)
+    public void Validation_RequiredFunctionalGroupAcknowledgeCode(string functionalGroupAcknowledgeCode, bool isValidExpected)
     {
         var subject = new AK9_FunctionalGroupResponseTrailer();
         subject.NumberOfTransactionSetsIncluded = 1;
@@ -42,7 +42,7 @@ public class AK9Tests
     [Theory]
     [InlineData(0, false)]
     [InlineData(1, true)]
-    public void Validatation_RequiredNumberOfTransactionSetsIncluded(int numberOfTransactionSetsIncluded, bool isValidExpected)
+    public void Validation_RequiredNumberOfTransactionSetsIncluded(int numberOfTransactionSetsIncluded, bool isValidExpected)
     {
         var subject = new AK9_FunctionalGroupResponseTrailer();
         subject.NumberOfReceivedTransactionSets = 1;
@@ -55,7 +55,7 @@ public class AK9Tests
     [Theory]
     [InlineData(0, false)]
     [InlineData(1, true)]
-    public void Validatation_RequiredNumberOfReceivedTransactionSets(int numberOfReceivedTransactionSets, bool isValidExpected)
+    public void Validation_RequiredNumberOfReceivedTransactionSets(int numberOfReceivedTransactionSets, bool isValidExpected)
     {
         var subject = new AK9_FunctionalGroupResponseTrailer();
         subject.NumberOfTransactionSetsIncluded = 1;
@@ -69,7 +69,7 @@ public class AK9Tests
     [Theory]
     [InlineData(0, false)]
     [InlineData(1, true)]
-    public void Validatation_RequiredNumberOfAcceptedTransactionSets(int numberOfAcceptedTransactionSets, bool isValidExpected)
+    public void Validation_RequiredNumberOfAcceptedTransactionSets(int numberOfAcceptedTransactionSets, bool isValidExpected)
     {
         var subject = new AK9_FunctionalGroupResponseTrailer();
         subject.NumberOfTransactionSetsIncluded = 1;

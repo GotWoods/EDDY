@@ -25,7 +25,7 @@ public class BMGTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("0P", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BMG_BeginningSegmentForTextMessage();
 		subject.TransactionSetPurposeCode = transactionSetPurposeCode;

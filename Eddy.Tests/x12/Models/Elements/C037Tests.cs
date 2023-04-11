@@ -24,7 +24,7 @@ public class C037Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("U", true)]
-    public void Validatation_RequiredTaxInformationIdentificationNumber(string taxInformationIdentificationNumber, bool isValidExpected)
+    public void Validation_RequiredTaxInformationIdentificationNumber(string taxInformationIdentificationNumber, bool isValidExpected)
     {
         var subject = new C037_TaxFieldIdentification();
         subject.TaxInformationIdentificationNumber = taxInformationIdentificationNumber;

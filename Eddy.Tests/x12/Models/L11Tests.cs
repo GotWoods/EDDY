@@ -29,7 +29,7 @@ namespace Eddy.Tests.x12.Models
         [InlineData("v1", "v2", true)]
         [InlineData("", "v2", false)]
         [InlineData("v1", "", false)]
-        public void Validatation_RequiredReferenceIdentification(string referenceIdentification, string referenceIdentificationQualifier, bool isValidExpected)
+        public void Validation_RequiredReferenceIdentification(string referenceIdentification, string referenceIdentificationQualifier, bool isValidExpected)
         {
             var subject = new L11_BusinessInstructionsAndReferenceNumber();
             subject.Description = "description";
@@ -43,7 +43,7 @@ namespace Eddy.Tests.x12.Models
         [InlineData("v1", "v2", true)]
         [InlineData("", "v2", true)]
         [InlineData("v1", "", true)]
-        public void Validatation_ReferenceIdentificationOrDescriptionRequired(string referenceIdentification, string description, bool isValidExpected)
+        public void Validation_ReferenceIdentificationOrDescriptionRequired(string referenceIdentification, string description, bool isValidExpected)
         {
             var subject = new L11_BusinessInstructionsAndReferenceNumber();
             subject.ReferenceIdentification = referenceIdentification;

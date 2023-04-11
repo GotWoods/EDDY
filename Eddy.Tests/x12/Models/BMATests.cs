@@ -30,7 +30,7 @@ public class BMATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Ia", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BMA_BeginningSegmentForMarketDevelopmentFundAllocation();
 		subject.ReferenceIdentification = "5";
@@ -45,7 +45,7 @@ public class BMATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("5", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new BMA_BeginningSegmentForMarketDevelopmentFundAllocation();
 		subject.TransactionSetPurposeCode = "Ia";
@@ -60,7 +60,7 @@ public class BMATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("3D", true)]
-	public void Validatation_RequiredAllowanceOrChargeMethodOfHandlingCode(string allowanceOrChargeMethodOfHandlingCode, bool isValidExpected)
+	public void Validation_RequiredAllowanceOrChargeMethodOfHandlingCode(string allowanceOrChargeMethodOfHandlingCode, bool isValidExpected)
 	{
 		var subject = new BMA_BeginningSegmentForMarketDevelopmentFundAllocation();
 		subject.TransactionSetPurposeCode = "Ia";
@@ -75,7 +75,7 @@ public class BMATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("mrplXDRF", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BMA_BeginningSegmentForMarketDevelopmentFundAllocation();
 		subject.TransactionSetPurposeCode = "Ia";
@@ -90,7 +90,7 @@ public class BMATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("OJST0hJJ", true)]
-	public void Validatation_RequiredDate2(string date2, bool isValidExpected)
+	public void Validation_RequiredDate2(string date2, bool isValidExpected)
 	{
 		var subject = new BMA_BeginningSegmentForMarketDevelopmentFundAllocation();
 		subject.TransactionSetPurposeCode = "Ia";
@@ -105,7 +105,7 @@ public class BMATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("jK", true)]
-	public void Validatation_RequiredTransactionTypeCode(string transactionTypeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionTypeCode(string transactionTypeCode, bool isValidExpected)
 	{
 		var subject = new BMA_BeginningSegmentForMarketDevelopmentFundAllocation();
 		subject.TransactionSetPurposeCode = "Ia";

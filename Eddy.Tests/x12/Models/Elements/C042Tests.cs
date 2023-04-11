@@ -24,7 +24,7 @@ public class C042Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("L", true)]
-    public void Validatation_RequiredIndustryCode(string industryCode, bool isValidExpected)
+    public void Validation_RequiredIndustryCode(string industryCode, bool isValidExpected)
     {
         var subject = new C042_AdjustmentIdentifier();
         subject.IndustryCode = industryCode;

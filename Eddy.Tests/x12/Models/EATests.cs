@@ -25,7 +25,7 @@ public class EATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("uP", true)]
-	public void Validatation_RequiredEquipmentAttributeCode(string equipmentAttributeCode, bool isValidExpected)
+	public void Validation_RequiredEquipmentAttributeCode(string equipmentAttributeCode, bool isValidExpected)
 	{
 		var subject = new EA_EquipmentAttributes();
 		subject.EquipmentAttributeCode = equipmentAttributeCode;

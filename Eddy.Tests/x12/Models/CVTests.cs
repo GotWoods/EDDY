@@ -36,7 +36,7 @@ public class CVTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("D", true)]
-	public void Validatation_RequiredLoadEmptyStatusCode(string loadEmptyStatusCode, bool isValidExpected)
+	public void Validation_RequiredLoadEmptyStatusCode(string loadEmptyStatusCode, bool isValidExpected)
 	{
 		var subject = new CV_CycleSummaryValue();
 		subject.LoadEmptyStatusCode = loadEmptyStatusCode;

@@ -28,7 +28,7 @@ public class CSTTests
     [Theory]
     [InlineData("", false)]
     [InlineData("rPW", true)]
-    public void Validatation_RequiredCostCode(string costCode, bool isValidExpected)
+    public void Validation_RequiredCostCode(string costCode, bool isValidExpected)
     {
         var subject = new CST_CostAnalysis();
         subject.MonetaryAmount = 3;
@@ -39,7 +39,7 @@ public class CSTTests
     [Theory]
     [InlineData(0, false)]
     [InlineData(3, true)]
-    public void Validatation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
+    public void Validation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
     {
         var subject = new CST_CostAnalysis();
         subject.CostCode = "rPW";

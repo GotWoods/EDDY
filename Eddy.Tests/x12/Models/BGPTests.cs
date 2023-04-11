@@ -31,7 +31,7 @@ public class BGPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("R5", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BGP_BeginningSegmentForProblemLogInquiryOrAdvice();
 		subject.TransactionSetPurposeCode = transactionSetPurposeCode;

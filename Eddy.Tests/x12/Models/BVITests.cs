@@ -27,7 +27,7 @@ public class BVITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("GI", true)]
-	public void Validatation_RequiredBeverageCategory(string beverageCategory, bool isValidExpected)
+	public void Validation_RequiredBeverageCategory(string beverageCategory, bool isValidExpected)
 	{
 		var subject = new BVI_BeverageInformation();
 		subject.BeverageCategory = beverageCategory;

@@ -26,7 +26,7 @@ public class AK4Tests
     [Theory]
     [InlineData(0, false)]
     [InlineData(1, true)]
-    public void Validatation_RequiredPositionInSegment(int positionInSegment, bool isValidExpected)
+    public void Validation_RequiredPositionInSegment(int positionInSegment, bool isValidExpected)
     {
         var subject = new AK4_DataElementNote();
         subject.DataElementSyntaxErrorCode = "CO1";
@@ -37,7 +37,7 @@ public class AK4Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("COl", true)]
-    public void Validatation_RequiredDataElementSyntaxErrorCode(string dataElementSyntaxErrorCode, bool isValidExpected)
+    public void Validation_RequiredDataElementSyntaxErrorCode(string dataElementSyntaxErrorCode, bool isValidExpected)
     {
         var subject = new AK4_DataElementNote();
         subject.PositionInSegment = new C030_PositionInSegment() { ElementPositionInSegment = 1 };

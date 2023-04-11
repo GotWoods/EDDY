@@ -28,7 +28,7 @@ public class C077Tests
     [Theory]
     [InlineData(0, false)]
     [InlineData(7, true)]
-    public void Validatation_RequiredUnitPrice(decimal unitPrice, bool isValidExpected)
+    public void Validation_RequiredUnitPrice(decimal unitPrice, bool isValidExpected)
     {
         var subject = new C077_CompositeCurrency();
         subject.CurrencyCode = "C0v";
@@ -40,7 +40,7 @@ public class C077Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("C0v", true)]
-    public void Validatation_RequiredCurrencyCode(string currencyCode, bool isValidExpected)
+    public void Validation_RequiredCurrencyCode(string currencyCode, bool isValidExpected)
     {
         var subject = new C077_CompositeCurrency();
         subject.UnitPrice = 7;

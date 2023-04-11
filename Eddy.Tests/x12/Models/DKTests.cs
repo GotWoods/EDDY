@@ -32,7 +32,7 @@ public class DKTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("GK", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
 	{
 		var subject = new DK_DocketHeader();
 		subject.DocketControlNumber = "h";
@@ -45,7 +45,7 @@ public class DKTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("h", true)]
-	public void Validatation_RequiredDocketControlNumber(string docketControlNumber, bool isValidExpected)
+	public void Validation_RequiredDocketControlNumber(string docketControlNumber, bool isValidExpected)
 	{
 		var subject = new DK_DocketHeader();
 		subject.StandardCarrierAlphaCode = "GK";
@@ -58,7 +58,7 @@ public class DKTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("r", true)]
-	public void Validatation_RequiredDocketIdentification(string docketIdentification, bool isValidExpected)
+	public void Validation_RequiredDocketIdentification(string docketIdentification, bool isValidExpected)
 	{
 		var subject = new DK_DocketHeader();
 		subject.StandardCarrierAlphaCode = "GK";
@@ -71,7 +71,7 @@ public class DKTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(4, true)]
-	public void Validatation_RequiredRevisionNumber(int revisionNumber, bool isValidExpected)
+	public void Validation_RequiredRevisionNumber(int revisionNumber, bool isValidExpected)
 	{
 		var subject = new DK_DocketHeader();
 		subject.StandardCarrierAlphaCode = "GK";

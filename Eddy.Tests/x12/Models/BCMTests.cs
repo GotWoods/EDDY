@@ -34,7 +34,7 @@ public class BCMTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("BA", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BCM_BeginningSegmentForContractorCostDataReporting();
 		subject.Date = "7cPBeojz";
@@ -47,7 +47,7 @@ public class BCMTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("7cPBeojz", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BCM_BeginningSegmentForContractorCostDataReporting();
 		subject.TransactionSetPurposeCode = "BA";
@@ -60,7 +60,7 @@ public class BCMTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("j31wN35J", true)]
-	public void Validatation_RequiredDate2(string date2, bool isValidExpected)
+	public void Validation_RequiredDate2(string date2, bool isValidExpected)
 	{
 		var subject = new BCM_BeginningSegmentForContractorCostDataReporting();
 		subject.TransactionSetPurposeCode = "BA";

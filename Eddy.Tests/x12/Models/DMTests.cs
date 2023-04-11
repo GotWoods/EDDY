@@ -43,7 +43,7 @@ public class DMTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("b", true)]
-	public void Validatation_RequiredGeographyQualifierCode(string geographyQualifierCode, bool isValidExpected)
+	public void Validation_RequiredGeographyQualifierCode(string geographyQualifierCode, bool isValidExpected)
 	{
 		var subject = new DM_DemurrageDetentionStorageRate();
 		subject.RateValueQualifier = "uR";
@@ -58,7 +58,7 @@ public class DMTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("uR", true)]
-	public void Validatation_RequiredRateValueQualifier(string rateValueQualifier, bool isValidExpected)
+	public void Validation_RequiredRateValueQualifier(string rateValueQualifier, bool isValidExpected)
 	{
 		var subject = new DM_DemurrageDetentionStorageRate();
 		subject.GeographyQualifierCode = "b";
@@ -93,7 +93,7 @@ public class DMTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(2, true)]
-	public void Validatation_RequiredNumberOfPeriods(int numberOfPeriods, bool isValidExpected)
+	public void Validation_RequiredNumberOfPeriods(int numberOfPeriods, bool isValidExpected)
 	{
 		var subject = new DM_DemurrageDetentionStorageRate();
 		subject.GeographyQualifierCode = "b";
@@ -109,7 +109,7 @@ public class DMTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("M", true)]
-	public void Validatation_RequiredTimePeriodQualifier(string timePeriodQualifier, bool isValidExpected)
+	public void Validation_RequiredTimePeriodQualifier(string timePeriodQualifier, bool isValidExpected)
 	{
 		var subject = new DM_DemurrageDetentionStorageRate();
 		subject.GeographyQualifierCode = "b";
@@ -124,7 +124,7 @@ public class DMTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(7, true)]
-	public void Validatation_RequiredNumberOfPeriods2(int numberOfPeriods2, bool isValidExpected)
+	public void Validation_RequiredNumberOfPeriods2(int numberOfPeriods2, bool isValidExpected)
 	{
 		var subject = new DM_DemurrageDetentionStorageRate();
 		subject.GeographyQualifierCode = "b";
@@ -140,7 +140,7 @@ public class DMTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(2, true)]
-	public void Validatation_RequiredRate(decimal rate, bool isValidExpected)
+	public void Validation_RequiredRate(decimal rate, bool isValidExpected)
 	{
 		var subject = new DM_DemurrageDetentionStorageRate();
 		subject.GeographyQualifierCode = "b";

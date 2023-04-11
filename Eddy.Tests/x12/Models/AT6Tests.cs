@@ -25,7 +25,7 @@ public class AT6Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("5n", true)]
-    public void Validatation_RequiredInternationalDutiableStatusCode(string internationalDutiableStatusCode, bool isValidExpected)
+    public void Validation_RequiredInternationalDutiableStatusCode(string internationalDutiableStatusCode, bool isValidExpected)
     {
         var subject = new AT6_InternationalManifestInformation();
         subject.ImportExportCode = "o";
@@ -36,7 +36,7 @@ public class AT6Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("o", true)]
-    public void Validatation_RequiredImportExportCode(string importExportCode, bool isValidExpected)
+    public void Validation_RequiredImportExportCode(string importExportCode, bool isValidExpected)
     {
         var subject = new AT6_InternationalManifestInformation();
         subject.InternationalDutiableStatusCode = "5n";

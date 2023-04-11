@@ -28,7 +28,7 @@ public class C076Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("F", true)]
-    public void Validatation_RequiredIdentificationCodeQualifier(string identificationCodeQualifier, bool isValidExpected)
+    public void Validation_RequiredIdentificationCodeQualifier(string identificationCodeQualifier, bool isValidExpected)
     {
         var subject = new C076_CompositeIdentificationCodes();
         subject.IdentificationCode = "MQ";
@@ -39,7 +39,7 @@ public class C076Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("MQ", true)]
-    public void Validatation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
+    public void Validation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
     {
         var subject = new C076_CompositeIdentificationCodes();
         subject.IdentificationCodeQualifier = "F";

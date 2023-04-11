@@ -24,7 +24,7 @@ public class C999Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("q", true)]
-    public void Validatation_RequiredDataElementReferenceCode(string dataElementReferenceCode, bool isValidExpected)
+    public void Validation_RequiredDataElementReferenceCode(string dataElementReferenceCode, bool isValidExpected)
     {
         var subject = new C999_ReferenceInSegment();
         subject.DataElementReferenceCode = dataElementReferenceCode;

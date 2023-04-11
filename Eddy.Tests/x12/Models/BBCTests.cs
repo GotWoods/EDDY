@@ -24,7 +24,7 @@ public class BBCTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("M", true)]
-	public void Validatation_RequiredClaimTypeCode(string claimTypeCode, bool isValidExpected)
+	public void Validation_RequiredClaimTypeCode(string claimTypeCode, bool isValidExpected)
 	{
 		var subject = new BBC_LegalClaims();
 		subject.ClaimTypeCode = claimTypeCode;

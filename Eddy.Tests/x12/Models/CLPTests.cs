@@ -40,7 +40,7 @@ public class CLPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("d", true)]
-	public void Validatation_RequiredClaimSubmittersIdentifier(string claimSubmittersIdentifier, bool isValidExpected)
+	public void Validation_RequiredClaimSubmittersIdentifier(string claimSubmittersIdentifier, bool isValidExpected)
 	{
 		var subject = new CLP_ClaimLevelData();
 		subject.ClaimStatusCode = "Q";
@@ -53,7 +53,7 @@ public class CLPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Q", true)]
-	public void Validatation_RequiredClaimStatusCode(string claimStatusCode, bool isValidExpected)
+	public void Validation_RequiredClaimStatusCode(string claimStatusCode, bool isValidExpected)
 	{
 		var subject = new CLP_ClaimLevelData();
 		subject.ClaimSubmittersIdentifier = "d";
@@ -66,7 +66,7 @@ public class CLPTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(6, true)]
-	public void Validatation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
+	public void Validation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
 	{
 		var subject = new CLP_ClaimLevelData();
 		subject.ClaimSubmittersIdentifier = "d";
@@ -80,7 +80,7 @@ public class CLPTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(8, true)]
-	public void Validatation_RequiredMonetaryAmount2(decimal monetaryAmount2, bool isValidExpected)
+	public void Validation_RequiredMonetaryAmount2(decimal monetaryAmount2, bool isValidExpected)
 	{
 		var subject = new CLP_ClaimLevelData();
 		subject.ClaimSubmittersIdentifier = "d";

@@ -25,7 +25,7 @@ public class DHTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("0", true)]
-	public void Validatation_RequiredShipDeliveryOrCalendarPatternCode(string shipDeliveryOrCalendarPatternCode, bool isValidExpected)
+	public void Validation_RequiredShipDeliveryOrCalendarPatternCode(string shipDeliveryOrCalendarPatternCode, bool isValidExpected)
 	{
 		var subject = new DH_DealerHours();
 		subject.Time = "GCg3";
@@ -37,7 +37,7 @@ public class DHTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("GCg3", true)]
-	public void Validatation_RequiredTime(string time, bool isValidExpected)
+	public void Validation_RequiredTime(string time, bool isValidExpected)
 	{
 		var subject = new DH_DealerHours();
 		subject.ShipDeliveryOrCalendarPatternCode = "0";
@@ -49,7 +49,7 @@ public class DHTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("qU5v", true)]
-	public void Validatation_RequiredTime2(string time2, bool isValidExpected)
+	public void Validation_RequiredTime2(string time2, bool isValidExpected)
 	{
 		var subject = new DH_DealerHours();
 		subject.ShipDeliveryOrCalendarPatternCode = "0";

@@ -26,7 +26,7 @@ public class C052Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("e", true)]
-    public void Validatation_RequiredMedicarePlanCode(string medicarePlanCode, bool isValidExpected)
+    public void Validation_RequiredMedicarePlanCode(string medicarePlanCode, bool isValidExpected)
     {
         var subject = new C052_MedicareStatusCode();
         subject.MedicarePlanCode = medicarePlanCode;

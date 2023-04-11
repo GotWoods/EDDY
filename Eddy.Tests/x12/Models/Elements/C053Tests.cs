@@ -27,7 +27,7 @@ public class C053Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("f", true)]
-    public void Validatation_RequiredElectronicFormStandardsTypeCode(string electronicFormStandardsTypeCode, bool isValidExpected)
+    public void Validation_RequiredElectronicFormStandardsTypeCode(string electronicFormStandardsTypeCode, bool isValidExpected)
     {
         var subject = new C053_StandardsInformation();
         subject.ElectronicFormStandardsIdentifier = "t";
@@ -39,7 +39,7 @@ public class C053Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("t", true)]
-    public void Validatation_RequiredElectronicFormStandardsIdentifier(string electronicFormStandardsIdentifier, bool isValidExpected)
+    public void Validation_RequiredElectronicFormStandardsIdentifier(string electronicFormStandardsIdentifier, bool isValidExpected)
     {
         var subject = new C053_StandardsInformation();
         subject.ElectronicFormStandardsTypeCode = "f";
@@ -51,7 +51,7 @@ public class C053Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("D", true)]
-    public void Validatation_RequiredImplementationConventionReference(string implementationConventionReference, bool isValidExpected)
+    public void Validation_RequiredImplementationConventionReference(string implementationConventionReference, bool isValidExpected)
     {
         var subject = new C053_StandardsInformation();
         subject.ElectronicFormStandardsTypeCode = "f";

@@ -28,7 +28,7 @@ public class CYCTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(2784, true)]
-	public void Validatation_RequiredYear(int year, bool isValidExpected)
+	public void Validation_RequiredYear(int year, bool isValidExpected)
 	{
 		var subject = new CYC_CarHireCycle();
 		subject.MonthOfTheYearCode = "h2";
@@ -43,7 +43,7 @@ public class CYCTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("h2", true)]
-	public void Validatation_RequiredMonthOfTheYearCode(string monthOfTheYearCode, bool isValidExpected)
+	public void Validation_RequiredMonthOfTheYearCode(string monthOfTheYearCode, bool isValidExpected)
 	{
 		var subject = new CYC_CarHireCycle();
 		subject.Year = 2784;
@@ -57,7 +57,7 @@ public class CYCTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(2, true)]
-	public void Validatation_RequiredCycleMonthHours(int cycleMonthHours, bool isValidExpected)
+	public void Validation_RequiredCycleMonthHours(int cycleMonthHours, bool isValidExpected)
 	{
 		var subject = new CYC_CarHireCycle();
 		subject.Year = 2784;
@@ -72,7 +72,7 @@ public class CYCTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("zpnJVB", true)]
-	public void Validatation_RequiredStandardPointLocationCode(string standardPointLocationCode, bool isValidExpected)
+	public void Validation_RequiredStandardPointLocationCode(string standardPointLocationCode, bool isValidExpected)
 	{
 		var subject = new CYC_CarHireCycle();
 		subject.Year = 2784;
@@ -86,7 +86,7 @@ public class CYCTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("uA", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
 	{
 		var subject = new CYC_CarHireCycle();
 		subject.Year = 2784;

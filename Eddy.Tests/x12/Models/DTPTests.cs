@@ -25,7 +25,7 @@ public class DTPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("tib", true)]
-	public void Validatation_RequiredDateTimeQualifier(string dateTimeQualifier, bool isValidExpected)
+	public void Validation_RequiredDateTimeQualifier(string dateTimeQualifier, bool isValidExpected)
 	{
 		var subject = new DTP_DateOrTimeOrPeriod();
 		subject.DateTimePeriodFormatQualifier = "WL";
@@ -37,7 +37,7 @@ public class DTPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("WL", true)]
-	public void Validatation_RequiredDateTimePeriodFormatQualifier(string dateTimePeriodFormatQualifier, bool isValidExpected)
+	public void Validation_RequiredDateTimePeriodFormatQualifier(string dateTimePeriodFormatQualifier, bool isValidExpected)
 	{
 		var subject = new DTP_DateOrTimeOrPeriod();
 		subject.DateTimeQualifier = "tib";
@@ -49,7 +49,7 @@ public class DTPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("A", true)]
-	public void Validatation_RequiredDateTimePeriod(string dateTimePeriod, bool isValidExpected)
+	public void Validation_RequiredDateTimePeriod(string dateTimePeriod, bool isValidExpected)
 	{
 		var subject = new DTP_DateOrTimeOrPeriod();
 		subject.DateTimeQualifier = "tib";

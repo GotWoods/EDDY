@@ -33,7 +33,7 @@ public class CMATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Gl", true)]
-	public void Validatation_RequiredTransactionTypeCode(string transactionTypeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionTypeCode(string transactionTypeCode, bool isValidExpected)
 	{
 		var subject = new CMA_CooperativeMarketAgreement();
 		subject.ReferenceIdentificationQualifier = "pY";
@@ -47,7 +47,7 @@ public class CMATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("pY", true)]
-	public void Validatation_RequiredReferenceIdentificationQualifier(string referenceIdentificationQualifier, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentificationQualifier(string referenceIdentificationQualifier, bool isValidExpected)
 	{
 		var subject = new CMA_CooperativeMarketAgreement();
 		subject.TransactionTypeCode = "Gl";
@@ -61,7 +61,7 @@ public class CMATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("r", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new CMA_CooperativeMarketAgreement();
 		subject.TransactionTypeCode = "Gl";
@@ -75,7 +75,7 @@ public class CMATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("pekdfZ0K", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new CMA_CooperativeMarketAgreement();
 		subject.TransactionTypeCode = "Gl";
@@ -89,7 +89,7 @@ public class CMATests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(151965, true)]
-	public void Validatation_RequiredWeek(int week, bool isValidExpected)
+	public void Validation_RequiredWeek(int week, bool isValidExpected)
 	{
 		var subject = new CMA_CooperativeMarketAgreement();
 		subject.TransactionTypeCode = "Gl";

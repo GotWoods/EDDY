@@ -26,7 +26,7 @@ public class ASLTests
     [Theory]
     [InlineData("", false)]
     [InlineData("A", true)]
-    public void Validatation_RequiredAmountQualifierCode(string amountQualifierCode, bool isValidExpected)
+    public void Validation_RequiredAmountQualifierCode(string amountQualifierCode, bool isValidExpected)
     {
         var subject = new ASL_AssetLiability();
         subject.MonetaryAmount = 1;
@@ -37,7 +37,7 @@ public class ASLTests
     [Theory]
     [InlineData(0, false)]
     [InlineData(1, true)]
-    public void Validatation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
+    public void Validation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
     {
         var subject = new ASL_AssetLiability();
         subject.AmountQualifierCode = "A";

@@ -25,7 +25,7 @@ public class APRTests
     [Theory]
     [InlineData("", false)]
     [InlineData("7", true)]
-    public void Validatation_RequiredYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, bool isValidExpected)
+    public void Validation_RequiredYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, bool isValidExpected)
     {
         var subject = new APR_AssociationOfAmericanRailroadsPoolCodeRestrictions();
         subject.AssociationOfAmericanRailroadsAARPoolCode = "g5Ht0vO";
@@ -36,7 +36,7 @@ public class APRTests
     [Theory]
     [InlineData("", false)]
     [InlineData("g5Ht0vO", true)]
-    public void Validatation_RequiredAssociationOfAmericanRailroadsAARPoolCode(string associationOfAmericanRailroadsAARPoolCode, bool isValidExpected)
+    public void Validation_RequiredAssociationOfAmericanRailroadsAARPoolCode(string associationOfAmericanRailroadsAARPoolCode, bool isValidExpected)
     {
         var subject = new APR_AssociationOfAmericanRailroadsPoolCodeRestrictions();
         subject.YesNoConditionOrResponseCode = "7";

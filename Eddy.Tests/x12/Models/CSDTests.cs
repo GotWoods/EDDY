@@ -35,7 +35,7 @@ public class CSDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("JV", true)]
-	public void Validatation_RequiredSpecialHandlingCode(string specialHandlingCode, bool isValidExpected)
+	public void Validation_RequiredSpecialHandlingCode(string specialHandlingCode, bool isValidExpected)
 	{
 		var subject = new CSD_ConsolidatedShipmentInvoiceData();
 		subject.ReferenceIdentificationQualifier = "JU";
@@ -49,7 +49,7 @@ public class CSDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("JU", true)]
-	public void Validatation_RequiredReferenceIdentificationQualifier(string referenceIdentificationQualifier, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentificationQualifier(string referenceIdentificationQualifier, bool isValidExpected)
 	{
 		var subject = new CSD_ConsolidatedShipmentInvoiceData();
 		subject.SpecialHandlingCode = "JV";
@@ -63,7 +63,7 @@ public class CSDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("i", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new CSD_ConsolidatedShipmentInvoiceData();
 		subject.SpecialHandlingCode = "JV";
@@ -77,7 +77,7 @@ public class CSDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("0N", true)]
-	public void Validatation_RequiredShipmentMethodOfPaymentCode(string shipmentMethodOfPaymentCode, bool isValidExpected)
+	public void Validation_RequiredShipmentMethodOfPaymentCode(string shipmentMethodOfPaymentCode, bool isValidExpected)
 	{
 		var subject = new CSD_ConsolidatedShipmentInvoiceData();
 		subject.SpecialHandlingCode = "JV";
@@ -91,7 +91,7 @@ public class CSDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("a", true)]
-	public void Validatation_RequiredAmountCharged(string amountCharged, bool isValidExpected)
+	public void Validation_RequiredAmountCharged(string amountCharged, bool isValidExpected)
 	{
 		var subject = new CSD_ConsolidatedShipmentInvoiceData();
 		subject.SpecialHandlingCode = "JV";

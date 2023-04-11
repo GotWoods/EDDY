@@ -26,7 +26,7 @@ public class BSCTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("2D", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BSC_BeginningSegmentForCommissionSalesReportAndPeriodicCompensation();
 		subject.Date = "2t8RP6Ri";
@@ -39,7 +39,7 @@ public class BSCTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("2t8RP6Ri", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BSC_BeginningSegmentForCommissionSalesReportAndPeriodicCompensation();
 		subject.TransactionSetPurposeCode = "2D";
@@ -52,7 +52,7 @@ public class BSCTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("3ST0UM8K", true)]
-	public void Validatation_RequiredDate2(string date2, bool isValidExpected)
+	public void Validation_RequiredDate2(string date2, bool isValidExpected)
 	{
 		var subject = new BSC_BeginningSegmentForCommissionSalesReportAndPeriodicCompensation();
 		subject.TransactionSetPurposeCode = "2D";
@@ -65,7 +65,7 @@ public class BSCTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("h7CFlfqZ", true)]
-	public void Validatation_RequiredDate3(string date3, bool isValidExpected)
+	public void Validation_RequiredDate3(string date3, bool isValidExpected)
 	{
 		var subject = new BSC_BeginningSegmentForCommissionSalesReportAndPeriodicCompensation();
 		subject.TransactionSetPurposeCode = "2D";

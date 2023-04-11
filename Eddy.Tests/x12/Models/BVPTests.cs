@@ -33,7 +33,7 @@ public class BVPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("X", true)]
-	public void Validatation_RequiredVehicleProductionStatus(string vehicleProductionStatus, bool isValidExpected)
+	public void Validation_RequiredVehicleProductionStatus(string vehicleProductionStatus, bool isValidExpected)
 	{
 		var subject = new BVP_BeginningSegmentForVehicleShippingOrder();
 		subject.IdentificationCodeQualifier = "0";
@@ -47,7 +47,7 @@ public class BVPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("0", true)]
-	public void Validatation_RequiredIdentificationCodeQualifier(string identificationCodeQualifier, bool isValidExpected)
+	public void Validation_RequiredIdentificationCodeQualifier(string identificationCodeQualifier, bool isValidExpected)
 	{
 		var subject = new BVP_BeginningSegmentForVehicleShippingOrder();
 		subject.VehicleProductionStatus = "X";
@@ -61,7 +61,7 @@ public class BVPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Lh", true)]
-	public void Validatation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
+	public void Validation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
 	{
 		var subject = new BVP_BeginningSegmentForVehicleShippingOrder();
 		subject.VehicleProductionStatus = "X";

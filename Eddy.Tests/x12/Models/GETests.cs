@@ -24,7 +24,7 @@ public class GETests
     [Theory]
     [InlineData(0, false)]
     [InlineData(1, true)]
-    public void Validatation_RequiredNumberOfTransactionSetsIncluded(int numberOfTransactionSetsIncluded, bool isValidExpected)
+    public void Validation_RequiredNumberOfTransactionSetsIncluded(int numberOfTransactionSetsIncluded, bool isValidExpected)
     {
         var subject = new GE_FunctionalGroupTrailer();
 
@@ -39,7 +39,7 @@ public class GETests
     [Theory]
     [InlineData(0, false)]
     [InlineData(1, true)]
-    public void Validatation_RequiredGroupControlNumber(int groupControlNumber, bool isValidExpected)
+    public void Validation_RequiredGroupControlNumber(int groupControlNumber, bool isValidExpected)
     {
         var subject = new GE_FunctionalGroupTrailer();
         subject.NumberOfTransactionSetsIncluded = 1;

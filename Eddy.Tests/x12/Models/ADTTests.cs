@@ -32,7 +32,7 @@ public class ADTTests
     [Theory]
     [InlineData("", false)]
     [InlineData("a", true)]
-    public void Validatation_RequiredParturitionStatusCode(string parturitionStatusCode, bool isValidExpected)
+    public void Validation_RequiredParturitionStatusCode(string parturitionStatusCode, bool isValidExpected)
     {
         var subject = new ADT_AnimalParturitionStatus();
         subject.ParturitionStatusCode = parturitionStatusCode;

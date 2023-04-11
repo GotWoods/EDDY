@@ -26,7 +26,7 @@ public class C043Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("R", true)]
-    public void Validatation_RequiredIndustryCode(string industryCode, bool isValidExpected)
+    public void Validation_RequiredIndustryCode(string industryCode, bool isValidExpected)
     {
         var subject = new C043_HealthCareClaimStatus();
         subject.IndustryCode2 = "H";
@@ -37,7 +37,7 @@ public class C043Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("H", true)]
-    public void Validatation_RequiredIndustryCode2(string industryCode2, bool isValidExpected)
+    public void Validation_RequiredIndustryCode2(string industryCode2, bool isValidExpected)
     {
         var subject = new C043_HealthCareClaimStatus();
         subject.IndustryCode = "R";

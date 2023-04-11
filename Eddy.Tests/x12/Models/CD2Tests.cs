@@ -30,7 +30,7 @@ public class CD2Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("kj", true)]
-	public void Validatation_RequiredCodeCategory(string codeCategory, bool isValidExpected)
+	public void Validation_RequiredCodeCategory(string codeCategory, bool isValidExpected)
 	{
 		var subject = new CD2_MultiValuedCharacteristics();
 		subject.ProductServiceIDQualifier = "v6";
@@ -42,7 +42,7 @@ public class CD2Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("v6", true)]
-	public void Validatation_RequiredProductServiceIDQualifier(string productServiceIDQualifier, bool isValidExpected)
+	public void Validation_RequiredProductServiceIDQualifier(string productServiceIDQualifier, bool isValidExpected)
 	{
 		var subject = new CD2_MultiValuedCharacteristics();
 		subject.CodeCategory = "kj";
@@ -54,7 +54,7 @@ public class CD2Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("p", true)]
-	public void Validatation_RequiredMedicalCodeValue(string medicalCodeValue, bool isValidExpected)
+	public void Validation_RequiredMedicalCodeValue(string medicalCodeValue, bool isValidExpected)
 	{
 		var subject = new CD2_MultiValuedCharacteristics();
 		subject.CodeCategory = "kj";

@@ -29,7 +29,7 @@ public class SPOTests
     [Theory]
     [InlineData("", false)]
     [InlineData("IXtz54B2mI8mOM2w8fwzEA", true)]
-    public void Validatation_RequiredPurchaseOrderNumber(string purchaseOrderNumber, bool isValidExpected)
+    public void Validation_RequiredPurchaseOrderNumber(string purchaseOrderNumber, bool isValidExpected)
     {
         var subject = new SPO_ShipmentPurchaseOrderDetail();
         subject.PurchaseOrderNumber = purchaseOrderNumber;

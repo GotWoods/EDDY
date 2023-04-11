@@ -24,7 +24,7 @@ public class C062Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("Y", true)]
-    public void Validatation_RequiredAccountRelationshipCode(string accountRelationshipCode, bool isValidExpected)
+    public void Validation_RequiredAccountRelationshipCode(string accountRelationshipCode, bool isValidExpected)
     {
         var subject = new C062_TaxAdvantageAccountInformation();
         subject.AccountRelationshipCode = accountRelationshipCode;

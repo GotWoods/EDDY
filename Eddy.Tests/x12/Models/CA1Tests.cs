@@ -24,7 +24,7 @@ public class CA1Tests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(6, true)]
-	public void Validatation_RequiredRateRequestID(int rateRequestID, bool isValidExpected)
+	public void Validation_RequiredRateRequestID(int rateRequestID, bool isValidExpected)
 	{
 		var subject = new CA1_RateRequestIdentifier();
 		if (rateRequestID > 0)

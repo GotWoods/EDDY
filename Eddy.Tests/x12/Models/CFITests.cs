@@ -29,7 +29,7 @@ public class CFITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("M3", true)]
-	public void Validatation_RequiredCodeCategory(string codeCategory, bool isValidExpected)
+	public void Validation_RequiredCodeCategory(string codeCategory, bool isValidExpected)
 	{
 		var subject = new CFI_CompensationFinancialInformation();
 		subject.CodeCategory = codeCategory;

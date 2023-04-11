@@ -30,7 +30,7 @@ public class FOBTests
     [Theory]
     [InlineData("", false)]
     [InlineData("YK", true)]
-    public void Validatation_RequiredShipmentMethodOfPaymentCode(string shipmentMethodOfPaymentCode, bool isValidExpected)
+    public void Validation_RequiredShipmentMethodOfPaymentCode(string shipmentMethodOfPaymentCode, bool isValidExpected)
     {
         var subject = new FOB_RelatedInstructions();
         subject.ShipmentMethodOfPaymentCode = shipmentMethodOfPaymentCode;

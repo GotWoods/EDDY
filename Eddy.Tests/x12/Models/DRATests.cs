@@ -37,7 +37,7 @@ public class DRATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("b", true)]
-	public void Validatation_RequiredDescription(string description, bool isValidExpected)
+	public void Validation_RequiredDescription(string description, bool isValidExpected)
 	{
 		var subject = new DRA_DrugAuthorization();
 		subject.Description = description;

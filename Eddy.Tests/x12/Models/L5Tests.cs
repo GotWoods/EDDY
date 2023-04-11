@@ -35,7 +35,7 @@ public class L5Tests
     [InlineData("v1", "v2", true)]
     [InlineData("", "v2", false)]
     [InlineData("v1", "", false)]
-    public void Validatation_RequiredCommodityCode(string commodityCode, string commodityCodeQualifier, bool isValidExpected)
+    public void Validation_RequiredCommodityCode(string commodityCode, string commodityCodeQualifier, bool isValidExpected)
     {
         var subject = new L5_DescriptionMarksAndNumbers();
         subject.CommodityCode = commodityCode;
@@ -47,7 +47,7 @@ public class L5Tests
     [InlineData("v1", "v2", true)]
     [InlineData("", "v2", false)]
     [InlineData("v1", "", false)]
-    public void Validatation_RequiredCommodityCodeQualifier(string commodityCodeQualifier, string commodityCode, bool isValidExpected)
+    public void Validation_RequiredCommodityCodeQualifier(string commodityCodeQualifier, string commodityCode, bool isValidExpected)
     {
         var subject = new L5_DescriptionMarksAndNumbers();
         subject.CommodityCodeQualifier = commodityCodeQualifier;

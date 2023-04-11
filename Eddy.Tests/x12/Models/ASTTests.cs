@@ -33,7 +33,7 @@ public class ASTTests
     [Theory]
     [InlineData("", false)]
     [InlineData("c", true)]
-    public void Validatation_RequiredYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, bool isValidExpected)
+    public void Validation_RequiredYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, bool isValidExpected)
     {
         var subject = new AST_AnimalReproductiveStatus();
         subject.YesNoConditionOrResponseCode = yesNoConditionOrResponseCode;

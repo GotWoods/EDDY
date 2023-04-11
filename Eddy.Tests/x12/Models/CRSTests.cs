@@ -42,7 +42,7 @@ public class CRSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("c", true)]
-	public void Validatation_RequiredBasisForAcademicCreditOrAwardOfCredentialCode(string basisForAcademicCreditOrAwardOfCredentialCode, bool isValidExpected)
+	public void Validation_RequiredBasisForAcademicCreditOrAwardOfCredentialCode(string basisForAcademicCreditOrAwardOfCredentialCode, bool isValidExpected)
 	{
 		var subject = new CRS_CourseRecord();
 		subject.BasisForAcademicCreditOrAwardOfCredentialCode = basisForAcademicCreditOrAwardOfCredentialCode;

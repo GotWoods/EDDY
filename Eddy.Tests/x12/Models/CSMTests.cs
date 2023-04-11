@@ -25,7 +25,7 @@ public class CSMTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("bn7", true)]
-	public void Validatation_RequiredCryptographicServiceMessageCSMMessageClassCode(string cryptographicServiceMessageCSMMessageClassCode, bool isValidExpected)
+	public void Validation_RequiredCryptographicServiceMessageCSMMessageClassCode(string cryptographicServiceMessageCSMMessageClassCode, bool isValidExpected)
 	{
 		var subject = new CSM_CryptographicServiceMessageHeader();
 		subject.CryptographicServiceMessageCSMMessageClassCode = cryptographicServiceMessageCSMMessageClassCode;

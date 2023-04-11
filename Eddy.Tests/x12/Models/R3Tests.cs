@@ -33,7 +33,7 @@ public class R3Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("v1", true)]
-    public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+    public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
     {
         var subject = new R3_RouteInformationMotor();
         subject.StandardCarrierAlphaCode = standardCarrierAlphaCode;
@@ -43,7 +43,7 @@ public class R3Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("v1", true)]
-    public void Validatation_RequiredRoutingSequenceCode(string routingSequenceCode, bool isValidExpected)
+    public void Validation_RequiredRoutingSequenceCode(string routingSequenceCode, bool isValidExpected)
     {
         var subject = new R3_RouteInformationMotor();
         subject.RoutingSequenceCode = routingSequenceCode;

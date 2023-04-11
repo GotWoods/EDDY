@@ -29,7 +29,7 @@ public class BRATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("f", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new BRA_BeginningSegmentForReceivingAdviceOrAcceptanceCertificate();
 		subject.Date = "2RI7MF6R";
@@ -42,7 +42,7 @@ public class BRATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("2RI7MF6R", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BRA_BeginningSegmentForReceivingAdviceOrAcceptanceCertificate();
 		subject.ReferenceIdentification = "f";
@@ -55,7 +55,7 @@ public class BRATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("74", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BRA_BeginningSegmentForReceivingAdviceOrAcceptanceCertificate();
 		subject.ReferenceIdentification = "f";
@@ -68,7 +68,7 @@ public class BRATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("j", true)]
-	public void Validatation_RequiredReceivingAdviceOrAcceptanceCertificateTypeCode(string receivingAdviceOrAcceptanceCertificateTypeCode, bool isValidExpected)
+	public void Validation_RequiredReceivingAdviceOrAcceptanceCertificateTypeCode(string receivingAdviceOrAcceptanceCertificateTypeCode, bool isValidExpected)
 	{
 		var subject = new BRA_BeginningSegmentForReceivingAdviceOrAcceptanceCertificate();
 		subject.ReferenceIdentification = "f";

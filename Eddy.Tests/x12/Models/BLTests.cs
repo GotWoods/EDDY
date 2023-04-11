@@ -39,7 +39,7 @@ public class BLTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("xn", true)]
-	public void Validatation_RequiredRebillReasonCode(string rebillReasonCode, bool isValidExpected)
+	public void Validation_RequiredRebillReasonCode(string rebillReasonCode, bool isValidExpected)
 	{
 		var subject = new BL_BillingInformation();
 		subject.RebillReasonCode = rebillReasonCode;

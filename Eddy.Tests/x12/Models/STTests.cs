@@ -24,7 +24,7 @@ public class STTests
     [Theory]
     [InlineData("", false)]
     [InlineData("123", true)]
-    public void Validatation_RequiredTransactionSetIdentifierCode(string transactionSetIdentifierCode, bool isValidExpected)
+    public void Validation_RequiredTransactionSetIdentifierCode(string transactionSetIdentifierCode, bool isValidExpected)
     {
         var subject = new ST_TransactionSetHeader();
         subject.TransactionSetControlNumber = "1234";
@@ -34,7 +34,7 @@ public class STTests
     [Theory]
     [InlineData("", false)]
     [InlineData("1234", true)]
-    public void Validatation_RequiredTransactionSetControlNumber(string transactionSetControlNumber, bool isValidExpected)
+    public void Validation_RequiredTransactionSetControlNumber(string transactionSetControlNumber, bool isValidExpected)
     {
         var subject = new ST_TransactionSetHeader();
         subject.TransactionSetIdentifierCode = "123";

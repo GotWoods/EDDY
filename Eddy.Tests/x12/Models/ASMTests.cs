@@ -25,7 +25,7 @@ public class ASMTests
     [Theory]
     [InlineData("", false)]
     [InlineData("5", true)]
-    public void Validatation_RequiredAmount(string amount, bool isValidExpected)
+    public void Validation_RequiredAmount(string amount, bool isValidExpected)
     {
         var subject = new ASM_AmountAndSettlementMethod();
         subject.Amount = amount;

@@ -34,7 +34,7 @@ public class BCOTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("NZ", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BCO_BeginningSegmentForProcurementNotices();
 		subject.TransactionSetPurposeCode = transactionSetPurposeCode;

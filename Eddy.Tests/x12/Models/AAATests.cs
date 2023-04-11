@@ -27,7 +27,7 @@ public class AAATests
     [Theory]
     [InlineData("", false)]
     [InlineData("k", true)]
-    public void Validatation_RequiredYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, bool isValidExpected)
+    public void Validation_RequiredYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, bool isValidExpected)
     {
         var subject = new AAA_RequestValidation();
         subject.YesNoConditionOrResponseCode = yesNoConditionOrResponseCode;

@@ -32,7 +32,7 @@ public class BCTTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("7m", true)]
-	public void Validatation_RequiredCatalogPurposeCode(string catalogPurposeCode, bool isValidExpected)
+	public void Validation_RequiredCatalogPurposeCode(string catalogPurposeCode, bool isValidExpected)
 	{
 		var subject = new BCT_BeginningSegmentForPriceSalesCatalog();
 		subject.CatalogPurposeCode = catalogPurposeCode;

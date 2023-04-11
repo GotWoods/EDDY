@@ -30,7 +30,7 @@ public class CTBTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("hB", true)]
-	public void Validatation_RequiredRestrictionsConditionsQualifier(string restrictionsConditionsQualifier, bool isValidExpected)
+	public void Validation_RequiredRestrictionsConditionsQualifier(string restrictionsConditionsQualifier, bool isValidExpected)
 	{
 		var subject = new CTB_RestrictionsConditions();
 		subject.RestrictionsConditionsQualifier = restrictionsConditionsQualifier;

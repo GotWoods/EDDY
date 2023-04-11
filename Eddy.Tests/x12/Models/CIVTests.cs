@@ -40,7 +40,7 @@ public class CIVTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("ku", true)]
-	public void Validatation_RequiredPublicRecordOrObligationCode(string publicRecordOrObligationCode, bool isValidExpected)
+	public void Validation_RequiredPublicRecordOrObligationCode(string publicRecordOrObligationCode, bool isValidExpected)
 	{
 		var subject = new CIV_CivilActionLiability();
 		subject.AmountQualifierCode = "J";
@@ -52,7 +52,7 @@ public class CIVTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("J", true)]
-	public void Validatation_RequiredAmountQualifierCode(string amountQualifierCode, bool isValidExpected)
+	public void Validation_RequiredAmountQualifierCode(string amountQualifierCode, bool isValidExpected)
 	{
 		var subject = new CIV_CivilActionLiability();
 		subject.PublicRecordOrObligationCode = "ku";
@@ -64,7 +64,7 @@ public class CIVTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(5, true)]
-	public void Validatation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
+	public void Validation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
 	{
 		var subject = new CIV_CivilActionLiability();
 		subject.PublicRecordOrObligationCode = "ku";

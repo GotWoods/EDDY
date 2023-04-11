@@ -32,7 +32,7 @@ public class BMMTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("6K", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
 	{
 		var subject = new BMM_BeginningSegmentForMultilevelRailcarLoadDetailsTransaction();
 		subject.StandardPointLocationCode = "fNg9jh";
@@ -45,7 +45,7 @@ public class BMMTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("fNg9jh", true)]
-	public void Validatation_RequiredStandardPointLocationCode(string standardPointLocationCode, bool isValidExpected)
+	public void Validation_RequiredStandardPointLocationCode(string standardPointLocationCode, bool isValidExpected)
 	{
 		var subject = new BMM_BeginningSegmentForMultilevelRailcarLoadDetailsTransaction();
 		subject.StandardCarrierAlphaCode = "6K";
@@ -58,7 +58,7 @@ public class BMMTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(6, true)]
-	public void Validatation_RequiredQuantity(decimal quantity, bool isValidExpected)
+	public void Validation_RequiredQuantity(decimal quantity, bool isValidExpected)
 	{
 		var subject = new BMM_BeginningSegmentForMultilevelRailcarLoadDetailsTransaction();
 		subject.StandardCarrierAlphaCode = "6K";
@@ -72,7 +72,7 @@ public class BMMTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(6, true)]
-	public void Validatation_RequiredWaybillNumber(int waybillNumber, bool isValidExpected)
+	public void Validation_RequiredWaybillNumber(int waybillNumber, bool isValidExpected)
 	{
 		var subject = new BMM_BeginningSegmentForMultilevelRailcarLoadDetailsTransaction();
 		subject.StandardCarrierAlphaCode = "6K";

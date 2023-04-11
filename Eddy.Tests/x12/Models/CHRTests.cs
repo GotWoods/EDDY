@@ -25,7 +25,7 @@ public class CHRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("G", true)]
-	public void Validatation_RequiredRateSourceCode(string rateSourceCode, bool isValidExpected)
+	public void Validation_RequiredRateSourceCode(string rateSourceCode, bool isValidExpected)
 	{
 		var subject = new CHR_CarHireRates();
 		subject.BilledRatedAsQualifier = "0u";
@@ -36,7 +36,7 @@ public class CHRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("0u", true)]
-	public void Validatation_RequiredBilledRatedAsQualifier(string billedRatedAsQualifier, bool isValidExpected)
+	public void Validation_RequiredBilledRatedAsQualifier(string billedRatedAsQualifier, bool isValidExpected)
 	{
 		var subject = new CHR_CarHireRates();
 		subject.RateSourceCode = "G";

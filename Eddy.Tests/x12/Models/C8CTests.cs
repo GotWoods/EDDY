@@ -25,7 +25,7 @@ public class C8CTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("0U", true)]
-	public void Validatation_RequiredCertificationClauseText(string certificationClauseText, bool isValidExpected)
+	public void Validation_RequiredCertificationClauseText(string certificationClauseText, bool isValidExpected)
 	{
 		var subject = new C8C_CertificationsClausesContinuation();
 		subject.CertificationClauseText = certificationClauseText;

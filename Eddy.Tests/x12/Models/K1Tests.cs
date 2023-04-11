@@ -23,7 +23,7 @@ public class K1Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("v1", true)]
-    public void Validatation_RequiredFreeFormInformation(string freeFormInformation, bool isValidExpected)
+    public void Validation_RequiredFreeFormInformation(string freeFormInformation, bool isValidExpected)
     {
         var subject = new K1_Remarks();
         subject.FreeFormInformation = freeFormInformation;

@@ -30,7 +30,7 @@ public class DEPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("s", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new DEP_Deposit();
 		subject.Date = "zzHfghwp";
@@ -43,7 +43,7 @@ public class DEPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("zzHfghwp", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new DEP_Deposit();
 		subject.ReferenceIdentification = "s";
@@ -56,7 +56,7 @@ public class DEPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Z4", true)]
-	public void Validatation_RequiredDFIIDNumberQualifier(string dFIIDNumberQualifier, bool isValidExpected)
+	public void Validation_RequiredDFIIDNumberQualifier(string dFIIDNumberQualifier, bool isValidExpected)
 	{
 		var subject = new DEP_Deposit();
 		subject.ReferenceIdentification = "s";
@@ -69,7 +69,7 @@ public class DEPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("AtG", true)]
-	public void Validatation_RequiredDFIIdentificationNumber(string dFIIdentificationNumber, bool isValidExpected)
+	public void Validation_RequiredDFIIdentificationNumber(string dFIIdentificationNumber, bool isValidExpected)
 	{
 		var subject = new DEP_Deposit();
 		subject.ReferenceIdentification = "s";

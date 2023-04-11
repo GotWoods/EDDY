@@ -37,7 +37,7 @@ public class BOXTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("w", true)]
-	public void Validatation_RequiredFrequencyCode(string frequencyCode, bool isValidExpected)
+	public void Validation_RequiredFrequencyCode(string frequencyCode, bool isValidExpected)
 	{
 		var subject = new BOX_BoxOfficeDetail();
 		subject.ShowCode = "Rq";
@@ -50,7 +50,7 @@ public class BOXTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Rq", true)]
-	public void Validatation_RequiredShowCode(string showCode, bool isValidExpected)
+	public void Validation_RequiredShowCode(string showCode, bool isValidExpected)
 	{
 		var subject = new BOX_BoxOfficeDetail();
 		subject.FrequencyCode = "w";
@@ -63,7 +63,7 @@ public class BOXTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("TR", true)]
-	public void Validatation_RequiredTicketCategoryCode(string ticketCategoryCode, bool isValidExpected)
+	public void Validation_RequiredTicketCategoryCode(string ticketCategoryCode, bool isValidExpected)
 	{
 		var subject = new BOX_BoxOfficeDetail();
 		subject.FrequencyCode = "w";
@@ -76,7 +76,7 @@ public class BOXTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(4, true)]
-	public void Validatation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
+	public void Validation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
 	{
 		var subject = new BOX_BoxOfficeDetail();
 		subject.FrequencyCode = "w";

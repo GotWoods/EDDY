@@ -24,7 +24,7 @@ public class CB1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("fR", true)]
-	public void Validatation_RequiredAcquisitionDataCode(string acquisitionDataCode, bool isValidExpected)
+	public void Validation_RequiredAcquisitionDataCode(string acquisitionDataCode, bool isValidExpected)
 	{
 		var subject = new CB1_ContractAndCostAccountingStandardsData();
 		subject.AcquisitionDataCode = acquisitionDataCode;

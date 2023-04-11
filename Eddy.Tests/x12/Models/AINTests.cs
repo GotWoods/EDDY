@@ -35,7 +35,7 @@ public class AINTests
     [Theory]
     [InlineData("", false)]
     [InlineData("UR", true)]
-    public void Validatation_RequiredTypeOfIncomeCode(string typeOfIncomeCode, bool isValidExpected)
+    public void Validation_RequiredTypeOfIncomeCode(string typeOfIncomeCode, bool isValidExpected)
     {
         var subject = new AIN_Income();
         subject.FrequencyCode = "u";
@@ -47,7 +47,7 @@ public class AINTests
     [Theory]
     [InlineData("", false)]
     [InlineData("u", true)]
-    public void Validatation_RequiredFrequencyCode(string frequencyCode, bool isValidExpected)
+    public void Validation_RequiredFrequencyCode(string frequencyCode, bool isValidExpected)
     {
         var subject = new AIN_Income();
         subject.TypeOfIncomeCode = "UR";
@@ -59,7 +59,7 @@ public class AINTests
     [Theory]
     [InlineData(0, false)]
     [InlineData(1, true)]
-    public void Validatation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
+    public void Validation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
     {
         var subject = new AIN_Income();
         subject.TypeOfIncomeCode = "UR";

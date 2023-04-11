@@ -29,7 +29,7 @@ public class CTXTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("ab", true)]
-	public void Validatation_RequiredContextIdentification(string contextIdentification, bool isValidExpected)
+	public void Validation_RequiredContextIdentification(string contextIdentification, bool isValidExpected)
 	{
 		var subject = new CTX_Context();
 		if (contextIdentification != "")

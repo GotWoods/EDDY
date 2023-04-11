@@ -32,7 +32,7 @@ public class BTPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("2t", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BTP_BeginningSegmentForTradingPartnerProfile();
 		subject.ReferenceIdentification = "9";
@@ -46,7 +46,7 @@ public class BTPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("9", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new BTP_BeginningSegmentForTradingPartnerProfile();
 		subject.TransactionSetPurposeCode = "2t";
@@ -60,7 +60,7 @@ public class BTPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("81ZyTc8G", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BTP_BeginningSegmentForTradingPartnerProfile();
 		subject.TransactionSetPurposeCode = "2t";
@@ -74,7 +74,7 @@ public class BTPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("YxTq", true)]
-	public void Validatation_RequiredTime(string time, bool isValidExpected)
+	public void Validation_RequiredTime(string time, bool isValidExpected)
 	{
 		var subject = new BTP_BeginningSegmentForTradingPartnerProfile();
 		subject.TransactionSetPurposeCode = "2t";
@@ -88,7 +88,7 @@ public class BTPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("lT", true)]
-	public void Validatation_RequiredTransactionTypeCode(string transactionTypeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionTypeCode(string transactionTypeCode, bool isValidExpected)
 	{
 		var subject = new BTP_BeginningSegmentForTradingPartnerProfile();
 		subject.TransactionSetPurposeCode = "2t";

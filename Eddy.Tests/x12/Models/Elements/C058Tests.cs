@@ -29,7 +29,7 @@ public class C058Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("s", true)]
-    public void Validatation_RequiredClaimAdjustmentReasonCode(string claimAdjustmentReasonCode, bool isValidExpected)
+    public void Validation_RequiredClaimAdjustmentReasonCode(string claimAdjustmentReasonCode, bool isValidExpected)
     {
         var subject = new C058_AdjustmentReason();
         subject.ClaimAdjustmentReasonCode = claimAdjustmentReasonCode;

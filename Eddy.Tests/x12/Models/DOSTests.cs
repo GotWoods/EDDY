@@ -29,7 +29,7 @@ public class DOSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("vY", true)]
-	public void Validatation_RequiredContractTypeCode(string contractTypeCode, bool isValidExpected)
+	public void Validation_RequiredContractTypeCode(string contractTypeCode, bool isValidExpected)
 	{
 		var subject = new DOS_DefinitionOfShare();
 		subject.ContractTypeCode = contractTypeCode;

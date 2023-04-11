@@ -24,7 +24,7 @@ public class C4Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Kne", true)]
-	public void Validatation_RequiredCurrencyCode(string currencyCode, bool isValidExpected)
+	public void Validation_RequiredCurrencyCode(string currencyCode, bool isValidExpected)
 	{
 		var subject = new C4_AlternateAmountDue();
 		subject.NetAmountDue = "e";
@@ -35,7 +35,7 @@ public class C4Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("e", true)]
-	public void Validatation_RequiredNetAmountDue(string netAmountDue, bool isValidExpected)
+	public void Validation_RequiredNetAmountDue(string netAmountDue, bool isValidExpected)
 	{
 		var subject = new C4_AlternateAmountDue();
 		subject.CurrencyCode = "Kne";

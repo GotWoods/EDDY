@@ -30,7 +30,7 @@ public class BTRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Vt", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BTR_BeginningSegmentForTestResults();
 		subject.Date = "q7dLaBE5";
@@ -41,7 +41,7 @@ public class BTRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("q7dLaBE5", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BTR_BeginningSegmentForTestResults();
 		subject.TransactionSetPurposeCode = "Vt";

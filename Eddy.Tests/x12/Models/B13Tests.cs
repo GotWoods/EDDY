@@ -24,7 +24,7 @@ public class B13Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("q", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new B13_BeginningSegmentForAppointmentSchedule();
 		subject.ReferenceIdentification = referenceIdentification;

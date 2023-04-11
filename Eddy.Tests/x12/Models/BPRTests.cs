@@ -43,7 +43,7 @@ public class BPRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("c", true)]
-	public void Validatation_RequiredTransactionHandlingCode(string transactionHandlingCode, bool isValidExpected)
+	public void Validation_RequiredTransactionHandlingCode(string transactionHandlingCode, bool isValidExpected)
 	{
 		var subject = new BPR_BeginningSegmentForPaymentOrderRemittanceAdvice();
 		subject.MonetaryAmount = 2;
@@ -56,7 +56,7 @@ public class BPRTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(2, true)]
-	public void Validatation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
+	public void Validation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
 	{
 		var subject = new BPR_BeginningSegmentForPaymentOrderRemittanceAdvice();
 		subject.TransactionHandlingCode = "c";
@@ -70,7 +70,7 @@ public class BPRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("k", true)]
-	public void Validatation_RequiredCreditDebitFlagCode(string creditDebitFlagCode, bool isValidExpected)
+	public void Validation_RequiredCreditDebitFlagCode(string creditDebitFlagCode, bool isValidExpected)
 	{
 		var subject = new BPR_BeginningSegmentForPaymentOrderRemittanceAdvice();
 		subject.TransactionHandlingCode = "c";
@@ -83,7 +83,7 @@ public class BPRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("wya", true)]
-	public void Validatation_RequiredPaymentMethodCode(string paymentMethodCode, bool isValidExpected)
+	public void Validation_RequiredPaymentMethodCode(string paymentMethodCode, bool isValidExpected)
 	{
 		var subject = new BPR_BeginningSegmentForPaymentOrderRemittanceAdvice();
 		subject.TransactionHandlingCode = "c";

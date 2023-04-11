@@ -32,7 +32,7 @@ public class CF2Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("S", true)]
-	public void Validatation_RequiredInvoiceNumber(string invoiceNumber, bool isValidExpected)
+	public void Validation_RequiredInvoiceNumber(string invoiceNumber, bool isValidExpected)
 	{
 		var subject = new CF2_SummaryFreightBillDetail();
 		subject.NetAmountDue = "T";
@@ -43,7 +43,7 @@ public class CF2Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("T", true)]
-	public void Validatation_RequiredNetAmountDue(string netAmountDue, bool isValidExpected)
+	public void Validation_RequiredNetAmountDue(string netAmountDue, bool isValidExpected)
 	{
 		var subject = new CF2_SummaryFreightBillDetail();
 		subject.InvoiceNumber = "S";

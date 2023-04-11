@@ -30,7 +30,7 @@ public class C007Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("b", true)]
-    public void Validatation_RequiredAmountQualifierCode(string amountQualifierCode, bool isValidExpected)
+    public void Validation_RequiredAmountQualifierCode(string amountQualifierCode, bool isValidExpected)
     {
         var subject = new C007_AmountQualifyingDescription();
         subject.AmountQualifierCode = amountQualifierCode;

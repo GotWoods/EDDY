@@ -33,7 +33,7 @@ public class BT1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("y2F", true)]
-	public void Validatation_RequiredTransactionSetIdentifierCode(string transactionSetIdentifierCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetIdentifierCode(string transactionSetIdentifierCode, bool isValidExpected)
 	{
 		var subject = new BT1_BatchTotals();
 		subject.NumberOfTransactionSetsTotaled = 3;
@@ -46,7 +46,7 @@ public class BT1Tests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(3, true)]
-	public void Validatation_RequiredNumberOfTransactionSetsTotaled(int numberOfTransactionSetsTotaled, bool isValidExpected)
+	public void Validation_RequiredNumberOfTransactionSetsTotaled(int numberOfTransactionSetsTotaled, bool isValidExpected)
 	{
 		var subject = new BT1_BatchTotals();
 		subject.TransactionSetIdentifierCode = "y2F";
@@ -60,7 +60,7 @@ public class BT1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Z", true)]
-	public void Validatation_RequiredTotalQualifier(string totalQualifier, bool isValidExpected)
+	public void Validation_RequiredTotalQualifier(string totalQualifier, bool isValidExpected)
 	{
 		var subject = new BT1_BatchTotals();
 		subject.TransactionSetIdentifierCode = "y2F";
@@ -73,7 +73,7 @@ public class BT1Tests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(9, true)]
-	public void Validatation_RequiredTotal(decimal total, bool isValidExpected)
+	public void Validation_RequiredTotal(decimal total, bool isValidExpected)
 	{
 		var subject = new BT1_BatchTotals();
 		subject.TransactionSetIdentifierCode = "y2F";

@@ -33,7 +33,7 @@ public class BIGTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("6q8xQllD", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BIG_BeginningSegmentForInvoice();
 		subject.InvoiceNumber = "1";
@@ -44,7 +44,7 @@ public class BIGTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("1", true)]
-	public void Validatation_RequiredInvoiceNumber(string invoiceNumber, bool isValidExpected)
+	public void Validation_RequiredInvoiceNumber(string invoiceNumber, bool isValidExpected)
 	{
 		var subject = new BIG_BeginningSegmentForInvoice();
 		subject.Date = "6q8xQllD";

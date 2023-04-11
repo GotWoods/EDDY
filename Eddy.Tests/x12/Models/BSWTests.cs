@@ -29,7 +29,7 @@ public class BSWTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("IBoICgvm", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BSW_BeginningSegmentForCarriersServicesSettlement();
 		subject.StandardCarrierAlphaCode = "h3";
@@ -43,7 +43,7 @@ public class BSWTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("h3", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
 	{
 		var subject = new BSW_BeginningSegmentForCarriersServicesSettlement();
 		subject.Date = "IBoICgvm";
@@ -57,7 +57,7 @@ public class BSWTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("WV", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode2(string standardCarrierAlphaCode2, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode2(string standardCarrierAlphaCode2, bool isValidExpected)
 	{
 		var subject = new BSW_BeginningSegmentForCarriersServicesSettlement();
 		subject.Date = "IBoICgvm";
@@ -71,7 +71,7 @@ public class BSWTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("6", true)]
-	public void Validatation_RequiredNetAmountDue(string netAmountDue, bool isValidExpected)
+	public void Validation_RequiredNetAmountDue(string netAmountDue, bool isValidExpected)
 	{
 		var subject = new BSW_BeginningSegmentForCarriersServicesSettlement();
 		subject.Date = "IBoICgvm";
@@ -85,7 +85,7 @@ public class BSWTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("o", true)]
-	public void Validatation_RequiredBillingCode(string billingCode, bool isValidExpected)
+	public void Validation_RequiredBillingCode(string billingCode, bool isValidExpected)
 	{
 		var subject = new BSW_BeginningSegmentForCarriersServicesSettlement();
 		subject.Date = "IBoICgvm";

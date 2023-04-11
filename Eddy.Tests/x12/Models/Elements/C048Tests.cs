@@ -26,7 +26,7 @@ public class C048Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("2D", true)]
-    public void Validatation_RequiredUseOfProceedsCode(string useOfProceedsCode, bool isValidExpected)
+    public void Validation_RequiredUseOfProceedsCode(string useOfProceedsCode, bool isValidExpected)
     {
         var subject = new C048_CompositeUseOfProceeds();
         subject.UseOfProceedsCode = useOfProceedsCode;

@@ -31,7 +31,7 @@ public class E6Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("J", true)]
-	public void Validatation_RequiredEquipmentInitial(string equipmentInitial, bool isValidExpected)
+	public void Validation_RequiredEquipmentInitial(string equipmentInitial, bool isValidExpected)
 	{
 		var subject = new E6_AdvanceCarDisposition();
 		subject.EquipmentNumber = "u";
@@ -45,7 +45,7 @@ public class E6Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("u", true)]
-	public void Validatation_RequiredEquipmentNumber(string equipmentNumber, bool isValidExpected)
+	public void Validation_RequiredEquipmentNumber(string equipmentNumber, bool isValidExpected)
 	{
 		var subject = new E6_AdvanceCarDisposition();
 		subject.EquipmentInitial = "J";
@@ -59,7 +59,7 @@ public class E6Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("uK", true)]
-	public void Validatation_RequiredCityName(string cityName, bool isValidExpected)
+	public void Validation_RequiredCityName(string cityName, bool isValidExpected)
 	{
 		var subject = new E6_AdvanceCarDisposition();
 		subject.EquipmentInitial = "J";
@@ -73,7 +73,7 @@ public class E6Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("8I", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
 	{
 		var subject = new E6_AdvanceCarDisposition();
 		subject.EquipmentInitial = "J";
@@ -87,7 +87,7 @@ public class E6Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("X", true)]
-	public void Validatation_RequiredEquipmentStatusCode(string equipmentStatusCode, bool isValidExpected)
+	public void Validation_RequiredEquipmentStatusCode(string equipmentStatusCode, bool isValidExpected)
 	{
 		var subject = new E6_AdvanceCarDisposition();
 		subject.EquipmentInitial = "J";

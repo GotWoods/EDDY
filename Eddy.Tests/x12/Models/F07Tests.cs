@@ -44,7 +44,7 @@ public class F07Tests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(5, true)]
-	public void Validatation_RequiredAssignedNumber(int assignedNumber, bool isValidExpected)
+	public void Validation_RequiredAssignedNumber(int assignedNumber, bool isValidExpected)
 	{
 		var subject = new F07_AutoClaimDetail();
 		subject.DamageAreaCode = "xI";
@@ -59,7 +59,7 @@ public class F07Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("xI", true)]
-	public void Validatation_RequiredDamageAreaCode(string damageAreaCode, bool isValidExpected)
+	public void Validation_RequiredDamageAreaCode(string damageAreaCode, bool isValidExpected)
 	{
 		var subject = new F07_AutoClaimDetail();
 		subject.AssignedNumber = 5;
@@ -73,7 +73,7 @@ public class F07Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("CW", true)]
-	public void Validatation_RequiredDamageTypeCode(string damageTypeCode, bool isValidExpected)
+	public void Validation_RequiredDamageTypeCode(string damageTypeCode, bool isValidExpected)
 	{
 		var subject = new F07_AutoClaimDetail();
 		subject.AssignedNumber = 5;
@@ -87,7 +87,7 @@ public class F07Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Y", true)]
-	public void Validatation_RequiredDamageSeverityCode(string damageSeverityCode, bool isValidExpected)
+	public void Validation_RequiredDamageSeverityCode(string damageSeverityCode, bool isValidExpected)
 	{
 		var subject = new F07_AutoClaimDetail();
 		subject.AssignedNumber = 5;
@@ -141,7 +141,7 @@ public class F07Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("hgy", true)]
-	public void Validatation_RequiredTotalRepairCost(string totalRepairCost, bool isValidExpected)
+	public void Validation_RequiredTotalRepairCost(string totalRepairCost, bool isValidExpected)
 	{
 		var subject = new F07_AutoClaimDetail();
 		subject.AssignedNumber = 5;

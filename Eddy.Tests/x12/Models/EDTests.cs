@@ -30,7 +30,7 @@ public class EDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("I", true)]
-	public void Validatation_RequiredEquipmentInitial(string equipmentInitial, bool isValidExpected)
+	public void Validation_RequiredEquipmentInitial(string equipmentInitial, bool isValidExpected)
 	{
 		var subject = new ED_EquipmentDescription();
 		subject.EquipmentNumber = "o";
@@ -41,7 +41,7 @@ public class EDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("o", true)]
-	public void Validatation_RequiredEquipmentNumber(string equipmentNumber, bool isValidExpected)
+	public void Validation_RequiredEquipmentNumber(string equipmentNumber, bool isValidExpected)
 	{
 		var subject = new ED_EquipmentDescription();
 		subject.EquipmentInitial = "I";

@@ -28,7 +28,7 @@ public class AM1Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("kS", true)]
-    public void Validatation_RequiredCodeCategory(string codeCategory, bool isValidExpected)
+    public void Validation_RequiredCodeCategory(string codeCategory, bool isValidExpected)
     {
         var subject = new AM1_InformationalValues();
         subject.ProductServiceIDQualifier = "LX";
@@ -40,7 +40,7 @@ public class AM1Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("LX", true)]
-    public void Validatation_RequiredProductServiceIDQualifier(string productServiceIDQualifier, bool isValidExpected)
+    public void Validation_RequiredProductServiceIDQualifier(string productServiceIDQualifier, bool isValidExpected)
     {
         var subject = new AM1_InformationalValues();
         subject.CodeCategory = "kS";
@@ -52,7 +52,7 @@ public class AM1Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("R", true)]
-    public void Validatation_RequiredProductServiceID(string productServiceID, bool isValidExpected)
+    public void Validation_RequiredProductServiceID(string productServiceID, bool isValidExpected)
     {
         var subject = new AM1_InformationalValues();
         subject.CodeCategory = "kS";

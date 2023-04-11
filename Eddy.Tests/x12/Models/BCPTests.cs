@@ -35,7 +35,7 @@ public class BCPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("6k", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BCP_BeginningSegmentForContractPricingProposal();
 		subject.ReferenceIdentificationQualifier = "B6";
@@ -47,7 +47,7 @@ public class BCPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("B6", true)]
-	public void Validatation_RequiredReferenceIdentificationQualifier(string referenceIdentificationQualifier, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentificationQualifier(string referenceIdentificationQualifier, bool isValidExpected)
 	{
 		var subject = new BCP_BeginningSegmentForContractPricingProposal();
 		subject.TransactionSetPurposeCode = "6k";
@@ -59,7 +59,7 @@ public class BCPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("T", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new BCP_BeginningSegmentForContractPricingProposal();
 		subject.TransactionSetPurposeCode = "6k";

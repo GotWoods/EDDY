@@ -27,7 +27,7 @@ public class C045Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("2f", true)]
-    public void Validatation_RequiredConditionIndicatorCode(string conditionIndicatorCode, bool isValidExpected)
+    public void Validation_RequiredConditionIndicatorCode(string conditionIndicatorCode, bool isValidExpected)
     {
         var subject = new C045_ConditionsIndicated();
         subject.ConditionIndicatorCode = conditionIndicatorCode;

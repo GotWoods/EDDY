@@ -25,7 +25,7 @@ public class BWTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("hs", true)]
-	public void Validatation_RequiredOriginEDICarrierCode(string originEDICarrierCode, bool isValidExpected)
+	public void Validation_RequiredOriginEDICarrierCode(string originEDICarrierCode, bool isValidExpected)
 	{
 		var subject = new BW_BeginningSegmentForWeightMessageSet();
 		subject.WeightUnitCode = "H";
@@ -36,7 +36,7 @@ public class BWTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("H", true)]
-	public void Validatation_RequiredWeightUnitCode(string weightUnitCode, bool isValidExpected)
+	public void Validation_RequiredWeightUnitCode(string weightUnitCode, bool isValidExpected)
 	{
 		var subject = new BW_BeginningSegmentForWeightMessageSet();
 		subject.OriginEDICarrierCode = "hs";

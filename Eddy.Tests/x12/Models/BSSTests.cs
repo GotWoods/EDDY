@@ -33,7 +33,7 @@ public class BSSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("7k", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BSS_BeginningSegmentForShippingScheduleProductionSequence();
 		subject.ReferenceIdentification = "R";
@@ -51,7 +51,7 @@ public class BSSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("R", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new BSS_BeginningSegmentForShippingScheduleProductionSequence();
 		subject.TransactionSetPurposeCode = "7k";
@@ -68,7 +68,7 @@ public class BSSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("JTxZ0WDE", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BSS_BeginningSegmentForShippingScheduleProductionSequence();
 		subject.TransactionSetPurposeCode = "7k";
@@ -86,7 +86,7 @@ public class BSSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("G5", true)]
-	public void Validatation_RequiredScheduleTypeQualifier(string scheduleTypeQualifier, bool isValidExpected)
+	public void Validation_RequiredScheduleTypeQualifier(string scheduleTypeQualifier, bool isValidExpected)
 	{
 		var subject = new BSS_BeginningSegmentForShippingScheduleProductionSequence();
 		subject.TransactionSetPurposeCode = "7k";
@@ -103,7 +103,7 @@ public class BSSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("vQxEDxHL", true)]
-	public void Validatation_RequiredDate2(string date2, bool isValidExpected)
+	public void Validation_RequiredDate2(string date2, bool isValidExpected)
 	{
 		var subject = new BSS_BeginningSegmentForShippingScheduleProductionSequence();
 		subject.TransactionSetPurposeCode = "7k";
@@ -120,7 +120,7 @@ public class BSSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Lm4cmzj6", true)]
-	public void Validatation_RequiredDate3(string date3, bool isValidExpected)
+	public void Validation_RequiredDate3(string date3, bool isValidExpected)
 	{
 		var subject = new BSS_BeginningSegmentForShippingScheduleProductionSequence();
 		subject.TransactionSetPurposeCode = "7k";

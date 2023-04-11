@@ -36,7 +36,7 @@ public class BPPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("SJ", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BPP_BeginningSegmentForProjectScheduleReporting();
 		subject.Date = "8pQIHq3v";
@@ -48,7 +48,7 @@ public class BPPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("8pQIHq3v", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BPP_BeginningSegmentForProjectScheduleReporting();
 		subject.TransactionSetPurposeCode = "SJ";
@@ -60,7 +60,7 @@ public class BPPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("2R", true)]
-	public void Validatation_RequiredNetworkOrScheduleDataTypeCode(string networkOrScheduleDataTypeCode, bool isValidExpected)
+	public void Validation_RequiredNetworkOrScheduleDataTypeCode(string networkOrScheduleDataTypeCode, bool isValidExpected)
 	{
 		var subject = new BPP_BeginningSegmentForProjectScheduleReporting();
 		subject.TransactionSetPurposeCode = "SJ";

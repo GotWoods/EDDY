@@ -33,7 +33,7 @@ public class LH1Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("cx", true)]
-    public void Validatation_RequiredUnitOrBasisForMeasurementCode(string unitOrBasisForMeasurementCode, bool isValidExpected)
+    public void Validation_RequiredUnitOrBasisForMeasurementCode(string unitOrBasisForMeasurementCode, bool isValidExpected)
     {
         var subject = new LH1_HazardousIdentificationInformation();
         subject.UnitOrBasisForMeasurementCode = "AB";
@@ -44,7 +44,7 @@ public class LH1Tests
     [Theory]
     [InlineData(0, false)]
     [InlineData(1, true)]
-    public void Validatation_RequiredLadingQuantity(int ladingQuantity, bool isValidExpected)
+    public void Validation_RequiredLadingQuantity(int ladingQuantity, bool isValidExpected)
     {
         var subject = new LH1_HazardousIdentificationInformation();
         subject.UnitOrBasisForMeasurementCode = "AB";

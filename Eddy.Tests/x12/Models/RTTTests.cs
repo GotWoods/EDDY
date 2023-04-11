@@ -24,7 +24,7 @@ public class RTTTests
     [Theory]
     [InlineData("", false)]
     [InlineData("tL", true)]
-    public void Validatation_RequiredRateValueQualifier(string rateValueQualifier, bool isValidExpected)
+    public void Validation_RequiredRateValueQualifier(string rateValueQualifier, bool isValidExpected)
     {
         var subject = new RTT_FreightRateInformation();
         subject.FreightRate = 1m;
@@ -36,7 +36,7 @@ public class RTTTests
     [Theory]
     [InlineData(0, false)]
     [InlineData(1, true)]
-    public void Validatation_RequiredFreightRate(decimal freightRate, bool isValidExpected)
+    public void Validation_RequiredFreightRate(decimal freightRate, bool isValidExpected)
     {
         var subject = new RTT_FreightRateInformation();
         subject.RateValueQualifier = "RT";

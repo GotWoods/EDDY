@@ -25,7 +25,7 @@ public class C030Tests
     [Theory]
     [InlineData(0, false)]
     [InlineData(4, true)]
-    public void Validatation_RequiredElementPositionInSegment(int elementPositionInSegment, bool isValidExpected)
+    public void Validation_RequiredElementPositionInSegment(int elementPositionInSegment, bool isValidExpected)
     {
         var subject = new C030_PositionInSegment();
         if (elementPositionInSegment > 0)

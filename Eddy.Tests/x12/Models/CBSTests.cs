@@ -33,7 +33,7 @@ public class CBSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("5", true)]
-	public void Validatation_RequiredAssignedIdentification(string assignedIdentification, bool isValidExpected)
+	public void Validation_RequiredAssignedIdentification(string assignedIdentification, bool isValidExpected)
 	{
 		var subject = new CBS_CostBreakdownStructure();
 		subject.Quantity = 4;
@@ -45,7 +45,7 @@ public class CBSTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(4, true)]
-	public void Validatation_RequiredQuantity(decimal quantity, bool isValidExpected)
+	public void Validation_RequiredQuantity(decimal quantity, bool isValidExpected)
 	{
 		var subject = new CBS_CostBreakdownStructure();
 		subject.AssignedIdentification = "5";
@@ -58,7 +58,7 @@ public class CBSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("AB", true)]
-	public void Validatation_RequiredCompositeUnitOfMeasure(string compositeUnitOfMeasure, bool isValidExpected)
+	public void Validation_RequiredCompositeUnitOfMeasure(string compositeUnitOfMeasure, bool isValidExpected)
 	{
 		var subject = new CBS_CostBreakdownStructure();
 		subject.AssignedIdentification = "5";

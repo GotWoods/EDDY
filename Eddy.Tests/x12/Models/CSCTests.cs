@@ -42,7 +42,7 @@ public class CSCTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("iCj", true)]
-	public void Validatation_RequiredCryptographicManagementPurposeCode(string cryptographicManagementPurposeCode, bool isValidExpected)
+	public void Validation_RequiredCryptographicManagementPurposeCode(string cryptographicManagementPurposeCode, bool isValidExpected)
 	{
 		var subject = new CSC_CryptographicServiceMessageCertificatesAndKeys();
 		subject.CryptographicManagementPurposeCode = cryptographicManagementPurposeCode;

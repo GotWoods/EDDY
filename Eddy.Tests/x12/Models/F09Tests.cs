@@ -34,7 +34,7 @@ public class F09Tests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(3, true)]
-	public void Validatation_RequiredQuantity(decimal quantity, bool isValidExpected)
+	public void Validation_RequiredQuantity(decimal quantity, bool isValidExpected)
 	{
 		var subject = new F09_DetailSupportingEvidenceForClaim();
 		subject.UnitOrBasisForMeasurementCode = "jT";
@@ -49,7 +49,7 @@ public class F09Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("jT", true)]
-	public void Validatation_RequiredUnitOrBasisForMeasurementCode(string unitOrBasisForMeasurementCode, bool isValidExpected)
+	public void Validation_RequiredUnitOrBasisForMeasurementCode(string unitOrBasisForMeasurementCode, bool isValidExpected)
 	{
 		var subject = new F09_DetailSupportingEvidenceForClaim();
 		subject.Quantity = 3;
@@ -63,7 +63,7 @@ public class F09Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Wt", true)]
-	public void Validatation_RequiredNatureOfClaimCode(string natureOfClaimCode, bool isValidExpected)
+	public void Validation_RequiredNatureOfClaimCode(string natureOfClaimCode, bool isValidExpected)
 	{
 		var subject = new F09_DetailSupportingEvidenceForClaim();
 		subject.Quantity = 3;
@@ -77,7 +77,7 @@ public class F09Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("C", true)]
-	public void Validatation_RequiredAmount(string amount, bool isValidExpected)
+	public void Validation_RequiredAmount(string amount, bool isValidExpected)
 	{
 		var subject = new F09_DetailSupportingEvidenceForClaim();
 		subject.Quantity = 3;
@@ -91,7 +91,7 @@ public class F09Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("C", true)]
-	public void Validatation_RequiredAmount2(string amount2, bool isValidExpected)
+	public void Validation_RequiredAmount2(string amount2, bool isValidExpected)
 	{
 		var subject = new F09_DetailSupportingEvidenceForClaim();
 		subject.Quantity = 3;

@@ -28,7 +28,7 @@ public class BLSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("7O", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BLS_BeginningSegmentForAssetSchedule();
 		subject.TransactionTypeCode = "r8";
@@ -41,7 +41,7 @@ public class BLSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("r8", true)]
-	public void Validatation_RequiredTransactionTypeCode(string transactionTypeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionTypeCode(string transactionTypeCode, bool isValidExpected)
 	{
 		var subject = new BLS_BeginningSegmentForAssetSchedule();
 		subject.TransactionSetPurposeCode = "7O";
@@ -54,7 +54,7 @@ public class BLSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("I", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new BLS_BeginningSegmentForAssetSchedule();
 		subject.TransactionSetPurposeCode = "7O";
@@ -67,7 +67,7 @@ public class BLSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("IiJdNJC9", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BLS_BeginningSegmentForAssetSchedule();
 		subject.TransactionSetPurposeCode = "7O";

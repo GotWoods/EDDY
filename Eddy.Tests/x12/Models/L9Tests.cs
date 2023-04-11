@@ -23,7 +23,7 @@ public class L9Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("123", true)]
-    public void Validatation_RequiredSpecialChargeOrAllowanceCode(string specialChargeOrAllowanceCode, bool isValidExpected)
+    public void Validation_RequiredSpecialChargeOrAllowanceCode(string specialChargeOrAllowanceCode, bool isValidExpected)
     {
         var subject = new L9_ChargeDetail();
         subject.SpecialChargeOrAllowanceCode = specialChargeOrAllowanceCode;
@@ -33,7 +33,7 @@ public class L9Tests
     [Theory]
     [InlineData(0, false)]
     [InlineData(1, true)]
-    public void Validatation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
+    public void Validation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
     {
         var subject = new L9_ChargeDetail();
         subject.SpecialChargeOrAllowanceCode = "123";

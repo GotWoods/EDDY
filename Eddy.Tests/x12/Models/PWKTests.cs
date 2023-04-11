@@ -32,7 +32,7 @@ public class PWKTests
     [Theory]
     [InlineData("", false)]
     [InlineData("ML", true)]
-    public void Validatation_RequiredReportTypeCode(string reportTypeCode, bool isValidExpected)
+    public void Validation_RequiredReportTypeCode(string reportTypeCode, bool isValidExpected)
     {
         var subject = new PWK_Paperwork();
         subject.ReportTypeCode = reportTypeCode;

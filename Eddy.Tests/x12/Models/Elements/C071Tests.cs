@@ -30,7 +30,7 @@ public class C071Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("h", true)]
-    public void Validatation_RequiredFreeFormMessageText(string freeFormMessageText, bool isValidExpected)
+    public void Validation_RequiredFreeFormMessageText(string freeFormMessageText, bool isValidExpected)
     {
         var subject = new C071_CompositeMultipleLanguageTextInformation();
         subject.LanguageCode = "5w";
@@ -41,7 +41,7 @@ public class C071Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("5w", true)]
-    public void Validatation_RequiredLanguageCode(string languageCode, bool isValidExpected)
+    public void Validation_RequiredLanguageCode(string languageCode, bool isValidExpected)
     {
         var subject = new C071_CompositeMultipleLanguageTextInformation();
         subject.FreeFormMessageText = "h";

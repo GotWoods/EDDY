@@ -34,7 +34,7 @@ public class BSRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("2", true)]
-	public void Validatation_RequiredStatusReportCode(string statusReportCode, bool isValidExpected)
+	public void Validation_RequiredStatusReportCode(string statusReportCode, bool isValidExpected)
 	{
 		var subject = new BSR_BeginningSegmentForOrderStatusReport();
 		subject.OrderItemCode = "P";
@@ -47,7 +47,7 @@ public class BSRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("P", true)]
-	public void Validatation_RequiredOrderItemCode(string orderItemCode, bool isValidExpected)
+	public void Validation_RequiredOrderItemCode(string orderItemCode, bool isValidExpected)
 	{
 		var subject = new BSR_BeginningSegmentForOrderStatusReport();
 		subject.StatusReportCode = "2";
@@ -60,7 +60,7 @@ public class BSRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("T", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new BSR_BeginningSegmentForOrderStatusReport();
 		subject.StatusReportCode = "2";
@@ -73,7 +73,7 @@ public class BSRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("fXTNANtc", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BSR_BeginningSegmentForOrderStatusReport();
 		subject.StatusReportCode = "2";

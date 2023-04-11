@@ -27,7 +27,7 @@ public class M7Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("v1", true)]
-    public void Validatation_RequiredSealNumber(string sealNumber, bool isValidExpected)
+    public void Validation_RequiredSealNumber(string sealNumber, bool isValidExpected)
     {
         var subject = new M7_SealNumbers();
         subject.SealNumber = sealNumber;

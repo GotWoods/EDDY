@@ -34,7 +34,7 @@ public class F9Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Sx", true)]
-	public void Validatation_RequiredCityName(string cityName, bool isValidExpected)
+	public void Validation_RequiredCityName(string cityName, bool isValidExpected)
 	{
 		var subject = new F9_OriginStation();
 		subject.StateOrProvinceCode = "2R";
@@ -45,7 +45,7 @@ public class F9Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("2R", true)]
-	public void Validatation_RequiredStateOrProvinceCode(string stateOrProvinceCode, bool isValidExpected)
+	public void Validation_RequiredStateOrProvinceCode(string stateOrProvinceCode, bool isValidExpected)
 	{
 		var subject = new F9_OriginStation();
 		subject.CityName = "Sx";

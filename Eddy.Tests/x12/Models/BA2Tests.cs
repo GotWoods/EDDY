@@ -33,7 +33,7 @@ public class BA2Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("PT", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
 	{
 		var subject = new BA2_BeginningSegmentForCargoTerminalInformation();
 		subject.VesselCode = "V";
@@ -49,7 +49,7 @@ public class BA2Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("V", true)]
-	public void Validatation_RequiredVesselCode(string vesselCode, bool isValidExpected)
+	public void Validation_RequiredVesselCode(string vesselCode, bool isValidExpected)
 	{
 		var subject = new BA2_BeginningSegmentForCargoTerminalInformation();
 		subject.StandardCarrierAlphaCode = "PT";
@@ -65,7 +65,7 @@ public class BA2Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Ba", true)]
-	public void Validatation_RequiredFlightVoyageNumber(string flightVoyageNumber, bool isValidExpected)
+	public void Validation_RequiredFlightVoyageNumber(string flightVoyageNumber, bool isValidExpected)
 	{
 		var subject = new BA2_BeginningSegmentForCargoTerminalInformation();
 		subject.StandardCarrierAlphaCode = "PT";
@@ -81,7 +81,7 @@ public class BA2Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("U", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new BA2_BeginningSegmentForCargoTerminalInformation();
 		subject.StandardCarrierAlphaCode = "PT";
@@ -97,7 +97,7 @@ public class BA2Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("F", true)]
-	public void Validatation_RequiredReferenceIdentification2(string referenceIdentification2, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification2(string referenceIdentification2, bool isValidExpected)
 	{
 		var subject = new BA2_BeginningSegmentForCargoTerminalInformation();
 		subject.StandardCarrierAlphaCode = "PT";
@@ -113,7 +113,7 @@ public class BA2Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("N", true)]
-	public void Validatation_RequiredPierNumber(string pierNumber, bool isValidExpected)
+	public void Validation_RequiredPierNumber(string pierNumber, bool isValidExpected)
 	{
 		var subject = new BA2_BeginningSegmentForCargoTerminalInformation();
 		subject.StandardCarrierAlphaCode = "PT";
@@ -129,7 +129,7 @@ public class BA2Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("OX", true)]
-	public void Validatation_RequiredPierName(string pierName, bool isValidExpected)
+	public void Validation_RequiredPierName(string pierName, bool isValidExpected)
 	{
 		var subject = new BA2_BeginningSegmentForCargoTerminalInformation();
 		subject.StandardCarrierAlphaCode = "PT";

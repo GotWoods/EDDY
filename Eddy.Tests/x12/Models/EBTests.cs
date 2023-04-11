@@ -39,7 +39,7 @@ public class EBTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("9", true)]
-	public void Validatation_RequiredEligibilityOrBenefitInformationCode(string eligibilityOrBenefitInformationCode, bool isValidExpected)
+	public void Validation_RequiredEligibilityOrBenefitInformationCode(string eligibilityOrBenefitInformationCode, bool isValidExpected)
 	{
 		var subject = new EB_EligibilityOrBenefitInformation();
 		subject.EligibilityOrBenefitInformationCode = eligibilityOrBenefitInformationCode;

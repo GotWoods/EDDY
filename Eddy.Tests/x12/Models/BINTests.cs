@@ -24,7 +24,7 @@ public class BINTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(2, true)]
-	public void Validatation_RequiredLengthOfBinaryData(int lengthOfBinaryData, bool isValidExpected)
+	public void Validation_RequiredLengthOfBinaryData(int lengthOfBinaryData, bool isValidExpected)
 	{
 		var subject = new BIN_BinaryDataSegment();
 		subject.BinaryData = "c";
@@ -36,7 +36,7 @@ public class BINTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("c", true)]
-	public void Validatation_RequiredBinaryData(string binaryData, bool isValidExpected)
+	public void Validation_RequiredBinaryData(string binaryData, bool isValidExpected)
 	{
 		var subject = new BIN_BinaryDataSegment();
 		subject.LengthOfBinaryData = 2;

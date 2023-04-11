@@ -52,7 +52,7 @@ public class C073Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("N", true)]
-    public void Validatation_RequiredAssignedIdentification(string assignedIdentification, bool isValidExpected)
+    public void Validation_RequiredAssignedIdentification(string assignedIdentification, bool isValidExpected)
     {
         var subject = new C073_CompositeGrapeVarietalSequence();
         subject.AssignedIdentification = assignedIdentification;

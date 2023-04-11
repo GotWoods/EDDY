@@ -49,7 +49,7 @@ public class B1Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("v1", true)]
-    public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+    public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
     {
         var subject = new B1_BeginningSegmentForBookingOrPickupDelivery();
         subject.StandardCarrierAlphaCode = standardCarrierAlphaCode;

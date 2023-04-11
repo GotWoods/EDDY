@@ -32,7 +32,7 @@ public class C022Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("y", true)]
-    public void Validatation_RequiredCodeListQualifierCode(string codeListQualifierCode, bool isValidExpected)
+    public void Validation_RequiredCodeListQualifierCode(string codeListQualifierCode, bool isValidExpected)
     {
         var subject = new C022_HealthCareCodeInformation();
         subject.IndustryCode = "o";
@@ -43,7 +43,7 @@ public class C022Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("o", true)]
-    public void Validatation_RequiredIndustryCode(string industryCode, bool isValidExpected)
+    public void Validation_RequiredIndustryCode(string industryCode, bool isValidExpected)
     {
         var subject = new C022_HealthCareCodeInformation();
         subject.CodeListQualifierCode = "y";

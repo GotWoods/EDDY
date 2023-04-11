@@ -27,7 +27,7 @@ public class DTMTests
     [Theory]
     [InlineData("", false)]
     [InlineData("mNK", true)]
-    public void Validatation_RequiredDateTimeQualifier(string dateTimeQualifier, bool isValidExpected)
+    public void Validation_RequiredDateTimeQualifier(string dateTimeQualifier, bool isValidExpected)
     {
         var subject = new DTM_DateTimeReference();
         subject.DateTimeQualifier = dateTimeQualifier;

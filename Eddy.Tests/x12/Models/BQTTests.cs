@@ -33,7 +33,7 @@ public class BQTTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("3O", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BQT_BeginningSegmentForRequestForQuotation();
 		subject.RequestForQuoteReferenceNumber = "v";
@@ -45,7 +45,7 @@ public class BQTTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("v", true)]
-	public void Validatation_RequiredRequestForQuoteReferenceNumber(string requestForQuoteReferenceNumber, bool isValidExpected)
+	public void Validation_RequiredRequestForQuoteReferenceNumber(string requestForQuoteReferenceNumber, bool isValidExpected)
 	{
 		var subject = new BQT_BeginningSegmentForRequestForQuotation();
 		subject.TransactionSetPurposeCode = "3O";
@@ -57,7 +57,7 @@ public class BQTTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("FujpQVN2", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BQT_BeginningSegmentForRequestForQuotation();
 		subject.TransactionSetPurposeCode = "3O";

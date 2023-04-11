@@ -25,7 +25,7 @@ public class ATATests
     [Theory]
     [InlineData("", false)]
     [InlineData("Uu", true)]
-    public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+    public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
     {
         var subject = new ATA_BeginningSegmentForMotorCarrierDeliveryTrailerManifest();
         subject.ReferenceIdentification = "w";
@@ -36,7 +36,7 @@ public class ATATests
     [Theory]
     [InlineData("", false)]
     [InlineData("w", true)]
-    public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+    public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
     {
         var subject = new ATA_BeginningSegmentForMotorCarrierDeliveryTrailerManifest();
         subject.StandardCarrierAlphaCode = "Uu";

@@ -28,7 +28,7 @@ public class BOSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("3", true)]
-	public void Validatation_RequiredStatementNumber(string statementNumber, bool isValidExpected)
+	public void Validation_RequiredStatementNumber(string statementNumber, bool isValidExpected)
 	{
 		var subject = new BOS_BeginningSegmentForJointInterestBillingAndOperatingExpenseStatement();
 		subject.Date = "OaoIXX5E";
@@ -39,7 +39,7 @@ public class BOSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("OaoIXX5E", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BOS_BeginningSegmentForJointInterestBillingAndOperatingExpenseStatement();
 		subject.StatementNumber = "3";

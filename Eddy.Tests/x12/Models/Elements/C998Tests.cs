@@ -24,7 +24,7 @@ public class C998Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("1", true)]
-    public void Validatation_RequiredContextName(string contextName, bool isValidExpected)
+    public void Validation_RequiredContextName(string contextName, bool isValidExpected)
     {
         var subject = new C998_ContextIdentification();
         subject.ContextName = contextName;

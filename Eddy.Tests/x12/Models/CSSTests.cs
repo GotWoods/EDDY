@@ -30,7 +30,7 @@ public class CSSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("B6", true)]
-	public void Validatation_RequiredSamplingSequenceQualifier(string samplingSequenceQualifier, bool isValidExpected)
+	public void Validation_RequiredSamplingSequenceQualifier(string samplingSequenceQualifier, bool isValidExpected)
 	{
 		var subject = new CSS_ConditionalSamplingSequence();
 		subject.CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure();
@@ -42,7 +42,7 @@ public class CSSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("AA", true)]
-	public void Validatation_RequiredCompositeUnitOfMeasure(string compositeUnitOfMeasure, bool isValidExpected)
+	public void Validation_RequiredCompositeUnitOfMeasure(string compositeUnitOfMeasure, bool isValidExpected)
 	{
 		var subject = new CSS_ConditionalSamplingSequence();
 		if (compositeUnitOfMeasure != "")
@@ -56,7 +56,7 @@ public class CSSTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(2, true)]
-	public void Validatation_RequiredSamplingSequenceValue(int samplingSequenceValue, bool isValidExpected)
+	public void Validation_RequiredSamplingSequenceValue(int samplingSequenceValue, bool isValidExpected)
 	{
 		var subject = new CSS_ConditionalSamplingSequence();
 		subject.SamplingSequenceQualifier = "B6";

@@ -32,7 +32,7 @@ public class ATRTests
     [Theory]
     [InlineData("", false)]
     [InlineData("1R", true)]
-    public void Validatation_RequiredTestTypeCode(string testTypeCode, bool isValidExpected)
+    public void Validation_RequiredTestTypeCode(string testTypeCode, bool isValidExpected)
     {
         var subject = new ATR_AnimalTestResult();
         subject.TestPeriodOrIntervalValue = 4;
@@ -46,7 +46,7 @@ public class ATRTests
     [Theory]
     [InlineData(0, false)]
     [InlineData(4, true)]
-    public void Validatation_RequiredTestPeriodOrIntervalValue(int testPeriodOrIntervalValue, bool isValidExpected)
+    public void Validation_RequiredTestPeriodOrIntervalValue(int testPeriodOrIntervalValue, bool isValidExpected)
     {
         var subject = new ATR_AnimalTestResult();
         subject.TestTypeCode = "1R";
@@ -61,7 +61,7 @@ public class ATRTests
     [Theory]
     [InlineData("", false)]
     [InlineData("y5", true)]
-    public void Validatation_RequiredUnitOfTimePeriodOrIntervalCode(string unitOfTimePeriodOrIntervalCode, bool isValidExpected)
+    public void Validation_RequiredUnitOfTimePeriodOrIntervalCode(string unitOfTimePeriodOrIntervalCode, bool isValidExpected)
     {
         var subject = new ATR_AnimalTestResult();
         subject.TestTypeCode = "1R";

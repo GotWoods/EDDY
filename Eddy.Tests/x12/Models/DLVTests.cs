@@ -27,7 +27,7 @@ public class DLVTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(9, true)]
-	public void Validatation_RequiredQuantity(decimal quantity, bool isValidExpected)
+	public void Validation_RequiredQuantity(decimal quantity, bool isValidExpected)
 	{
 		var subject = new DLV_DeliverableInformation();
 		if (quantity > 0)

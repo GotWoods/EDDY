@@ -31,7 +31,7 @@ public class PIDTests
     [Theory]
     [InlineData("", false)]
     [InlineData("c", true)]
-    public void Validatation_RequiredItemDescriptionTypeCode(string itemDescriptionTypeCode, bool isValidExpected)
+    public void Validation_RequiredItemDescriptionTypeCode(string itemDescriptionTypeCode, bool isValidExpected)
     {
         var subject = new PID_ProductItemDescription();
         subject.ItemDescriptionTypeCode = itemDescriptionTypeCode;

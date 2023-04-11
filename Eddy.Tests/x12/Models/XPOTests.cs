@@ -25,7 +25,7 @@ public class XPOTests
     [Theory]
     [InlineData("", false)]
     [InlineData("j", true)]
-    public void Validatation_RequiredPurchaseOrderNumber(string purchaseOrderNumber, bool isValidExpected)
+    public void Validation_RequiredPurchaseOrderNumber(string purchaseOrderNumber, bool isValidExpected)
     {
         var subject = new XPO_PreassignedPurchaseOrderNumbers();
         subject.PurchaseOrderNumber = purchaseOrderNumber;

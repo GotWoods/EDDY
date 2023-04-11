@@ -28,7 +28,7 @@ public class ELVTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("9q", true)]
-	public void Validatation_RequiredEmploymentStatusCode(string employmentStatusCode, bool isValidExpected)
+	public void Validation_RequiredEmploymentStatusCode(string employmentStatusCode, bool isValidExpected)
 	{
 		var subject = new ELV_EmployeeLeaveSummary();
 		subject.EmploymentStatusCode = employmentStatusCode;

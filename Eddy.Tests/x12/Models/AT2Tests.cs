@@ -52,7 +52,7 @@ public class AT2Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("pF", true)]
-    public void Validatation_RequiredWeightQualifier(string weightQualifier, bool isValidExpected)
+    public void Validation_RequiredWeightQualifier(string weightQualifier, bool isValidExpected)
     {
         var subject = new AT2_BillOfLadingLineItemDetail();
         subject.WeightUnitCode = "p";
@@ -63,7 +63,7 @@ public class AT2Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("p", true)]
-    public void Validatation_RequiredWeightUnitCode(string weightUnitCode, bool isValidExpected)
+    public void Validation_RequiredWeightUnitCode(string weightUnitCode, bool isValidExpected)
     {
         var subject = new AT2_BillOfLadingLineItemDetail();
         subject.WeightQualifier = "pF";
@@ -74,7 +74,7 @@ public class AT2Tests
     [Theory]
     [InlineData(0, false)]
     [InlineData(3, true)]
-    public void Validatation_RequiredWeight(decimal weight, bool isValidExpected)
+    public void Validation_RequiredWeight(decimal weight, bool isValidExpected)
     {
         var subject = new AT2_BillOfLadingLineItemDetail();
         subject.WeightQualifier = "pF";

@@ -26,7 +26,7 @@ public class ACSTests
     [Theory]
     [InlineData("", false)]
     [InlineData("x", true)]
-    public void Validatation_RequiredAmount(string amount, bool isValidExpected)
+    public void Validation_RequiredAmount(string amount, bool isValidExpected)
     {
         var subject = new ACS_AncillaryCharges();
         subject.SpecialChargeOrAllowanceCode = "Sbc";
@@ -37,7 +37,7 @@ public class ACSTests
     [Theory]
     [InlineData("", false)]
     [InlineData("Sbc", true)]
-    public void Validatation_RequiredSpecialChargeOrAllowanceCode(string specialChargeOrAllowanceCode, bool isValidExpected)
+    public void Validation_RequiredSpecialChargeOrAllowanceCode(string specialChargeOrAllowanceCode, bool isValidExpected)
     {
         var subject = new ACS_AncillaryCharges();
         subject.Amount = "x";

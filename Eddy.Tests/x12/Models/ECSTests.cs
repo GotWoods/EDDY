@@ -26,7 +26,7 @@ public class ECSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("q", true)]
-	public void Validatation_RequiredAmountQualifierCode(string amountQualifierCode, bool isValidExpected)
+	public void Validation_RequiredAmountQualifierCode(string amountQualifierCode, bool isValidExpected)
 	{
 		var subject = new ECS_FeesAndPaymentSchedule();
 		subject.MonetaryAmount = 5;
@@ -38,7 +38,7 @@ public class ECSTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(5, true)]
-	public void Validatation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
+	public void Validation_RequiredMonetaryAmount(decimal monetaryAmount, bool isValidExpected)
 	{
 		var subject = new ECS_FeesAndPaymentSchedule();
 		subject.AmountQualifierCode = "q";
@@ -51,7 +51,7 @@ public class ECSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Ia", true)]
-	public void Validatation_RequiredFrequencyPatternCode(string frequencyPatternCode, bool isValidExpected)
+	public void Validation_RequiredFrequencyPatternCode(string frequencyPatternCode, bool isValidExpected)
 	{
 		var subject = new ECS_FeesAndPaymentSchedule();
 		subject.AmountQualifierCode = "q";

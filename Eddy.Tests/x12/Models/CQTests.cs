@@ -32,7 +32,7 @@ public class CQTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("q", true)]
-	public void Validatation_RequiredCredentialTypeCode(string credentialTypeCode, bool isValidExpected)
+	public void Validation_RequiredCredentialTypeCode(string credentialTypeCode, bool isValidExpected)
 	{
 		var subject = new CQ_CredentialsAndQualifications();
 		subject.CredentialTypeCode = credentialTypeCode;

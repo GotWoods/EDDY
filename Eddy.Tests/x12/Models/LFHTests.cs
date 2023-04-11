@@ -29,7 +29,7 @@ public class LFHTests
     [Theory]
     [InlineData("", false)]
     [InlineData("sDG", true)]
-    public void Validatation_RequiredHazardousMaterialShipmentInformationQualifier(string hazardousMaterialShipmentInformationQualifier, bool isValidExpected)
+    public void Validation_RequiredHazardousMaterialShipmentInformationQualifier(string hazardousMaterialShipmentInformationQualifier, bool isValidExpected)
     {
         var subject = new LFH_FreeFormHazardousMaterialInformation();
         subject.HazardousMaterialShipmentInformationQualifier = hazardousMaterialShipmentInformationQualifier;
@@ -39,7 +39,7 @@ public class LFHTests
     [Theory]
     [InlineData("", false)]
     [InlineData("5LJaYNgTX8KzKk5qwlCsqDG5z", true)]
-    public void Validatation_RequiredHazardousMaterialShipmentInformation(string hazardousMaterialShipmentInformation, bool isValidExpected)
+    public void Validation_RequiredHazardousMaterialShipmentInformation(string hazardousMaterialShipmentInformation, bool isValidExpected)
     {
         var subject = new LFH_FreeFormHazardousMaterialInformation();
         subject.HazardousMaterialShipmentInformation = hazardousMaterialShipmentInformation;

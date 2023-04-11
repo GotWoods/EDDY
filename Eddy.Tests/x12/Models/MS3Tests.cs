@@ -26,7 +26,7 @@ public class MS3Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("v1", true)]
-    public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+    public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
     {
         var subject = new MS3_InterlineInformation();
         subject.StandardCarrierAlphaCode = standardCarrierAlphaCode;
@@ -36,7 +36,7 @@ public class MS3Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("v1", true)]
-    public void Validatation_RequiredRoutingSequenceCode(string routingSequenceCode, bool isValidExpected)
+    public void Validation_RequiredRoutingSequenceCode(string routingSequenceCode, bool isValidExpected)
     {
         var subject = new MS3_InterlineInformation();
         subject.RoutingSequenceCode = routingSequenceCode;

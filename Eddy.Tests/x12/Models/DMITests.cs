@@ -34,7 +34,7 @@ public class DMITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("V", true)]
-	public void Validatation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
+	public void Validation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
 	{
 		var subject = new DMI_DataMaintenanceInformation();
 		subject.DataMaintenanceNumber = "m";
@@ -45,7 +45,7 @@ public class DMITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("m", true)]
-	public void Validatation_RequiredDataMaintenanceNumber(string dataMaintenanceNumber, bool isValidExpected)
+	public void Validation_RequiredDataMaintenanceNumber(string dataMaintenanceNumber, bool isValidExpected)
 	{
 		var subject = new DMI_DataMaintenanceInformation();
 		subject.MaintenanceOperationCode = "V";

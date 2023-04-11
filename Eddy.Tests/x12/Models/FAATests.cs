@@ -37,7 +37,7 @@ public class FAATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("O", true)]
-	public void Validatation_RequiredAccountNumberQualifier(string accountNumberQualifier, bool isValidExpected)
+	public void Validation_RequiredAccountNumberQualifier(string accountNumberQualifier, bool isValidExpected)
 	{
 		var subject = new FAA_FinancialAssetAccount();
 		subject.AccountNumberQualifier = accountNumberQualifier;

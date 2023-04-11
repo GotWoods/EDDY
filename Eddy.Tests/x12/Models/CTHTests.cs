@@ -33,7 +33,7 @@ public class CTHTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("vN", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new CTH_BeginningSegmentForContractTransactionSet();
 		subject.ContractNumber = "D";
@@ -45,7 +45,7 @@ public class CTHTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("D", true)]
-	public void Validatation_RequiredContractNumber(string contractNumber, bool isValidExpected)
+	public void Validation_RequiredContractNumber(string contractNumber, bool isValidExpected)
 	{
 		var subject = new CTH_BeginningSegmentForContractTransactionSet();
 		subject.TransactionSetPurposeCode = "vN";
@@ -57,7 +57,7 @@ public class CTHTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("6Z", true)]
-	public void Validatation_RequiredContractActionCode(string contractActionCode, bool isValidExpected)
+	public void Validation_RequiredContractActionCode(string contractActionCode, bool isValidExpected)
 	{
 		var subject = new CTH_BeginningSegmentForContractTransactionSet();
 		subject.TransactionSetPurposeCode = "vN";

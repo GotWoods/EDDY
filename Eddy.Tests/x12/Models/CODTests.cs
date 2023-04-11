@@ -26,7 +26,7 @@ public class CODTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("fE", true)]
-	public void Validatation_RequiredAgencyQualifierCode(string agencyQualifierCode, bool isValidExpected)
+	public void Validation_RequiredAgencyQualifierCode(string agencyQualifierCode, bool isValidExpected)
 	{
 		var subject = new COD_ChannelOfDistribution();
 		subject.CompositeChannelOfDistribution = new C070_CompositeChannelOfDistribution() { };
@@ -37,7 +37,7 @@ public class CODTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("aa", true)]
-	public void Validatation_RequiredCompositeChannelOfDistribution(string compositeChannelOfDistribution, bool isValidExpected)
+	public void Validation_RequiredCompositeChannelOfDistribution(string compositeChannelOfDistribution, bool isValidExpected)
 	{
 		var subject = new COD_ChannelOfDistribution();
 		subject.AgencyQualifierCode = "fE";

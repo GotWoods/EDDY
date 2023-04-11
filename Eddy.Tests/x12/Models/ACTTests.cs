@@ -31,7 +31,7 @@ public class ACTTests
     [Theory]
     [InlineData("", false)]
     [InlineData("O", true)]
-    public void Validatation_RequiredAccountNumber(string accountNumber, bool isValidExpected)
+    public void Validation_RequiredAccountNumber(string accountNumber, bool isValidExpected)
     {
         var subject = new ACT_AccountIdentification();
         subject.AccountNumber = accountNumber;

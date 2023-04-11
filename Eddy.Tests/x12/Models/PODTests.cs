@@ -24,7 +24,7 @@ public class PODTests
     [Theory]
     [InlineData("", false)]
     [InlineData("12345678", true)]
-    public void Validatation_RequiredDate(string date, bool isValidExpected)
+    public void Validation_RequiredDate(string date, bool isValidExpected)
     {
         var subject = new POD_ProofOfDelivery();
         subject.Name = "AB";
@@ -34,7 +34,7 @@ public class PODTests
     [Theory]
     [InlineData("", false)]
     [InlineData("v1", true)]
-    public void Validatation_RequiredName(string name, bool isValidExpected)
+    public void Validation_RequiredName(string name, bool isValidExpected)
     {
         var subject = new POD_ProofOfDelivery();
         subject.Date = "12345678";

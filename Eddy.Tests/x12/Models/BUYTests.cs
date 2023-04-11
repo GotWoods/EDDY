@@ -27,7 +27,7 @@ public class BUYTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("0", true)]
-	public void Validatation_RequiredLoanBuydownTypeCode(string loanBuydownTypeCode, bool isValidExpected)
+	public void Validation_RequiredLoanBuydownTypeCode(string loanBuydownTypeCode, bool isValidExpected)
 	{
 		var subject = new BUY_LoanBuydown();
 		subject.SourceOfFundsCode = "X";
@@ -38,7 +38,7 @@ public class BUYTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("X", true)]
-	public void Validatation_RequiredSourceOfFundsCode(string sourceOfFundsCode, bool isValidExpected)
+	public void Validation_RequiredSourceOfFundsCode(string sourceOfFundsCode, bool isValidExpected)
 	{
 		var subject = new BUY_LoanBuydown();
 		subject.LoanBuydownTypeCode = "0";

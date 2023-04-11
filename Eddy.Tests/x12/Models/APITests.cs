@@ -30,7 +30,7 @@ public class APITests
     [Theory]
     [InlineData("", false)]
     [InlineData("jT", true)]
-    public void Validatation_RequiredCodeCategory(string codeCategory, bool isValidExpected)
+    public void Validation_RequiredCodeCategory(string codeCategory, bool isValidExpected)
     {
         var subject = new API_ActivityOrProcessInformation();
         subject.CodeCategory = codeCategory;

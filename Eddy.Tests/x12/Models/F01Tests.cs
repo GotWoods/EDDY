@@ -31,7 +31,7 @@ public class F01Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("KnVwr2WL", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new F01_IdentificationOfClaimClaimantOriginated();
 		subject.ReferenceIdentification = "T";
@@ -45,7 +45,7 @@ public class F01Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("T", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new F01_IdentificationOfClaimClaimantOriginated();
 		subject.Date = "KnVwr2WL";
@@ -59,7 +59,7 @@ public class F01Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("I", true)]
-	public void Validatation_RequiredAmount(string amount, bool isValidExpected)
+	public void Validation_RequiredAmount(string amount, bool isValidExpected)
 	{
 		var subject = new F01_IdentificationOfClaimClaimantOriginated();
 		subject.Date = "KnVwr2WL";
@@ -73,7 +73,7 @@ public class F01Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("vp", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
 	{
 		var subject = new F01_IdentificationOfClaimClaimantOriginated();
 		subject.Date = "KnVwr2WL";
@@ -87,7 +87,7 @@ public class F01Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("r", true)]
-	public void Validatation_RequiredSupportingEvidenceCode(string supportingEvidenceCode, bool isValidExpected)
+	public void Validation_RequiredSupportingEvidenceCode(string supportingEvidenceCode, bool isValidExpected)
 	{
 		var subject = new F01_IdentificationOfClaimClaimantOriginated();
 		subject.Date = "KnVwr2WL";

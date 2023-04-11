@@ -27,7 +27,7 @@ public class BPATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("fv", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BPA_BeginningSegmentForPriceAuthorizationAcknowledgmentStatus();
 		subject.Date = "PT2cKlku";
@@ -38,7 +38,7 @@ public class BPATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("PT2cKlku", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BPA_BeginningSegmentForPriceAuthorizationAcknowledgmentStatus();
 		subject.TransactionSetPurposeCode = "fv";

@@ -29,7 +29,7 @@ public class BSNTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("7q", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BSN_BeginningSegmentForShipNotice();
 		subject.ShipmentIdentification = "dA";
@@ -42,7 +42,7 @@ public class BSNTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("dA", true)]
-	public void Validatation_RequiredShipmentIdentification(string shipmentIdentification, bool isValidExpected)
+	public void Validation_RequiredShipmentIdentification(string shipmentIdentification, bool isValidExpected)
 	{
 		var subject = new BSN_BeginningSegmentForShipNotice();
 		subject.TransactionSetPurposeCode = "7q";
@@ -55,7 +55,7 @@ public class BSNTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("CfR2Dckc", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BSN_BeginningSegmentForShipNotice();
 		subject.TransactionSetPurposeCode = "7q";
@@ -68,7 +68,7 @@ public class BSNTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("liFI", true)]
-	public void Validatation_RequiredTime(string time, bool isValidExpected)
+	public void Validation_RequiredTime(string time, bool isValidExpected)
 	{
 		var subject = new BSN_BeginningSegmentForShipNotice();
 		subject.TransactionSetPurposeCode = "7q";

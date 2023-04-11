@@ -29,7 +29,7 @@ public class N1Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("v1", true)]
-    public void Validatation_RequiredEntityIdentifierCode(string entityIdentifierCode, bool isValidExpected)
+    public void Validation_RequiredEntityIdentifierCode(string entityIdentifierCode, bool isValidExpected)
     {
         var subject = new N1_PartyIdentification();
         subject.EntityIdentifierCode = entityIdentifierCode;

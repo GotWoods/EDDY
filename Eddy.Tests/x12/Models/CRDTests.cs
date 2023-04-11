@@ -26,7 +26,7 @@ public class CRDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Yo", true)]
-	public void Validatation_RequiredCountryCode(string countryCode, bool isValidExpected)
+	public void Validation_RequiredCountryCode(string countryCode, bool isValidExpected)
 	{
 		var subject = new CRD_ContentReportingDetail();
 		subject.CountryCode = countryCode;

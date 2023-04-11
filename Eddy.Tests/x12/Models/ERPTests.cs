@@ -27,7 +27,7 @@ public class ERPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("04", true)]
-	public void Validatation_RequiredTransactionTypeCode(string transactionTypeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionTypeCode(string transactionTypeCode, bool isValidExpected)
 	{
 		var subject = new ERP_EducationalRecordPurpose();
 		subject.TransactionTypeCode = transactionTypeCode;

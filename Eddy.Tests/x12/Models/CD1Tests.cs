@@ -53,7 +53,7 @@ public class CD1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("9", true)]
-	public void Validatation_RequiredEquipmentInitial(string equipmentInitial, bool isValidExpected)
+	public void Validation_RequiredEquipmentInitial(string equipmentInitial, bool isValidExpected)
 	{
 		var subject = new CD1_CargoDetail();
 		subject.EquipmentNumber = "p";
@@ -75,7 +75,7 @@ public class CD1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("p", true)]
-	public void Validatation_RequiredEquipmentNumber(string equipmentNumber, bool isValidExpected)
+	public void Validation_RequiredEquipmentNumber(string equipmentNumber, bool isValidExpected)
 	{
 		var subject = new CD1_CargoDetail();
 		subject.EquipmentInitial = "9";
@@ -97,7 +97,7 @@ public class CD1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("p", true)]
-	public void Validatation_RequiredBillOfLadingWaybillNumber(string billOfLadingWaybillNumber, bool isValidExpected)
+	public void Validation_RequiredBillOfLadingWaybillNumber(string billOfLadingWaybillNumber, bool isValidExpected)
 	{
 		var subject = new CD1_CargoDetail();
 		subject.EquipmentInitial = "9";
@@ -119,7 +119,7 @@ public class CD1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Dn", true)]
-	public void Validatation_RequiredTypeOfServiceCode(string typeOfServiceCode, bool isValidExpected)
+	public void Validation_RequiredTypeOfServiceCode(string typeOfServiceCode, bool isValidExpected)
 	{
 		var subject = new CD1_CargoDetail();
 		subject.EquipmentInitial = "9";
@@ -141,7 +141,7 @@ public class CD1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("I", true)]
-	public void Validatation_RequiredLocationIdentifier(string locationIdentifier, bool isValidExpected)
+	public void Validation_RequiredLocationIdentifier(string locationIdentifier, bool isValidExpected)
 	{
 		var subject = new CD1_CargoDetail();
 		subject.EquipmentInitial = "9";
@@ -163,7 +163,7 @@ public class CD1Tests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(2, true)]
-	public void Validatation_RequiredQuantity(decimal quantity, bool isValidExpected)
+	public void Validation_RequiredQuantity(decimal quantity, bool isValidExpected)
 	{
 		var subject = new CD1_CargoDetail();
 		subject.EquipmentInitial = "9";
@@ -186,7 +186,7 @@ public class CD1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("V8Y", true)]
-	public void Validatation_RequiredPackagingCode(string packagingCode, bool isValidExpected)
+	public void Validation_RequiredPackagingCode(string packagingCode, bool isValidExpected)
 	{
 		var subject = new CD1_CargoDetail();
 		subject.EquipmentInitial = "9";
@@ -208,7 +208,7 @@ public class CD1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("So", true)]
-	public void Validatation_RequiredBillOfLadingDispositionCode(string billOfLadingDispositionCode, bool isValidExpected)
+	public void Validation_RequiredBillOfLadingDispositionCode(string billOfLadingDispositionCode, bool isValidExpected)
 	{
 		var subject = new CD1_CargoDetail();
 		subject.EquipmentInitial = "9";
@@ -230,7 +230,7 @@ public class CD1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("jy", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
 	{
 		var subject = new CD1_CargoDetail();
 		subject.EquipmentInitial = "9";
@@ -252,7 +252,7 @@ public class CD1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("sG", true)]
-	public void Validatation_RequiredReferenceIdentificationQualifier(string referenceIdentificationQualifier, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentificationQualifier(string referenceIdentificationQualifier, bool isValidExpected)
 	{
 		var subject = new CD1_CargoDetail();
 		subject.EquipmentInitial = "9";
@@ -274,7 +274,7 @@ public class CD1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("g", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new CD1_CargoDetail();
 		subject.EquipmentInitial = "9";
@@ -296,7 +296,7 @@ public class CD1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("ZV", true)]
-	public void Validatation_RequiredReferenceIdentificationQualifier2(string referenceIdentificationQualifier2, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentificationQualifier2(string referenceIdentificationQualifier2, bool isValidExpected)
 	{
 		var subject = new CD1_CargoDetail();
 		subject.EquipmentInitial = "9";
@@ -318,7 +318,7 @@ public class CD1Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("h", true)]
-	public void Validatation_RequiredReferenceIdentification2(string referenceIdentification2, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification2(string referenceIdentification2, bool isValidExpected)
 	{
 		var subject = new CD1_CargoDetail();
 		subject.EquipmentInitial = "9";

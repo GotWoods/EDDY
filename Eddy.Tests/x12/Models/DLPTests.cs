@@ -26,7 +26,7 @@ public class DLPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("uy", true)]
-	public void Validatation_RequiredDeliveryTimeMeasurementTypeCode(string deliveryTimeMeasurementTypeCode, bool isValidExpected)
+	public void Validation_RequiredDeliveryTimeMeasurementTypeCode(string deliveryTimeMeasurementTypeCode, bool isValidExpected)
 	{
 		var subject = new DLP_DeliveryParameter();
 		subject.AppointmentTimeBasisCode = "Pq";
@@ -37,7 +37,7 @@ public class DLPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Pq", true)]
-	public void Validatation_RequiredAppointmentTimeBasisCode(string appointmentTimeBasisCode, bool isValidExpected)
+	public void Validation_RequiredAppointmentTimeBasisCode(string appointmentTimeBasisCode, bool isValidExpected)
 	{
 		var subject = new DLP_DeliveryParameter();
 		subject.DeliveryTimeMeasurementTypeCode = "uy";

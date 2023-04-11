@@ -32,7 +32,7 @@ public class EMPTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("z", true)]
-	public void Validatation_RequiredDescription(string description, bool isValidExpected)
+	public void Validation_RequiredDescription(string description, bool isValidExpected)
 	{
 		var subject = new EMP_Employer();
 		subject.Description = description;

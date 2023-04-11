@@ -25,7 +25,7 @@ public class AK3Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("9WG", true)]
-    public void Validatation_RequiredSegmentIDCode(string segmentIdCode, bool isValidExpected)
+    public void Validation_RequiredSegmentIDCode(string segmentIdCode, bool isValidExpected)
     {
         var subject = new AK3_DataSegmentNote();
         subject.SegmentPositionInTransactionSet = 1;
@@ -35,7 +35,7 @@ public class AK3Tests
     [Theory]
     [InlineData(0, false)]
     [InlineData(1, true)]
-    public void Validatation_RequiredSegmentPositionInTransactionSet(int segmentPositionInTransactionSet, bool isValidExpected)
+    public void Validation_RequiredSegmentPositionInTransactionSet(int segmentPositionInTransactionSet, bool isValidExpected)
     {
         var subject = new AK3_DataSegmentNote();
         subject.SegmentIDCode = "9WG";

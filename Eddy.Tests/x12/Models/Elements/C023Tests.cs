@@ -25,7 +25,7 @@ public class C023Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("D", true)]
-    public void Validatation_RequiredFacilityCodeValue(string facilityCodeValue, bool isValidExpected)
+    public void Validation_RequiredFacilityCodeValue(string facilityCodeValue, bool isValidExpected)
     {
         var subject = new C023_HealthCareServiceLocationInformation();
         subject.FacilityCodeQualifier = "O";
@@ -36,7 +36,7 @@ public class C023Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("O", true)]
-    public void Validatation_RequiredFacilityCodeQualifier(string facilityCodeQualifier, bool isValidExpected)
+    public void Validation_RequiredFacilityCodeQualifier(string facilityCodeQualifier, bool isValidExpected)
     {
         var subject = new C023_HealthCareServiceLocationInformation();
         subject.FacilityCodeValue = "D";

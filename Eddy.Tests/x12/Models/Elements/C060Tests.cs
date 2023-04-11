@@ -24,7 +24,7 @@ public class C060Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("v", true)]
-    public void Validatation_RequiredAssignedIdentification(string assignedIdentification, bool isValidExpected)
+    public void Validation_RequiredAssignedIdentification(string assignedIdentification, bool isValidExpected)
     {
         var subject = new C060_QuestionAndAnswer();
         subject.YesNoConditionOrResponseCode = "G";
@@ -35,7 +35,7 @@ public class C060Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("G", true)]
-    public void Validatation_RequiredYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, bool isValidExpected)
+    public void Validation_RequiredYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, bool isValidExpected)
     {
         var subject = new C060_QuestionAndAnswer();
         subject.AssignedIdentification = "v";

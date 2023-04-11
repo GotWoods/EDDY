@@ -24,7 +24,7 @@ public class AK2Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("IBD", true)]
-    public void Validatation_RequiredTransactionSetIdentifierCode(string transactionSetIdentifierCode, bool isValidExpected)
+    public void Validation_RequiredTransactionSetIdentifierCode(string transactionSetIdentifierCode, bool isValidExpected)
     {
         var subject = new AK2_TransactionSetResponseHeader();
         subject.TransactionSetControlNumber = "82AECMFHJ";
@@ -34,7 +34,7 @@ public class AK2Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("82AECMFHJ", true)]
-    public void Validatation_RequiredTransactionSetControlNumber(string transactionSetControlNumber, bool isValidExpected)
+    public void Validation_RequiredTransactionSetControlNumber(string transactionSetControlNumber, bool isValidExpected)
     {
         var subject = new AK2_TransactionSetResponseHeader();
         subject.TransactionSetIdentifierCode = "IBD";

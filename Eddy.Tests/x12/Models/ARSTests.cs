@@ -27,7 +27,7 @@ public class ARSTests
     [Theory]
     [InlineData("", false)]
     [InlineData("N", true)]
-    public void Validatation_RequiredTypeOfResidenceCode(string typeOfResidenceCode, bool isValidExpected)
+    public void Validation_RequiredTypeOfResidenceCode(string typeOfResidenceCode, bool isValidExpected)
     {
         var subject = new ARS_ApplicantResidenceSpecifics();
         subject.PropertyOwnershipRightsCode = "N";
@@ -38,7 +38,7 @@ public class ARSTests
     [Theory]
     [InlineData("", false)]
     [InlineData("N", true)]
-    public void Validatation_RequiredPropertyOwnershipRightsCode(string propertyOwnershipRightsCode, bool isValidExpected)
+    public void Validation_RequiredPropertyOwnershipRightsCode(string propertyOwnershipRightsCode, bool isValidExpected)
     {
         var subject = new ARS_ApplicantResidenceSpecifics();
         subject.TypeOfResidenceCode = "N";

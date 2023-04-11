@@ -26,7 +26,7 @@ public class CSITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("oQ", true)]
-	public void Validatation_RequiredClaimSubmissionReasonCode(string claimSubmissionReasonCode, bool isValidExpected)
+	public void Validation_RequiredClaimSubmissionReasonCode(string claimSubmissionReasonCode, bool isValidExpected)
 	{
 		var subject = new CSI_ClaimStatusInformation();
 		subject.DateTimeQualifier = "4zo";
@@ -39,7 +39,7 @@ public class CSITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("4zo", true)]
-	public void Validatation_RequiredDateTimeQualifier(string dateTimeQualifier, bool isValidExpected)
+	public void Validation_RequiredDateTimeQualifier(string dateTimeQualifier, bool isValidExpected)
 	{
 		var subject = new CSI_ClaimStatusInformation();
 		subject.ClaimSubmissionReasonCode = "oQ";
@@ -52,7 +52,7 @@ public class CSITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("F4", true)]
-	public void Validatation_RequiredDateTimePeriodFormatQualifier(string dateTimePeriodFormatQualifier, bool isValidExpected)
+	public void Validation_RequiredDateTimePeriodFormatQualifier(string dateTimePeriodFormatQualifier, bool isValidExpected)
 	{
 		var subject = new CSI_ClaimStatusInformation();
 		subject.ClaimSubmissionReasonCode = "oQ";
@@ -65,7 +65,7 @@ public class CSITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("R", true)]
-	public void Validatation_RequiredDateTimePeriod(string dateTimePeriod, bool isValidExpected)
+	public void Validation_RequiredDateTimePeriod(string dateTimePeriod, bool isValidExpected)
 	{
 		var subject = new CSI_ClaimStatusInformation();
 		subject.ClaimSubmissionReasonCode = "oQ";

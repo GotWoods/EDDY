@@ -34,7 +34,7 @@ public class BVSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Su", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
 	{
 		var subject = new BVS_BeginningSegmentForVehicleService();
 		subject.IdentificationCodeQualifier = "z";
@@ -46,7 +46,7 @@ public class BVSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("z", true)]
-	public void Validatation_RequiredIdentificationCodeQualifier(string identificationCodeQualifier, bool isValidExpected)
+	public void Validation_RequiredIdentificationCodeQualifier(string identificationCodeQualifier, bool isValidExpected)
 	{
 		var subject = new BVS_BeginningSegmentForVehicleService();
 		subject.StandardCarrierAlphaCode = "Su";
@@ -58,7 +58,7 @@ public class BVSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("7f", true)]
-	public void Validatation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
+	public void Validation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
 	{
 		var subject = new BVS_BeginningSegmentForVehicleService();
 		subject.StandardCarrierAlphaCode = "Su";

@@ -24,7 +24,7 @@ public class FA2Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("RL", true)]
-	public void Validatation_RequiredBreakdownStructureDetailCode(string breakdownStructureDetailCode, bool isValidExpected)
+	public void Validation_RequiredBreakdownStructureDetailCode(string breakdownStructureDetailCode, bool isValidExpected)
 	{
 		var subject = new FA2_AccountingData();
 		subject.FinancialInformationCode = "q";
@@ -35,7 +35,7 @@ public class FA2Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("q", true)]
-	public void Validatation_RequiredFinancialInformationCode(string financialInformationCode, bool isValidExpected)
+	public void Validation_RequiredFinancialInformationCode(string financialInformationCode, bool isValidExpected)
 	{
 		var subject = new FA2_AccountingData();
 		subject.BreakdownStructureDetailCode = "RL";

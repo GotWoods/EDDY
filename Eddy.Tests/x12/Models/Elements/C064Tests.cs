@@ -24,7 +24,7 @@ public class C064Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("M", true)]
-    public void Validatation_RequiredIndustryCode(string industryCode, bool isValidExpected)
+    public void Validation_RequiredIndustryCode(string industryCode, bool isValidExpected)
     {
         var subject = new C064_ServiceType();
         subject.IndustryCode = industryCode;

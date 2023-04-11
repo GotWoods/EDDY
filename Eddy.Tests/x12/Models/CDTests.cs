@@ -34,7 +34,7 @@ public class CDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("K", true)]
-	public void Validatation_RequiredConditionSegmentLogicalConnector(string conditionSegmentLogicalConnector, bool isValidExpected)
+	public void Validation_RequiredConditionSegmentLogicalConnector(string conditionSegmentLogicalConnector, bool isValidExpected)
 	{
 		var subject = new CD_ShipmentConditions();
 		subject.ConditionSegmentLogicalConnector = conditionSegmentLogicalConnector;

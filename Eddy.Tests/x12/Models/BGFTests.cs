@@ -25,7 +25,7 @@ public class BGFTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("1T", true)]
-	public void Validatation_RequiredReferenceIdentificationQualifier(string referenceIdentificationQualifier, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentificationQualifier(string referenceIdentificationQualifier, bool isValidExpected)
 	{
 		var subject = new BGF_BeginningSegmentForFileTransferInformation();
 		subject.ReferenceIdentification = "f";
@@ -36,7 +36,7 @@ public class BGFTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("f", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new BGF_BeginningSegmentForFileTransferInformation();
 		subject.ReferenceIdentificationQualifier = "1T";

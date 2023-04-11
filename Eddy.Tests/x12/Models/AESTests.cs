@@ -27,7 +27,7 @@ public class AESTests
     [Theory]
     [InlineData("", false)]
     [InlineData("5", true)]
-    public void Validatation_RequiredAutomaticEquipmentIdentificationSiteStatusCode(string automaticEquipmentIdentificationSiteStatusCode, bool isValidExpected)
+    public void Validation_RequiredAutomaticEquipmentIdentificationSiteStatusCode(string automaticEquipmentIdentificationSiteStatusCode, bool isValidExpected)
     {
         var subject = new AES_AutomaticEquipmentIdentificationSiteInformation();
         subject.MovementTypeCode = "X";
@@ -40,7 +40,7 @@ public class AESTests
     [Theory]
     [InlineData("", false)]
     [InlineData("X", true)]
-    public void Validatation_RequiredMovementTypeCode(string movementTypeCode, bool isValidExpected)
+    public void Validation_RequiredMovementTypeCode(string movementTypeCode, bool isValidExpected)
     {
         var subject = new AES_AutomaticEquipmentIdentificationSiteInformation();
         subject.AutomaticEquipmentIdentificationSiteStatusCode = "5";
@@ -53,7 +53,7 @@ public class AESTests
     [Theory]
     [InlineData("", false)]
     [InlineData("x", true)]
-    public void Validatation_RequiredTrainTerminationStatusCode(string trainTerminationStatusCode, bool isValidExpected)
+    public void Validation_RequiredTrainTerminationStatusCode(string trainTerminationStatusCode, bool isValidExpected)
     {
         var subject = new AES_AutomaticEquipmentIdentificationSiteInformation();
         subject.AutomaticEquipmentIdentificationSiteStatusCode = "5";
@@ -66,7 +66,7 @@ public class AESTests
     [Theory]
     [InlineData("", false)]
     [InlineData("R", true)]
-    public void Validatation_RequiredAutomaticEquipmentIdentificationConsistConfidenceLevelCode(string automaticEquipmentIdentificationConsistConfidenceLevelCode, bool isValidExpected)
+    public void Validation_RequiredAutomaticEquipmentIdentificationConsistConfidenceLevelCode(string automaticEquipmentIdentificationConsistConfidenceLevelCode, bool isValidExpected)
     {
         var subject = new AES_AutomaticEquipmentIdentificationSiteInformation();
         subject.AutomaticEquipmentIdentificationSiteStatusCode = "5";

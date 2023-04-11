@@ -26,7 +26,7 @@ public class E5Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("x8", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
 	{
 		var subject = new E5_EmptyCarDispositionPendedDestinationRoute();
 		subject.RoutingSequenceCode = "E";
@@ -37,7 +37,7 @@ public class E5Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("E", true)]
-	public void Validatation_RequiredRoutingSequenceCode(string routingSequenceCode, bool isValidExpected)
+	public void Validation_RequiredRoutingSequenceCode(string routingSequenceCode, bool isValidExpected)
 	{
 		var subject = new E5_EmptyCarDispositionPendedDestinationRoute();
 		subject.StandardCarrierAlphaCode = "x8";

@@ -36,7 +36,7 @@ public class BXTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("RE", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BX_GeneralShipmentInformation();
 		subject.TransportationMethodTypeCode = "I";
@@ -48,7 +48,7 @@ public class BXTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("I", true)]
-	public void Validatation_RequiredTransportationMethodTypeCode(string transportationMethodTypeCode, bool isValidExpected)
+	public void Validation_RequiredTransportationMethodTypeCode(string transportationMethodTypeCode, bool isValidExpected)
 	{
 		var subject = new BX_GeneralShipmentInformation();
 		subject.TransactionSetPurposeCode = "RE";
@@ -60,7 +60,7 @@ public class BXTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("oX", true)]
-	public void Validatation_RequiredShipmentMethodOfPaymentCode(string shipmentMethodOfPaymentCode, bool isValidExpected)
+	public void Validation_RequiredShipmentMethodOfPaymentCode(string shipmentMethodOfPaymentCode, bool isValidExpected)
 	{
 		var subject = new BX_GeneralShipmentInformation();
 		subject.TransactionSetPurposeCode = "RE";

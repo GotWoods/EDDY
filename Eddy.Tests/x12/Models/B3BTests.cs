@@ -33,7 +33,7 @@ public class B3BTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("a", true)]
-	public void Validatation_RequiredInvoiceNumber(string invoiceNumber, bool isValidExpected)
+	public void Validation_RequiredInvoiceNumber(string invoiceNumber, bool isValidExpected)
 	{
 		var subject = new B3B_BeginningSegmentForRailCarriersInvoice();
 		subject.ShipmentMethodOfPaymentCode = "rL";
@@ -48,7 +48,7 @@ public class B3BTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("rL", true)]
-	public void Validatation_RequiredShipmentMethodOfPaymentCode(string shipmentMethodOfPaymentCode, bool isValidExpected)
+	public void Validation_RequiredShipmentMethodOfPaymentCode(string shipmentMethodOfPaymentCode, bool isValidExpected)
 	{
 		var subject = new B3B_BeginningSegmentForRailCarriersInvoice();
 		subject.InvoiceNumber = "a";
@@ -63,7 +63,7 @@ public class B3BTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("I6gOXjcL", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new B3B_BeginningSegmentForRailCarriersInvoice();
 		subject.InvoiceNumber = "a";
@@ -78,7 +78,7 @@ public class B3BTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("D", true)]
-	public void Validatation_RequiredNetAmountDue(string netAmountDue, bool isValidExpected)
+	public void Validation_RequiredNetAmountDue(string netAmountDue, bool isValidExpected)
 	{
 		var subject = new B3B_BeginningSegmentForRailCarriersInvoice();
 		subject.InvoiceNumber = "a";
@@ -93,7 +93,7 @@ public class B3BTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Qe", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
 	{
 		var subject = new B3B_BeginningSegmentForRailCarriersInvoice();
 		subject.InvoiceNumber = "a";
@@ -108,7 +108,7 @@ public class B3BTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("O", true)]
-	public void Validatation_RequiredTransportationMethodTypeCode(string transportationMethodTypeCode, bool isValidExpected)
+	public void Validation_RequiredTransportationMethodTypeCode(string transportationMethodTypeCode, bool isValidExpected)
 	{
 		var subject = new B3B_BeginningSegmentForRailCarriersInvoice();
 		subject.InvoiceNumber = "a";

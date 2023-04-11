@@ -25,7 +25,7 @@ public class BDSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("j1p", true)]
-	public void Validatation_RequiredFilterIDCode(string filterIDCode, bool isValidExpected)
+	public void Validation_RequiredFilterIDCode(string filterIDCode, bool isValidExpected)
 	{
 		var subject = new BDS_BinaryDataStructure();
 		subject.LengthOfBinaryData = 6;
@@ -37,7 +37,7 @@ public class BDSTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(6, true)]
-	public void Validatation_RequiredLengthOfBinaryData(int lengthOfBinaryData, bool isValidExpected)
+	public void Validation_RequiredLengthOfBinaryData(int lengthOfBinaryData, bool isValidExpected)
 	{
 		var subject = new BDS_BinaryDataStructure();
 		subject.FilterIDCode = "j1p";
@@ -50,7 +50,7 @@ public class BDSTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("u", true)]
-	public void Validatation_RequiredBinaryData(string binaryData, bool isValidExpected)
+	public void Validation_RequiredBinaryData(string binaryData, bool isValidExpected)
 	{
 		var subject = new BDS_BinaryDataStructure();
 		subject.FilterIDCode = "j1p";

@@ -32,7 +32,7 @@ public class CTCTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Ch", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
 	{
 		var subject = new CTC_CarHireTransactionControl();
 		subject.StandardCarrierAlphaCode2 = "iN";
@@ -48,7 +48,7 @@ public class CTCTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("iN", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode2(string standardCarrierAlphaCode2, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode2(string standardCarrierAlphaCode2, bool isValidExpected)
 	{
 		var subject = new CTC_CarHireTransactionControl();
 		subject.StandardCarrierAlphaCode = "Ch";
@@ -64,7 +64,7 @@ public class CTCTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Q", true)]
-	public void Validatation_RequiredCarHireDetailSummaryCode(string carHireDetailSummaryCode, bool isValidExpected)
+	public void Validation_RequiredCarHireDetailSummaryCode(string carHireDetailSummaryCode, bool isValidExpected)
 	{
 		var subject = new CTC_CarHireTransactionControl();
 		subject.StandardCarrierAlphaCode = "Ch";
@@ -80,7 +80,7 @@ public class CTCTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Ui", true)]
-	public void Validatation_RequiredAccountTypeCode(string accountTypeCode, bool isValidExpected)
+	public void Validation_RequiredAccountTypeCode(string accountTypeCode, bool isValidExpected)
 	{
 		var subject = new CTC_CarHireTransactionControl();
 		subject.StandardCarrierAlphaCode = "Ch";
@@ -96,7 +96,7 @@ public class CTCTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("2U", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new CTC_CarHireTransactionControl();
 		subject.StandardCarrierAlphaCode = "Ch";
@@ -112,7 +112,7 @@ public class CTCTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(3785, true)]
-	public void Validatation_RequiredYear(int year, bool isValidExpected)
+	public void Validation_RequiredYear(int year, bool isValidExpected)
 	{
 		var subject = new CTC_CarHireTransactionControl();
 		subject.StandardCarrierAlphaCode = "Ch";
@@ -129,7 +129,7 @@ public class CTCTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("jE", true)]
-	public void Validatation_RequiredMonthOfTheYearCode(string monthOfTheYearCode, bool isValidExpected)
+	public void Validation_RequiredMonthOfTheYearCode(string monthOfTheYearCode, bool isValidExpected)
 	{
 		var subject = new CTC_CarHireTransactionControl();
 		subject.StandardCarrierAlphaCode = "Ch";

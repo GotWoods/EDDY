@@ -47,7 +47,7 @@ public class BVATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("RA", true)]
-	public void Validatation_RequiredPaymentTypeCode(string paymentTypeCode, bool isValidExpected)
+	public void Validation_RequiredPaymentTypeCode(string paymentTypeCode, bool isValidExpected)
 	{
 		var subject = new BVA_BeginningVehicleAdvice();
 		subject.StandardCarrierAlphaCode = "vI";
@@ -63,7 +63,7 @@ public class BVATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("vI", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
 	{
 		var subject = new BVA_BeginningVehicleAdvice();
 		subject.PaymentTypeCode = "RA";
@@ -79,7 +79,7 @@ public class BVATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("l", true)]
-	public void Validatation_RequiredIdentificationCodeQualifier(string identificationCodeQualifier, bool isValidExpected)
+	public void Validation_RequiredIdentificationCodeQualifier(string identificationCodeQualifier, bool isValidExpected)
 	{
 		var subject = new BVA_BeginningVehicleAdvice();
 		subject.PaymentTypeCode = "RA";
@@ -96,7 +96,7 @@ public class BVATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("KL", true)]
-	public void Validatation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
+	public void Validation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
 	{
 		var subject = new BVA_BeginningVehicleAdvice();
 		subject.PaymentTypeCode = "RA";
@@ -112,7 +112,7 @@ public class BVATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("gcrInKSt", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BVA_BeginningVehicleAdvice();
 		subject.PaymentTypeCode = "RA";

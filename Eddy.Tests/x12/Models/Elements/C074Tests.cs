@@ -27,7 +27,7 @@ public class C074Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("l", true)]
-    public void Validatation_RequiredDateTimePeriod(string dateTimePeriod, bool isValidExpected)
+    public void Validation_RequiredDateTimePeriod(string dateTimePeriod, bool isValidExpected)
     {
         var subject = new C074_CompositeDateTimePeriod();
         subject.DateTimePeriod = dateTimePeriod;

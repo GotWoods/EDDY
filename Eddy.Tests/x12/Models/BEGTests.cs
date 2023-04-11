@@ -34,7 +34,7 @@ public class BEGTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("5N", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BEG_BeginningSegmentForPurchaseOrder();
 		subject.PurchaseOrderTypeCode = "nC";
@@ -47,7 +47,7 @@ public class BEGTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("nC", true)]
-	public void Validatation_RequiredPurchaseOrderTypeCode(string purchaseOrderTypeCode, bool isValidExpected)
+	public void Validation_RequiredPurchaseOrderTypeCode(string purchaseOrderTypeCode, bool isValidExpected)
 	{
 		var subject = new BEG_BeginningSegmentForPurchaseOrder();
 		subject.TransactionSetPurposeCode = "5N";
@@ -60,7 +60,7 @@ public class BEGTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("7", true)]
-	public void Validatation_RequiredPurchaseOrderNumber(string purchaseOrderNumber, bool isValidExpected)
+	public void Validation_RequiredPurchaseOrderNumber(string purchaseOrderNumber, bool isValidExpected)
 	{
 		var subject = new BEG_BeginningSegmentForPurchaseOrder();
 		subject.TransactionSetPurposeCode = "5N";
@@ -73,7 +73,7 @@ public class BEGTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("DzIEG8Ug", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BEG_BeginningSegmentForPurchaseOrder();
 		subject.TransactionSetPurposeCode = "5N";

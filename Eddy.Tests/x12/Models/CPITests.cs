@@ -25,7 +25,7 @@ public class CPITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("9Q", true)]
-	public void Validatation_RequiredPaymentHandlingCode(string paymentHandlingCode, bool isValidExpected)
+	public void Validation_RequiredPaymentHandlingCode(string paymentHandlingCode, bool isValidExpected)
 	{
 		var subject = new CPI_ClaimantPaymentInformation();
 		subject.PaymentHandlingCode = paymentHandlingCode;

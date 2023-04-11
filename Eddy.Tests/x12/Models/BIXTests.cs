@@ -33,7 +33,7 @@ public class BIXTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("9C", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BIX_BeginningSegmentForAutomotiveInspection();
 		subject.StandardCarrierAlphaCode = "n7";
@@ -46,7 +46,7 @@ public class BIXTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("n7", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
 	{
 		var subject = new BIX_BeginningSegmentForAutomotiveInspection();
 		subject.TransactionSetPurposeCode = "9C";
@@ -59,7 +59,7 @@ public class BIXTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("EjaklDo7", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BIX_BeginningSegmentForAutomotiveInspection();
 		subject.TransactionSetPurposeCode = "9C";
@@ -72,7 +72,7 @@ public class BIXTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("X", true)]
-	public void Validatation_RequiredInspectionLocationTypeCode(string inspectionLocationTypeCode, bool isValidExpected)
+	public void Validation_RequiredInspectionLocationTypeCode(string inspectionLocationTypeCode, bool isValidExpected)
 	{
 		var subject = new BIX_BeginningSegmentForAutomotiveInspection();
 		subject.TransactionSetPurposeCode = "9C";

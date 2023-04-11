@@ -28,7 +28,7 @@ public class AT3Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("fe16x9B7wbwufNx", true)]
-    public void Validatation_RequiredAmountCharged(string amountCharged, bool isValidExpected)
+    public void Validation_RequiredAmountCharged(string amountCharged, bool isValidExpected)
     {
         var subject = new AT3_BillOfLadingRatesAndCharges();
         subject.AmountCharged = amountCharged;

@@ -32,7 +32,7 @@ public class BOLTests
     [Theory]
     [InlineData("", false)]
     [InlineData("9IwR", true)]
-    public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+    public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
     {
         var subject = new BOL_BeginningSegmentForTheMotorCarrierBillOfLading();
         subject.ShipmentMethodOfPaymentCode = "nv";
@@ -44,7 +44,7 @@ public class BOLTests
     [Theory]
     [InlineData("", false)]
     [InlineData("nv", true)]
-    public void Validatation_RequiredShipmentMethodOfPaymentCode(string shipmentMethodOfPaymentCode, bool isValidExpected)
+    public void Validation_RequiredShipmentMethodOfPaymentCode(string shipmentMethodOfPaymentCode, bool isValidExpected)
     {
         var subject = new BOL_BeginningSegmentForTheMotorCarrierBillOfLading();
         subject.StandardCarrierAlphaCode = "9IwR";
@@ -56,7 +56,7 @@ public class BOLTests
     [Theory]
     [InlineData("", false)]
     [InlineData("cuFL3ClomExWlyMbaghJzNStwtNV9D", true)]
-    public void Validatation_RequiredShipmentIdentificationNumber(string shipmentIdentificationNumber, bool isValidExpected)
+    public void Validation_RequiredShipmentIdentificationNumber(string shipmentIdentificationNumber, bool isValidExpected)
     {
         var subject = new BOL_BeginningSegmentForTheMotorCarrierBillOfLading();
         subject.StandardCarrierAlphaCode = "9IwR";
@@ -68,7 +68,7 @@ public class BOLTests
     [Theory]
     [InlineData("", false)]
     [InlineData("j19jWsm1", true)]
-    public void Validatation_RequiredDate(string date, bool isValidExpected)
+    public void Validation_RequiredDate(string date, bool isValidExpected)
     {
         var subject = new BOL_BeginningSegmentForTheMotorCarrierBillOfLading();
         subject.StandardCarrierAlphaCode = "9IwR";

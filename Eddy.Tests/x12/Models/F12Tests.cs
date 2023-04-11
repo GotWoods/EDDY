@@ -30,7 +30,7 @@ public class F12Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("s", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new F12_BasicClaimInformationAutomotive();
 		subject.ReferenceIdentification2 = "5";
@@ -46,7 +46,7 @@ public class F12Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("5", true)]
-	public void Validatation_RequiredReferenceIdentification2(string referenceIdentification2, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification2(string referenceIdentification2, bool isValidExpected)
 	{
 		var subject = new F12_BasicClaimInformationAutomotive();
 		subject.ReferenceIdentification = "s";
@@ -62,7 +62,7 @@ public class F12Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("JPpMRYAY", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new F12_BasicClaimInformationAutomotive();
 		subject.ReferenceIdentification = "s";
@@ -78,7 +78,7 @@ public class F12Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("4", true)]
-	public void Validatation_RequiredCreditDebitAdjustmentNumber(string creditDebitAdjustmentNumber, bool isValidExpected)
+	public void Validation_RequiredCreditDebitAdjustmentNumber(string creditDebitAdjustmentNumber, bool isValidExpected)
 	{
 		var subject = new F12_BasicClaimInformationAutomotive();
 		subject.ReferenceIdentification = "s";
@@ -94,7 +94,7 @@ public class F12Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("uPLrDzTA", true)]
-	public void Validatation_RequiredDate2(string date2, bool isValidExpected)
+	public void Validation_RequiredDate2(string date2, bool isValidExpected)
 	{
 		var subject = new F12_BasicClaimInformationAutomotive();
 		subject.ReferenceIdentification = "s";
@@ -110,7 +110,7 @@ public class F12Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("iQx", true)]
-	public void Validatation_RequiredLaborRate(string laborRate, bool isValidExpected)
+	public void Validation_RequiredLaborRate(string laborRate, bool isValidExpected)
 	{
 		var subject = new F12_BasicClaimInformationAutomotive();
 		subject.ReferenceIdentification = "s";
@@ -126,7 +126,7 @@ public class F12Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("uSU", true)]
-	public void Validatation_RequiredLaborRate2(string laborRate2, bool isValidExpected)
+	public void Validation_RequiredLaborRate2(string laborRate2, bool isValidExpected)
 	{
 		var subject = new F12_BasicClaimInformationAutomotive();
 		subject.ReferenceIdentification = "s";

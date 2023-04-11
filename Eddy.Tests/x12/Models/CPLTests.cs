@@ -34,7 +34,7 @@ public class CPLTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("72", true)]
-	public void Validatation_RequiredProgramTypeCode(string programTypeCode, bool isValidExpected)
+	public void Validation_RequiredProgramTypeCode(string programTypeCode, bool isValidExpected)
 	{
 		var subject = new CPL_ProgramInformation();
 		subject.Description = "a";
@@ -46,7 +46,7 @@ public class CPLTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("a", true)]
-	public void Validatation_RequiredDescription(string description, bool isValidExpected)
+	public void Validation_RequiredDescription(string description, bool isValidExpected)
 	{
 		var subject = new CPL_ProgramInformation();
 		subject.ProgramTypeCode = "72";
@@ -58,7 +58,7 @@ public class CPLTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("v", true)]
-	public void Validatation_RequiredActionCode(string actionCode, bool isValidExpected)
+	public void Validation_RequiredActionCode(string actionCode, bool isValidExpected)
 	{
 		var subject = new CPL_ProgramInformation();
 		subject.ProgramTypeCode = "72";

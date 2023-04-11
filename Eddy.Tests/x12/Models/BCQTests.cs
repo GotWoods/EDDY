@@ -29,7 +29,7 @@ public class BCQTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("lo", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BCQ_BeginningSegmentForShippersCarOrder();
 		subject.Date = "KafjARHj";
@@ -41,7 +41,7 @@ public class BCQTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("KafjARHj", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BCQ_BeginningSegmentForShippersCarOrder();
 		subject.TransactionSetPurposeCode = "lo";
@@ -53,7 +53,7 @@ public class BCQTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("0b0B", true)]
-	public void Validatation_RequiredTime(string time, bool isValidExpected)
+	public void Validation_RequiredTime(string time, bool isValidExpected)
 	{
 		var subject = new BCQ_BeginningSegmentForShippersCarOrder();
 		subject.TransactionSetPurposeCode = "lo";

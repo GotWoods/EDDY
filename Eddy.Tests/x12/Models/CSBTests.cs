@@ -24,7 +24,7 @@ public class CSBTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("d4", true)]
-	public void Validatation_RequiredCryptographicServiceMessageCSMFieldTagCode(string cryptographicServiceMessageCSMFieldTagCode, bool isValidExpected)
+	public void Validation_RequiredCryptographicServiceMessageCSMFieldTagCode(string cryptographicServiceMessageCSMFieldTagCode, bool isValidExpected)
 	{
 		var subject = new CSB_CryptographicServiceMessageBody();
 		subject.CryptographicServiceMessageCSMFieldTagCode = cryptographicServiceMessageCSMFieldTagCode;

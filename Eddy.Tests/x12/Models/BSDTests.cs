@@ -31,7 +31,7 @@ public class BSDTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("GH", true)]
-	public void Validatation_RequiredReferenceIdentificationQualifier(string referenceIdentificationQualifier, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentificationQualifier(string referenceIdentificationQualifier, bool isValidExpected)
 	{
 		var subject = new BSD_BreakdownStructureDescription();
 		subject.ReferenceIdentificationQualifier = referenceIdentificationQualifier;

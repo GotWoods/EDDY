@@ -28,7 +28,7 @@ public class C2Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("v", true)]
-    public void Validatation_RequiredBankClientCode(string bankClientCode, bool isValidExpected)
+    public void Validation_RequiredBankClientCode(string bankClientCode, bool isValidExpected)
     {
         var subject = new C2_BankID();
         subject.IdentificationCode = "12";
@@ -40,7 +40,7 @@ public class C2Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("v1", true)]
-    public void Validatation_RequiredIdentificationCodeQualifier(string identificationCodeQualifier, bool isValidExpected)
+    public void Validation_RequiredIdentificationCodeQualifier(string identificationCodeQualifier, bool isValidExpected)
     {
         var subject = new C2_BankID();
         subject.IdentificationCode = "12";
@@ -52,7 +52,7 @@ public class C2Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("v1", true)]
-    public void Validatation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
+    public void Validation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
     {
         var subject = new C2_BankID();
         subject.IdentificationCodeQualifier = "A";

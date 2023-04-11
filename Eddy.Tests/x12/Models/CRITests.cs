@@ -33,7 +33,7 @@ public class CRITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("e", true)]
-	public void Validatation_RequiredClaimFilingIndicatorCode(string claimFilingIndicatorCode, bool isValidExpected)
+	public void Validation_RequiredClaimFilingIndicatorCode(string claimFilingIndicatorCode, bool isValidExpected)
 	{
 		var subject = new CRI_ClaimReportInformation();
 		subject.ClaimFilingIndicatorCode = claimFilingIndicatorCode;

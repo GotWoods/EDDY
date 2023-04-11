@@ -31,7 +31,7 @@ public class BGNTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("dD", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BGN_BeginningSegment();
 		subject.ReferenceIdentification = "J";
@@ -43,7 +43,7 @@ public class BGNTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("J", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new BGN_BeginningSegment();
 		subject.TransactionSetPurposeCode = "dD";
@@ -55,7 +55,7 @@ public class BGNTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("3H87R2zZ", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BGN_BeginningSegment();
 		subject.TransactionSetPurposeCode = "dD";

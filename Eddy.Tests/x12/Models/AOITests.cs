@@ -35,7 +35,7 @@ public class AOITests
     [Theory]
     [InlineData("", false)]
     [InlineData("a", true)]
-    public void Validatation_RequiredYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, bool isValidExpected)
+    public void Validation_RequiredYesNoConditionOrResponseCode(string yesNoConditionOrResponseCode, bool isValidExpected)
     {
         var subject = new AOI_AnimalOffspringFetusIdentification();
         subject.ReferenceIdentification = "p";
@@ -47,7 +47,7 @@ public class AOITests
     [Theory]
     [InlineData("", false)]
     [InlineData("p", true)]
-    public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+    public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
     {
         var subject = new AOI_AnimalOffspringFetusIdentification();
         subject.YesNoConditionOrResponseCode = "a";
@@ -59,7 +59,7 @@ public class AOITests
     [Theory]
     [InlineData("", false)]
     [InlineData("u", true)]
-    public void Validatation_RequiredGenderCode(string genderCode, bool isValidExpected)
+    public void Validation_RequiredGenderCode(string genderCode, bool isValidExpected)
     {
         var subject = new AOI_AnimalOffspringFetusIdentification();
         subject.YesNoConditionOrResponseCode = "a";

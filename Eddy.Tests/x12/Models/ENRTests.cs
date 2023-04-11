@@ -42,7 +42,7 @@ public class ENRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("31Y", true)]
-	public void Validatation_RequiredStatusReasonCode(string statusReasonCode, bool isValidExpected)
+	public void Validation_RequiredStatusReasonCode(string statusReasonCode, bool isValidExpected)
 	{
 		var subject = new ENR_SchoolEnrollmentInformation();
 		subject.StatusReasonCode = statusReasonCode;

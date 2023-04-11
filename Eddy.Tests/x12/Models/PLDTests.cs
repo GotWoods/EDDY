@@ -25,7 +25,7 @@ public class PLDTests
     [Theory]
     [InlineData(0, false)]
     [InlineData(1, true)]
-    public void Validatation_RequiredQuantityOfPalletsShipped(int quantityOfPalletsShipped, bool isValidExpected)
+    public void Validation_RequiredQuantityOfPalletsShipped(int quantityOfPalletsShipped, bool isValidExpected)
     {
         var subject = new PLD_PalletShipmentInformation();
         if (quantityOfPalletsShipped > 0)

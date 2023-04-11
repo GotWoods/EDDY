@@ -24,7 +24,7 @@ public class AK1Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("sc", true)]
-    public void Validatation_RequiredFunctionalIdentifierCode(string functionalIdentifierCode, bool isValidExpected)
+    public void Validation_RequiredFunctionalIdentifierCode(string functionalIdentifierCode, bool isValidExpected)
     {
         var subject = new AK1_FunctionalGroupResponseHeader();
         subject.GroupControlNumber = 1;
@@ -34,7 +34,7 @@ public class AK1Tests
     [Theory]
     [InlineData(0, false)]
     [InlineData(1, true)]
-    public void Validatation_RequiredGroupControlNumber(int groupControlNumber, bool isValidExpected)
+    public void Validation_RequiredGroupControlNumber(int groupControlNumber, bool isValidExpected)
     {
         var subject = new AK1_FunctionalGroupResponseHeader();
         subject.FunctionalIdentifierCode = "sc";

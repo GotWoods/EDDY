@@ -27,7 +27,7 @@ public class C046Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("B3", true)]
-    public void Validatation_RequiredRateValueQualifier(string rateValueQualifier, bool isValidExpected)
+    public void Validation_RequiredRateValueQualifier(string rateValueQualifier, bool isValidExpected)
     {
         var subject = new C046_CompositeQualifierIdentifier();
         subject.RateValueQualifier = rateValueQualifier;

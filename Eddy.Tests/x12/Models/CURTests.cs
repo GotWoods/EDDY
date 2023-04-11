@@ -44,7 +44,7 @@
 // 	[Theory]
 // 	[InlineData("", false)]
 // 	[InlineData("kg", true)]
-// 	public void Validatation_RequiredEntityIdentifierCode(string entityIdentifierCode, bool isValidExpected)
+// 	public void Validation_RequiredEntityIdentifierCode(string entityIdentifierCode, bool isValidExpected)
 // 	{
 // 		var subject = new CUR_Currency();
 // 		subject.CurrencyCode = "yzQ";
@@ -55,7 +55,7 @@
 // 	[Theory]
 // 	[InlineData("", false)]
 // 	[InlineData("yzQ", true)]
-// 	public void Validatation_RequiredCurrencyCode(string currencyCode, bool isValidExpected)
+// 	public void Validation_RequiredCurrencyCode(string currencyCode, bool isValidExpected)
 // 	{
 // 		var subject = new CUR_Currency();
 // 		subject.EntityIdentifierCode = "kg";

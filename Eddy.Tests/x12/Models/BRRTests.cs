@@ -28,7 +28,7 @@ public class BRRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("eT", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new BRR_BeginningSegmentForRailroadMarkRegisterUpdateActivity();
 		subject.StandardCarrierAlphaCode = "d9";
@@ -40,7 +40,7 @@ public class BRRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("d9", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
 	{
 		var subject = new BRR_BeginningSegmentForRailroadMarkRegisterUpdateActivity();
 		subject.TransactionSetPurposeCode = "eT";
@@ -52,7 +52,7 @@ public class BRRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("kg", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode2(string standardCarrierAlphaCode2, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode2(string standardCarrierAlphaCode2, bool isValidExpected)
 	{
 		var subject = new BRR_BeginningSegmentForRailroadMarkRegisterUpdateActivity();
 		subject.TransactionSetPurposeCode = "eT";

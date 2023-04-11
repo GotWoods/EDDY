@@ -31,7 +31,7 @@ public class BSITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("A", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new BSI_BeginningSegmentForOrderStatusInquiry();
 		subject.Date = "f9Sk79vI";
@@ -43,7 +43,7 @@ public class BSITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("f9Sk79vI", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new BSI_BeginningSegmentForOrderStatusInquiry();
 		subject.ReferenceIdentification = "A";
@@ -55,7 +55,7 @@ public class BSITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("q", true)]
-	public void Validatation_RequiredOrderItemCode(string orderItemCode, bool isValidExpected)
+	public void Validation_RequiredOrderItemCode(string orderItemCode, bool isValidExpected)
 	{
 		var subject = new BSI_BeginningSegmentForOrderStatusInquiry();
 		subject.ReferenceIdentification = "A";

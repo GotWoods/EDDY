@@ -30,7 +30,7 @@ public class H1Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("1234", true)]
-    public void Validatation_RequiredHazardousMaterialCode(string hazardousMaterialCode, bool isValidExpected)
+    public void Validation_RequiredHazardousMaterialCode(string hazardousMaterialCode, bool isValidExpected)
     {
         var subject = new H1_HazardousMaterial();
         subject.HazardousMaterialCode = hazardousMaterialCode;

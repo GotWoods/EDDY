@@ -23,7 +23,7 @@ public class SETests
     [Theory]
     [InlineData(0, false)]
     [InlineData(1, true)]
-    public void Validatation_RequiredNumberOfIncludedSegments(int numberOfIncludedSegments, bool isValidExpected)
+    public void Validation_RequiredNumberOfIncludedSegments(int numberOfIncludedSegments, bool isValidExpected)
     {
         var subject = new SE_TransactionSetTrailer();
         subject.TransactionSetControlNumber = "1234";
@@ -34,7 +34,7 @@ public class SETests
     [Theory]
     [InlineData("", false)]
     [InlineData("1234", true)]
-    public void Validatation_RequiredTransactionSetControlNumber(string transactionSetControlNumber, bool isValidExpected)
+    public void Validation_RequiredTransactionSetControlNumber(string transactionSetControlNumber, bool isValidExpected)
     {
         var subject = new SE_TransactionSetTrailer();
         subject.NumberOfIncludedSegments = 1;

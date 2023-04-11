@@ -28,7 +28,7 @@ public class C040Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("Pc", true)]
-    public void Validatation_RequiredReferenceIdentificationQualifier(string referenceIdentificationQualifier, bool isValidExpected)
+    public void Validation_RequiredReferenceIdentificationQualifier(string referenceIdentificationQualifier, bool isValidExpected)
     {
         var subject = new C040_ReferenceIdentifier();
         subject.ReferenceIdentification = "e";
@@ -39,7 +39,7 @@ public class C040Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("e", true)]
-    public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+    public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
     {
         var subject = new C040_ReferenceIdentifier();
         subject.ReferenceIdentificationQualifier = "Pc";

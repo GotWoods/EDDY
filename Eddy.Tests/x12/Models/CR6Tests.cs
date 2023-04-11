@@ -43,7 +43,7 @@ public class CR6Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("s", true)]
-	public void Validatation_RequiredPrognosisCode(string prognosisCode, bool isValidExpected)
+	public void Validation_RequiredPrognosisCode(string prognosisCode, bool isValidExpected)
 	{
 		var subject = new CR6_HomeHealthCareCertification();
 		subject.Date = "A8yDP4dW";
@@ -54,7 +54,7 @@ public class CR6Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("A8yDP4dW", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new CR6_HomeHealthCareCertification();
 		subject.PrognosisCode = "s";

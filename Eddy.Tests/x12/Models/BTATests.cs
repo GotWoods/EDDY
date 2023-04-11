@@ -26,7 +26,7 @@ public class BTATests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Up", true)]
-	public void Validatation_RequiredAcknowledgmentTypeCode(string acknowledgmentTypeCode, bool isValidExpected)
+	public void Validation_RequiredAcknowledgmentTypeCode(string acknowledgmentTypeCode, bool isValidExpected)
 	{
 		var subject = new BTA_BeginningTaxAcknowledgment();
 		subject.AcknowledgmentTypeCode = acknowledgmentTypeCode;

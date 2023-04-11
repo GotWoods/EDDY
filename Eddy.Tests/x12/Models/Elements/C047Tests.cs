@@ -27,7 +27,7 @@ public class C047Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("5e", true)]
-    public void Validatation_RequiredTypeOfRealEstateAssetCode(string typeOfRealEstateAssetCode, bool isValidExpected)
+    public void Validation_RequiredTypeOfRealEstateAssetCode(string typeOfRealEstateAssetCode, bool isValidExpected)
     {
         var subject = new C047_CompositeTypeOfRealEstateAssetCode();
         subject.TypeOfRealEstateAssetCode = typeOfRealEstateAssetCode;

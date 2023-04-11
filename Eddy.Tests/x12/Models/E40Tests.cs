@@ -26,7 +26,7 @@ public class E40Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("E", true)]
-	public void Validatation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
+	public void Validation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
 	{
 		var subject = new E40_EDIStandardsNoteReference();
 		subject.NoteIdentificationNumber = 8;
@@ -38,7 +38,7 @@ public class E40Tests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(8, true)]
-	public void Validatation_RequiredNoteIdentificationNumber(int noteIdentificationNumber, bool isValidExpected)
+	public void Validation_RequiredNoteIdentificationNumber(int noteIdentificationNumber, bool isValidExpected)
 	{
 		var subject = new E40_EDIStandardsNoteReference();
 		subject.MaintenanceOperationCode = "E";
@@ -51,7 +51,7 @@ public class E40Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("9Vy", true)]
-	public void Validatation_RequiredElectronicFormNoteReferenceCode(string electronicFormNoteReferenceCode, bool isValidExpected)
+	public void Validation_RequiredElectronicFormNoteReferenceCode(string electronicFormNoteReferenceCode, bool isValidExpected)
 	{
 		var subject = new E40_EDIStandardsNoteReference();
 		subject.MaintenanceOperationCode = "E";

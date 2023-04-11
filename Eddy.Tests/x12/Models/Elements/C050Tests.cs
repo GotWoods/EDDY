@@ -34,7 +34,7 @@ public class C050Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("0X", true)]
-    public void Validatation_RequiredLookUpValueProtocolCode(string lookUpValueProtocolCode, bool isValidExpected)
+    public void Validation_RequiredLookUpValueProtocolCode(string lookUpValueProtocolCode, bool isValidExpected)
     {
         var subject = new C050_CertificateLookUpInformation();
         subject.FilterIDCode = "aJp";
@@ -47,7 +47,7 @@ public class C050Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("aJp", true)]
-    public void Validatation_RequiredFilterIDCode(string filterIDCode, bool isValidExpected)
+    public void Validation_RequiredFilterIDCode(string filterIDCode, bool isValidExpected)
     {
         var subject = new C050_CertificateLookUpInformation();
         subject.LookUpValueProtocolCode = "0X";
@@ -60,7 +60,7 @@ public class C050Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("d", true)]
-    public void Validatation_RequiredVersionIdentifier(string versionIdentifier, bool isValidExpected)
+    public void Validation_RequiredVersionIdentifier(string versionIdentifier, bool isValidExpected)
     {
         var subject = new C050_CertificateLookUpInformation();
         subject.LookUpValueProtocolCode = "0X";
@@ -73,7 +73,7 @@ public class C050Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("f", true)]
-    public void Validatation_RequiredLookUpValue(string lookUpValue, bool isValidExpected)
+    public void Validation_RequiredLookUpValue(string lookUpValue, bool isValidExpected)
     {
         var subject = new C050_CertificateLookUpInformation();
         subject.LookUpValueProtocolCode = "0X";

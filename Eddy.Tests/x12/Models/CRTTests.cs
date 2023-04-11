@@ -35,7 +35,7 @@ public class CRTTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Hx", true)]
-	public void Validatation_RequiredReportTypeCode(string reportTypeCode, bool isValidExpected)
+	public void Validation_RequiredReportTypeCode(string reportTypeCode, bool isValidExpected)
 	{
 		var subject = new CRT_ContractorReportType();
 		subject.ReportTypeCode = reportTypeCode;

@@ -32,7 +32,7 @@ public class S5Tests
     [Theory]
     [InlineData(0, false)]
     [InlineData(1, true)]
-    public void Validatation_RequiredStopSequenceNumber(int stopSequenceNumber, bool isValidExpected)
+    public void Validation_RequiredStopSequenceNumber(int stopSequenceNumber, bool isValidExpected)
     {
         var subject = new S5_StopOffDetails();
         subject.StopReasonCode = "12";
@@ -43,7 +43,7 @@ public class S5Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("v1", true)]
-    public void Validatation_RequiredStopReasonCode(string stopReasonCode, bool isValidExpected)
+    public void Validation_RequiredStopReasonCode(string stopReasonCode, bool isValidExpected)
     {
         var subject = new S5_StopOffDetails();
         subject.StopSequenceNumber = 1;

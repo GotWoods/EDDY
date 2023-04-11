@@ -27,7 +27,7 @@ public class DEGTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("WlX", true)]
-	public void Validatation_RequiredAcademicDegreeCode(string academicDegreeCode, bool isValidExpected)
+	public void Validation_RequiredAcademicDegreeCode(string academicDegreeCode, bool isValidExpected)
 	{
 		var subject = new DEG_DegreeRecord();
 		subject.AcademicDegreeCode = academicDegreeCode;

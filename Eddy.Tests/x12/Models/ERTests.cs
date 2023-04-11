@@ -34,7 +34,7 @@ public class ERTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("U", true)]
-	public void Validatation_RequiredActionCode(string actionCode, bool isValidExpected)
+	public void Validation_RequiredActionCode(string actionCode, bool isValidExpected)
 	{
 		var subject = new ER_RailEventReporting();
 		subject.StandardCarrierAlphaCode = "JK";
@@ -50,7 +50,7 @@ public class ERTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("JK", true)]
-	public void Validatation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
+	public void Validation_RequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, bool isValidExpected)
 	{
 		var subject = new ER_RailEventReporting();
 		subject.ActionCode = "U";
@@ -66,7 +66,7 @@ public class ERTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Lbm", true)]
-	public void Validatation_RequiredEventCode(string eventCode, bool isValidExpected)
+	public void Validation_RequiredEventCode(string eventCode, bool isValidExpected)
 	{
 		var subject = new ER_RailEventReporting();
 		subject.ActionCode = "U";
@@ -82,7 +82,7 @@ public class ERTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("m6YC0M", true)]
-	public void Validatation_RequiredStandardPointLocationCode(string standardPointLocationCode, bool isValidExpected)
+	public void Validation_RequiredStandardPointLocationCode(string standardPointLocationCode, bool isValidExpected)
 	{
 		var subject = new ER_RailEventReporting();
 		subject.ActionCode = "U";
@@ -98,7 +98,7 @@ public class ERTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("PiP", true)]
-	public void Validatation_RequiredDateTimeQualifier(string dateTimeQualifier, bool isValidExpected)
+	public void Validation_RequiredDateTimeQualifier(string dateTimeQualifier, bool isValidExpected)
 	{
 		var subject = new ER_RailEventReporting();
 		subject.ActionCode = "U";
@@ -114,7 +114,7 @@ public class ERTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Ww", true)]
-	public void Validatation_RequiredDateTimePeriodFormatQualifier(string dateTimePeriodFormatQualifier, bool isValidExpected)
+	public void Validation_RequiredDateTimePeriodFormatQualifier(string dateTimePeriodFormatQualifier, bool isValidExpected)
 	{
 		var subject = new ER_RailEventReporting();
 		subject.ActionCode = "U";
@@ -130,7 +130,7 @@ public class ERTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("a", true)]
-	public void Validatation_RequiredDateTimePeriod(string dateTimePeriod, bool isValidExpected)
+	public void Validation_RequiredDateTimePeriod(string dateTimePeriod, bool isValidExpected)
 	{
 		var subject = new ER_RailEventReporting();
 		subject.ActionCode = "U";

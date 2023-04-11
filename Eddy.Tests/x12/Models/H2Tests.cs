@@ -23,7 +23,7 @@ public class H2Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("v1", true)]
-    public void Validatation_RequiredHazardousMaterialDescription(string hazardousMaterialDescription, bool isValidExpected)
+    public void Validation_RequiredHazardousMaterialDescription(string hazardousMaterialDescription, bool isValidExpected)
     {
         var subject = new H2_AdditionalHazardousMaterialDescription();
         subject.HazardousMaterialDescription = hazardousMaterialDescription;

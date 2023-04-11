@@ -30,7 +30,7 @@ public class AXLTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("3G", true)]
-	public void Validatation_RequiredProductServiceIDQualifier(string productServiceIDQualifier, bool isValidExpected)
+	public void Validation_RequiredProductServiceIDQualifier(string productServiceIDQualifier, bool isValidExpected)
 	{
 		var subject = new AXL_VehicleAxleMeasurements();
 		subject.ProductServiceID = "E";
@@ -41,7 +41,7 @@ public class AXLTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("E", true)]
-	public void Validatation_RequiredProductServiceID(string productServiceID, bool isValidExpected)
+	public void Validation_RequiredProductServiceID(string productServiceID, bool isValidExpected)
 	{
 		var subject = new AXL_VehicleAxleMeasurements();
 		subject.ProductServiceIDQualifier = "3G";

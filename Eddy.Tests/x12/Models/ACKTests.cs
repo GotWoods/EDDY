@@ -51,7 +51,7 @@ public class ACKTests
     [Theory]
     [InlineData("", false)]
     [InlineData("RH", true)]
-    public void Validatation_RequiredLineItemStatusCode(string lineItemStatusCode, bool isValidExpected)
+    public void Validation_RequiredLineItemStatusCode(string lineItemStatusCode, bool isValidExpected)
     {
         var subject = new ACK_LineItemAcknowledgment();
         subject.LineItemStatusCode = lineItemStatusCode;

@@ -27,7 +27,7 @@ public class CPRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Pb7", true)]
-	public void Validatation_RequiredMarketExchangeIdentifierCode(string marketExchangeIdentifierCode, bool isValidExpected)
+	public void Validation_RequiredMarketExchangeIdentifierCode(string marketExchangeIdentifierCode, bool isValidExpected)
 	{
 		var subject = new CPR_CommodityPriceReference();
 		subject.Date = "RNvfuO5T";
@@ -40,7 +40,7 @@ public class CPRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("RNvfuO5T", true)]
-	public void Validatation_RequiredDate(string date, bool isValidExpected)
+	public void Validation_RequiredDate(string date, bool isValidExpected)
 	{
 		var subject = new CPR_CommodityPriceReference();
 		subject.MarketExchangeIdentifierCode = "Pb7";
@@ -53,7 +53,7 @@ public class CPRTests
 	[Theory]
 	[InlineData(0, false)]
 	[InlineData(6, true)]
-	public void Validatation_RequiredUnitPrice(decimal unitPrice, bool isValidExpected)
+	public void Validation_RequiredUnitPrice(decimal unitPrice, bool isValidExpected)
 	{
 		var subject = new CPR_CommodityPriceReference();
 		subject.MarketExchangeIdentifierCode = "Pb7";
@@ -67,7 +67,7 @@ public class CPRTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("uY", true)]
-	public void Validatation_RequiredCommodityIdentificationCode(string commodityIdentificationCode, bool isValidExpected)
+	public void Validation_RequiredCommodityIdentificationCode(string commodityIdentificationCode, bool isValidExpected)
 	{
 		var subject = new CPR_CommodityPriceReference();
 		subject.MarketExchangeIdentifierCode = "Pb7";

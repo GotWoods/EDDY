@@ -30,7 +30,7 @@ public class F6XTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("R", true)]
-	public void Validatation_RequiredVehicleIdentificationNumber(string vehicleIdentificationNumber, bool isValidExpected)
+	public void Validation_RequiredVehicleIdentificationNumber(string vehicleIdentificationNumber, bool isValidExpected)
 	{
 		var subject = new F6X_IdentificationAutomotive();
 		subject.AutomotiveManufacturersCode = "SF";
@@ -45,7 +45,7 @@ public class F6XTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("SF", true)]
-	public void Validatation_RequiredAutomotiveManufacturersCode(string automotiveManufacturersCode, bool isValidExpected)
+	public void Validation_RequiredAutomotiveManufacturersCode(string automotiveManufacturersCode, bool isValidExpected)
 	{
 		var subject = new F6X_IdentificationAutomotive();
 		subject.VehicleIdentificationNumber = "R";
@@ -60,7 +60,7 @@ public class F6XTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("cD", true)]
-	public void Validatation_RequiredDealerCode(string dealerCode, bool isValidExpected)
+	public void Validation_RequiredDealerCode(string dealerCode, bool isValidExpected)
 	{
 		var subject = new F6X_IdentificationAutomotive();
 		subject.VehicleIdentificationNumber = "R";
@@ -75,7 +75,7 @@ public class F6XTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("R", true)]
-	public void Validatation_RequiredIdentificationCodeQualifier(string identificationCodeQualifier, bool isValidExpected)
+	public void Validation_RequiredIdentificationCodeQualifier(string identificationCodeQualifier, bool isValidExpected)
 	{
 		var subject = new F6X_IdentificationAutomotive();
 		subject.VehicleIdentificationNumber = "R";
@@ -90,7 +90,7 @@ public class F6XTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("Zl", true)]
-	public void Validatation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
+	public void Validation_RequiredIdentificationCode(string identificationCode, bool isValidExpected)
 	{
 		var subject = new F6X_IdentificationAutomotive();
 		subject.VehicleIdentificationNumber = "R";
@@ -105,7 +105,7 @@ public class F6XTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("p", true)]
-	public void Validatation_RequiredInvoiceNumber(string invoiceNumber, bool isValidExpected)
+	public void Validation_RequiredInvoiceNumber(string invoiceNumber, bool isValidExpected)
 	{
 		var subject = new F6X_IdentificationAutomotive();
 		subject.VehicleIdentificationNumber = "R";

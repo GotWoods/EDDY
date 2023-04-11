@@ -25,7 +25,7 @@ public class C035Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("b", true)]
-    public void Validatation_RequiredProviderSpecialtyCode(string providerSpecialtyCode, bool isValidExpected)
+    public void Validation_RequiredProviderSpecialtyCode(string providerSpecialtyCode, bool isValidExpected)
     {
         var subject = new C035_ProviderSpecialtyInformation();
         subject.ProviderSpecialtyCode = providerSpecialtyCode;

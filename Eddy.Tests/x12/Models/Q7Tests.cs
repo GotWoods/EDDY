@@ -24,7 +24,7 @@ public class Q7Tests
     [Theory]
     [InlineData("", false)]
     [InlineData("a", true)]
-    public void Validatation_RequiredLadingExceptionCode(string ladingExceptionCode, bool isValidExpected)
+    public void Validation_RequiredLadingExceptionCode(string ladingExceptionCode, bool isValidExpected)
     {
         var subject = new Q7_LadingExceptionStatus();
         subject.LadingExceptionCode = ladingExceptionCode;

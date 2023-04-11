@@ -30,7 +30,7 @@ public class PERTests
     [Theory]
     [InlineData("", false)]
     [InlineData("u4", true)]
-    public void Validatation_RequiredContactFunctionCode(string contactFunctionCode, bool isValidExpected)
+    public void Validation_RequiredContactFunctionCode(string contactFunctionCode, bool isValidExpected)
     {
         var subject = new PER_AdministrativeCommunicationsContact();
         subject.ContactFunctionCode = contactFunctionCode;

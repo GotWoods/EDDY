@@ -26,7 +26,7 @@ public class CSFTests
     [Theory]
     [InlineData("", false)]
     [InlineData("AA", true)]
-    public void Validatation_RequiredCompositeUnitOfMeasure(string compositeUnitOfMeasure, bool isValidExpected)
+    public void Validation_RequiredCompositeUnitOfMeasure(string compositeUnitOfMeasure, bool isValidExpected)
     {
         var subject = new CSF_ConditionalSamplingFrequency();
         if (compositeUnitOfMeasure != "")

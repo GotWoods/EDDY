@@ -25,7 +25,7 @@ public class DAITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("p", true)]
-	public void Validatation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
+	public void Validation_RequiredMaintenanceOperationCode(string maintenanceOperationCode, bool isValidExpected)
 	{
 		var subject = new DAI_AppendixInformation();
 		subject.CodeListReference = "5";
@@ -36,7 +36,7 @@ public class DAITests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("5", true)]
-	public void Validatation_RequiredCodeListReference(string codeListReference, bool isValidExpected)
+	public void Validation_RequiredCodeListReference(string codeListReference, bool isValidExpected)
 	{
 		var subject = new DAI_AppendixInformation();
 		subject.MaintenanceOperationCode = "p";

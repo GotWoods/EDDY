@@ -25,7 +25,7 @@ public class B9Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("w", true)]
-	public void Validatation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
+	public void Validation_RequiredReferenceIdentification(string referenceIdentification, bool isValidExpected)
 	{
 		var subject = new B9_BeginningSegmentForLogisticsServices();
 		subject.TransactionSetPurposeCode = "8z";
@@ -36,7 +36,7 @@ public class B9Tests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("8z", true)]
-	public void Validatation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
+	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
 		var subject = new B9_BeginningSegmentForLogisticsServices();
 		subject.ReferenceIdentification = "w";

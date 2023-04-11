@@ -37,7 +37,7 @@ public class SACTests
 	[Theory]
 	[InlineData("", false)]
 	[InlineData("R", true)]
-	public void Validatation_RequiredAllowanceOrChargeIndicatorCode(string allowanceOrChargeIndicatorCode, bool isValidExpected)
+	public void Validation_RequiredAllowanceOrChargeIndicatorCode(string allowanceOrChargeIndicatorCode, bool isValidExpected)
 	{
 		var subject = new SAC_ServicePromotionAllowanceOrChargeInformation();
 		subject.AllowanceOrChargeIndicatorCode = allowanceOrChargeIndicatorCode;
