@@ -1,4 +1,4 @@
-//TODO: this test is very broken
+//TODO: ISA Test
 // using Eddy.Core.Validation;
 // using Eddy.x12.Mapping;
 // using Eddy.x12.Models;
@@ -10,26 +10,26 @@
 // 	[Fact]
 // 	public void Parse_ShouldReturnCorrectObject()
 // 	{
-// 		string x12Line = "ISA*Eh*8v43WscGFL*ME*aoGHErYyRl*YZ*vCZNLpX7qHcpFDm*2g*XIB3hZ2l7dsNdLp*MgxeJZ*oxhz*4*8RDGT*391922432*d*s*J";
+// 		string x12Line = "ISA*qd*J4jx3oksba*8M*dPRh7QvjnU*qa*VGBELASo4iTXIXD*co*1cvjcsVoCyYS7wc*8cmqOU*aaQF*l*KvNT1*182646812*E*o*k";
 //
 // 		var expected = new ISA_InterchangeControlHeader()
 // 		{
-// 			AuthorizationInformationQualifier = "Eh",
-// 			AuthorizationInformation = "8v43WscGFL",
-// 			SecurityInformationQualifier = "ME",
-// 			SecurityInformation = "aoGHErYyRl",
-// 			InterchangeIDQualifier = "YZ",
-// 			InterchangeSenderID = "vCZNLpX7qHcpFDm",
-// 			InterchangeIDQualifier2 = "2g",
-// 			InterchangeReceiverID = "XIB3hZ2l7dsNdLp",
-// 			InterchangeDate = "MgxeJZ",
-// 			InterchangeTime = "oxhz",
-// 			RepetitionSeparator = "4",
-// 			InterchangeControlVersionNumberCode = "8RDGT",
-// 			InterchangeControlNumber = 391922432,
-// 			AcknowledgmentRequestedCode = "d",
-// 			InterchangeUsageIndicatorCode = "s",
-// 			ComponentElementSeparator = "J",
+// 			AuthorizationInformationQualifier = "qd",
+// 			AuthorizationInformation = "J4jx3oksba",
+// 			SecurityInformationQualifier = "8M",
+// 			SecurityInformation = "dPRh7QvjnU",
+// 			InterchangeIDQualifier = "qa",
+// 			InterchangeSenderID = "VGBELASo4iTXIXD",
+// 			InterchangeIDQualifier2 = "co",
+// 			InterchangeReceiverID = "1cvjcsVoCyYS7wc",
+// 			InterchangeDate = "8cmqOU",
+// 			InterchangeTime = "aaQF",
+// 			RepetitionSeparator = "l",
+// 			InterchangeControlVersionNumberCode = "KvNT1",
+// 			InterchangeControlNumber = 182646812,
+// 			AcknowledgmentRequestedCode = "E",
+// 			InterchangeUsageIndicatorCode = "o",
+// 			ComponentElementSeparator = "k",
 // 		};
 //
 // 		var actual = Map.MapObject<ISA_InterchangeControlHeader>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
@@ -38,325 +38,325 @@
 //
 // 	[Theory]
 // 	[InlineData("", false)]
-// 	[InlineData("Eh", true)]
+// 	[InlineData("qd", true)]
 // 	public void Validation_RequiredAuthorizationInformationQualifier(string authorizationInformationQualifier, bool isValidExpected)
 // 	{
 // 		var subject = new ISA_InterchangeControlHeader();
-// 		subject.AuthorizationInformation = "8v43WscGFL";
-// 		subject.SecurityInformationQualifier = "ME";
-// 		subject.SecurityInformation = "aoGHErYyRl";
-// 		subject.InterchangeIDQualifier = "YZ";
-// 		subject.InterchangeSenderID = "vCZNLpX7qHcpFDm";
-// 		subject.InterchangeIDQualifier2 = "2g";
-// 		subject.InterchangeReceiverID = "XIB3hZ2l7dsNdLp";
-// 		subject.InterchangeDate = "MgxeJZ";
-// 		subject.InterchangeTime = "oxhz";
-// 		subject.RepetitionSeparator = "4";
-// 		subject.InterchangeControlVersionNumberCode = "8RDGT";
-// 		subject.InterchangeControlNumber = 391922432;
-// 		subject.AcknowledgmentRequestedCode = "d";
-// 		subject.InterchangeUsageIndicatorCode = "s";
-// 		subject.ComponentElementSeparator = "J";
+// 		subject.AuthorizationInformation = "J4jx3oksba";
+// 		subject.SecurityInformationQualifier = "8M";
+// 		subject.SecurityInformation = "dPRh7QvjnU";
+// 		subject.InterchangeIDQualifier = "qa";
+// 		subject.InterchangeSenderID = "VGBELASo4iTXIXD";
+// 		subject.InterchangeIDQualifier2 = "co";
+// 		subject.InterchangeReceiverID = "1cvjcsVoCyYS7wc";
+// 		subject.InterchangeDate = "8cmqOU";
+// 		subject.InterchangeTime = "aaQF";
+// 		subject.RepetitionSeparator = "l";
+// 		subject.InterchangeControlVersionNumberCode = "KvNT1";
+// 		subject.InterchangeControlNumber = 182646812;
+// 		subject.AcknowledgmentRequestedCode = "E";
+// 		subject.InterchangeUsageIndicatorCode = "o";
+// 		subject.ComponentElementSeparator = "k";
 // 		subject.AuthorizationInformationQualifier = authorizationInformationQualifier;
 // 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 // 	}
 //
 // 	[Theory]
 // 	[InlineData("", false)]
-// 	[InlineData("8v43WscGFL", true)]
+// 	[InlineData("J4jx3oksba", true)]
 // 	public void Validation_RequiredAuthorizationInformation(string authorizationInformation, bool isValidExpected)
 // 	{
 // 		var subject = new ISA_InterchangeControlHeader();
-// 		subject.AuthorizationInformationQualifier = "Eh";
-// 		subject.SecurityInformationQualifier = "ME";
-// 		subject.SecurityInformation = "aoGHErYyRl";
-// 		subject.InterchangeIDQualifier = "YZ";
-// 		subject.InterchangeSenderID = "vCZNLpX7qHcpFDm";
-// 		subject.InterchangeIDQualifier2 = "2g";
-// 		subject.InterchangeReceiverID = "XIB3hZ2l7dsNdLp";
-// 		subject.InterchangeDate = "MgxeJZ";
-// 		subject.InterchangeTime = "oxhz";
-// 		subject.RepetitionSeparator = "4";
-// 		subject.InterchangeControlVersionNumberCode = "8RDGT";
-// 		subject.InterchangeControlNumber = 391922432;
-// 		subject.AcknowledgmentRequestedCode = "d";
-// 		subject.InterchangeUsageIndicatorCode = "s";
-// 		subject.ComponentElementSeparator = "J";
+// 		subject.AuthorizationInformationQualifier = "qd";
+// 		subject.SecurityInformationQualifier = "8M";
+// 		subject.SecurityInformation = "dPRh7QvjnU";
+// 		subject.InterchangeIDQualifier = "qa";
+// 		subject.InterchangeSenderID = "VGBELASo4iTXIXD";
+// 		subject.InterchangeIDQualifier2 = "co";
+// 		subject.InterchangeReceiverID = "1cvjcsVoCyYS7wc";
+// 		subject.InterchangeDate = "8cmqOU";
+// 		subject.InterchangeTime = "aaQF";
+// 		subject.RepetitionSeparator = "l";
+// 		subject.InterchangeControlVersionNumberCode = "KvNT1";
+// 		subject.InterchangeControlNumber = 182646812;
+// 		subject.AcknowledgmentRequestedCode = "E";
+// 		subject.InterchangeUsageIndicatorCode = "o";
+// 		subject.ComponentElementSeparator = "k";
 // 		subject.AuthorizationInformation = authorizationInformation;
 // 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 // 	}
 //
 // 	[Theory]
 // 	[InlineData("", false)]
-// 	[InlineData("ME", true)]
+// 	[InlineData("8M", true)]
 // 	public void Validation_RequiredSecurityInformationQualifier(string securityInformationQualifier, bool isValidExpected)
 // 	{
 // 		var subject = new ISA_InterchangeControlHeader();
-// 		subject.AuthorizationInformationQualifier = "Eh";
-// 		subject.AuthorizationInformation = "8v43WscGFL";
-// 		subject.SecurityInformation = "aoGHErYyRl";
-// 		subject.InterchangeIDQualifier = "YZ";
-// 		subject.InterchangeSenderID = "vCZNLpX7qHcpFDm";
-// 		subject.InterchangeIDQualifier2 = "2g";
-// 		subject.InterchangeReceiverID = "XIB3hZ2l7dsNdLp";
-// 		subject.InterchangeDate = "MgxeJZ";
-// 		subject.InterchangeTime = "oxhz";
-// 		subject.RepetitionSeparator = "4";
-// 		subject.InterchangeControlVersionNumberCode = "8RDGT";
-// 		subject.InterchangeControlNumber = 391922432;
-// 		subject.AcknowledgmentRequestedCode = "d";
-// 		subject.InterchangeUsageIndicatorCode = "s";
-// 		subject.ComponentElementSeparator = "J";
+// 		subject.AuthorizationInformationQualifier = "qd";
+// 		subject.AuthorizationInformation = "J4jx3oksba";
+// 		subject.SecurityInformation = "dPRh7QvjnU";
+// 		subject.InterchangeIDQualifier = "qa";
+// 		subject.InterchangeSenderID = "VGBELASo4iTXIXD";
+// 		subject.InterchangeIDQualifier2 = "co";
+// 		subject.InterchangeReceiverID = "1cvjcsVoCyYS7wc";
+// 		subject.InterchangeDate = "8cmqOU";
+// 		subject.InterchangeTime = "aaQF";
+// 		subject.RepetitionSeparator = "l";
+// 		subject.InterchangeControlVersionNumberCode = "KvNT1";
+// 		subject.InterchangeControlNumber = 182646812;
+// 		subject.AcknowledgmentRequestedCode = "E";
+// 		subject.InterchangeUsageIndicatorCode = "o";
+// 		subject.ComponentElementSeparator = "k";
 // 		subject.SecurityInformationQualifier = securityInformationQualifier;
 // 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 // 	}
 //
 // 	[Theory]
 // 	[InlineData("", false)]
-// 	[InlineData("aoGHErYyRl", true)]
+// 	[InlineData("dPRh7QvjnU", true)]
 // 	public void Validation_RequiredSecurityInformation(string securityInformation, bool isValidExpected)
 // 	{
 // 		var subject = new ISA_InterchangeControlHeader();
-// 		subject.AuthorizationInformationQualifier = "Eh";
-// 		subject.AuthorizationInformation = "8v43WscGFL";
-// 		subject.SecurityInformationQualifier = "ME";
-// 		subject.InterchangeIDQualifier = "YZ";
-// 		subject.InterchangeSenderID = "vCZNLpX7qHcpFDm";
-// 		subject.InterchangeIDQualifier2 = "2g";
-// 		subject.InterchangeReceiverID = "XIB3hZ2l7dsNdLp";
-// 		subject.InterchangeDate = "MgxeJZ";
-// 		subject.InterchangeTime = "oxhz";
-// 		subject.RepetitionSeparator = "4";
-// 		subject.InterchangeControlVersionNumberCode = "8RDGT";
-// 		subject.InterchangeControlNumber = 391922432;
-// 		subject.AcknowledgmentRequestedCode = "d";
-// 		subject.InterchangeUsageIndicatorCode = "s";
-// 		subject.ComponentElementSeparator = "J";
+// 		subject.AuthorizationInformationQualifier = "qd";
+// 		subject.AuthorizationInformation = "J4jx3oksba";
+// 		subject.SecurityInformationQualifier = "8M";
+// 		subject.InterchangeIDQualifier = "qa";
+// 		subject.InterchangeSenderID = "VGBELASo4iTXIXD";
+// 		subject.InterchangeIDQualifier2 = "co";
+// 		subject.InterchangeReceiverID = "1cvjcsVoCyYS7wc";
+// 		subject.InterchangeDate = "8cmqOU";
+// 		subject.InterchangeTime = "aaQF";
+// 		subject.RepetitionSeparator = "l";
+// 		subject.InterchangeControlVersionNumberCode = "KvNT1";
+// 		subject.InterchangeControlNumber = 182646812;
+// 		subject.AcknowledgmentRequestedCode = "E";
+// 		subject.InterchangeUsageIndicatorCode = "o";
+// 		subject.ComponentElementSeparator = "k";
 // 		subject.SecurityInformation = securityInformation;
 // 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 // 	}
 //
 // 	[Theory]
 // 	[InlineData("", false)]
-// 	[InlineData("YZ", true)]
+// 	[InlineData("qa", true)]
 // 	public void Validation_RequiredInterchangeIDQualifier(string interchangeIDQualifier, bool isValidExpected)
 // 	{
 // 		var subject = new ISA_InterchangeControlHeader();
-// 		subject.AuthorizationInformationQualifier = "Eh";
-// 		subject.AuthorizationInformation = "8v43WscGFL";
-// 		subject.SecurityInformationQualifier = "ME";
-// 		subject.SecurityInformation = "aoGHErYyRl";
-// 		subject.InterchangeSenderID = "vCZNLpX7qHcpFDm";
-// 		subject.InterchangeIDQualifier2 = "2g";
-// 		subject.InterchangeReceiverID = "XIB3hZ2l7dsNdLp";
-// 		subject.InterchangeDate = "MgxeJZ";
-// 		subject.InterchangeTime = "oxhz";
-// 		subject.RepetitionSeparator = "4";
-// 		subject.InterchangeControlVersionNumberCode = "8RDGT";
-// 		subject.InterchangeControlNumber = 391922432;
-// 		subject.AcknowledgmentRequestedCode = "d";
-// 		subject.InterchangeUsageIndicatorCode = "s";
-// 		subject.ComponentElementSeparator = "J";
+// 		subject.AuthorizationInformationQualifier = "qd";
+// 		subject.AuthorizationInformation = "J4jx3oksba";
+// 		subject.SecurityInformationQualifier = "8M";
+// 		subject.SecurityInformation = "dPRh7QvjnU";
+// 		subject.InterchangeSenderID = "VGBELASo4iTXIXD";
+// 		subject.InterchangeIDQualifier2 = "co";
+// 		subject.InterchangeReceiverID = "1cvjcsVoCyYS7wc";
+// 		subject.InterchangeDate = "8cmqOU";
+// 		subject.InterchangeTime = "aaQF";
+// 		subject.RepetitionSeparator = "l";
+// 		subject.InterchangeControlVersionNumberCode = "KvNT1";
+// 		subject.InterchangeControlNumber = 182646812;
+// 		subject.AcknowledgmentRequestedCode = "E";
+// 		subject.InterchangeUsageIndicatorCode = "o";
+// 		subject.ComponentElementSeparator = "k";
 // 		subject.InterchangeIDQualifier = interchangeIDQualifier;
 // 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 // 	}
 //
 // 	[Theory]
 // 	[InlineData("", false)]
-// 	[InlineData("vCZNLpX7qHcpFDm", true)]
+// 	[InlineData("VGBELASo4iTXIXD", true)]
 // 	public void Validation_RequiredInterchangeSenderID(string interchangeSenderID, bool isValidExpected)
 // 	{
 // 		var subject = new ISA_InterchangeControlHeader();
-// 		subject.AuthorizationInformationQualifier = "Eh";
-// 		subject.AuthorizationInformation = "8v43WscGFL";
-// 		subject.SecurityInformationQualifier = "ME";
-// 		subject.SecurityInformation = "aoGHErYyRl";
-// 		subject.InterchangeIDQualifier = "YZ";
-// 		subject.InterchangeIDQualifier2 = "2g";
-// 		subject.InterchangeReceiverID = "XIB3hZ2l7dsNdLp";
-// 		subject.InterchangeDate = "MgxeJZ";
-// 		subject.InterchangeTime = "oxhz";
-// 		subject.RepetitionSeparator = "4";
-// 		subject.InterchangeControlVersionNumberCode = "8RDGT";
-// 		subject.InterchangeControlNumber = 391922432;
-// 		subject.AcknowledgmentRequestedCode = "d";
-// 		subject.InterchangeUsageIndicatorCode = "s";
-// 		subject.ComponentElementSeparator = "J";
+// 		subject.AuthorizationInformationQualifier = "qd";
+// 		subject.AuthorizationInformation = "J4jx3oksba";
+// 		subject.SecurityInformationQualifier = "8M";
+// 		subject.SecurityInformation = "dPRh7QvjnU";
+// 		subject.InterchangeIDQualifier = "qa";
+// 		subject.InterchangeIDQualifier2 = "co";
+// 		subject.InterchangeReceiverID = "1cvjcsVoCyYS7wc";
+// 		subject.InterchangeDate = "8cmqOU";
+// 		subject.InterchangeTime = "aaQF";
+// 		subject.RepetitionSeparator = "l";
+// 		subject.InterchangeControlVersionNumberCode = "KvNT1";
+// 		subject.InterchangeControlNumber = 182646812;
+// 		subject.AcknowledgmentRequestedCode = "E";
+// 		subject.InterchangeUsageIndicatorCode = "o";
+// 		subject.ComponentElementSeparator = "k";
 // 		subject.InterchangeSenderID = interchangeSenderID;
 // 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 // 	}
 //
 // 	[Theory]
 // 	[InlineData("", false)]
-// 	[InlineData("2g", true)]
+// 	[InlineData("co", true)]
 // 	public void Validation_RequiredInterchangeIDQualifier2(string interchangeIDQualifier2, bool isValidExpected)
 // 	{
 // 		var subject = new ISA_InterchangeControlHeader();
-// 		subject.AuthorizationInformationQualifier = "Eh";
-// 		subject.AuthorizationInformation = "8v43WscGFL";
-// 		subject.SecurityInformationQualifier = "ME";
-// 		subject.SecurityInformation = "aoGHErYyRl";
-// 		subject.InterchangeIDQualifier = "YZ";
-// 		subject.InterchangeSenderID = "vCZNLpX7qHcpFDm";
-// 		subject.InterchangeReceiverID = "XIB3hZ2l7dsNdLp";
-// 		subject.InterchangeDate = "MgxeJZ";
-// 		subject.InterchangeTime = "oxhz";
-// 		subject.RepetitionSeparator = "4";
-// 		subject.InterchangeControlVersionNumberCode = "8RDGT";
-// 		subject.InterchangeControlNumber = 391922432;
-// 		subject.AcknowledgmentRequestedCode = "d";
-// 		subject.InterchangeUsageIndicatorCode = "s";
-// 		subject.ComponentElementSeparator = "J";
+// 		subject.AuthorizationInformationQualifier = "qd";
+// 		subject.AuthorizationInformation = "J4jx3oksba";
+// 		subject.SecurityInformationQualifier = "8M";
+// 		subject.SecurityInformation = "dPRh7QvjnU";
+// 		subject.InterchangeIDQualifier = "qa";
+// 		subject.InterchangeSenderID = "VGBELASo4iTXIXD";
+// 		subject.InterchangeReceiverID = "1cvjcsVoCyYS7wc";
+// 		subject.InterchangeDate = "8cmqOU";
+// 		subject.InterchangeTime = "aaQF";
+// 		subject.RepetitionSeparator = "l";
+// 		subject.InterchangeControlVersionNumberCode = "KvNT1";
+// 		subject.InterchangeControlNumber = 182646812;
+// 		subject.AcknowledgmentRequestedCode = "E";
+// 		subject.InterchangeUsageIndicatorCode = "o";
+// 		subject.ComponentElementSeparator = "k";
 // 		subject.InterchangeIDQualifier2 = interchangeIDQualifier2;
 // 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 // 	}
 //
 // 	[Theory]
 // 	[InlineData("", false)]
-// 	[InlineData("XIB3hZ2l7dsNdLp", true)]
+// 	[InlineData("1cvjcsVoCyYS7wc", true)]
 // 	public void Validation_RequiredInterchangeReceiverID(string interchangeReceiverID, bool isValidExpected)
 // 	{
 // 		var subject = new ISA_InterchangeControlHeader();
-// 		subject.AuthorizationInformationQualifier = "Eh";
-// 		subject.AuthorizationInformation = "8v43WscGFL";
-// 		subject.SecurityInformationQualifier = "ME";
-// 		subject.SecurityInformation = "aoGHErYyRl";
-// 		subject.InterchangeIDQualifier = "YZ";
-// 		subject.InterchangeSenderID = "vCZNLpX7qHcpFDm";
-// 		subject.InterchangeIDQualifier2 = "2g";
-// 		subject.InterchangeDate = "MgxeJZ";
-// 		subject.InterchangeTime = "oxhz";
-// 		subject.RepetitionSeparator = "4";
-// 		subject.InterchangeControlVersionNumberCode = "8RDGT";
-// 		subject.InterchangeControlNumber = 391922432;
-// 		subject.AcknowledgmentRequestedCode = "d";
-// 		subject.InterchangeUsageIndicatorCode = "s";
-// 		subject.ComponentElementSeparator = "J";
+// 		subject.AuthorizationInformationQualifier = "qd";
+// 		subject.AuthorizationInformation = "J4jx3oksba";
+// 		subject.SecurityInformationQualifier = "8M";
+// 		subject.SecurityInformation = "dPRh7QvjnU";
+// 		subject.InterchangeIDQualifier = "qa";
+// 		subject.InterchangeSenderID = "VGBELASo4iTXIXD";
+// 		subject.InterchangeIDQualifier2 = "co";
+// 		subject.InterchangeDate = "8cmqOU";
+// 		subject.InterchangeTime = "aaQF";
+// 		subject.RepetitionSeparator = "l";
+// 		subject.InterchangeControlVersionNumberCode = "KvNT1";
+// 		subject.InterchangeControlNumber = 182646812;
+// 		subject.AcknowledgmentRequestedCode = "E";
+// 		subject.InterchangeUsageIndicatorCode = "o";
+// 		subject.ComponentElementSeparator = "k";
 // 		subject.InterchangeReceiverID = interchangeReceiverID;
 // 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 // 	}
 //
 // 	[Theory]
 // 	[InlineData("", false)]
-// 	[InlineData("MgxeJZ", true)]
+// 	[InlineData("8cmqOU", true)]
 // 	public void Validation_RequiredInterchangeDate(string interchangeDate, bool isValidExpected)
 // 	{
 // 		var subject = new ISA_InterchangeControlHeader();
-// 		subject.AuthorizationInformationQualifier = "Eh";
-// 		subject.AuthorizationInformation = "8v43WscGFL";
-// 		subject.SecurityInformationQualifier = "ME";
-// 		subject.SecurityInformation = "aoGHErYyRl";
-// 		subject.InterchangeIDQualifier = "YZ";
-// 		subject.InterchangeSenderID = "vCZNLpX7qHcpFDm";
-// 		subject.InterchangeIDQualifier2 = "2g";
-// 		subject.InterchangeReceiverID = "XIB3hZ2l7dsNdLp";
-// 		subject.InterchangeTime = "oxhz";
-// 		subject.RepetitionSeparator = "4";
-// 		subject.InterchangeControlVersionNumberCode = "8RDGT";
-// 		subject.InterchangeControlNumber = 391922432;
-// 		subject.AcknowledgmentRequestedCode = "d";
-// 		subject.InterchangeUsageIndicatorCode = "s";
-// 		subject.ComponentElementSeparator = "J";
+// 		subject.AuthorizationInformationQualifier = "qd";
+// 		subject.AuthorizationInformation = "J4jx3oksba";
+// 		subject.SecurityInformationQualifier = "8M";
+// 		subject.SecurityInformation = "dPRh7QvjnU";
+// 		subject.InterchangeIDQualifier = "qa";
+// 		subject.InterchangeSenderID = "VGBELASo4iTXIXD";
+// 		subject.InterchangeIDQualifier2 = "co";
+// 		subject.InterchangeReceiverID = "1cvjcsVoCyYS7wc";
+// 		subject.InterchangeTime = "aaQF";
+// 		subject.RepetitionSeparator = "l";
+// 		subject.InterchangeControlVersionNumberCode = "KvNT1";
+// 		subject.InterchangeControlNumber = 182646812;
+// 		subject.AcknowledgmentRequestedCode = "E";
+// 		subject.InterchangeUsageIndicatorCode = "o";
+// 		subject.ComponentElementSeparator = "k";
 // 		subject.InterchangeDate = interchangeDate;
 // 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 // 	}
 //
 // 	[Theory]
 // 	[InlineData("", false)]
-// 	[InlineData("oxhz", true)]
+// 	[InlineData("aaQF", true)]
 // 	public void Validation_RequiredInterchangeTime(string interchangeTime, bool isValidExpected)
 // 	{
 // 		var subject = new ISA_InterchangeControlHeader();
-// 		subject.AuthorizationInformationQualifier = "Eh";
-// 		subject.AuthorizationInformation = "8v43WscGFL";
-// 		subject.SecurityInformationQualifier = "ME";
-// 		subject.SecurityInformation = "aoGHErYyRl";
-// 		subject.InterchangeIDQualifier = "YZ";
-// 		subject.InterchangeSenderID = "vCZNLpX7qHcpFDm";
-// 		subject.InterchangeIDQualifier2 = "2g";
-// 		subject.InterchangeReceiverID = "XIB3hZ2l7dsNdLp";
-// 		subject.InterchangeDate = "MgxeJZ";
-// 		subject.RepetitionSeparator = "4";
-// 		subject.InterchangeControlVersionNumberCode = "8RDGT";
-// 		subject.InterchangeControlNumber = 391922432;
-// 		subject.AcknowledgmentRequestedCode = "d";
-// 		subject.InterchangeUsageIndicatorCode = "s";
-// 		subject.ComponentElementSeparator = "J";
+// 		subject.AuthorizationInformationQualifier = "qd";
+// 		subject.AuthorizationInformation = "J4jx3oksba";
+// 		subject.SecurityInformationQualifier = "8M";
+// 		subject.SecurityInformation = "dPRh7QvjnU";
+// 		subject.InterchangeIDQualifier = "qa";
+// 		subject.InterchangeSenderID = "VGBELASo4iTXIXD";
+// 		subject.InterchangeIDQualifier2 = "co";
+// 		subject.InterchangeReceiverID = "1cvjcsVoCyYS7wc";
+// 		subject.InterchangeDate = "8cmqOU";
+// 		subject.RepetitionSeparator = "l";
+// 		subject.InterchangeControlVersionNumberCode = "KvNT1";
+// 		subject.InterchangeControlNumber = 182646812;
+// 		subject.AcknowledgmentRequestedCode = "E";
+// 		subject.InterchangeUsageIndicatorCode = "o";
+// 		subject.ComponentElementSeparator = "k";
 // 		subject.InterchangeTime = interchangeTime;
 // 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 // 	}
 //
 // 	[Theory]
 // 	[InlineData("", false)]
-// 	[InlineData("4", true)]
+// 	[InlineData("l", true)]
 // 	public void Validation_RequiredRepetitionSeparator(string repetitionSeparator, bool isValidExpected)
 // 	{
 // 		var subject = new ISA_InterchangeControlHeader();
-// 		subject.AuthorizationInformationQualifier = "Eh";
-// 		subject.AuthorizationInformation = "8v43WscGFL";
-// 		subject.SecurityInformationQualifier = "ME";
-// 		subject.SecurityInformation = "aoGHErYyRl";
-// 		subject.InterchangeIDQualifier = "YZ";
-// 		subject.InterchangeSenderID = "vCZNLpX7qHcpFDm";
-// 		subject.InterchangeIDQualifier2 = "2g";
-// 		subject.InterchangeReceiverID = "XIB3hZ2l7dsNdLp";
-// 		subject.InterchangeDate = "MgxeJZ";
-// 		subject.InterchangeTime = "oxhz";
-// 		subject.InterchangeControlVersionNumberCode = "8RDGT";
-// 		subject.InterchangeControlNumber = 391922432;
-// 		subject.AcknowledgmentRequestedCode = "d";
-// 		subject.InterchangeUsageIndicatorCode = "s";
-// 		subject.ComponentElementSeparator = "J";
+// 		subject.AuthorizationInformationQualifier = "qd";
+// 		subject.AuthorizationInformation = "J4jx3oksba";
+// 		subject.SecurityInformationQualifier = "8M";
+// 		subject.SecurityInformation = "dPRh7QvjnU";
+// 		subject.InterchangeIDQualifier = "qa";
+// 		subject.InterchangeSenderID = "VGBELASo4iTXIXD";
+// 		subject.InterchangeIDQualifier2 = "co";
+// 		subject.InterchangeReceiverID = "1cvjcsVoCyYS7wc";
+// 		subject.InterchangeDate = "8cmqOU";
+// 		subject.InterchangeTime = "aaQF";
+// 		subject.InterchangeControlVersionNumberCode = "KvNT1";
+// 		subject.InterchangeControlNumber = 182646812;
+// 		subject.AcknowledgmentRequestedCode = "E";
+// 		subject.InterchangeUsageIndicatorCode = "o";
+// 		subject.ComponentElementSeparator = "k";
 // 		subject.RepetitionSeparator = repetitionSeparator;
 // 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 // 	}
 //
 // 	[Theory]
 // 	[InlineData("", false)]
-// 	[InlineData("8RDGT", true)]
+// 	[InlineData("KvNT1", true)]
 // 	public void Validation_RequiredInterchangeControlVersionNumberCode(string interchangeControlVersionNumberCode, bool isValidExpected)
 // 	{
 // 		var subject = new ISA_InterchangeControlHeader();
-// 		subject.AuthorizationInformationQualifier = "Eh";
-// 		subject.AuthorizationInformation = "8v43WscGFL";
-// 		subject.SecurityInformationQualifier = "ME";
-// 		subject.SecurityInformation = "aoGHErYyRl";
-// 		subject.InterchangeIDQualifier = "YZ";
-// 		subject.InterchangeSenderID = "vCZNLpX7qHcpFDm";
-// 		subject.InterchangeIDQualifier2 = "2g";
-// 		subject.InterchangeReceiverID = "XIB3hZ2l7dsNdLp";
-// 		subject.InterchangeDate = "MgxeJZ";
-// 		subject.InterchangeTime = "oxhz";
-// 		subject.RepetitionSeparator = "4";
-// 		subject.InterchangeControlNumber = 391922432;
-// 		subject.AcknowledgmentRequestedCode = "d";
-// 		subject.InterchangeUsageIndicatorCode = "s";
-// 		subject.ComponentElementSeparator = "J";
+// 		subject.AuthorizationInformationQualifier = "qd";
+// 		subject.AuthorizationInformation = "J4jx3oksba";
+// 		subject.SecurityInformationQualifier = "8M";
+// 		subject.SecurityInformation = "dPRh7QvjnU";
+// 		subject.InterchangeIDQualifier = "qa";
+// 		subject.InterchangeSenderID = "VGBELASo4iTXIXD";
+// 		subject.InterchangeIDQualifier2 = "co";
+// 		subject.InterchangeReceiverID = "1cvjcsVoCyYS7wc";
+// 		subject.InterchangeDate = "8cmqOU";
+// 		subject.InterchangeTime = "aaQF";
+// 		subject.RepetitionSeparator = "l";
+// 		subject.InterchangeControlNumber = 182646812;
+// 		subject.AcknowledgmentRequestedCode = "E";
+// 		subject.InterchangeUsageIndicatorCode = "o";
+// 		subject.ComponentElementSeparator = "k";
 // 		subject.InterchangeControlVersionNumberCode = interchangeControlVersionNumberCode;
 // 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 // 	}
 //
 // 	[Theory]
 // 	[InlineData(0, false)]
-// 	[InlineData(391922432, true)]
+// 	[InlineData(182646812, true)]
 // 	public void Validation_RequiredInterchangeControlNumber(int interchangeControlNumber, bool isValidExpected)
 // 	{
 // 		var subject = new ISA_InterchangeControlHeader();
-// 		subject.AuthorizationInformationQualifier = "Eh";
-// 		subject.AuthorizationInformation = "8v43WscGFL";
-// 		subject.SecurityInformationQualifier = "ME";
-// 		subject.SecurityInformation = "aoGHErYyRl";
-// 		subject.InterchangeIDQualifier = "YZ";
-// 		subject.InterchangeSenderID = "vCZNLpX7qHcpFDm";
-// 		subject.InterchangeIDQualifier2 = "2g";
-// 		subject.InterchangeReceiverID = "XIB3hZ2l7dsNdLp";
-// 		subject.InterchangeDate = "MgxeJZ";
-// 		subject.InterchangeTime = "oxhz";
-// 		subject.RepetitionSeparator = "4";
-// 		subject.InterchangeControlVersionNumberCode = "8RDGT";
-// 		subject.AcknowledgmentRequestedCode = "d";
-// 		subject.InterchangeUsageIndicatorCode = "s";
-// 		subject.ComponentElementSeparator = "J";
+// 		subject.AuthorizationInformationQualifier = "qd";
+// 		subject.AuthorizationInformation = "J4jx3oksba";
+// 		subject.SecurityInformationQualifier = "8M";
+// 		subject.SecurityInformation = "dPRh7QvjnU";
+// 		subject.InterchangeIDQualifier = "qa";
+// 		subject.InterchangeSenderID = "VGBELASo4iTXIXD";
+// 		subject.InterchangeIDQualifier2 = "co";
+// 		subject.InterchangeReceiverID = "1cvjcsVoCyYS7wc";
+// 		subject.InterchangeDate = "8cmqOU";
+// 		subject.InterchangeTime = "aaQF";
+// 		subject.RepetitionSeparator = "l";
+// 		subject.InterchangeControlVersionNumberCode = "KvNT1";
+// 		subject.AcknowledgmentRequestedCode = "E";
+// 		subject.InterchangeUsageIndicatorCode = "o";
+// 		subject.ComponentElementSeparator = "k";
 // 		if (interchangeControlNumber > 0)
 // 		subject.InterchangeControlNumber = interchangeControlNumber;
 // 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
@@ -364,75 +364,75 @@
 //
 // 	[Theory]
 // 	[InlineData("", false)]
-// 	[InlineData("d", true)]
+// 	[InlineData("E", true)]
 // 	public void Validation_RequiredAcknowledgmentRequestedCode(string acknowledgmentRequestedCode, bool isValidExpected)
 // 	{
 // 		var subject = new ISA_InterchangeControlHeader();
-// 		subject.AuthorizationInformationQualifier = "Eh";
-// 		subject.AuthorizationInformation = "8v43WscGFL";
-// 		subject.SecurityInformationQualifier = "ME";
-// 		subject.SecurityInformation = "aoGHErYyRl";
-// 		subject.InterchangeIDQualifier = "YZ";
-// 		subject.InterchangeSenderID = "vCZNLpX7qHcpFDm";
-// 		subject.InterchangeIDQualifier2 = "2g";
-// 		subject.InterchangeReceiverID = "XIB3hZ2l7dsNdLp";
-// 		subject.InterchangeDate = "MgxeJZ";
-// 		subject.InterchangeTime = "oxhz";
-// 		subject.RepetitionSeparator = "4";
-// 		subject.InterchangeControlVersionNumberCode = "8RDGT";
-// 		subject.InterchangeControlNumber = 391922432;
-// 		subject.InterchangeUsageIndicatorCode = "s";
-// 		subject.ComponentElementSeparator = "J";
+// 		subject.AuthorizationInformationQualifier = "qd";
+// 		subject.AuthorizationInformation = "J4jx3oksba";
+// 		subject.SecurityInformationQualifier = "8M";
+// 		subject.SecurityInformation = "dPRh7QvjnU";
+// 		subject.InterchangeIDQualifier = "qa";
+// 		subject.InterchangeSenderID = "VGBELASo4iTXIXD";
+// 		subject.InterchangeIDQualifier2 = "co";
+// 		subject.InterchangeReceiverID = "1cvjcsVoCyYS7wc";
+// 		subject.InterchangeDate = "8cmqOU";
+// 		subject.InterchangeTime = "aaQF";
+// 		subject.RepetitionSeparator = "l";
+// 		subject.InterchangeControlVersionNumberCode = "KvNT1";
+// 		subject.InterchangeControlNumber = 182646812;
+// 		subject.InterchangeUsageIndicatorCode = "o";
+// 		subject.ComponentElementSeparator = "k";
 // 		subject.AcknowledgmentRequestedCode = acknowledgmentRequestedCode;
 // 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 // 	}
 //
 // 	[Theory]
 // 	[InlineData("", false)]
-// 	[InlineData("s", true)]
+// 	[InlineData("o", true)]
 // 	public void Validation_RequiredInterchangeUsageIndicatorCode(string interchangeUsageIndicatorCode, bool isValidExpected)
 // 	{
 // 		var subject = new ISA_InterchangeControlHeader();
-// 		subject.AuthorizationInformationQualifier = "Eh";
-// 		subject.AuthorizationInformation = "8v43WscGFL";
-// 		subject.SecurityInformationQualifier = "ME";
-// 		subject.SecurityInformation = "aoGHErYyRl";
-// 		subject.InterchangeIDQualifier = "YZ";
-// 		subject.InterchangeSenderID = "vCZNLpX7qHcpFDm";
-// 		subject.InterchangeIDQualifier2 = "2g";
-// 		subject.InterchangeReceiverID = "XIB3hZ2l7dsNdLp";
-// 		subject.InterchangeDate = "MgxeJZ";
-// 		subject.InterchangeTime = "oxhz";
-// 		subject.RepetitionSeparator = "4";
-// 		subject.InterchangeControlVersionNumberCode = "8RDGT";
-// 		subject.InterchangeControlNumber = 391922432;
-// 		subject.AcknowledgmentRequestedCode = "d";
-// 		subject.ComponentElementSeparator = "J";
+// 		subject.AuthorizationInformationQualifier = "qd";
+// 		subject.AuthorizationInformation = "J4jx3oksba";
+// 		subject.SecurityInformationQualifier = "8M";
+// 		subject.SecurityInformation = "dPRh7QvjnU";
+// 		subject.InterchangeIDQualifier = "qa";
+// 		subject.InterchangeSenderID = "VGBELASo4iTXIXD";
+// 		subject.InterchangeIDQualifier2 = "co";
+// 		subject.InterchangeReceiverID = "1cvjcsVoCyYS7wc";
+// 		subject.InterchangeDate = "8cmqOU";
+// 		subject.InterchangeTime = "aaQF";
+// 		subject.RepetitionSeparator = "l";
+// 		subject.InterchangeControlVersionNumberCode = "KvNT1";
+// 		subject.InterchangeControlNumber = 182646812;
+// 		subject.AcknowledgmentRequestedCode = "E";
+// 		subject.ComponentElementSeparator = "k";
 // 		subject.InterchangeUsageIndicatorCode = interchangeUsageIndicatorCode;
 // 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 // 	}
 //
 // 	[Theory]
 // 	[InlineData("", false)]
-// 	[InlineData("J", true)]
+// 	[InlineData("k", true)]
 // 	public void Validation_RequiredComponentElementSeparator(string componentElementSeparator, bool isValidExpected)
 // 	{
 // 		var subject = new ISA_InterchangeControlHeader();
-// 		subject.AuthorizationInformationQualifier = "Eh";
-// 		subject.AuthorizationInformation = "8v43WscGFL";
-// 		subject.SecurityInformationQualifier = "ME";
-// 		subject.SecurityInformation = "aoGHErYyRl";
-// 		subject.InterchangeIDQualifier = "YZ";
-// 		subject.InterchangeSenderID = "vCZNLpX7qHcpFDm";
-// 		subject.InterchangeIDQualifier2 = "2g";
-// 		subject.InterchangeReceiverID = "XIB3hZ2l7dsNdLp";
-// 		subject.InterchangeDate = "MgxeJZ";
-// 		subject.InterchangeTime = "oxhz";
-// 		subject.RepetitionSeparator = "4";
-// 		subject.InterchangeControlVersionNumberCode = "8RDGT";
-// 		subject.InterchangeControlNumber = 391922432;
-// 		subject.AcknowledgmentRequestedCode = "d";
-// 		subject.InterchangeUsageIndicatorCode = "s";
+// 		subject.AuthorizationInformationQualifier = "qd";
+// 		subject.AuthorizationInformation = "J4jx3oksba";
+// 		subject.SecurityInformationQualifier = "8M";
+// 		subject.SecurityInformation = "dPRh7QvjnU";
+// 		subject.InterchangeIDQualifier = "qa";
+// 		subject.InterchangeSenderID = "VGBELASo4iTXIXD";
+// 		subject.InterchangeIDQualifier2 = "co";
+// 		subject.InterchangeReceiverID = "1cvjcsVoCyYS7wc";
+// 		subject.InterchangeDate = "8cmqOU";
+// 		subject.InterchangeTime = "aaQF";
+// 		subject.RepetitionSeparator = "l";
+// 		subject.InterchangeControlVersionNumberCode = "KvNT1";
+// 		subject.InterchangeControlNumber = 182646812;
+// 		subject.AcknowledgmentRequestedCode = "E";
+// 		subject.InterchangeUsageIndicatorCode = "o";
 // 		subject.ComponentElementSeparator = componentElementSeparator;
 // 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 // 	}

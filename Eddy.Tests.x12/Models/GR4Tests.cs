@@ -197,11 +197,7 @@ public class GR4Tests
         subject.LocationQualifier = "AB";
 		subject.EquipmentInitial = "AA";
 		subject.EquipmentNumber = "AA";
-
-		if (cityName != "")
-        {
-			subject.StateOrProvinceCode = "AB";
-        }
+		
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 
