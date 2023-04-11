@@ -74,7 +74,6 @@ public class ID1Tests
         if (productServiceIDQualifier != "")
             subject.ProductServiceID = "AB";
 
-        subject.UPCEANConsumerPackageCode = "123456789012";
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
     }
 

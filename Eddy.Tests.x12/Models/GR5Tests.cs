@@ -68,9 +68,6 @@ public class GR5Tests
             subject.MeasurementValue = measurementValue;
         subject.UnitOrBasisForMeasurementCode = unitOrBasisForMeasurementCode;
 
-        if (unitOrBasisForMeasurementCode != "")
-            subject.MeasurementValue = 1;
-
         subject.SurfaceLayerPositionCode = "AB";
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
     }

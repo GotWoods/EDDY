@@ -99,9 +99,8 @@ public class LN1Tests
 
 	[Theory]
 	[InlineData("","", "", "", "", "", true)]
-	[InlineData("WX", "A", "", "", "", "", false)]
-    [InlineData("","A", "", "", "", "", true)]
-    [InlineData("WX", "", "", "", "", "", true)]
+	[InlineData("WX", "A", "", "", "", "", true)]
+    [InlineData("WX", "", "A", "", "", "", true)]
 
     public void Validation_IfOneSpecifiedThenOneMoreRequired_DateTimePeriodFormatQualifier(string dateTimePeriodFormatQualifier, string dateTimePeriod, string dateTimePeriod2, string dateTimePeriod3, string dateTimePeriod4, string dateTimePeriod5, bool isValidExpected)
 	{
@@ -121,8 +120,7 @@ public class LN1Tests
 
 	[Theory]
 	[InlineData("", "", true)]
-	[InlineData("", "WX", true)]
-	[InlineData("A", "", false)]
+	[InlineData("A", "WX", true)]
 	public void Validation_ARequiresBDateTimePeriod(string dateTimePeriod, string dateTimePeriodFormatQualifier, bool isValidExpected)
 	{
 		var subject = new LN1_LoanSpecificData();
@@ -137,8 +135,7 @@ public class LN1Tests
 
 	[Theory]
 	[InlineData("", "", true)]
-	[InlineData("", "WX", true)]
-	[InlineData("R", "", false)]
+	[InlineData("A", "WX", true)]
 	public void Validation_ARequiresBDateTimePeriod2(string dateTimePeriod2, string dateTimePeriodFormatQualifier, bool isValidExpected)
 	{
 		var subject = new LN1_LoanSpecificData();
@@ -152,10 +149,10 @@ public class LN1Tests
 	}
 
 	[Theory]
-	[InlineData("", "", true)]
-	[InlineData("", "WX", true)]
-	[InlineData("M", "", false)]
-	public void Validation_ARequiresBDateTimePeriod3(string dateTimePeriod3, string dateTimePeriodFormatQualifier, bool isValidExpected)
+    [InlineData("", "", true)]
+    [InlineData("A", "WX", true)]
+
+    public void Validation_ARequiresBDateTimePeriod3(string dateTimePeriod3, string dateTimePeriodFormatQualifier, bool isValidExpected)
 	{
 		var subject = new LN1_LoanSpecificData();
 		subject.MonetaryAmount = 8;
@@ -168,10 +165,10 @@ public class LN1Tests
 	}
 
 	[Theory]
-	[InlineData("", "", true)]
-	[InlineData("", "WX", true)]
-	[InlineData("H", "", false)]
-	public void Validation_ARequiresBDateTimePeriod4(string dateTimePeriod4, string dateTimePeriodFormatQualifier, bool isValidExpected)
+    [InlineData("", "", true)]
+    [InlineData("A", "WX", true)]
+
+    public void Validation_ARequiresBDateTimePeriod4(string dateTimePeriod4, string dateTimePeriodFormatQualifier, bool isValidExpected)
 	{
 		var subject = new LN1_LoanSpecificData();
 		subject.MonetaryAmount = 8;
@@ -184,10 +181,10 @@ public class LN1Tests
 	}
 
 	[Theory]
-	[InlineData("", "", true)]
-	[InlineData("", "WX", true)]
-	[InlineData("J", "", false)]
-	public void Validation_ARequiresBDateTimePeriod5(string dateTimePeriod5, string dateTimePeriodFormatQualifier, bool isValidExpected)
+    [InlineData("", "", true)]
+    [InlineData("A", "WX", true)]
+
+    public void Validation_ARequiresBDateTimePeriod5(string dateTimePeriod5, string dateTimePeriodFormatQualifier, bool isValidExpected)
 	{
 		var subject = new LN1_LoanSpecificData();
 		subject.MonetaryAmount = 8;

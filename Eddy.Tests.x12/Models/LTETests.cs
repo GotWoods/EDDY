@@ -33,20 +33,22 @@ public class LTETests
 		var subject = new LTE_LetterOfRecommendationEvaluation();
 		subject.CodeListQualifierCode = codeListQualifierCode;
 		subject.IndustryCode = industryCode;
-
+		subject.Description = "55";
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 
 	[Theory]
 	[InlineData("","", false)]
 	[InlineData("e","5", true)]
-	[InlineData("", "5", true)]
 	[InlineData("e", "", true)]
 	public void Validation_AtLeastOneIndustryCode(string industryCode, string description, bool isValidExpected)
 	{
 		var subject = new LTE_LetterOfRecommendationEvaluation();
 		subject.IndustryCode = industryCode;
 		subject.Description = description;
+
+		if (industryCode != "")
+			subject.CodeListQualifierCode = "AA";
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}

@@ -70,6 +70,9 @@ public class IMMTests
 		subject.DateTimePeriod = dateTimePeriod;
 		subject.ImmunizationStatusCode = immunizationStatusCode;
 
+		if (dateTimePeriod != "")
+			subject.DateTimePeriodFormatQualifier = "AA";
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 

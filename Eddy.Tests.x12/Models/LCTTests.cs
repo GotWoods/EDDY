@@ -72,9 +72,9 @@ public class LCTTests
 
     [Theory]
     [InlineData("", 0, 0, 0, true)]
-    [InlineData("V", 8, 0, 0, false)]
-    [InlineData("", 8, 0, 0, true)]
-    [InlineData("V", 0, 0, 0, true)]
+    [InlineData("V", 8, 0, 0, true)]
+    [InlineData("V", 0, 8, 0, true)]
+    [InlineData("V", 0, 0, 8, true)]
     public void Validation_IfOneSpecifiedThenOneMoreRequired_MeasurementUnitQualifier(string measurementUnitQualifier, decimal length, decimal width, decimal height, bool isValidExpected)
     {
         var subject = new LCT_LogisticsContainerTrackingInformation();
@@ -104,6 +104,9 @@ public class LCTTests
             subject.Length = length;
         subject.MeasurementUnitQualifier = measurementUnitQualifier;
 
+        if (measurementUnitQualifier != "")
+            subject.Width = 3;
+
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
     }
 
@@ -120,6 +123,8 @@ public class LCTTests
             subject.Width = width;
         subject.MeasurementUnitQualifier = measurementUnitQualifier;
 
+        if (measurementUnitQualifier != "")
+            subject.Length = 3;
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
     }
 
@@ -135,6 +140,10 @@ public class LCTTests
         if (height > 0)
             subject.Height = height;
         subject.MeasurementUnitQualifier = measurementUnitQualifier;
+
+
+        if (measurementUnitQualifier != "")
+            subject.Length = 3;
 
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
     }

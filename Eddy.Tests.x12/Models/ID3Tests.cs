@@ -50,8 +50,7 @@ public class ID3Tests
         var subject = new ID3_DimensionsDetail();
         subject.UPCCaseCode = uPCCaseCode;
         subject.ProductServiceIDQualifier = productServiceIDQualifier;
-        subject.UPCCaseCode = "123456789012";
-
+        
         if (productServiceIDQualifier != "")
             subject.ProductServiceID = "AA";
 
