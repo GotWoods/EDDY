@@ -32,7 +32,8 @@ public class FX2Tests
 		var subject = new FX2_ProductClassification();
 		subject.CommodityCodeQualifier = "0";
 		subject.YesNoConditionOrResponseCode = yesNoConditionOrResponseCode;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+        subject.Description = "AB";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
@@ -43,6 +44,7 @@ public class FX2Tests
 		var subject = new FX2_ProductClassification();
 		subject.YesNoConditionOrResponseCode = "f";
 		subject.CommodityCodeQualifier = commodityCodeQualifier;
+		subject.Description = "AB";
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 

@@ -33,6 +33,7 @@ public class FX4Tests
 	{
 		var subject = new FX4_EquipmentInformation();
 		subject.YesNoConditionOrResponseCode = yesNoConditionOrResponseCode;
+        subject.Description = "AB";
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
@@ -47,8 +48,8 @@ public class FX4Tests
 		subject.YesNoConditionOrResponseCode = "W";
 		subject.ProductServiceIDQualifier = productServiceIDQualifier;
 		subject.ProductServiceID = productServiceID;
-
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
+        subject.Description = "AB";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 
 	[Theory]
@@ -62,6 +63,9 @@ public class FX4Tests
 		subject.YesNoConditionOrResponseCode = "W";
 		subject.ProductServiceIDQualifier = productServiceIDQualifier;
 		subject.Description = description;
+
+		if (productServiceIDQualifier!="")
+			subject.ProductServiceID = "AB";
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}
@@ -77,8 +81,8 @@ public class FX4Tests
 		subject.YesNoConditionOrResponseCode = "W";
 		subject.ProductServiceIDQualifier2 = productServiceIDQualifier2;
 		subject.ProductServiceID2 = productServiceID2;
-
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
+        subject.Description = "AB";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 
 }

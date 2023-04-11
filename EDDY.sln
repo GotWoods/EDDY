@@ -20,6 +20,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eddy.x12", "Eddy.x12\Eddy.x
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eddy.Core", "Eddy.Core\Eddy.Core.csproj", "{3E536632-D58C-49EB-866F-550296EB4881}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eddy.Tests.x12", "Eddy.Tests.x12\Eddy.Tests.x12.csproj", "{95C81A0A-7A37-4226-A225-928E20DE91B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,10 @@ Global
 		{3E536632-D58C-49EB-866F-550296EB4881}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E536632-D58C-49EB-866F-550296EB4881}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E536632-D58C-49EB-866F-550296EB4881}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95C81A0A-7A37-4226-A225-928E20DE91B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95C81A0A-7A37-4226-A225-928E20DE91B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95C81A0A-7A37-4226-A225-928E20DE91B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95C81A0A-7A37-4226-A225-928E20DE91B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

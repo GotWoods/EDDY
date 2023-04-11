@@ -29,7 +29,8 @@ public class FX6Tests
 	{
 		var subject = new FX6_BrandLabel();
 		subject.YesNoConditionOrResponseCode = yesNoConditionOrResponseCode;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+        subject.Description = "AB";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]

@@ -34,7 +34,8 @@ public class FX5Tests
 		var subject = new FX5_ServicesInformation();
 		subject.MaintenanceTypeCode = "ijC";
 		subject.YesNoConditionOrResponseCode = yesNoConditionOrResponseCode;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+        subject.Description = "AB";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
@@ -45,7 +46,8 @@ public class FX5Tests
 		var subject = new FX5_ServicesInformation();
 		subject.YesNoConditionOrResponseCode = "M";
 		subject.MaintenanceTypeCode = maintenanceTypeCode;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+        subject.Description = "AB";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
@@ -60,8 +62,8 @@ public class FX5Tests
 		subject.MaintenanceTypeCode = "ijC";
 		subject.ProductServiceIDQualifier = productServiceIDQualifier;
 		subject.ProductServiceID = productServiceID;
-
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
+        subject.Description = "AB";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 
 	[Theory]
@@ -76,6 +78,9 @@ public class FX5Tests
 		subject.MaintenanceTypeCode = "ijC";
 		subject.ProductServiceIDQualifier = productServiceIDQualifier;
 		subject.Description = description;
+
+		if (productServiceIDQualifier != "")
+			subject.ProductServiceID = "AB";
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}
@@ -92,8 +97,8 @@ public class FX5Tests
 		subject.MaintenanceTypeCode = "ijC";
 		subject.ProductServiceIDQualifier2 = productServiceIDQualifier2;
 		subject.ProductServiceID2 = productServiceID2;
-
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
+        subject.Description = "AB";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 
 }
