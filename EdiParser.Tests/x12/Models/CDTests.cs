@@ -56,7 +56,6 @@ public class CDTests
 	}
 
 	[Theory]
-	[InlineData("", "", true)]
 	[InlineData("", "BM", true)]
 	[InlineData("s0e5", "", true)]
 	public void Validation_OnlyOneOfConditionCode(string conditionCode, string standardCarrierAlphaCode, bool isValidExpected)

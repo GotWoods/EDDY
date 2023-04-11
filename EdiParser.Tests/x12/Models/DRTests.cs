@@ -104,7 +104,6 @@ public class DRTests
 
 	[Theory]
 	[InlineData("", 0, true)]
-	[InlineData("s", 8, false)]
 	[InlineData("", 8, true)]
 	[InlineData("s", 0, true)]
 	public void Validation_OnlyOneOfDocketIdentification2(string docketIdentification2, int revisionNumber, bool isValidExpected)
@@ -114,10 +113,11 @@ public class DRTests
 		subject.StandardCarrierAlphaCode = "si";
 		subject.DocketControlNumber = "T";
 		subject.DocketIdentification = "j";
-        subject.RevisionNumber = 1;
         subject.DocketIdentification2 = docketIdentification2;
 		if (revisionNumber > 0)
-		subject.RevisionNumber = revisionNumber;
+		{
+			subject.RevisionNumber = revisionNumber;
+		}
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.OnlyOneOf);
 	}

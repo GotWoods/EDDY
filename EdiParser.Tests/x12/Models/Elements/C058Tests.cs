@@ -98,6 +98,13 @@ public class C058Tests
         subject.IndustryCode4 = industryCode4;
         subject.IndustryCode3 = industryCode3;
 
+        if (subject.IndustryCode3 != "")
+        {
+            subject.IndustryCode2 = "A";
+            subject.IndustryCode = "A";
+            subject.CodeListQualifierCode = "A";
+        }
+
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
     }
 
@@ -111,6 +118,14 @@ public class C058Tests
         subject.ClaimAdjustmentReasonCode = "s";
         subject.IndustryCode5 = industryCode5;
         subject.IndustryCode4 = industryCode4;
+
+        if (subject.IndustryCode4 != "")
+        {
+            subject.IndustryCode3 = "A";
+            subject.IndustryCode2 = "A";
+            subject.IndustryCode = "A";
+            subject.CodeListQualifierCode = "A";
+        }
 
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
     }
