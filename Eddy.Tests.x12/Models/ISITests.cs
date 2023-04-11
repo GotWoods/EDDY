@@ -16,7 +16,7 @@ public class ISITests
 			CodeListQualifierCode = "S",
 			IndustryCode = "7",
 			LevelOfIndividualTestOrCourseCode = "Fr",
-			CompositeRaceOrEthnicityInformation = "",
+			CompositeRaceOrEthnicityInformation = null,
 			Quantity = 6,
 			YesNoConditionOrResponseCode = "J",
 		};

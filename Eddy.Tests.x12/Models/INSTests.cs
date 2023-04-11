@@ -18,7 +18,7 @@ public class INSTests
 			MaintenanceTypeCode = "L8T",
 			MaintenanceReasonCode = "tM",
 			BenefitStatusCode = "s",
-			MedicareStatusCode = "",
+			MedicareStatusCode = null,
 			ConsolidatedOmnibusBudgetReconciliationActCOBRAQualifyingEventCode = "T",
 			EmploymentStatusCode = "WX",
 			StudentStatusCode = "E",

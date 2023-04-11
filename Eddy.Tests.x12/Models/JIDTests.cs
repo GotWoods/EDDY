@@ -16,7 +16,7 @@ public class JIDTests
 			ProductServiceIDQualifier = "EN",
 			ProductServiceID = "I",
 			Quantity = 2,
-			CompositeUnitOfMeasure = "",
+			CompositeUnitOfMeasure = null,
 			ProductServiceConditionCode = "yc",
 			MonetaryAmount = 9,
 		};
