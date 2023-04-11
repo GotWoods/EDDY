@@ -209,14 +209,14 @@ public class CodeGenerator
         var sb = new StringBuilder();
         if (parseType == ParseType.x12Segment || parseType == ParseType.x12Element)
         {
-            sb.AppendLine("using EdiParser.Attributes;");
-            sb.AppendLine("using EdiParser.Validation;");
-            sb.AppendLine("using EdiParser.x12.Internals;");
+            sb.AppendLine("using Eddy.Core.Attributes;");
+            sb.AppendLine("using Eddy.Core.Validation;");
+            sb.AppendLine("using Eddy.x12.Internals;");
             sb.AppendLine();
             if (parseType == ParseType.x12Element)
-                sb.AppendLine("namespace EdiParser.x12.Models.Elements;");
+                sb.AppendLine("namespace Eddy.x12.Models.Elements;");
             else
-                sb.AppendLine("namespace EdiParser.x12.Models;");
+                sb.AppendLine("namespace Eddy.x12.Models;");
             sb.AppendLine();
             sb.AppendLine($"[Segment(\"{segmentType}\")]");
             sb.Append($"public class {className} : ");
@@ -292,11 +292,11 @@ public class CodeGenerator
       
 
         var sbTest = new StringBuilder();
-        sbTest.AppendLine("using EdiParser.Validation;");
-        sbTest.AppendLine("using EdiParser.x12.Mapping;");
-        sbTest.AppendLine("using EdiParser.x12.Models;");
+        sbTest.AppendLine("using Eddy.Core.Validation;");
+        sbTest.AppendLine("using Eddy.x12.Mapping;");
+        sbTest.AppendLine("using Eddy.x12.Models;");
         sbTest.AppendLine();
-        sbTest.AppendLine("namespace EdiParser.Tests.x12.Models;");
+        sbTest.AppendLine("namespace Eddy.Tests.x12.Models;");
         sbTest.AppendLine();
         sbTest.AppendLine($"public class {segmentType}Tests");
         sbTest.AppendLine("{");
