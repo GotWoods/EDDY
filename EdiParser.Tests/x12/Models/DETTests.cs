@@ -50,6 +50,8 @@ public class DETTests
 		subject.ReferenceIdentification = referenceIdentification;
 		subject.NameLastOrOrganizationName = nameLastOrOrganizationName;
 
+		subject.Description = "AB";
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 

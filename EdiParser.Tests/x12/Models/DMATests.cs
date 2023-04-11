@@ -75,6 +75,9 @@ public class DMATests
 		subject.LanguageCode = languageCode;
 		subject.CountryCode = countryCode;
 
+		if (countryCode != "")
+			subject.CodeForLicensingCertificationRegistrationOrAccreditationAgency = "AB";
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
@@ -88,6 +91,11 @@ public class DMATests
 		subject.StatusCode = statusCode;
 		subject.ReferenceIdentification2 = referenceIdentification2;
 
+		if (referenceIdentification2 != "")
+		{
+			subject.ReferenceIdentification2 = "AB";
+			subject.StateOrProvinceCode2 = "FA";
+		}
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 

@@ -26,7 +26,3 @@ public class CPI_ClaimantPaymentInformation : EdiX12Segment
 		return validator.Results;
 	}
 }
-
-class CpiClaimantPaymentInformation : CPI_ClaimantPaymentInformation
-{
-}

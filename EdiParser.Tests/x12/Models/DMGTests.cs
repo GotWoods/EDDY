@@ -18,7 +18,7 @@ public class DMGTests
 			DateTimePeriod = "p",
 			GenderCode = "Y",
 			MaritalStatusCode = "b",
-			CompositeRaceOrEthnicityInformation = new C056_CompositeRaceOrEthnicityInformation(),
+			CompositeRaceOrEthnicityInformation = null,
 			CitizenshipStatusCode = "c",
 			CountryCode = "GK",
 			BasisOfVerificationCode = "4",
@@ -57,12 +57,15 @@ public class DMGTests
 		subject.CodeListQualifierCode = codeListQualifierCode;
 		subject.IndustryCode = industryCode;
 
+		if (industryCode != "")
+			subject.CompositeRaceOrEthnicityInformation = new C056_CompositeRaceOrEthnicityInformation();
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 
 	[Theory]
 	[InlineData("", "", true)]
-	[InlineData("", "", true)]
+	[InlineData("", "AB", true)]
 	[InlineData("p", "", false)]
 	public void Validation_ARequiresBIndustryCode(string industryCode, string compositeRaceOrEthnicityInformation, bool isValidExpected)
 	{
@@ -70,7 +73,8 @@ public class DMGTests
 		subject.IndustryCode = industryCode;
 		if (industryCode != "")
 			subject.CodeListQualifierCode = "A";
-		subject.CompositeRaceOrEthnicityInformation = new C056_CompositeRaceOrEthnicityInformation() { RaceOrEthnicityCode = compositeRaceOrEthnicityInformation };
+		if (compositeRaceOrEthnicityInformation != "")
+		    subject.CompositeRaceOrEthnicityInformation = new C056_CompositeRaceOrEthnicityInformation() { RaceOrEthnicityCode = compositeRaceOrEthnicityInformation };
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}

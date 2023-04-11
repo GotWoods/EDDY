@@ -16,7 +16,7 @@ public class EBTests
 		{
 			EligibilityOrBenefitInformationCode = "9",
 			CoverageLevelCode = "JuV",
-			ServiceType = new C064_ServiceType(),
+			ServiceType = null,
 			InsuranceProductCode = "w",
 			PlanCoverageDescription = "X",
 			TimePeriodQualifier = "P",
@@ -26,11 +26,11 @@ public class EBTests
 			Quantity = 7,
 			YesNoConditionOrResponseCode = "y",
 			NetworkIndicatorCode = "M",
-			CompositeMedicalProcedureIdentifier = new C003_CompositeMedicalProcedureIdentifier(),
+			CompositeMedicalProcedureIdentifier = null,
 			DiagnosisCodePointer = 2,
 			YesNoConditionOrResponseCode2 = "o",
 			HealthCareServicesReviewRequirementCode = "a",
-			HealthCareCodeInformation = new C022_HealthCareCodeInformation(),
+			HealthCareCodeInformation = null,
 		};
 
 		var actual = Map.MapObject<EB_EligibilityOrBenefitInformation>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);

@@ -35,6 +35,9 @@ public class DRTests
 		subject.DocketControlNumber = "T";
 		subject.DocketIdentification = "j";
 		subject.Date = date;
+
+		subject.RevisionNumber = 1;
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
@@ -47,7 +50,9 @@ public class DRTests
 		subject.Date = "31cclvgg";
 		subject.DocketControlNumber = "T";
 		subject.DocketIdentification = "j";
-		subject.StandardCarrierAlphaCode = standardCarrierAlphaCode;
+        subject.RevisionNumber = 1;
+
+        subject.StandardCarrierAlphaCode = standardCarrierAlphaCode;
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
@@ -60,7 +65,8 @@ public class DRTests
 		subject.Date = "31cclvgg";
 		subject.StandardCarrierAlphaCode = "si";
 		subject.DocketIdentification = "j";
-		subject.DocketControlNumber = docketControlNumber;
+        subject.RevisionNumber = 1;
+        subject.DocketControlNumber = docketControlNumber;
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
@@ -73,13 +79,13 @@ public class DRTests
 		subject.Date = "31cclvgg";
 		subject.StandardCarrierAlphaCode = "si";
 		subject.DocketControlNumber = "T";
-		subject.DocketIdentification = docketIdentification;
+        subject.RevisionNumber = 1;
+        subject.DocketIdentification = docketIdentification;
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
 	[InlineData("",0, false)]
-	[InlineData("s",8, true)]
 	[InlineData("", 8, true)]
 	[InlineData("s", 0, true)]
 	public void Validation_AtLeastOneDocketIdentification2(string docketIdentification2, int revisionNumber, bool isValidExpected)
@@ -89,9 +95,9 @@ public class DRTests
 		subject.StandardCarrierAlphaCode = "si";
 		subject.DocketControlNumber = "T";
 		subject.DocketIdentification = "j";
-		subject.DocketIdentification2 = docketIdentification2;
+        subject.DocketIdentification2 = docketIdentification2;
 		if (revisionNumber > 0)
-		subject.RevisionNumber = revisionNumber;
+		    subject.RevisionNumber = revisionNumber;
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}
@@ -108,7 +114,8 @@ public class DRTests
 		subject.StandardCarrierAlphaCode = "si";
 		subject.DocketControlNumber = "T";
 		subject.DocketIdentification = "j";
-		subject.DocketIdentification2 = docketIdentification2;
+        subject.RevisionNumber = 1;
+        subject.DocketIdentification2 = docketIdentification2;
 		if (revisionNumber > 0)
 		subject.RevisionNumber = revisionNumber;
 

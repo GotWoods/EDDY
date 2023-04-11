@@ -16,7 +16,7 @@ public class DRATests
 		{
 			Description = "b",
 			CertificationTypeCode = "I",
-			CompositeMedicalProcedureIdentifier = new C003_CompositeMedicalProcedureIdentifier(),
+			CompositeMedicalProcedureIdentifier = null,
 			UnitOrBasisForMeasurementCode = "TS",
 			Quantity = 7,
 			FreeFormMessageText = "o",
@@ -26,7 +26,7 @@ public class DRATests
 			Date = "eqXDRJ99",
 			FreeFormMessageText2 = "G",
 			Quantity2 = 7,
-			QuestionAndAnswer = new C060_QuestionAndAnswer(),
+			QuestionAndAnswer = null,
 			DosageFormCode = "8W",
 			FreeFormMessageText3 = "0",
 		};

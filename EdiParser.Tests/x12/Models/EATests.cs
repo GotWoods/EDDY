@@ -14,7 +14,7 @@ public class EATests
 		var expected = new EA_EquipmentAttributes()
 		{
 			EquipmentAttributeCode = "uP",
-			CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure(),
+			CompositeUnitOfMeasure = null,
 			Quantity = 1,
 		};
 

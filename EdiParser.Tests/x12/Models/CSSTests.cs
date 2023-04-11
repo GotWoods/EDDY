@@ -14,7 +14,7 @@ public class CSSTests
 		var expected = new CSS_ConditionalSamplingSequence()
 		{
 			SamplingSequenceQualifier = "B6",
-			CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure(),
+			CompositeUnitOfMeasure = null,
 			SamplingSequenceValue = 2,
 			SamplingSequenceValue2 = 3,
 			SamplingSequenceValue3 = 1,
@@ -40,7 +40,7 @@ public class CSSTests
 
 	[Theory]
 	[InlineData("", false)]
-	[InlineData("", true)]
+	[InlineData("AA", true)]
 	public void Validatation_RequiredCompositeUnitOfMeasure(string compositeUnitOfMeasure, bool isValidExpected)
 	{
 		var subject = new CSS_ConditionalSamplingSequence();

@@ -14,12 +14,12 @@ public class CTXTests
 
 		var expected = new CTX_Context()
 		{
-			ContextIdentification = new C998_ContextIdentification(),
+			ContextIdentification = null,
 			SegmentIDCode = "34",
 			SegmentPositionInTransactionSet = 6,
 			LoopIdentifierCode = "0",
-			PositionInSegment = new C030_PositionInSegment(),
-			ReferenceInSegment = new C999_ReferenceInSegment(),
+			PositionInSegment = null,
+			ReferenceInSegment = null,
 		};
 
 		var actual = Map.MapObject<CTX_Context>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
