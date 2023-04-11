@@ -10,7 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EdiParser\EdiParser.csproj" />
+    <ProjectReference Include="..\Eddy.Core\Eddy.Core.csproj" />
+    <ProjectReference Include="..\EdiParser\Eddy.Core.csproj" />
   </ItemGroup>
 
 </Project>
