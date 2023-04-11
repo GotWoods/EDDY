@@ -1,13 +1,12 @@
 ﻿using Eddy.Core;
-using EdiFact.Mapping;
-using EdiParser.x12;
-using EdiParser.x12.DomainModels;
-using EdiParser.x12.DomainModels._204;
-using EdiParser.x12.Internals;
-using EdiParser.x12.Models;
+using Eddy.x12;
+using Eddy.x12.DomainModels._8020;
+using Eddy.x12.DomainModels._8020._204;
+using Eddy.x12.Internals;
+using Eddy.x12.Models;
 using Xunit.Abstractions;
 
-namespace EdiParser.Tests.x12.Beta;
+namespace Eddy.Tests.x12.Beta;
 
 public partial class DomainMapperTests
 {

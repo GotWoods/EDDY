@@ -1,4 +1,4 @@
-namespace EdiParser.ClassGenerator.Lib;
+namespace Eddy.ClassGenerator.Lib;
 
 public enum ParseType
 {

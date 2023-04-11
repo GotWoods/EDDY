@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace EdiParser.ClassGenerator.Lib;
+namespace Eddy.ClassGenerator.Lib;
 
 public class ValidationData
 {

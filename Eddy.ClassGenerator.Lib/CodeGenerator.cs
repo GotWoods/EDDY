@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 using Eddy.Core.Validation;
 using HtmlAgilityPack;
 
-namespace EdiParser.ClassGenerator.Lib;
+namespace Eddy.ClassGenerator.Lib;
 
 public class CodeGenerator
 {

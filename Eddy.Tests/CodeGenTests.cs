@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
+using Eddy.ClassGenerator.Lib;
 using Eddy.Core.Attributes;
-using EdiParser.ClassGenerator.Lib;
 
 namespace Eddy.Tests
 {

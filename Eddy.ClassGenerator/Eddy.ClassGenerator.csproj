@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EdiParser.ClassGenerator.Lib\EdiParser.ClassGenerator.Lib.csproj" />
+    <ProjectReference Include="..\Eddy.ClassGenerator.Lib\Eddy.ClassGenerator.Lib.csproj" />
   </ItemGroup>
 
 </Project>

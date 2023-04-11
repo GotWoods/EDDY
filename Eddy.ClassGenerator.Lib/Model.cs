@@ -1,9 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EdiParser.ClassGenerator.Lib;
+namespace Eddy.ClassGenerator.Lib;
 
 public class Model
 {

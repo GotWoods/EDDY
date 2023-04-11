@@ -1,8 +1,8 @@
-using EdiParser.ClassGenerator.Lib;
+using Eddy.ClassGenerator.Lib;
 using HtmlAgilityPack;
 using PuppeteerSharp;
 
-namespace EdiParser.ClassGenerator;
+namespace Eddy.ClassGenerator;
 
 public partial class Form1 : Form
 {

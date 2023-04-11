@@ -1,4 +1,4 @@
-namespace EdiParser.ClassGenerator
+namespace Eddy.ClassGenerator
 {
     internal static class Program
     {
