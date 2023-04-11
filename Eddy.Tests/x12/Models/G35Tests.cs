@@ -23,10 +23,10 @@ public class G35Tests
 	}
 
 	[Theory]
-	[InlineData(0,"", true)]
-	[InlineData(7, "GM", false)]
-	[InlineData(0,"GM", true)]
-	[InlineData(7, "", true)]
+	[InlineData(0,"", "",true)]
+	[InlineData(7, "GM", "", true)]
+	[InlineData(0,"GM","", false)]
+	[InlineData(7, "", "GM",true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_MonetaryAmount(decimal monetaryAmount, string promotionConditionCode, string couponTypeCode, bool isValidExpected)
 	{
 		var subject = new G35_AdvertisingFeatureInformation();
