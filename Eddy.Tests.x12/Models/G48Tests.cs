@@ -39,6 +39,13 @@ public class G48Tests
 		subject.InvoiceNumber = invoiceNumber;
 		subject.Date = date;
 
+		if (invoiceNumber == "")
+		{
+			subject.ReferenceIdentificationQualifier = "AB";
+			subject.ReferenceIdentification = "AB";
+		}
+
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 

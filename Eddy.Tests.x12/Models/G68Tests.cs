@@ -41,7 +41,8 @@ public class G68Tests
 	{
 		var subject = new G68_LineItemDetailProduct();
 		subject.UnitOrBasisForMeasurementCode = "h6";
-		if (quantity > 0)
+        subject.UPCCaseCode = "123456789012";
+        if (quantity > 0)
 		subject.Quantity = quantity;
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
@@ -53,7 +54,8 @@ public class G68Tests
 	{
 		var subject = new G68_LineItemDetailProduct();
 		subject.Quantity = 8;
-		subject.UnitOrBasisForMeasurementCode = unitOrBasisForMeasurementCode;
+        subject.UPCCaseCode = "123456789012";
+        subject.UnitOrBasisForMeasurementCode = unitOrBasisForMeasurementCode;
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
@@ -70,6 +72,10 @@ public class G68Tests
 		subject.UPCCaseCode = uPCCaseCode;
 		subject.ProductServiceIDQualifier = productServiceIDQualifier;
 
+		if (subject.ProductServiceIDQualifier != "")
+        {
+			subject.ProductServiceID = "AB";
+        }
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}
 
@@ -82,7 +88,8 @@ public class G68Tests
 	{
 		var subject = new G68_LineItemDetailProduct();
 		subject.Quantity = 8;
-		subject.UnitOrBasisForMeasurementCode = "h6";
+        subject.UPCCaseCode = "123456789012";
+        subject.UnitOrBasisForMeasurementCode = "h6";
 		subject.ProductServiceIDQualifier = productServiceIDQualifier;
 		subject.ProductServiceID = productServiceID;
 
@@ -99,7 +106,8 @@ public class G68Tests
 		var subject = new G68_LineItemDetailProduct();
 		subject.Quantity = 8;
 		subject.UnitOrBasisForMeasurementCode = "h6";
-		subject.ProductServiceIDQualifier2 = productServiceIDQualifier2;
+        subject.UPCCaseCode = "123456789012";
+        subject.ProductServiceIDQualifier2 = productServiceIDQualifier2;
 		subject.ProductServiceID2 = productServiceID2;
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
@@ -115,7 +123,8 @@ public class G68Tests
 		var subject = new G68_LineItemDetailProduct();
 		subject.Quantity = 8;
 		subject.UnitOrBasisForMeasurementCode = "h6";
-		subject.QuantityCost = quantityCost;
+        subject.UPCCaseCode = "123456789012";
+        subject.QuantityCost = quantityCost;
 		subject.UnitOrBasisForMeasurementCode2 = unitOrBasisForMeasurementCode2;
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
