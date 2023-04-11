@@ -136,7 +136,7 @@ public class CodeGenerator
         return input.Replace("/", "").Replace(" ", "").Replace("-", "").Replace(",", "").Replace("(", "").Replace(")", "").Replace("'", "").Replace(".", "");
     }
 
-    public (string Code, string Test) ParseData(HtmlNode document, ParseType parseType)
+    public (string Code, string Test, string codeClassName) ParseData(HtmlNode document, ParseType parseType)
     {
         var textInfo = new CultureInfo("en-US", false).TextInfo;
 
@@ -441,7 +441,7 @@ public class CodeGenerator
             }
         }
         sbTest.AppendLine("}");
-        return (Code: sb.ToString(), Test: sbTest.ToString());
+        return (Code: sb.ToString(), Test: sbTest.ToString(), codeClassName: className);
     }
 
     private string GenerateInlineDataValue(Model item, bool generateBlankDefault)

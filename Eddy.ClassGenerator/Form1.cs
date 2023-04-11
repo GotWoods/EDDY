@@ -109,7 +109,7 @@ public partial class Form1 : Form
             var results = generator.ParseData(newNode2, ParseType.x12Segment);
             counter++;
 
-            File.WriteAllText(modelPath + "\\" + type + "_new.cs", results.Code);
+            File.WriteAllText(modelPath + "\\" + results.codeClassName + ".cs", results.Code);
             File.WriteAllText(testPath + "\\" + type + "Tests.cs", results.Test);
 
 
