@@ -6,10 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DomainModels\4010\830\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Eddy.Core\Eddy.Core.csproj" />
   </ItemGroup>
 
