@@ -40,10 +40,10 @@ public class PO3Tests
 	}
 
 	[Theory]
-	[InlineData(0,"", true)]
-	[InlineData(1, "Hnw", true)]
-	[InlineData(0,"Hnw", true)]
-	[InlineData(1, "", true)]
+	[InlineData(0,"", "", true)]
+	[InlineData(1, "Hnw", "", true)]
+	[InlineData(0, "Hnw", "", true)]
+	[InlineData(1, "", "", true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_UnitPrice(decimal unitPrice, string priceIdentifierCode, string basisOfUnitPriceCode, bool isValidExpected)
 	{
 		var subject = new PO3_AdditionalItemDetail();

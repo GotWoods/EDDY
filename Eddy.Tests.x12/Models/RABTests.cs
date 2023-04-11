@@ -30,10 +30,10 @@ public class RABTests
 	}
 
 	[Theory]
-	[InlineData("","", true)]
-	[InlineData("K", "UK", true)]
-	[InlineData("","UK", true)]
-	[InlineData("K", "", true)]
+	[InlineData("","", 0, true)]
+	[InlineData("K", "UK", 0, true)]
+	[InlineData("", "UK", 0, true)]
+	[InlineData("K", "", 0, true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_MinimumWeightLogic(string minimumWeightLogic, string rateValueQualifier2, int percentIntegerFormat, bool isValidExpected)
 	{
 		var subject = new RAB_RateOrMinimumQualifiers();

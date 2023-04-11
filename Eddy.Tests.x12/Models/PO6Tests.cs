@@ -13,7 +13,7 @@ public class PO6Tests
 
 		var expected = new PO6_NonPackagedItemPhyscialDetails()
 		{
-			CompositeProductWeightBasis = "",
+			CompositeProductWeightBasis = null,
 			Length = 5,
 			UnitOrBasisForMeasurementCode = "Ck",
 			Width = 9,

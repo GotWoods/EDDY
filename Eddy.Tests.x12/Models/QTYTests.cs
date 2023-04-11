@@ -15,7 +15,7 @@ public class QTYTests
 		{
 			QuantityQualifier = "n0",
 			Quantity = 3,
-			CompositeUnitOfMeasure = "",
+			CompositeUnitOfMeasure = null,
 			FreeFormInformation = "c",
 		};
 

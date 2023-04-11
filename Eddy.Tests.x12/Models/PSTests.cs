@@ -56,10 +56,10 @@ public class PSTests
 	}
 
 	[Theory]
-	[InlineData("",0, true)]
-	[InlineData("9j", 3, true)]
-	[InlineData("",3, true)]
-	[InlineData("9j", 0, true)]
+	[InlineData("",0, 0, true)]
+	[InlineData("9j", 3, 0, true)]
+	[InlineData("",3, 0, true)]
+	[InlineData("9j", 0, 0, true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_UnitOrBasisForMeasurementCode(string unitOrBasisForMeasurementCode, decimal temperature, decimal temperature2, bool isValidExpected)
 	{
 		var subject = new PS_ProtectiveServiceInstructions();

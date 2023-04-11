@@ -24,7 +24,7 @@ public class PRCTests
 			YesNoConditionOrResponseCode = "T",
 			QuantityQualifier = "0f",
 			Quantity = 8,
-			CompositeUnitOfMeasure = "",
+			CompositeUnitOfMeasure = null,
 		};
 
 		var actual = Map.MapObject<PRC_PaymentRateChange>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);

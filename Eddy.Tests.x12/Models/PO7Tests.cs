@@ -14,7 +14,7 @@ public class PO7Tests
 		var expected = new PO7_GiftContainerPhysicalDetails()
 		{
 			PackagingCode = "bxh",
-			CompositeProductWeightBasis = "",
+			CompositeProductWeightBasis = null,
 			Length = 9,
 			UnitOrBasisForMeasurementCode = "aR",
 			Width = 8,

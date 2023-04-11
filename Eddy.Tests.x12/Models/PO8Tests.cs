@@ -18,7 +18,7 @@ public class PO8Tests
 			Size = 3,
 			UnitOrBasisForMeasurementCode = "Fr",
 			PackagingCode = "ypt",
-			CompositeProductWeightBasis = "",
+			CompositeProductWeightBasis = null,
 			GrossVolumePerPack = 9,
 			UnitOrBasisForMeasurementCode2 = "CM",
 			Length = 9,

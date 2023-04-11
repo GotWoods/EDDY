@@ -139,10 +139,10 @@ public class PO4Tests
 	}
 
 	[Theory]
-	[InlineData("",0, true)]
-	[InlineData("Bg", 9, true)]
-	[InlineData("",9, true)]
-	[InlineData("Bg", 0, true)]
+	[InlineData("",0, 0, 0, true)]
+	[InlineData("Bg", 9, 0, 0, true)]
+	[InlineData("", 9, 0, 0, true)]
+	[InlineData("Bg", 0, 0, 0, true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_UnitOrBasisForMeasurementCode4(string unitOrBasisForMeasurementCode4, decimal length, decimal width, decimal height, bool isValidExpected)
 	{
 		var subject = new PO4_ItemPhysicalDetails();

@@ -15,7 +15,7 @@ public class PDSTests
 		{
 			PropertyDescriptionQualifier = "1T",
 			FreeFormMessageText = "x",
-			ReferenceIdentifier = "",
+			ReferenceIdentifier = null,
 		};
 
 		var actual = Map.MapObject<PDS_PropertyDescriptionLegalDescription>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);

@@ -17,7 +17,7 @@ public class PRVTests
 			ReferenceIdentificationQualifier = "gM",
 			ReferenceIdentification = "L",
 			StateOrProvinceCode = "p3",
-			ProviderSpecialtyInformation = "",
+			ProviderSpecialtyInformation = null,
 			ProviderOrganizationCode = "0fZ",
 		};
 

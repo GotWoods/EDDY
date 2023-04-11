@@ -140,10 +140,10 @@ public class PKLTests
 	}
 
 	[Theory]
-	[InlineData("",0, true)]
-	[InlineData("Wq", 4, true)]
-	[InlineData("",4, true)]
-	[InlineData("Wq", 0, true)]
+	[InlineData("",0, 0, 0, true)]
+	[InlineData("Wq", 4, 0, 0, true)]
+	[InlineData("",4, 0, 0, true)]
+	[InlineData("Wq", 0, 0, 0, true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_UnitOrBasisForMeasurementCode2(string unitOrBasisForMeasurementCode2, decimal height, decimal width, decimal itemDepth, bool isValidExpected)
 	{
 		var subject = new PKL_MultiPackConfiguration();

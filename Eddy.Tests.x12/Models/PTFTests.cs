@@ -16,7 +16,7 @@ public class PTFTests
 			AmountQualifierCode = "i",
 			MonetaryAmount = 4,
 			FrequencyCode = "r",
-			CompositeUnitOfMeasure = "",
+			CompositeUnitOfMeasure = null,
 			EntityIdentifierCode = "od",
 			TaxTypeCode = "mo",
 			TaxExemptCode = "T",

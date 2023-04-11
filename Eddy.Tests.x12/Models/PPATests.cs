@@ -99,10 +99,10 @@ public class PPATests
 	}
 
 	[Theory]
-	[InlineData("","", true)]
-	[InlineData("I", "dNxHumv", true)]
-	[InlineData("","dNxHumv", true)]
-	[InlineData("I", "", true)]
+	[InlineData("","", 0, true)]
+	[InlineData("I", "dNxHumv", 0, true)]
+	[InlineData("", "dNxHumv", 0, true)]
+	[InlineData("I", "", 0, true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_DirectionIdentifierCode(string directionIdentifierCode, string longitudeCode, decimal longitudeDecimalFormat, bool isValidExpected)
 	{
 		var subject = new PPA_PropertyLocation();
@@ -150,10 +150,10 @@ public class PPATests
 	}
 
 	[Theory]
-	[InlineData("","", true)]
-	[InlineData("A", "jRxe53N", true)]
-	[InlineData("","jRxe53N", true)]
-	[InlineData("A", "", true)]
+	[InlineData("", "", 0, true)]
+	[InlineData("A", "jRxe53N", 0, true)]
+	[InlineData("", "jRxe53N", 0, true)]
+	[InlineData("A", "", 0, true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_DirectionIdentifierCode2(string directionIdentifierCode2, string latitudeCode, decimal latitudeDecimalFormat, bool isValidExpected)
 	{
 		var subject = new PPA_PropertyLocation();

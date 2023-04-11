@@ -31,7 +31,7 @@ public class PO5Tests
 			AssignedIdentification = "5",
 			AssignedIdentification2 = "x",
 			Number = 1,
-			CompositeProductWeightBasis = "",
+			CompositeProductWeightBasis = null,
 			TareWeight = 124,
 			UnitOrBasisForMeasurementCode6 = "ti",
 			Quantity = 7,

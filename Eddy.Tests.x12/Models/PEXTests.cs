@@ -20,7 +20,7 @@ public class PEXTests
 			YesNoConditionOrResponseCode = "S",
 			EntityIdentifierCode = "6Z",
 			TaxExemptCode = "A",
-			CompositeUnitOfMeasure = "",
+			CompositeUnitOfMeasure = null,
 		};
 
 		var actual = Map.MapObject<PEX_PropertyOrHousingExpense>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
