@@ -48,7 +48,7 @@ public partial class Form1 : Form
 
     private List<string> GetExistingFiles()
     {
-        var path = projectBasePath + @"EdiParser\x12\Models";
+        var path = projectBasePath + @"Eddy.x12\Models";
         var results = new List<string>();
         foreach (var file in Directory.GetFiles(path))
             if (file.IndexOf("_") > -1)
