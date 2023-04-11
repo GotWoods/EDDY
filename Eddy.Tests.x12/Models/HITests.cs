@@ -38,7 +38,8 @@ public class HITests
 	public void Validation_RequiredHealthCareCodeInformation(string healthCareCodeInformation, bool isValidExpected)
 	{
 		var subject = new HI_HealthCareInformationCodes();
-		subject.HealthCareCodeInformation = new C022_HealthCareCodeInformation() { CodeListQualifierCode = healthCareCodeInformation };
+		if (healthCareCodeInformation != "")
+		    subject.HealthCareCodeInformation = new C022_HealthCareCodeInformation() { CodeListQualifierCode = healthCareCodeInformation };
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 

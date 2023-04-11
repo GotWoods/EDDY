@@ -36,6 +36,9 @@ public class HPLTests
 		subject.ReferenceIdentificationQualifier = referenceIdentificationQualifier;
 		subject.ReferenceIdentification = referenceIdentification;
 
+		if (referenceIdentification == "")
+			subject.CodeForLicensingCertificationRegistrationOrAccreditationAgency = "AA";
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 
@@ -50,7 +53,13 @@ public class HPLTests
 		subject.ReferenceIdentification = referenceIdentification;
 		subject.CodeForLicensingCertificationRegistrationOrAccreditationAgency = codeForLicensingCertificationRegistrationOrAccreditationAgency;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
+		if (referenceIdentification != "")
+			subject.ReferenceIdentificationQualifier = "AA";
+
+        if (referenceIdentification == "")
+            subject.CodeForLicensingCertificationRegistrationOrAccreditationAgency = "AA";
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}
 
 }

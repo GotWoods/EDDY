@@ -38,8 +38,13 @@ public class GR4Tests
 		var subject = new GR4_LoadingCluster();
 		subject.EquipmentDescriptionCode = "s6";
 		subject.EquipmentUseCode = "j";
-		subject.ConfigurationTypeCode = configurationTypeCode;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+        subject.LocationIdentifier = "AB";
+        subject.LocationQualifier = "AB";
+        subject.EquipmentInitial = "AA";
+        subject.ConfigurationTypeCode = configurationTypeCode;
+		subject.EquipmentNumber = "AB";
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
@@ -51,7 +56,12 @@ public class GR4Tests
 		subject.ConfigurationTypeCode = "c";
 		subject.EquipmentUseCode = "j";
 		subject.EquipmentDescriptionCode = equipmentDescriptionCode;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+
+        subject.LocationIdentifier = "AB";
+        subject.LocationQualifier = "AB";
+        subject.EquipmentInitial = "AA";
+        subject.EquipmentNumber = "AB";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
@@ -63,7 +73,12 @@ public class GR4Tests
 		subject.ConfigurationTypeCode = "c";
 		subject.EquipmentDescriptionCode = "s6";
 		subject.EquipmentUseCode = equipmentUseCode;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+
+        subject.LocationIdentifier = "AB";
+        subject.LocationQualifier = "AB";
+        subject.EquipmentInitial = "AA";
+        subject.EquipmentNumber = "AB";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
@@ -80,7 +95,13 @@ public class GR4Tests
 		subject.ReferenceIdentification = referenceIdentification;
 		subject.EquipmentInitial = equipmentInitial;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
+        subject.LocationIdentifier = "AB";
+        subject.LocationQualifier = "AB";
+
+		if (equipmentInitial != "")
+			subject.EquipmentNumber = "AB";
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}
 
 	[Theory]
@@ -97,7 +118,13 @@ public class GR4Tests
 		subject.EquipmentInitial = equipmentInitial;
 		subject.EquipmentNumber = equipmentNumber;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
+        subject.LocationIdentifier = "AB";
+        subject.LocationQualifier = "AB";
+		subject.ReferenceIdentification = "AB";
+
+		
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 
 	[Theory]
@@ -113,8 +140,16 @@ public class GR4Tests
 		subject.EquipmentUseCode = "j";
 		subject.LocationQualifier = locationQualifier;
 		subject.LocationIdentifier = locationIdentifier;
+        subject.EquipmentInitial = "AA";
+        subject.EquipmentNumber = "AA";
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
+		if (locationIdentifier == "")
+        {
+			subject.CityName = "AB";
+			subject.StateOrProvinceCode = "AB";
+        }
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 
 	[Theory]
@@ -130,8 +165,18 @@ public class GR4Tests
 		subject.EquipmentUseCode = "j";
 		subject.LocationIdentifier = locationIdentifier;
 		subject.CityName = cityName;
+        subject.EquipmentInitial = "AA";
+		subject.EquipmentNumber = "AA";
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
+        if (cityName != "")
+        {
+            subject.StateOrProvinceCode = "AB";
+        }
+
+		if (locationIdentifier != "")
+			subject.LocationQualifier = "AB";
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}
 
 	[Theory]
@@ -148,7 +193,16 @@ public class GR4Tests
 		subject.CityName = cityName;
 		subject.StateOrProvinceCode = stateOrProvinceCode;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
+        subject.LocationIdentifier = "AB";
+        subject.LocationQualifier = "AB";
+		subject.EquipmentInitial = "AA";
+		subject.EquipmentNumber = "AA";
+
+		if (cityName != "")
+        {
+			subject.StateOrProvinceCode = "AB";
+        }
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 
 	[Theory]
@@ -164,7 +218,15 @@ public class GR4Tests
 		subject.CountryCode = countryCode;
 		subject.StateOrProvinceCode = stateOrProvinceCode;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
+        subject.LocationIdentifier = "AB";
+        subject.LocationQualifier = "AB";
+        subject.EquipmentInitial = "AA";
+        subject.EquipmentNumber = "AA";
+
+		if (stateOrProvinceCode != "")
+			subject.CityName = "AB";
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
 }

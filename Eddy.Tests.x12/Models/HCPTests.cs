@@ -58,7 +58,7 @@ public class HCPTests
 		var subject = new HCP_HealthCarePricing();
 		subject.ProductServiceIDQualifier = productServiceIDQualifier;
 		subject.ProductServiceID2 = productServiceID2;
-
+		subject.PricingMethodologyCode = "AA";
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 
@@ -73,8 +73,8 @@ public class HCPTests
 		subject.UnitOrBasisForMeasurementCode = unitOrBasisForMeasurementCode;
 		if (quantity > 0)
 		subject.Quantity = quantity;
-
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
+        subject.PricingMethodologyCode = "AA";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 
 }

@@ -38,7 +38,10 @@ public class GR2Tests
 	{
 		var subject = new GR2_TrainData();
 		subject.StandardCarrierAlphaCode = standardCarrierAlphaCode;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+        subject.LocationIdentifier = "AB";
+        subject.LocationQualifier = "AB";
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
@@ -53,6 +56,8 @@ public class GR2Tests
 		subject.LocationQualifier = locationQualifier;
 		subject.LocationIdentifier = locationIdentifier;
 
+		subject.CityName = "AB";
+		subject.StateOrProvinceCode = "AB";
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 
@@ -68,7 +73,14 @@ public class GR2Tests
 		subject.LocationIdentifier = locationIdentifier;
 		subject.CityName = cityName;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
+		if (cityName != "")
+			subject.StateOrProvinceCode = "AB";
+
+		if (locationIdentifier!="")
+            subject.LocationQualifier = "AB";
+
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}
 
 	[Theory]
@@ -82,6 +94,9 @@ public class GR2Tests
 		subject.StandardCarrierAlphaCode = "Jb";
 		subject.CityName = cityName;
 		subject.StateOrProvinceCode = stateOrProvinceCode;
+
+		subject.LocationIdentifier = "AB";
+		subject.LocationQualifier = "AB";
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}

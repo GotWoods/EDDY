@@ -46,7 +46,8 @@ public class GDPTests
 	{
 		var subject = new GDP_GeneralDosingParameters();
 		subject.MeasurementValue = 8;
-		subject.CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure() { UnitOrBasisForMeasurementCode = compositeUnitOfMeasure };
+		if (compositeUnitOfMeasure != "")
+		    subject.CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure() { UnitOrBasisForMeasurementCode = compositeUnitOfMeasure };
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 

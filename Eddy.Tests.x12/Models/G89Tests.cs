@@ -57,7 +57,11 @@ public class G89Tests
 		subject.UPCEANConsumerPackageCode = uPCEANConsumerPackageCode;
 		subject.ProductServiceID = productServiceID;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.OnlyOneOf);
+        if (productServiceID != "")
+            subject.ProductServiceIDQualifier = "AB";
+
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.OnlyOneOf);
 	}
 
 	[Theory]
@@ -86,6 +90,9 @@ public class G89Tests
 		subject.DirectStoreDeliverySequenceNumber = 6;
 		subject.UPCCaseCode = uPCCaseCode;
 		subject.ProductServiceID2 = productServiceID2;
+
+		if (productServiceID2 != "")
+			subject.ProductServiceIDQualifier2 = "AB";
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.OnlyOneOf);
 	}

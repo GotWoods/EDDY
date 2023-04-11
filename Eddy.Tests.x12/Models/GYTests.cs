@@ -84,6 +84,9 @@ public class GYTests
 		subject.LocationIdentifier2 = locationIdentifier2;
 		subject.LocationIdentifier = locationIdentifier;
 
+		if (locationIdentifier != "")
+			subject.LocationQualifier = "AA";
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
