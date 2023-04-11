@@ -211,7 +211,7 @@ public class CodeGenerator
         {
             sb.AppendLine("using Eddy.Core.Attributes;");
             sb.AppendLine("using Eddy.Core.Validation;");
-            sb.AppendLine("using Eddy.x12.Internals;");
+            sb.AppendLine("using Eddy.x12.Models.Elements;");
             sb.AppendLine();
             if (parseType == ParseType.x12Element)
                 sb.AppendLine("namespace Eddy.x12.Models.Elements;");

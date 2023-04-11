@@ -23,7 +23,7 @@ public partial class Form1 : Form
         {
             Headless = true
         });
-        // Create a new page and go to Bing Maps
+        
         var page = await browser.NewPageAsync();
         await page.GoToAsync(url, WaitUntilNavigation.Networkidle0);
 
