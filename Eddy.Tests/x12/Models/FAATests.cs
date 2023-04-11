@@ -55,6 +55,9 @@ public class FAATests
 		subject.DateTimeQualifier = dateTimeQualifier;
 		subject.DateTimePeriod = dateTimePeriod;
 
+		if (dateTimePeriod != "")
+			subject.DateTimePeriodFormatQualifier = "AA";
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 

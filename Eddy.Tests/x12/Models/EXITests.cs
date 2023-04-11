@@ -30,7 +30,7 @@ public class EXITests
 
     [Theory]
     [InlineData("", false)]
-    [InlineData("", true)]
+    [InlineData("ab", true)]
     public void Validation_RequiredReferenceIdentifier(string referenceIdentifier, bool isValidExpected)
     {
         var subject = new EXI_ExcavationTicketInformation();
@@ -38,7 +38,8 @@ public class EXITests
         subject.DateTimePeriodFormatQualifier = "3W";
         subject.DateTimePeriod = "e";
         subject.Description = "AD";
-        subject.ReferenceIdentifier = new C040_ReferenceIdentifier { ReferenceIdentification = referenceIdentifier };
+        if (referenceIdentifier != "")
+            subject.ReferenceIdentifier = new C040_ReferenceIdentifier { ReferenceIdentification = referenceIdentifier };
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
     }
 

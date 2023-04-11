@@ -33,7 +33,8 @@ public class FOSTests
 	{
 		var subject = new FOS_FieldOfStudy();
 		subject.AcademicFieldOfStudyLevelOrTypeCode = academicFieldOfStudyLevelOrTypeCode;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+        subject.Description = "AB";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
@@ -47,7 +48,7 @@ public class FOSTests
 		subject.AcademicFieldOfStudyLevelOrTypeCode = "T";
 		subject.IdentificationCodeQualifier = identificationCodeQualifier;
 		subject.IdentificationCode = identificationCode;
-
+		subject.Description = "AB";
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 
@@ -62,6 +63,9 @@ public class FOSTests
 		subject.AcademicFieldOfStudyLevelOrTypeCode = "T";
 		subject.IdentificationCodeQualifier = identificationCodeQualifier;
 		subject.Description = description;
+
+		if (identificationCodeQualifier != "")
+			subject.IdentificationCode = "AB";
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}

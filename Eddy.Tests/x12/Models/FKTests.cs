@@ -84,6 +84,10 @@ public class FKTests
 		subject.StateOrProvinceCode = stateOrProvinceCode;
 		subject.Rule260JunctionCode = rule260JunctionCode;
 
+		if (stateOrProvinceCode!="")
+        {
+			subject.CityName = "AB";
+        }
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.OnlyOneOf);
 	}
 

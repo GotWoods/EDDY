@@ -105,6 +105,9 @@ public class F11Tests
 		subject.Amount2 = amount2;
 		subject.Amount = amount;
 
+		if (amount != "")
+			subject.CurrencyCode = "USD";
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 

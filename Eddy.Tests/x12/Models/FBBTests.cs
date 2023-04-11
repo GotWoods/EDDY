@@ -33,6 +33,7 @@ public class FBBTests
 	{
 		var subject = new FBB_ForeignAndIndustryBusiness();
 		subject.CountryCode = countryCode;
+		subject.MonetaryAmount = 1;
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
@@ -64,6 +65,12 @@ public class FBBTests
 		subject.CountryCode = "mx";
 		subject.IdentificationCodeQualifier = identificationCodeQualifier;
 		subject.IdentificationCode = identificationCode;
+		subject.PercentageAsDecimal = 1;
+
+		if (identificationCodeQualifier != "")
+        {
+			subject.PercentageAsDecimal2 = 1;
+        }
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
