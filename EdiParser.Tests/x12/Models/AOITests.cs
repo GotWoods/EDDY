@@ -130,7 +130,7 @@ public class AOITests
             subject.UnitOfTimePeriodOrIntervalCode3 = "AB";
         }
 
-        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOne);
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOneOtherIsRequired);
     }
 
     [Theory]

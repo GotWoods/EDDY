@@ -22,7 +22,7 @@ public class ErrorCodes
 
     public static ErrorCodes Required = new ErrorCodes(2000, "{0} is required");
     public static ErrorCodes IfOneIsFilledAllAreRequired = new ErrorCodes(2001, "Specifying one of {0} means all are required");
-    public static ErrorCodes IfOneIsFilledThenAtLeastOne = new ErrorCodes(2006, "If {0} is present, then at least one of {1} is required");
+    public static ErrorCodes IfOneIsFilledThenAtLeastOneOtherIsRequired = new ErrorCodes(2006, "If {0} is present, then at least one of {1} is required");
     public static ErrorCodes AtLeastOneIsRequired = new ErrorCodes(2002, "at least one of {0} is required");
     public static ErrorCodes ARequiresB = new ErrorCodes(2003, "When {0} is present, {1} is also required");
     public static ErrorCodes OnlyOneOf = new ErrorCodes(2004, "When {0} is present, {1} can not be specified");

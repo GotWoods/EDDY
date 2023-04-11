@@ -48,7 +48,7 @@ public class MEATests
         if (industryCode != "")
             subject.CodeListQualifierCode = "AA";
 
-        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOne);
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOneOtherIsRequired);
     }
 
     [Theory]
@@ -68,7 +68,7 @@ public class MEATests
         if (industryCode != "")
             subject.CodeListQualifierCode = "AB";
 
-        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOne);
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOneOtherIsRequired);
     }
 
     [Theory]
@@ -94,7 +94,7 @@ public class MEATests
             subject.CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure() { UnitOrBasisForMeasurementCode = "A" };
         }
 
-        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOne);
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOneOtherIsRequired);
     }
     [Theory]
     [InlineData("", 0, true)]

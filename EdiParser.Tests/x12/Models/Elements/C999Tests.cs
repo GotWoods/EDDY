@@ -9,7 +9,7 @@ public class C999Tests
     [Fact]
     public void Parse_ShouldReturnCorrectObject()
     {
-        var x12Line = "*q*z";
+        var x12Line = "q*z";
 
         var expected = new C999_ReferenceInSegment()
         {

@@ -113,9 +113,15 @@ public class CDDTests
         subject.AdjustmentReasonCode = "o9";
         subject.CreditDebitFlagCode = "x";
         if (creditDebitQuantity > 0)
+        {
             subject.CreditDebitQuantity = creditDebitQuantity;
+            subject.UnitOrBasisForMeasurementCode = "AB";
+        }
         if (unitPrice > 0)
+        {
             subject.UnitPrice = unitPrice;
+            subject.PriceIdentifierCode = "AAA";
+        }
         subject.Amount = "12";
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
     }

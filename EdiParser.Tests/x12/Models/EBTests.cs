@@ -1,6 +1,7 @@
 using EdiParser.Validation;
 using EdiParser.x12.Mapping;
 using EdiParser.x12.Models;
+using EdiParser.x12.Models.Elements;
 
 namespace EdiParser.Tests.x12.Models;
 
@@ -15,7 +16,7 @@ public class EBTests
 		{
 			EligibilityOrBenefitInformationCode = "9",
 			CoverageLevelCode = "JuV",
-			ServiceType = "",
+			ServiceType = new C064_ServiceType(),
 			InsuranceProductCode = "w",
 			PlanCoverageDescription = "X",
 			TimePeriodQualifier = "P",
@@ -25,11 +26,11 @@ public class EBTests
 			Quantity = 7,
 			YesNoConditionOrResponseCode = "y",
 			NetworkIndicatorCode = "M",
-			CompositeMedicalProcedureIdentifier = "",
+			CompositeMedicalProcedureIdentifier = new C003_CompositeMedicalProcedureIdentifier(),
 			DiagnosisCodePointer = 2,
 			YesNoConditionOrResponseCode2 = "o",
 			HealthCareServicesReviewRequirementCode = "a",
-			HealthCareCodeInformation = "",
+			HealthCareCodeInformation = new C022_HealthCareCodeInformation(),
 		};
 
 		var actual = Map.MapObject<EB_EligibilityOrBenefitInformation>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);

@@ -65,7 +65,7 @@ public class AT5Tests
         if (temperature2 > 0)
             subject.Temperature2 = temperature2;
 
-        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOne);
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOneOtherIsRequired);
     }
     [Theory]
     [InlineData(0, "", true)]

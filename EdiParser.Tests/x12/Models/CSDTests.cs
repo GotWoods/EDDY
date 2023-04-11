@@ -184,6 +184,9 @@ public class CSDTests
 		subject.Time2 = time2;
 		subject.Date2 = date2;
 
+		if (time2 != "")
+			subject.TimeCode2 = "AA";
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 

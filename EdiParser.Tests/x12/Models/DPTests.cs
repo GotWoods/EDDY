@@ -47,11 +47,12 @@ public class DPTests
 	}
 
 	[Theory]
-	[InlineData(0,"", true)]
-	[InlineData(7, "F", false)]
-	[InlineData(0,"F", true)]
-	[InlineData(7, "", true)]
-	public void Validation_NEWQuantity(decimal quantity, string productServiceID, string productServiceID2, string freeFormDescription, bool isValidExpected)
+	[InlineData(0,"", "", "", true)]
+	[InlineData(7, "", "", "", false)]
+    [InlineData(7, "A", "", "",  true)]
+    [InlineData(7, "", "A", "", true)]
+    [InlineData(7, "", "", "A", true)]
+    public void Validation_NEWQuantity(decimal quantity, string productServiceID, string productServiceID2, string freeFormDescription, bool isValidExpected)
 	{
 		var subject = new DP_AutoClaimDetailParts();
 		subject.ActionCode = "O";
@@ -61,7 +62,7 @@ public class DPTests
 		subject.ProductServiceID2 = productServiceID2;
 		subject.FreeFormDescription = freeFormDescription;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOne);
+		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOneOtherIsRequired);
 	}
 
 }

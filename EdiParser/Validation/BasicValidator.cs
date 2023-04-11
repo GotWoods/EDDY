@@ -206,7 +206,7 @@ public class BasicValidator<T>
 
             //TODO: how to make the "or" work with localization?
             var finalString = String.Join(", ", propertyNames.ToArray(), 0, propertyNames.Count - 1) + ", or " + propertyNames.LastOrDefault();
-            Results.Errors.Add(new Error(ErrorCodes.IfOneIsFilledThenAtLeastOne, a.GetFormattedPropertyName(), finalString));
+            Results.Errors.Add(new Error(ErrorCodes.IfOneIsFilledThenAtLeastOneOtherIsRequired, a.GetFormattedPropertyName(), finalString));
         }
 
     }

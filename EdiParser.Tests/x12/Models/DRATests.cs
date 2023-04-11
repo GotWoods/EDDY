@@ -1,6 +1,7 @@
 using EdiParser.Validation;
 using EdiParser.x12.Mapping;
 using EdiParser.x12.Models;
+using EdiParser.x12.Models.Elements;
 
 namespace EdiParser.Tests.x12.Models;
 
@@ -15,7 +16,7 @@ public class DRATests
 		{
 			Description = "b",
 			CertificationTypeCode = "I",
-			CompositeMedicalProcedureIdentifier = "",
+			CompositeMedicalProcedureIdentifier = new C003_CompositeMedicalProcedureIdentifier(),
 			UnitOrBasisForMeasurementCode = "TS",
 			Quantity = 7,
 			FreeFormMessageText = "o",
@@ -25,7 +26,7 @@ public class DRATests
 			Date = "eqXDRJ99",
 			FreeFormMessageText2 = "G",
 			Quantity2 = 7,
-			QuestionAndAnswer = "",
+			QuestionAndAnswer = new C060_QuestionAndAnswer(),
 			DosageFormCode = "8W",
 			FreeFormMessageText3 = "0",
 		};

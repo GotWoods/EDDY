@@ -14,12 +14,12 @@ public class CTXTests
 
 		var expected = new CTX_Context()
 		{
-			ContextIdentification = "",
+			ContextIdentification = new C998_ContextIdentification(),
 			SegmentIDCode = "34",
 			SegmentPositionInTransactionSet = 6,
 			LoopIdentifierCode = "0",
-			PositionInSegment = "",
-			ReferenceInSegment = "",
+			PositionInSegment = new C030_PositionInSegment(),
+			ReferenceInSegment = new C999_ReferenceInSegment(),
 		};
 
 		var actual = Map.MapObject<CTX_Context>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
@@ -28,11 +28,15 @@ public class CTXTests
 
 	[Theory]
 	[InlineData("", false)]
-	[InlineData("", true)]
-	public void Validatation_RequiredContextIdentification(C998_ContextIdentification contextIdentification, bool isValidExpected)
+	[InlineData("ab", true)]
+	public void Validatation_RequiredContextIdentification(string contextIdentification, bool isValidExpected)
 	{
 		var subject = new CTX_Context();
-		subject.ContextIdentification = contextIdentification;
+		if (contextIdentification != "")
+        {
+            subject.ContextIdentification = new C998_ContextIdentification() { ContextReference = contextIdentification};
+        }
+		
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 

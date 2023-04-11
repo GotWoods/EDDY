@@ -43,7 +43,7 @@ public class MS1Tests
         subject.StateOrProvinceCode = stateOrProvinceCode;
         subject.CountryCode = countryCode;
 
-        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOne);
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOneOtherIsRequired);
     }
 
     [Theory]
@@ -67,7 +67,7 @@ public class MS1Tests
             subject.LatitudeDecimalFormat = longitudeDecimalFormat; //this is needed to pass a different validation
 
 
-        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOne);
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOneOtherIsRequired);
     }
 
     [Theory]
@@ -89,7 +89,7 @@ public class MS1Tests
         if (!string.IsNullOrEmpty(latitudeDecimalFormat))
             subject.LongitudeDecimalFormat = latitudeDecimalFormat; //this is needed to pass a different validation
 
-        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOne);
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOneOtherIsRequired);
     }
 
 
