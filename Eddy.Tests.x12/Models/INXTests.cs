@@ -15,7 +15,7 @@ public class INXTests
 		var expected = new INX_IndexDetail()
 		{
 			IndexQualifier = "p",
-			IndexIdentification = new C036_IndexIdentification(),
+			IndexIdentification = null,
 		};
 
 		var actual = Map.MapObject<INX_IndexDetail>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);

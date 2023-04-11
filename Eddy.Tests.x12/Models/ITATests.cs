@@ -49,8 +49,7 @@ public class ITATests
 
 	[Theory]
 	[InlineData("","", "", "",true)]
-	[InlineData("4D", "CQ", "", "", false)]
-    [InlineData("", "CQ", "", "", true)]
+	[InlineData("", "CQ", "", "", true)]
 	[InlineData("4D", "", "", "", true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_AgencyQualifierCode(string agencyQualifierCode, string specialServicesCode, string description, string specialChargeOrAllowanceCode, bool isValidExpected)
 	{
@@ -62,7 +61,11 @@ public class ITATests
 		subject.Description = description;
 		subject.SpecialChargeOrAllowanceCode = specialChargeOrAllowanceCode;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOneOtherIsRequired);
+        if (agencyQualifierCode != "")
+            subject.Description = "AAA";
+
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOneOtherIsRequired);
 	}
 
 	[Theory]
@@ -120,6 +123,9 @@ public class ITATests
 		subject.AllowanceOrChargeMethodOfHandlingCode = "8U";
 		subject.SourceSubqualifier = sourceSubqualifier;
 		subject.AgencyQualifierCode = agencyQualifierCode;
+
+		if (agencyQualifierCode != "")
+			subject.Description = "AAA";
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}

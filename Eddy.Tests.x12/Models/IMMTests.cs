@@ -49,6 +49,12 @@ public class IMMTests
 		subject.DateTimePeriodFormatQualifier = dateTimePeriodFormatQualifier;
 		subject.DateTimePeriod = dateTimePeriod;
 
+		if (dateTimePeriod != "")
+		{
+			subject.DateTimePeriod = "AAAAAA";
+			subject.ImmunizationStatusCode = "V";
+		}
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 

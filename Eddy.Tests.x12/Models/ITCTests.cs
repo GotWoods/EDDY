@@ -138,14 +138,20 @@ public class ITCTests
 		subject.UnitOfTimePeriodOrIntervalCode = unitOfTimePeriodOrIntervalCode;
 		subject.Description = description;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.OnlyOneOf);
+		if (description != "")
+			subject.FreeFormInformation = "AA";
+
+        if (unitOfTimePeriodOrIntervalCode != "")
+            subject.FreeFormInformation = "AA";
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.OnlyOneOf);
 	}
 
 	[Theory]
 	[InlineData("", "", "", true)]
-	[InlineData("6G", "H",  "", false)]
+	[InlineData("6G", "H",  "", true)]
 	[InlineData("", "H", "", true)]
-	[InlineData("6G", "", "", true)]
+	[InlineData("6G", "", "", false)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_UnitOfTimePeriodOrIntervalCode(string unitOfTimePeriodOrIntervalCode, string financialInformationTypeCode, string freeFormInformation, bool isValidExpected)
 	{
 		var subject = new ITC_InformationTypeAndCommentResults();
@@ -159,9 +165,9 @@ public class ITCTests
 
 	[Theory]
 	[InlineData("","", "",true)]
-	[InlineData("b", "H", "",false)]
+	[InlineData("b", "H", "",true)]
 	[InlineData("", "H", "", true)]
-	[InlineData("b", "", "",true)]
+	[InlineData("b", "", "",false)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_Description(string description, string financialInformationTypeCode, string freeFormInformation, bool isValidExpected)
 	{
 		var subject = new ITC_InformationTypeAndCommentResults();
@@ -169,7 +175,7 @@ public class ITCTests
 		subject.Description = description;
 		subject.FinancialInformationTypeCode = financialInformationTypeCode;
 		subject.FreeFormInformation = freeFormInformation;
-
+		
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOneOtherIsRequired);
 	}
 

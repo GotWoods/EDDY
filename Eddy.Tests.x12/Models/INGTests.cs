@@ -32,7 +32,7 @@ public class INGTests
     public void Validation_RequiredAssignedIdentification(string assignedIdentification, bool isValidExpected)
     {
         var subject = new ING_Ingredients();
-        subject.CompositeIngredientInformation = null;
+        subject.CompositeIngredientInformation = new C068_CompositeIngredientInformation();
         subject.AssignedIdentification = assignedIdentification;
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
     }

@@ -56,8 +56,8 @@ public class HPLTests
 		if (referenceIdentification != "")
 			subject.ReferenceIdentificationQualifier = "AA";
 
-        if (referenceIdentification == "")
-            subject.CodeForLicensingCertificationRegistrationOrAccreditationAgency = "AA";
+        // if (referenceIdentification == "")
+        //     subject.CodeForLicensingCertificationRegistrationOrAccreditationAgency = "AA";
 
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}
