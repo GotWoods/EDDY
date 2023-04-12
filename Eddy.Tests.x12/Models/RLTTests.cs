@@ -21,7 +21,7 @@ public class RLTTests
 			LoanPaymentTypeCode = "FP",
 			QuantityQualifier = "bY",
 			Quantity = 8,
-			CompositeUnitOfMeasure = "",
+			CompositeUnitOfMeasure = null,
 			ReferenceIdentificationQualifier3 = "Mj",
 			ReferenceIdentification3 = "Z",
 			ProgramTypeCode = "mI",

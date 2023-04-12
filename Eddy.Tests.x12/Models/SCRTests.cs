@@ -72,10 +72,10 @@ public class SCRTests
 	}
 
 	[Theory]
-	[InlineData("",0, true)]
-	[InlineData("E", 57, true)]
-	[InlineData("",57, true)]
-	[InlineData("E", 0, true)]
+	[InlineData("",0, 0,true)]
+	[InlineData("E", 57,0, true)]
+	[InlineData("",57, 0,true)]
+	[InlineData("E", 0, 0, true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_MetricQualifier(string metricQualifier, int weightCapacity, int cubicCapacity, bool isValidExpected)
 	{
 		var subject = new SCR_ShippersCarOrderedRail();

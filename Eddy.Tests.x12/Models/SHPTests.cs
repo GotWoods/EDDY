@@ -41,10 +41,10 @@ public class SHPTests
 	}
 
 	[Theory]
-	[InlineData("","", true)]
-	[InlineData("Zl1", "41bRaXru", true)]
-	[InlineData("","41bRaXru", true)]
-	[InlineData("Zl1", "", true)]
+	[InlineData("", "", "", true)]
+	[InlineData("Zl1", "41bRaXru", "", true)]
+	[InlineData("", "41bRaXru", "", true)]
+	[InlineData("Zl1", "", "", true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_DateTimeQualifier(string dateTimeQualifier, string date, string time, bool isValidExpected)
 	{
 		var subject = new SHP_ShippedReceivedInformation();

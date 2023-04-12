@@ -59,14 +59,15 @@ public class S3ATests
 
 	[Theory]
 	[InlineData("", false)]
-	[InlineData("", true)]
-	public void Validation_RequiredComputationMethods(C034_ComputationMethods computationMethods, bool isValidExpected)
+	[InlineData("AA", true)]
+	public void Validation_RequiredComputationMethods(string computationMethods, bool isValidExpected)
 	{
 		var subject = new S3A_AssuranceHeaderLevel1();
 		subject.SecurityVersionReleaseIdentifierCode = "LqJuKa";
 		subject.BusinessPurposeOfAssuranceCode = "6yq";
 		subject.DomainOfComputationOfAssuranceCode = "o";
-		subject.ComputationMethods = computationMethods;
+		if (computationMethods!="")
+		    subject.ComputationMethods = new C034_ComputationMethods() {};
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 

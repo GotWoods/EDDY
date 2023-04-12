@@ -16,8 +16,8 @@ public class RDMTests
 			ReportTransmissionCode = "R",
 			Name = "T",
 			CommunicationNumber = "z",
-			ReferenceIdentifier = "",
-			ReferenceIdentifier2 = "",
+			ReferenceIdentifier = null,
+			ReferenceIdentifier2 = null,
 		};
 
 		var actual = Map.MapObject<RDM_RemittanceDeliveryMethod>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);

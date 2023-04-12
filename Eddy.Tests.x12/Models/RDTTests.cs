@@ -39,10 +39,10 @@ public class RDTTests
 	}
 
 	[Theory]
-	[InlineData("","", true)]
-	[InlineData("8Dm", "gUH5twOJ", true)]
-	[InlineData("","gUH5twOJ", true)]
-	[InlineData("8Dm", "", true)]
+	[InlineData("","", "", true)]
+	[InlineData("8Dm", "gUH5twOJ", "", true)]
+	[InlineData("", "gUH5twOJ", "", true)]
+	[InlineData("8Dm", "", "", true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_DateTimeQualifier(string dateTimeQualifier, string date, string time, bool isValidExpected)
 	{
 		var subject = new RDT_RevisionDateTime();

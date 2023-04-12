@@ -102,10 +102,10 @@ public class SCHTests
 	}
 
 	[Theory]
-	[InlineData("","", true)]
-	[InlineData("isD", "nOXxkAMU", true)]
-	[InlineData("","nOXxkAMU", true)]
-	[InlineData("isD", "", true)]
+	[InlineData("", "", "", true)]
+	[InlineData("isD", "nOXxkAMU", "", true)]
+	[InlineData("", "nOXxkAMU", "", true)]
+	[InlineData("isD", "", "", true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_DateTimeQualifier2(string dateTimeQualifier2, string date2, string time2, bool isValidExpected)
 	{
 		var subject = new SCH_LineItemSchedule();

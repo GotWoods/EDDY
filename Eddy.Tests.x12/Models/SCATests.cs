@@ -41,10 +41,10 @@ public class SCATests
 	}
 
 	[Theory]
-	[InlineData("",0, true)]
-	[InlineData("b5", 2, true)]
-	[InlineData("",2, true)]
-	[InlineData("b5", 0, true)]
+	[InlineData("", 0, 0, true)]
+	[InlineData("b5", 2, 0, true)]
+	[InlineData("", 2, 0, true)]
+	[InlineData("b5", 0, 0, true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_StatisticCode(string statisticCode, decimal quantity, decimal rangeMaximum, bool isValidExpected)
 	{
 		var subject = new SCA_StatisticalCategoryAnalysis();

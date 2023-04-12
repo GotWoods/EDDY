@@ -19,9 +19,9 @@ public class S3STests
 			SecurityRecipientName = "t",
 			AuthenticationKeyName = "q",
 			AuthenticationServiceCode = "1",
-			CertificateLookUpInformation = "",
-			EncryptionKeyInformation = "",
-			EncryptionServiceInformation = "",
+			CertificateLookUpInformation = null,
+			EncryptionKeyInformation = null,
+			EncryptionServiceInformation = null,
 			LengthOfData = "H",
 			TransformedData = "Q",
 		};

@@ -1,6 +1,7 @@
 using Eddy.Core.Validation;
 using Eddy.x12.Mapping;
 using Eddy.x12.Models;
+using Eddy.x12.Models.Elements;
 
 namespace Eddy.Tests.x12.Models;
 
@@ -15,7 +16,7 @@ public class REGTests
 		{
 			RegulatoryType = "Xe",
 			CountryCode = "Zt",
-			CompositeStateOrProvinceCode = "",
+			CompositeStateOrProvinceCode = null,
 			YesNoConditionOrResponseCode = "C",
 		};
 
@@ -36,14 +37,15 @@ public class REGTests
 	[Theory]
 	[InlineData("","", false)]
 	[InlineData("Zt","", true)]
-	[InlineData("", "", true)]
-	[InlineData("Zt", "", true)]
-	public void Validation_AtLeastOneCountryCode(string countryCode, C069_CompositeStateOrProvinceCode compositeStateOrProvinceCode, bool isValidExpected)
+	[InlineData("", "AA", true)]
+	[InlineData("Zt", "AA", true)]
+	public void Validation_AtLeastOneCountryCode(string countryCode, string compositeStateOrProvinceCode, bool isValidExpected)
 	{
 		var subject = new REG_RegulatoryApplication();
 		subject.RegulatoryType = "Xe";
 		subject.CountryCode = countryCode;
-		subject.CompositeStateOrProvinceCode = compositeStateOrProvinceCode;
+		if (compositeStateOrProvinceCode != "")
+		    subject.CompositeStateOrProvinceCode = new C069_CompositeStateOrProvinceCode() ;
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}

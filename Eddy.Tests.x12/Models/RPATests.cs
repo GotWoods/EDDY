@@ -16,7 +16,7 @@ public class RPATests
 			RateOrValueTypeCode = "W",
 			MonetaryAmount = 4,
 			Rate = 2,
-			CompositeUnitOfMeasure = "",
+			CompositeUnitOfMeasure = null,
 			PercentageAsDecimal = 6,
 		};
 

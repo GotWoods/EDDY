@@ -19,9 +19,9 @@ public class S4STests
 			SecurityRecipientName = "b",
 			AuthenticationKeyName = "n",
 			AuthenticationServiceCode = "9",
-			CertificateLookUpInformation = "",
-			EncryptionKeyInformation = "",
-			EncryptionServiceInformation = "",
+			CertificateLookUpInformation = null,
+			EncryptionKeyInformation = null,
+			EncryptionServiceInformation = null,
 			LengthOfData = "h",
 			TransformedData = "t",
 		};

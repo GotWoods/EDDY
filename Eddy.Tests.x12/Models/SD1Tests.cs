@@ -50,10 +50,10 @@ public class SD1Tests
 	}
 
 	[Theory]
-	[InlineData("","", true)]
-	[InlineData("3D", "S", true)]
-	[InlineData("","S", true)]
-	[InlineData("3D", "", true)]
+	[InlineData("", "", "", true)]
+	[InlineData("3D", "S", "", true)]
+	[InlineData("", "S", "", true)]
+	[InlineData("3D", "", "", true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_AgencyQualifierCode(string agencyQualifierCode, string productDescriptionCode, string description, bool isValidExpected)
 	{
 		var subject = new SD1_SafetyData();

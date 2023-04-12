@@ -18,7 +18,7 @@ public class SINTests
 			FreeFormMessageText = "C",
 			FrequencyCode = "b",
 			Quantity = 3,
-			CompositeUnitOfMeasure = "",
+			CompositeUnitOfMeasure = null,
 		};
 
 		var actual = Map.MapObject<SIN_SubstanceUse>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);

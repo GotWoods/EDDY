@@ -147,10 +147,10 @@ public class REPTests
 	}
 
 	[Theory]
-	[InlineData("","", true)]
-	[InlineData("z", "X", true)]
-	[InlineData("","X", true)]
-	[InlineData("z", "", true)]
+	[InlineData("", "", "", true)]
+	[InlineData("z", "X", "", true)]
+	[InlineData("", "X", "", true)]
+	[InlineData("z", "", "", true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_ProductServiceID3(string productServiceID3, string repairActionCode2, string description2, bool isValidExpected)
 	{
 		var subject = new REP_RepairAction();
