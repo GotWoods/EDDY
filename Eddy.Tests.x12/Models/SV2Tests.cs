@@ -1,6 +1,7 @@
 using Eddy.Core.Validation;
 using Eddy.x12.Mapping;
 using Eddy.x12.Models;
+using Eddy.x12.Models.Elements;
 
 namespace Eddy.Tests.x12.Models;
 

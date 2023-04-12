@@ -1,6 +1,7 @@
 using Eddy.Core.Validation;
 using Eddy.x12.Mapping;
 using Eddy.x12.Models;
+using Eddy.x12.Models.Elements;
 
 namespace Eddy.Tests.x12.Models;
 
@@ -71,17 +72,20 @@ public class SLNTests
 
 	[Theory]
 	[InlineData(0,"", true)]
-	[InlineData(5, "", true)]
-	[InlineData(0, "", false)]
+	[InlineData(5, "AA", true)]
+	[InlineData(0, "AA", false)]
 	[InlineData(5, "", false)]
-	public void Validation_AllAreRequiredQuantity(decimal quantity, C001_CompositeUnitOfMeasure compositeUnitOfMeasure, bool isValidExpected)
+	public void Validation_AllAreRequiredQuantity(decimal quantity, string compositeUnitOfMeasure, bool isValidExpected)
 	{
 		var subject = new SLN_SublineItemDetail();
 		subject.AssignedIdentification = "j";
 		subject.RelationshipCode = "Y";
 		if (quantity > 0)
 		subject.Quantity = quantity;
-		subject.CompositeUnitOfMeasure = compositeUnitOfMeasure;
+
+        if (compositeUnitOfMeasure != "")
+            subject.CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure() { UnitOrBasisForMeasurementCode = compositeUnitOfMeasure };
+        
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}

@@ -1,6 +1,7 @@
 using Eddy.Core.Validation;
 using Eddy.x12.Mapping;
 using Eddy.x12.Models;
+using Eddy.x12.Models.Elements;
 
 namespace Eddy.Tests.x12.Models;
 
@@ -13,7 +14,7 @@ public class SV1Tests
 
 		var expected = new SV1_ProfessionalService()
 		{
-			CompositeMedicalProcedureIdentifier = "",
+			CompositeMedicalProcedureIdentifier = null,
 			MonetaryAmount = 8,
 			UnitOrBasisForMeasurementCode = "yt",
 			Quantity = 8,
