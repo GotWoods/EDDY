@@ -18,7 +18,7 @@ public class SLNTests
 			AssignedIdentification2 = "7",
 			RelationshipCode = "Y",
 			Quantity = 5,
-			CompositeUnitOfMeasure = "",
+			CompositeUnitOfMeasure = null,
 			UnitPrice = 7,
 			BasisOfUnitPriceCode = "gn",
 			RelationshipCode2 = "P",

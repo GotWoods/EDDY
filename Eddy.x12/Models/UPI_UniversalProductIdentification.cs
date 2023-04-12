@@ -40,8 +40,9 @@ public class UPI_UniversalProductIdentification : EdiX12Segment
 	[Position(11)]
 	public string LifeCycleStatusCode { get; set; }
 
-	[Position(12)]
-	public C066_SellingOrOrderingProductBasisCode SellingOrOrderingProductBasisCode { get; set; }
+	//TODO: this composite
+	//[Position(12)]
+	//public C066_SellingOrOrderingProductBasisCode SellingOrOrderingProductBasisCode { get; set; }
 
 	public override ValidationResult Validate()
 	{

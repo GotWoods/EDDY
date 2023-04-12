@@ -1,8 +1,7 @@
 ﻿using Eddy.Core.Attributes;
 using Eddy.Core.Validation;
-using Eddy.x12.Models;
 
-namespace Eddy.Tests.x12.Models.Elements;
+namespace Eddy.x12.Models.Elements;
 
 [Segment("C006")]
 public class C006_OralCavityDesignation : EdiX12Component

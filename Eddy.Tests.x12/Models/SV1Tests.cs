@@ -43,11 +43,12 @@ public class SV1Tests
 
 	[Theory]
 	[InlineData("", false)]
-	[InlineData("", true)]
-	public void Validation_RequiredCompositeMedicalProcedureIdentifier(C003_CompositeMedicalProcedureIdentifier compositeMedicalProcedureIdentifier, bool isValidExpected)
+	[InlineData("AA", true)]
+	public void Validation_RequiredCompositeMedicalProcedureIdentifier(string compositeMedicalProcedureIdentifier, bool isValidExpected)
 	{
 		var subject = new SV1_ProfessionalService();
-		subject.CompositeMedicalProcedureIdentifier = compositeMedicalProcedureIdentifier;
+		if (compositeMedicalProcedureIdentifier!= "")
+		    subject.CompositeMedicalProcedureIdentifier = new C003_CompositeMedicalProcedureIdentifier();
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
@@ -59,7 +60,7 @@ public class SV1Tests
 	public void Validation_AllAreRequiredUnitOrBasisForMeasurementCode(string unitOrBasisForMeasurementCode, decimal quantity, bool isValidExpected)
 	{
 		var subject = new SV1_ProfessionalService();
-		subject.CompositeMedicalProcedureIdentifier = "";
+		subject.CompositeMedicalProcedureIdentifier = new C003_CompositeMedicalProcedureIdentifier();
 		subject.UnitOrBasisForMeasurementCode = unitOrBasisForMeasurementCode;
 		if (quantity > 0)
 		subject.Quantity = quantity;

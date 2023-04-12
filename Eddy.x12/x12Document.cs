@@ -22,7 +22,10 @@ public class x12Document
             var header = new ST_TransactionSetHeader();
             header.TransactionSetControlNumber = section.TransactionSetControlNumber;
             header.TransactionSetIdentifierCode = section.SectionType;
-            sb.Append(Map.SegmentToString(header, options));
+            var data = Map.SegmentToString(header, options);
+            if (!string.IsNullOrEmpty(data))
+                sb.Append(data);
+
             var lines = 0;
             foreach (var segment in section.Segments)
             {
@@ -69,6 +72,7 @@ public class x12Document
 
         var options = new MapOptions();
         options.Separator = "*"; //x12 standard
+        options.ComponentElementSeparator = ">";
 
         var result = new x12Document();
 

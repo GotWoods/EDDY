@@ -14,7 +14,7 @@ public class SV5Tests
 
 		var expected = new SV5_DurableMedicalEquipmentService()
 		{
-			CompositeMedicalProcedureIdentifier = "",
+			CompositeMedicalProcedureIdentifier = null,
 			UnitOrBasisForMeasurementCode = "NE",
 			Quantity = 8,
 			MonetaryAmount = 8,
@@ -29,14 +29,15 @@ public class SV5Tests
 
 	[Theory]
 	[InlineData("", false)]
-	[InlineData("", true)]
-	public void Validation_RequiredCompositeMedicalProcedureIdentifier(C003_CompositeMedicalProcedureIdentifier compositeMedicalProcedureIdentifier, bool isValidExpected)
+	[InlineData("AA", true)]
+	public void Validation_RequiredCompositeMedicalProcedureIdentifier(string compositeMedicalProcedureIdentifier, bool isValidExpected)
 	{
 		var subject = new SV5_DurableMedicalEquipmentService();
 		subject.UnitOrBasisForMeasurementCode = "NE";
 		subject.Quantity = 8;
-		subject.CompositeMedicalProcedureIdentifier = compositeMedicalProcedureIdentifier;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+        if (compositeMedicalProcedureIdentifier != "")
+            subject.CompositeMedicalProcedureIdentifier = new C003_CompositeMedicalProcedureIdentifier();
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
@@ -45,7 +46,7 @@ public class SV5Tests
 	public void Validation_RequiredUnitOrBasisForMeasurementCode(string unitOrBasisForMeasurementCode, bool isValidExpected)
 	{
 		var subject = new SV5_DurableMedicalEquipmentService();
-		subject.CompositeMedicalProcedureIdentifier = "";
+		subject.CompositeMedicalProcedureIdentifier = new C003_CompositeMedicalProcedureIdentifier();
 		subject.Quantity = 8;
 		subject.UnitOrBasisForMeasurementCode = unitOrBasisForMeasurementCode;
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
@@ -57,7 +58,7 @@ public class SV5Tests
 	public void Validation_RequiredQuantity(decimal quantity, bool isValidExpected)
 	{
 		var subject = new SV5_DurableMedicalEquipmentService();
-		subject.CompositeMedicalProcedureIdentifier = "";
+		subject.CompositeMedicalProcedureIdentifier = new C003_CompositeMedicalProcedureIdentifier();
 		subject.UnitOrBasisForMeasurementCode = "NE";
 		if (quantity > 0)
 		subject.Quantity = quantity;
@@ -72,7 +73,7 @@ public class SV5Tests
 	public void Validation_AtLeastOneMonetaryAmount(decimal monetaryAmount, decimal monetaryAmount2, bool isValidExpected)
 	{
 		var subject = new SV5_DurableMedicalEquipmentService();
-		subject.CompositeMedicalProcedureIdentifier = "";
+		subject.CompositeMedicalProcedureIdentifier = new C003_CompositeMedicalProcedureIdentifier();
 		subject.UnitOrBasisForMeasurementCode = "NE";
 		subject.Quantity = 8;
 		if (monetaryAmount > 0)
@@ -90,7 +91,7 @@ public class SV5Tests
 	public void Validation_ARequiresBFrequencyCode(string frequencyCode, decimal monetaryAmount, bool isValidExpected)
 	{
 		var subject = new SV5_DurableMedicalEquipmentService();
-		subject.CompositeMedicalProcedureIdentifier = "";
+		subject.CompositeMedicalProcedureIdentifier = new C003_CompositeMedicalProcedureIdentifier();
 		subject.UnitOrBasisForMeasurementCode = "NE";
 		subject.Quantity = 8;
 		subject.FrequencyCode = frequencyCode;

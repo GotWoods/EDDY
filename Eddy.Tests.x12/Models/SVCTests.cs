@@ -14,12 +14,12 @@ public class SVCTests
 
 		var expected = new SVC_ServiceInformation()
 		{
-			CompositeMedicalProcedureIdentifier = "",
+			CompositeMedicalProcedureIdentifier = null,
 			MonetaryAmount = 9,
 			MonetaryAmount2 = 5,
 			ProductServiceID = "k",
 			Quantity = 3,
-			CompositeMedicalProcedureIdentifier2 = "",
+			CompositeMedicalProcedureIdentifier2 = null,
 			Quantity2 = 5,
 		};
 
@@ -29,12 +29,13 @@ public class SVCTests
 
 	[Theory]
 	[InlineData("", false)]
-	[InlineData("", true)]
-	public void Validation_RequiredCompositeMedicalProcedureIdentifier(C003_CompositeMedicalProcedureIdentifier compositeMedicalProcedureIdentifier, bool isValidExpected)
+	[InlineData("AA", true)]
+	public void Validation_RequiredCompositeMedicalProcedureIdentifier(string compositeMedicalProcedureIdentifier, bool isValidExpected)
 	{
 		var subject = new SVC_ServiceInformation();
-		subject.CompositeMedicalProcedureIdentifier = compositeMedicalProcedureIdentifier;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+        if (compositeMedicalProcedureIdentifier != "")
+            subject.CompositeMedicalProcedureIdentifier = new C003_CompositeMedicalProcedureIdentifier();
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Eddy.Core.Attributes;
 using Eddy.x12.DomainModels._4010._830;
+using Eddy.x12.Internals;
 using Eddy.x12.Models;
 
 namespace Eddy.x12.DomainModels._4010;
@@ -32,4 +33,17 @@ public class Edi830_PlanningScheduleWithReleaseCapability
     [SectionPosition(24)] public List<CodeInformation> CodeInformation { get; set; } = new();
     [SectionPosition(25)] public List<Item> Items { get; set; } = new();
 
+    //Summary
+    [SectionPosition(26)] public CTT_TransactionTotals TransactionTotals { get; set; }
+
+    public Section ToDocumentSection(string transactionSetControlNumber)
+    {
+        var s = new Section();
+        s.SectionType = "830";
+        s.TransactionSetControlNumber = transactionSetControlNumber;
+
+        var mapper = new DomainMapper();
+        s.Segments = mapper.MapToSegments(this);
+        return s;
+    }
 }

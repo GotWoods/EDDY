@@ -15,7 +15,7 @@ public class SV2Tests
 		var expected = new SV2_InstitutionalService()
 		{
 			ProductServiceID = "G",
-			CompositeMedicalProcedureIdentifier = "",
+			CompositeMedicalProcedureIdentifier = null,
 			MonetaryAmount = 1,
 			UnitOrBasisForMeasurementCode = "hr",
 			Quantity = 6,
@@ -32,16 +32,17 @@ public class SV2Tests
 
 	[Theory]
 	[InlineData("","", false)]
-	[InlineData("G","", true)]
-	[InlineData("", "", true)]
+	[InlineData("G","AA", true)]
+	[InlineData("", "AA", true)]
 	[InlineData("G", "", true)]
-	public void Validation_AtLeastOneProductServiceID(string productServiceID, C003_CompositeMedicalProcedureIdentifier compositeMedicalProcedureIdentifier, bool isValidExpected)
+	public void Validation_AtLeastOneProductServiceID(string productServiceID, string compositeMedicalProcedureIdentifier, bool isValidExpected)
 	{
 		var subject = new SV2_InstitutionalService();
 		subject.ProductServiceID = productServiceID;
-		subject.CompositeMedicalProcedureIdentifier = compositeMedicalProcedureIdentifier;
+        if (compositeMedicalProcedureIdentifier != "")
+            subject.CompositeMedicalProcedureIdentifier = new C003_CompositeMedicalProcedureIdentifier();
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}
 
 	[Theory]

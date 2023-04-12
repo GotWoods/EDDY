@@ -10,7 +10,7 @@ namespace Eddy.x12;
 
 public class EdiSectionParserFactory
 {
-    private static readonly bool _isInitialized = false;
+    private static bool _isInitialized = false;
     private static Dictionary<string, Type> _parsers;
 
     public static EdiX12Segment Parse(string line, MapOptions mapOptions)
@@ -22,7 +22,10 @@ public class EdiSectionParserFactory
     public static Type GetSegmentFor(string identifier)
     {
         if (!_isInitialized)
+        {
             _parsers = LoadSegmentProviders();
+            _isInitialized = true;
+        }
 
         // if (!_parsers.ContainsKey(identifier))
         //     return typeof(Unkown_Segment);

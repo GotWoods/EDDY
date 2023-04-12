@@ -14,10 +14,10 @@ public class SV3Tests
 
 		var expected = new SV3_DentalService()
 		{
-			CompositeMedicalProcedureIdentifier = "",
+			CompositeMedicalProcedureIdentifier = null,
 			MonetaryAmount = 1,
 			FacilityCodeValue = "m",
-			OralCavityDesignation = "",
+			OralCavityDesignation = null,
 			ProsthesisCrownOrInlayCode = "7",
 			Quantity = 7,
 			Description = "k",
@@ -33,12 +33,14 @@ public class SV3Tests
 
 	[Theory]
 	[InlineData("", false)]
-	[InlineData("", true)]
-	public void Validation_RequiredCompositeMedicalProcedureIdentifier(C003_CompositeMedicalProcedureIdentifier compositeMedicalProcedureIdentifier, bool isValidExpected)
+	[InlineData("AA", true)]
+	public void Validation_RequiredCompositeMedicalProcedureIdentifier(string compositeMedicalProcedureIdentifier, bool isValidExpected)
 	{
 		var subject = new SV3_DentalService();
-		subject.CompositeMedicalProcedureIdentifier = compositeMedicalProcedureIdentifier;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+
+        if (compositeMedicalProcedureIdentifier != "")
+            subject.CompositeMedicalProcedureIdentifier = new C003_CompositeMedicalProcedureIdentifier();
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 }
