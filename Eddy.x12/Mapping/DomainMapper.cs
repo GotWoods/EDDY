@@ -5,18 +5,19 @@ using System.Linq;
 using System.Reflection;
 using Eddy.Core;
 using Eddy.Core.Attributes;
+using Eddy.x12.Mapping.Cache;
 using Eddy.x12.Models;
 using Microsoft.Extensions.Logging;
 
-namespace Eddy.x12.Internals;
+namespace Eddy.x12.Mapping;
 
 public class DomainMapper
 {
     private readonly ILogger<DomainMapper> _logger;
 
     private readonly List<EdiX12Segment> _segments;
-    private int currentSegmetnIndex;
-    private int logDepth;
+    private int _currentSegmetnIndex;
+    private int _logDepth;
 
     public DomainMapper(List<EdiX12Segment> segments)
     {
@@ -29,94 +30,23 @@ public class DomainMapper
         _logger = Logging.Logger<DomainMapper>();
     }
 
-    private EdiX12Segment CurrentSegment => _segments[currentSegmetnIndex];
+    private EdiX12Segment CurrentSegment => _segments[_currentSegmetnIndex];
 
-    private List<DomainTypeMap> CreatePropertyMap(Type t)
-    {
-        var result = Activator.CreateInstance(t);
-        var props = result.GetType().GetProperties().Where(prop => Attribute.IsDefined(prop, typeof(SectionPositionAttribute))).ToList();
-        var propertyMap = new List<DomainTypeMap>();
-
-        foreach (var propertyInfo in props)
-        {
-            if (propertyInfo.GetCustomAttribute<SectionPositionAttribute>() == null)
-                continue;
-
-            var dt = new DomainTypeMap();
-            dt.MatchingSegmentType = propertyInfo.PropertyType;
-            dt.TypeToGenerate = propertyInfo.PropertyType;
-            dt.Property = propertyInfo;
-
-            //if (typeof(IEnumerable).IsAssignableFrom(propertyInfo.PropertyType))
-            if (propertyInfo.PropertyType.IsGenericType && propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
-            {
-                dt.IsListType = true;
-                var genericListType = propertyInfo.PropertyType.GetGenericArguments()[0];
-                dt.MatchingSegmentType = genericListType;
-                dt.TypeToGenerate = dt.MatchingSegmentType;
-
-                //Might be a list of custom objects that implement SectionPosition
-                //List<BillOfLadingHandlingInfo> AT5,RTT,C3
-                var childPositions = genericListType.GetProperties().Where(prop => Attribute.IsDefined(prop, typeof(SectionPositionAttribute))).ToList();
-                if (childPositions.Any())
-                {
-                    dt.IsComplexType = true;
-                    foreach (var childPosition in childPositions)
-                        if (childPosition.GetCustomAttribute<SectionPositionAttribute>()!.Position == 1)
-                        {
-                            dt.TypeToGenerate = genericListType; //taken from the list args
-                            dt.MatchingSegmentType = childPosition.PropertyType; //AT5
-                            break;
-                        }
-                }
-            }
-            else
-            {
-                var childPositions = propertyInfo.PropertyType.GetProperties().Where(prop => Attribute.IsDefined(prop, typeof(SectionPositionAttribute))).ToList();
-                if (childPositions.Any())
-                {
-                    dt.IsComplexType = true;
-                    foreach (var childPosition in childPositions)
-                        if (childPosition.GetCustomAttribute<SectionPositionAttribute>()!.Position == 1)
-                        {
-                            //dt.TypeToGenerate = genericListType; //taken from the list args
-                            dt.MatchingSegmentType = childPosition.PropertyType; //AT5
-                            break;
-                        }
-                }
-            }
-
-            // if (DoesTypeImplementISegmentConverter(propertyInfo.PropertyType))
-            // {
-            //     dt.MatchingSegmentType = "";
-            // }
-
-
-            propertyMap.Add(dt);
-        }
-
-        return propertyMap;
-    }
-
-    private bool DoesTypeImplementISegmentConverter(Type type)
-    {
-        return type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ISegmentConverter<>));
-    }
-
+   
 
     public object Map(Type t)
     {
         var result = Activator.CreateInstance(t);
         if (result == null)
             throw new NullReferenceException("Could not create type of " + t);
-        var propertyMap = CreatePropertyMap(t);
+        var propertyMap = DomainMapCache.GetMap(t);
 
         var firstInstanceFound = false;
 
-        var prefix = "".PadLeft(logDepth * 2, ' ');
-        while (currentSegmetnIndex < _segments.Count)
+        var prefix = "".PadLeft(_logDepth * 2, ' ');
+        while (_currentSegmetnIndex < _segments.Count)
         {
-            _logger.LogDebug($"{prefix}Processing [{currentSegmetnIndex}] {CurrentSegment.GetType()} into {result.GetType()}");
+            _logger.LogDebug($"{prefix}Processing [{_currentSegmetnIndex}] {CurrentSegment.GetType()} into {result.GetType()}");
 
             var prop = propertyMap.FirstOrDefault(x => x.MatchingSegmentType == CurrentSegment.GetType());
             if (prop == null)
@@ -134,16 +64,16 @@ public class DomainMapper
             if (prop.IsComplexType && prop.IsListType)
             {
                 var list = prop.Property.GetValue(result) as IList;
-                logDepth++;
+                _logDepth++;
                 list!.Add(Map(prop.TypeToGenerate));
-                logDepth--;
+                _logDepth--;
             }
             else if (prop.IsListType)
             {
                 var list = prop.Property.GetValue(result) as IList;
                 if (list != null)
                     list.Add(CurrentSegment);
-                currentSegmetnIndex++;
+                _currentSegmetnIndex++;
             }
             else if (prop.IsComplexType)
             {
@@ -174,7 +104,7 @@ public class DomainMapper
                 firstInstanceFound = true;
                 //}
 
-                currentSegmetnIndex++;
+                _currentSegmetnIndex++;
             }
         }
 
@@ -190,8 +120,7 @@ public class DomainMapper
     public List<EdiX12Segment> MapToSegments<T>(T input)
     {
         var result = new List<EdiX12Segment>();
-
-        var propertyMap = CreatePropertyMap(input.GetType());
+        var propertyMap = DomainMapCache.GetMap(input.GetType()); // CreatePropertyMap(input.GetType());
 
         foreach (var map in propertyMap)
             if (map.IsComplexType && map.IsListType)
@@ -227,7 +156,7 @@ public class DomainMapper
             else
             {
                 var value = map.Property.GetValue(input) as EdiX12Segment;
-                if (value != null) 
+                if (value != null)
                     result.Add(value);
             }
 

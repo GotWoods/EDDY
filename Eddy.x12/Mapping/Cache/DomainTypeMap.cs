@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Eddy.x12.Internals;
+namespace Eddy.x12.Mapping.Cache;
 
 internal class DomainTypeMap
 {

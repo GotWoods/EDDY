@@ -1,4 +1,5 @@
-﻿using Eddy.x12;
+﻿using System.Diagnostics;
+using Eddy.x12;
 using Eddy.x12.DomainModels._4010;
 using Eddy.x12.Internals;
 using Eddy.x12.Mapping;
@@ -21,12 +22,15 @@ public class Edi830Tests
     [InlineData(@"G:\EdiSamples\BMW\830\2023\02", '*', '\n')]
     public void ToDocument(string path, char seperator, char lineSeperator)
     {
+        var sw = new Stopwatch();
+        sw.Start();
+
         foreach (var file in Directory.GetFiles(path))
         {
             var expectedLines = new string[] { };
             var actualLines = new string[] { };
-            _output.WriteLine(file);
-
+           // _output.WriteLine(file);
+            
             try
             {
                 var data = File.ReadAllText(file);
@@ -88,5 +92,8 @@ public class Edi830Tests
                 throw;
             }
         }
+
+        sw.Stop();
+        _output.WriteLine(sw.Elapsed.TotalSeconds.ToString());
     }
 }

@@ -3,6 +3,7 @@ using Eddy.x12.DomainModels;
 using Eddy.x12.DomainModels._8020;
 using Eddy.x12.DomainModels._8020._204;
 using Eddy.x12.Internals;
+using Eddy.x12.Mapping;
 using Eddy.x12.Models;
 using Xunit.Abstractions;
 

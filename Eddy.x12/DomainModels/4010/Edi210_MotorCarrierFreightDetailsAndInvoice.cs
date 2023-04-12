@@ -2,6 +2,7 @@
 using Eddy.Core.Attributes;
 using Eddy.x12.DomainModels._4010._210;
 using Eddy.x12.Internals;
+using Eddy.x12.Mapping;
 using Eddy.x12.Models;
 
 namespace Eddy.x12.DomainModels._4010;
