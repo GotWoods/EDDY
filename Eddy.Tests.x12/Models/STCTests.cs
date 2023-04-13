@@ -1,6 +1,7 @@
 using Eddy.Core.Validation;
 using Eddy.x12.Mapping;
 using Eddy.x12.Models;
+using Eddy.x12.Models.Elements;
 
 namespace Eddy.Tests.x12.Models;
 
@@ -13,7 +14,7 @@ public class STCTests
 
 		var expected = new STC_StatusInformation()
 		{
-			HealthCareClaimStatus = "",
+			HealthCareClaimStatus = null,
 			Date = "y4CZYr6N",
 			ActionCode = "5",
 			MonetaryAmount = 5,
@@ -22,8 +23,8 @@ public class STCTests
 			PaymentMethodCode = "Kpf",
 			Date3 = "AKJWazlK",
 			CheckNumber = "A",
-			HealthCareClaimStatus2 = "",
-			HealthCareClaimStatus3 = "",
+			HealthCareClaimStatus2 = null,
+			HealthCareClaimStatus3 = null,
 			FreeFormMessageText = "A",
 			ClaimSubmissionReasonCode = "W9",
 		};
@@ -34,11 +35,12 @@ public class STCTests
 
 	[Theory]
 	[InlineData("", false)]
-	[InlineData("", true)]
-	public void Validation_RequiredHealthCareClaimStatus(C043_HealthCareClaimStatus healthCareClaimStatus, bool isValidExpected)
+	[InlineData("AA", true)]
+	public void Validation_RequiredHealthCareClaimStatus(string healthCareClaimStatus, bool isValidExpected)
 	{
 		var subject = new STC_StatusInformation();
-		subject.HealthCareClaimStatus = healthCareClaimStatus;
+        if (healthCareClaimStatus != "")
+            subject.HealthCareClaimStatus = new C043_HealthCareClaimStatus();
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 

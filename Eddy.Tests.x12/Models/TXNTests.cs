@@ -1,6 +1,7 @@
 using Eddy.Core.Validation;
 using Eddy.x12.Mapping;
 using Eddy.x12.Models;
+using Eddy.x12.Models.Elements;
 
 namespace Eddy.Tests.x12.Models;
 
@@ -22,7 +23,7 @@ public class TXNTests
 			ApplicationSendersCode = "vm",
 			Date = "XksQGJKm",
 			Time = "HBic",
-			StandardsInformation = "",
+			StandardsInformation = null,
 		};
 
 		var actual = Map.MapObject<TXN_TransactionCapabilities>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
@@ -42,16 +43,20 @@ public class TXNTests
 
 	[Theory]
 	[InlineData("", "", true)]
-	[InlineData("E", "", false)]
-	[InlineData("", "", true)]
+	[InlineData("E", "AA", false)]
+	[InlineData("", "AA", true)]
 	[InlineData("E", "", true)]
-	public void Validation_OnlyOneOfVersionReleaseIndustryIdentifierCode(string versionReleaseIndustryIdentifierCode, C053_StandardsInformation standardsInformation, bool isValidExpected)
+	public void Validation_OnlyOneOfVersionReleaseIndustryIdentifierCode(string versionReleaseIndustryIdentifierCode, string  standardsInformation, bool isValidExpected)
 	{
 		var subject = new TXN_TransactionCapabilities();
 		subject.ActionCode = "0";
 		subject.ActionCode2 = "G";
 		subject.VersionReleaseIndustryIdentifierCode = versionReleaseIndustryIdentifierCode;
-		subject.StandardsInformation = standardsInformation;
+
+        if (standardsInformation != "")
+            subject.StandardsInformation = new C053_StandardsInformation();
+
+        
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.OnlyOneOf);
 	}

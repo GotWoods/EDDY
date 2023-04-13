@@ -1,6 +1,7 @@
 using Eddy.Core.Validation;
 using Eddy.x12.Mapping;
 using Eddy.x12.Models;
+using Eddy.x12.Models.Elements;
 
 namespace Eddy.Tests.x12.Models;
 
@@ -14,7 +15,7 @@ public class VDITests
 		var expected = new VDI_ValueDescriptionOrInformation()
 		{
 			CodeCategory = "K8",
-			CompositeQualifierIdentifier = "",
+			CompositeQualifierIdentifier = null,
 			Quantity = 5,
 			PercentageAsDecimal = 5,
 			MonetaryAmount = 2,
@@ -36,14 +37,16 @@ public class VDITests
 
 	[Theory]
 	[InlineData(0, "", true)]
-	[InlineData(0, "", true)]
-	[InlineData(5, "", false)]
-	public void Validation_ARequiresBQuantity(decimal quantity, C046_CompositeQualifierIdentifier compositeQualifierIdentifier, bool isValidExpected)
+	[InlineData(0, "AA", true)]
+	[InlineData(5, "AA", false)]
+	public void Validation_ARequiresBQuantity(decimal quantity, string compositeQualifierIdentifier, bool isValidExpected)
 	{
 		var subject = new VDI_ValueDescriptionOrInformation();
 		if (quantity > 0)
 		subject.Quantity = quantity;
-		subject.CompositeQualifierIdentifier = compositeQualifierIdentifier;
+        if (compositeQualifierIdentifier != "")
+            subject.CompositeQualifierIdentifier = new C046_CompositeQualifierIdentifier();
+        
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
@@ -66,28 +69,33 @@ public class VDITests
 
 	[Theory]
 	[InlineData(0, "", true)]
-	[InlineData(0, "", true)]
-	[InlineData(5, "", false)]
-	public void Validation_ARequiresBPercentageAsDecimal(decimal percentageAsDecimal, C046_CompositeQualifierIdentifier compositeQualifierIdentifier, bool isValidExpected)
+	[InlineData(0, "AA", true)]
+	[InlineData(5, "AA", false)]
+	public void Validation_ARequiresBPercentageAsDecimal(decimal percentageAsDecimal, string compositeQualifierIdentifier, bool isValidExpected)
 	{
 		var subject = new VDI_ValueDescriptionOrInformation();
 		if (percentageAsDecimal > 0)
 		subject.PercentageAsDecimal = percentageAsDecimal;
-		subject.CompositeQualifierIdentifier = compositeQualifierIdentifier;
+        if (compositeQualifierIdentifier != "")
+            subject.CompositeQualifierIdentifier = new C046_CompositeQualifierIdentifier();
+
+        
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
 	[Theory]
 	[InlineData(0, "", true)]
-	[InlineData(0, "", true)]
-	[InlineData(2, "", false)]
-	public void Validation_ARequiresBMonetaryAmount(decimal monetaryAmount, C046_CompositeQualifierIdentifier compositeQualifierIdentifier, bool isValidExpected)
+	[InlineData(0, "AA", true)]
+	[InlineData(2, "AA", false)]
+	public void Validation_ARequiresBMonetaryAmount(decimal monetaryAmount, string compositeQualifierIdentifier, bool isValidExpected)
 	{
 		var subject = new VDI_ValueDescriptionOrInformation();
 		if (monetaryAmount > 0)
 		subject.MonetaryAmount = monetaryAmount;
-		subject.CompositeQualifierIdentifier = compositeQualifierIdentifier;
+        if (compositeQualifierIdentifier != "")
+            subject.CompositeQualifierIdentifier = new C046_CompositeQualifierIdentifier();
+        
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}

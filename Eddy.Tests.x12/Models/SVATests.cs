@@ -1,6 +1,7 @@
 using Eddy.Core.Validation;
 using Eddy.x12.Mapping;
 using Eddy.x12.Models;
+using Eddy.x12.Models.Elements;
 
 namespace Eddy.Tests.x12.Models;
 
@@ -15,7 +16,7 @@ public class SVATests
 		{
 			FilterIDCode = "0KW",
 			VersionIdentifier = "o",
-			SecurityTokenValue = "",
+			SecurityTokenValue = null,
 		};
 
 		var actual = Map.MapObject<SVA_SecurityValue>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
@@ -29,7 +30,7 @@ public class SVATests
 	{
 		var subject = new SVA_SecurityValue();
 		subject.VersionIdentifier = "o";
-		subject.SecurityTokenValue = "";
+		subject.SecurityTokenValue = new C033_SecurityTokenValue();
 		subject.FilterIDCode = filterIDCode;
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
@@ -41,20 +42,23 @@ public class SVATests
 	{
 		var subject = new SVA_SecurityValue();
 		subject.FilterIDCode = "0KW";
-		subject.SecurityTokenValue = "";
+		subject.SecurityTokenValue = new C033_SecurityTokenValue();
 		subject.VersionIdentifier = versionIdentifier;
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
 	[InlineData("", false)]
-	[InlineData("", true)]
-	public void Validation_RequiredSecurityTokenValue(C033_SecurityTokenValue securityTokenValue, bool isValidExpected)
+	[InlineData("AA", true)]
+	public void Validation_RequiredSecurityTokenValue(string securityTokenValue, bool isValidExpected)
 	{
 		var subject = new SVA_SecurityValue();
 		subject.FilterIDCode = "0KW";
 		subject.VersionIdentifier = "o";
-		subject.SecurityTokenValue = securityTokenValue;
+        if (securityTokenValue != "")
+            subject.SecurityTokenValue = new C033_SecurityTokenValue();
+
+        
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 

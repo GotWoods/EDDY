@@ -18,13 +18,13 @@ public class UPITests
 			ProductServiceID = "d",
 			UnitOrBasisForMeasurementCode = "DD",
 			DisplayTypeCode = "iTZ",
-			ProductUnitIndicator = "",
+			ProductUnitIndicator = null,
 			StockIndicatorCode = "1",
 			ActionCode = "0",
 			ProductionType = "TK",
 			Quantity = 4,
 			LifeCycleStatusCode = "h",
-			SellingOrOrderingProductBasisCode = "",
+			//SellingOrOrderingProductBasisCode = "",
 		};
 
 		var actual = Map.MapObject<UPI_UniversalProductIdentification>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
