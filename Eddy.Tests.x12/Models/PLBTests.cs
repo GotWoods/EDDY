@@ -26,7 +26,7 @@ public class PLBTests
 			MonetaryAmount4 = 3,
 			AdjustmentIdentifier5 = null,
 			MonetaryAmount5 = 3,
-			AdjustmentIdentifier6 = new C042_AdjustmentIdentifier(),
+			AdjustmentIdentifier6 = null,
 			MonetaryAmount6 = 5,
 		};
 

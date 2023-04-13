@@ -47,6 +47,9 @@ public class PKDTests
 		subject.AgencyQualifierCode = agencyQualifierCode;
 		subject.SourceSubqualifier = sourceSubqualifier;
 
+		if (sourceSubqualifier != "")
+			subject.PackagingCode = "AAA";
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
