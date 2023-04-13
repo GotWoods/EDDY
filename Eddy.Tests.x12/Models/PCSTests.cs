@@ -54,6 +54,9 @@ public class PCSTests
 		subject.AgencyQualifierCode = agencyQualifierCode;
 		subject.ClaimResponseReasonCode = claimResponseReasonCode;
 
+		if (claimResponseReasonCode == "")
+			subject.ClaimStatusCode = "AB";
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
@@ -63,9 +66,13 @@ public class PCSTests
 	[InlineData("b", "", false)]
 	public void Validation_ARequiresBSourceSubqualifier(string sourceSubqualifier, string agencyQualifierCode, bool isValidExpected)
 	{
-		var subject = new PCS_ProductClaimStatus();
-		subject.SourceSubqualifier = sourceSubqualifier;
+        var subject = new PCS_ProductClaimStatus();
+        subject.ClaimStatusCode = "AB";
+        subject.SourceSubqualifier = sourceSubqualifier;
 		subject.AgencyQualifierCode = agencyQualifierCode;
+
+		if (agencyQualifierCode != "")
+			subject.ClaimResponseReasonCode = "AA";
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
@@ -77,7 +84,8 @@ public class PCSTests
 	public void Validation_ARequiresBAgencyQualifierCode2(string agencyQualifierCode2, string dispositionCode, bool isValidExpected)
 	{
 		var subject = new PCS_ProductClaimStatus();
-		subject.AgencyQualifierCode2 = agencyQualifierCode2;
+        subject.ClaimStatusCode = "AB";
+        subject.AgencyQualifierCode2 = agencyQualifierCode2;
 		subject.DispositionCode = dispositionCode;
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
@@ -90,10 +98,14 @@ public class PCSTests
 	public void Validation_ARequiresBSourceSubqualifier2(string sourceSubqualifier2, string agencyQualifierCode2, bool isValidExpected)
 	{
 		var subject = new PCS_ProductClaimStatus();
-		subject.SourceSubqualifier2 = sourceSubqualifier2;
+        subject.ClaimStatusCode = "AB";
+        subject.SourceSubqualifier2 = sourceSubqualifier2;
 		subject.AgencyQualifierCode2 = agencyQualifierCode2;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
+        if (agencyQualifierCode2 != "")
+            subject.DispositionCode = "AAA";
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
 }

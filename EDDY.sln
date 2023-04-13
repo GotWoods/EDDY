@@ -22,6 +22,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eddy.Core", "Eddy.Core\Eddy
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eddy.x12.Tests", "Eddy.Tests.x12\Eddy.x12.Tests.csproj", "{95C81A0A-7A37-4226-A225-928E20DE91B6}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eddy.Edifact", "Eddy.Edifact\Eddy.Edifact.csproj", "{32E7B730-EE8B-46D0-8B61-5A7ED73CD026}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eddy.Edifact.Tests", "Eddy.Edifact.Tests\Eddy.Edifact.Tests.csproj", "{15E5C22A-130D-4FBE-91B9-3EB0B3B24C04}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +60,14 @@ Global
 		{95C81A0A-7A37-4226-A225-928E20DE91B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95C81A0A-7A37-4226-A225-928E20DE91B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95C81A0A-7A37-4226-A225-928E20DE91B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32E7B730-EE8B-46D0-8B61-5A7ED73CD026}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32E7B730-EE8B-46D0-8B61-5A7ED73CD026}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32E7B730-EE8B-46D0-8B61-5A7ED73CD026}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32E7B730-EE8B-46D0-8B61-5A7ED73CD026}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15E5C22A-130D-4FBE-91B9-3EB0B3B24C04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15E5C22A-130D-4FBE-91B9-3EB0B3B24C04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15E5C22A-130D-4FBE-91B9-3EB0B3B24C04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15E5C22A-130D-4FBE-91B9-3EB0B3B24C04}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

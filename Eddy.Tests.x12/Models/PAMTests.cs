@@ -59,14 +59,17 @@ public class PAMTests
 		subject.DateTimeQualifier = dateTimeQualifier;
 		subject.UnitOfTimePeriodOrIntervalCode = unitOfTimePeriodOrIntervalCode;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
+        if (dateTimeQualifier != "")
+            subject.Date = "11111111";
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
 	[Theory]
 	[InlineData("","", "",true)]
-	[InlineData("8WE", "FULFv9Fd","", false)]
-	[InlineData("", "FULFv9Fd", "", true)]
-	[InlineData("8WE", "", "", true)]
+	[InlineData("8WE", "FULFv9Fd","", true)]
+	[InlineData("*WE", "", "1111", true)]
+	[InlineData("8WE", "", "", false)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_DateTimeQualifier(string dateTimeQualifier, string date, string time, bool isValidExpected)
 	{
 		var subject = new PAM_PeriodAmount();
@@ -74,7 +77,10 @@ public class PAMTests
 		subject.Date = date;
 		subject.Time = time;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOneOtherIsRequired);
+		if (dateTimeQualifier != "")
+			subject.UnitOfTimePeriodOrIntervalCode = "AA";
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOneOtherIsRequired);
 	}
 
 	[Theory]
@@ -106,6 +112,12 @@ public class PAMTests
 		subject.Time = time;
 		subject.DateTimeQualifier = dateTimeQualifier;
 
+		if (dateTimeQualifier != "")
+		{
+			subject.Date = "20010101";
+			subject.UnitOfTimePeriodOrIntervalCode = "01";
+		}
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
@@ -119,7 +131,19 @@ public class PAMTests
 		subject.DateTimeQualifier2 = dateTimeQualifier2;
 		subject.DateTimeQualifier = dateTimeQualifier;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
+		if (dateTimeQualifier != "")
+		{
+			subject.Date = "12230101";
+			subject.UnitOfTimePeriodOrIntervalCode = "AA";
+		}
+
+        if (dateTimeQualifier2 != "")
+		{
+			subject.Time2 = "1234";
+			subject.UnitOfTimePeriodOrIntervalCode = "AA";
+		}
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
 	[Theory]
@@ -133,6 +157,9 @@ public class PAMTests
 		subject.DateTimeQualifier2 = dateTimeQualifier2;
 		subject.Date2 = date2;
 		subject.Time2 = time2;
+
+		if (dateTimeQualifier2 != "")
+			subject.UnitOfTimePeriodOrIntervalCode = "AA";
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOneOtherIsRequired);
 	}
@@ -170,6 +197,14 @@ public class PAMTests
 		var subject = new PAM_PeriodAmount();
 		subject.Time2 = time2;
 		subject.DateTimeQualifier2 = dateTimeQualifier2;
+
+		if (dateTimeQualifier2!= "")
+        {
+			subject.Date2 = "1234";
+            subject.DateTimeQualifier = dateTimeQualifier2;
+            subject.Time = "1234";
+            subject.UnitOfTimePeriodOrIntervalCode = "AA";
+        }
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}

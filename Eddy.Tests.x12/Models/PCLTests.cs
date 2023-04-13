@@ -34,7 +34,8 @@ public class PCLTests
 	public void Validation_AllAreRequiredIdentificationCodeQualifier(string identificationCodeQualifier, string identificationCode, bool isValidExpected)
 	{
 		var subject = new PCL_PreviousCollege();
-		subject.IdentificationCodeQualifier = identificationCodeQualifier;
+        subject.Description = "AA";
+        subject.IdentificationCodeQualifier = identificationCodeQualifier;
 		subject.IdentificationCode = identificationCode;
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
@@ -48,8 +49,12 @@ public class PCLTests
 	public void Validation_AtLeastOneIdentificationCodeQualifier(string identificationCodeQualifier, string description, bool isValidExpected)
 	{
 		var subject = new PCL_PreviousCollege();
-		subject.IdentificationCodeQualifier = identificationCodeQualifier;
+        subject.Description = "AA";
+        subject.IdentificationCodeQualifier = identificationCodeQualifier;
 		subject.Description = description;
+
+		if (identificationCodeQualifier != "")
+			subject.IdentificationCode = "AA";
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}
@@ -62,6 +67,7 @@ public class PCLTests
 	public void Validation_AllAreRequiredDateTimePeriodFormatQualifier(string dateTimePeriodFormatQualifier, string dateTimePeriod, bool isValidExpected)
 	{
 		var subject = new PCL_PreviousCollege();
+		subject.Description = "AA";
 		subject.DateTimePeriodFormatQualifier = dateTimePeriodFormatQualifier;
 		subject.DateTimePeriod = dateTimePeriod;
 
@@ -75,7 +81,8 @@ public class PCLTests
 	public void Validation_ARequiresBDateTimePeriod2(string dateTimePeriod2, string academicDegreeCode, bool isValidExpected)
 	{
 		var subject = new PCL_PreviousCollege();
-		subject.DateTimePeriod2 = dateTimePeriod2;
+        subject.Description = "AA";
+        subject.DateTimePeriod2 = dateTimePeriod2;
 		subject.AcademicDegreeCode = academicDegreeCode;
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
