@@ -40,15 +40,19 @@ public class LUITests
 
 	[Theory]
 	[InlineData("","", "", true)]
-	[InlineData("7", "xl", "", false)]
+    [InlineData("7", "", "", false)]
+    [InlineData("7", "xl", "", true)]
 	[InlineData("","xl", "", true)]
-	[InlineData("7", "", "", true)]
+	[InlineData("7", "", "aa", true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_UseOfLanguageIndicatorCode(string useOfLanguageIndicatorCode, string identificationCode, string description, bool isValidExpected)
 	{
 		var subject = new LUI_LanguageUse();
 		subject.UseOfLanguageIndicatorCode = useOfLanguageIndicatorCode;
 		subject.IdentificationCode = identificationCode;
 		subject.Description = description;
+
+		if (identificationCode != "")
+			subject.IdentificationCodeQualifier = "AB";
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledThenAtLeastOneOtherIsRequired);
 	}

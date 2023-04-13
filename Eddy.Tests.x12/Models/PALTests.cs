@@ -65,6 +65,9 @@ public class PALTests
             subject.Length = length;
         subject.UnitOrBasisForMeasurementCode2 = unitOrBasisForMeasurementCode2;
 
+        if (unitOrBasisForMeasurementCode2 != "")
+            subject.Width = 1;
+
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
     }
 
@@ -78,6 +81,8 @@ public class PALTests
         if (width > 0)
             subject.Width = width;
         subject.UnitOrBasisForMeasurementCode2 = unitOrBasisForMeasurementCode2;
+        if (unitOrBasisForMeasurementCode2 != "")
+            subject.Length = 1;
 
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
     }
@@ -93,14 +98,17 @@ public class PALTests
             subject.Height = height;
         subject.UnitOrBasisForMeasurementCode2 = unitOrBasisForMeasurementCode2;
 
+        if (unitOrBasisForMeasurementCode2 != "")
+            subject.Width = 1;
+
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
     }
 
     [Theory]
     [InlineData("", 0, 0, 0, true)]
-    [InlineData("rS", 8, 0, 0, false)]
-    [InlineData("", 8, 0, 0, true)]
-    [InlineData("rS", 0, 0, 0, true)]
+    [InlineData("rS", 8, 0, 0, true)]
+    [InlineData("rS", 0, 8, 0, true)]
+    [InlineData("rS", 0, 0, 8, true)]
     public void Validation_IfOneSpecifiedThenOneMoreRequired_UnitOrBasisForMeasurementCode2(string unitOrBasisForMeasurementCode2, decimal length, decimal width, decimal height, bool isValidExpected)
     {
         var subject = new PAL_PalletTypeAndLoadCharacteristics();

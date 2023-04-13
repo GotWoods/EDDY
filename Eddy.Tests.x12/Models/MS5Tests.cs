@@ -41,9 +41,9 @@ public class MS5Tests
 
 	[Theory]
 	[InlineData("","", "", true)]
-	[InlineData("8Dd", "b7", "", false)]
-	[InlineData("", "b7", "", true)]
-	[InlineData("8Dd", "", "", true)]
+	[InlineData("8Dd", "", "", false)]
+	[InlineData("8Dd", "b7", "", true)]
+	[InlineData("8Dd", "", "b7", true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_CurrencyCode(string currencyCode, string declaredValue, string declaredValue2, bool isValidExpected)
 	{
 		var subject = new MS5_ShipmentRatesAndCharges();

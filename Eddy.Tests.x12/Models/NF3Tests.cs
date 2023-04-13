@@ -14,7 +14,7 @@ public class NF3Tests
 
 		var expected = new NF3_ServingsPerContainerStatement()
 		{
-			CompositeMultipleLanguageTextInformation = new C071_CompositeMultipleLanguageTextInformation(),
+			CompositeMultipleLanguageTextInformation = null,
 			MeasurementValue = 9,
 			UnitOrBasisForMeasurementCode = "rF",
 			MeasurementSignificanceCode = "8L",

@@ -47,7 +47,8 @@ public class M15Tests
 		subject.ReferenceIdentification = "J";
 		subject.Date = "VWiBWi86";
 		subject.Time = "QU1u";
-		subject.NotificationEntityQualifier = notificationEntityQualifier;
+        subject.LocationIdentifier = "AA";
+        subject.NotificationEntityQualifier = notificationEntityQualifier;
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
@@ -60,7 +61,8 @@ public class M15Tests
 		subject.NotificationEntityQualifier = "m";
 		subject.Date = "VWiBWi86";
 		subject.Time = "QU1u";
-		subject.ReferenceIdentification = referenceIdentification;
+        subject.LocationIdentifier = "AA";
+        subject.ReferenceIdentification = referenceIdentification;
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
@@ -73,7 +75,8 @@ public class M15Tests
 		subject.NotificationEntityQualifier = "m";
 		subject.ReferenceIdentification = "J";
 		subject.Time = "QU1u";
-		subject.Date = date;
+        subject.LocationIdentifier = "AA";
+        subject.Date = date;
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
@@ -104,7 +107,8 @@ public class M15Tests
 		subject.NotificationEntityQualifier = "m";
 		subject.ReferenceIdentification = "J";
 		subject.Date = "VWiBWi86";
-		subject.Time = time;
+        subject.LocationIdentifier = "AA";
+        subject.Time = time;
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
@@ -119,7 +123,8 @@ public class M15Tests
 		subject.ReferenceIdentification = "J";
 		subject.Date = "VWiBWi86";
 		subject.Time = "QU1u";
-		subject.StateOrProvinceCode = stateOrProvinceCode;
+        subject.LocationIdentifier = "AA";
+        subject.StateOrProvinceCode = stateOrProvinceCode;
 		subject.CityName = cityName;
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
@@ -137,7 +142,8 @@ public class M15Tests
 		subject.ReferenceIdentification = "J";
 		subject.Date = "VWiBWi86";
 		subject.Time = "QU1u";
-		subject.ReferenceIdentificationQualifier = referenceIdentificationQualifier;
+        subject.LocationIdentifier = "AA";
+        subject.ReferenceIdentificationQualifier = referenceIdentificationQualifier;
 		subject.ReferenceIdentification3 = referenceIdentification3;
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
@@ -154,7 +160,8 @@ public class M15Tests
 		subject.ReferenceIdentification = "J";
 		subject.Date = "VWiBWi86";
 		subject.Time = "QU1u";
-		subject.VesselName = vesselName;
+        subject.LocationIdentifier = "AA";
+        subject.VesselName = vesselName;
 		subject.TransportationMethodTypeCode = transportationMethodTypeCode;
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
@@ -172,9 +179,10 @@ public class M15Tests
 		subject.ReferenceIdentification = "J";
 		subject.Date = "VWiBWi86";
 		subject.Time = "QU1u";
-		subject.Date2 = date2;
+        subject.LocationIdentifier = "AA";
+        subject.Date2 = date2;
 		subject.Time2 = time2;
-
+		
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 

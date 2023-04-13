@@ -87,7 +87,13 @@ public class PAMTests
 		subject.Date = date;
 		subject.DateTimeQualifier = dateTimeQualifier;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
+		if (dateTimeQualifier != "")
+			subject.UnitOfTimePeriodOrIntervalCode = "AA";
+
+		if (dateTimeQualifier != "")
+			subject.Time = "1234";
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
 	[Theory]
@@ -141,7 +147,18 @@ public class PAMTests
 		subject.Date2 = date2;
 		subject.DateTimeQualifier2 = dateTimeQualifier2;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
+
+		if (dateTimeQualifier2 != "")
+		{
+			subject.DateTimeQualifier = dateTimeQualifier2;
+			subject.Time = "1234";
+			subject.UnitOfTimePeriodOrIntervalCode = "AA";
+		}
+
+        if (dateTimeQualifier2 != "")
+            subject.Time2 = "1234";
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
 	[Theory]

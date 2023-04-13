@@ -192,6 +192,9 @@ public class M11Tests
 		subject.StandardCarrierAlphaCode5 = standardCarrierAlphaCode5;
 		subject.StandardCarrierAlphaCode4 = standardCarrierAlphaCode4;
 
+		if (standardCarrierAlphaCode4 != "")
+			subject.StandardCarrierAlphaCode3 = "ABCD";
+
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
@@ -209,7 +212,13 @@ public class M11Tests
 		subject.StandardCarrierAlphaCode6 = standardCarrierAlphaCode6;
 		subject.StandardCarrierAlphaCode5 = standardCarrierAlphaCode5;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
+		if (standardCarrierAlphaCode5 != "")
+		{
+			subject.StandardCarrierAlphaCode4 = "ABCD";
+            subject.StandardCarrierAlphaCode3 = "ABCD";
+        }
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
 	[Theory]

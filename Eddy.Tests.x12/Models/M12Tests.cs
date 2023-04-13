@@ -55,7 +55,13 @@ public class M12Tests
 		subject.CustomsEntryNumber = customsEntryNumber;
 		subject.InBondControlNumber = inBondControlNumber;
 
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.OnlyOneOf);
+		if (inBondControlNumber != "")
+		{
+			subject.ReferenceIdentificationQualifier = "AA";
+			subject.ReferenceIdentification = "AA";
+		}
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.OnlyOneOf);
 	}
 
 	[Theory]
@@ -68,6 +74,9 @@ public class M12Tests
 		subject.CustomsEntryTypeCode = "6v";
 		subject.InBondControlNumber = inBondControlNumber;
 		subject.ReferenceIdentificationQualifier = referenceIdentificationQualifier;
+
+		if (referenceIdentificationQualifier != "")
+			subject.ReferenceIdentification = "AA";
 
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}

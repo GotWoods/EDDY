@@ -47,6 +47,7 @@ public class NCATests
 	public void Validation_AllAreRequiredQuantity(decimal quantity, string compositeUnitOfMeasure, bool isValidExpected)
 	{
 		var subject = new NCA_NonconformanceAction();
+        subject.Description = "AA";
 		if (quantity > 0)
 		subject.Quantity = quantity;
 

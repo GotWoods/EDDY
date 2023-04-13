@@ -30,7 +30,8 @@ public class M3Tests
 	{
 		var subject = new M3_Release();
 		subject.ReleaseCode = releaseCode;
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+        subject.Date = "20020202";
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
@@ -59,6 +60,7 @@ public class M3Tests
 		subject.TimeCode = timeCode;
 		subject.Time = time;
 
+		subject.Date = "20020202";
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
