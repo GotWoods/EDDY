@@ -1,6 +1,6 @@
 using Eddy.Core.Attributes;
 using Eddy.Core.Validation;
-using Eddy.x12.Internals;
+
 
 namespace Eddy.x12.Models;
 

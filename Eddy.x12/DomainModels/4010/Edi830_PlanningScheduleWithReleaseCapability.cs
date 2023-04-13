@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Eddy.Core.Attributes;
 using Eddy.x12.DomainModels._4010._830;
-using Eddy.x12.Internals;
 using Eddy.x12.Mapping;
 using Eddy.x12.Models;
 

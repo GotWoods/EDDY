@@ -1,6 +1,6 @@
 ﻿using Eddy.x12;
 using Eddy.x12.DomainModels._8020;
-using Eddy.x12.Internals;
+
 using Eddy.x12.Mapping;
 using Xunit.Abstractions;
 

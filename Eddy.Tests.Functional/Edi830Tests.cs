@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using Eddy.x12;
 using Eddy.x12.DomainModels._4010;
-using Eddy.x12.Internals;
 using Eddy.x12.Mapping;
 using Xunit.Abstractions;
 using Edi210_MotorCarrierFreightDetailsAndInvoice = Eddy.x12.DomainModels._4010.Edi210_MotorCarrierFreightDetailsAndInvoice;
