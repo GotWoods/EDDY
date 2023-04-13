@@ -27,10 +27,10 @@ public class TARTests
 	}
 
 	[Theory]
-	[InlineData("","", true)]
-	[InlineData("E", "l", true)]
-	[InlineData("","l", true)]
-	[InlineData("E", "", true)]
+	[InlineData("","", "",true)]
+	[InlineData("E", "l", "", true)]
+	[InlineData("", "l", "", true)]
+	[InlineData("E", "", "", true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_MarketAreaCodeQualifier(string marketAreaCodeQualifier, string marketAreaCodeIdentifier, string description, bool isValidExpected)
 	{
 		var subject = new TAR_TargetMarket();

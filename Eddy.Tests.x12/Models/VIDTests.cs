@@ -62,10 +62,10 @@ public class VIDTests
 	}
 
 	[Theory]
-	[InlineData("","", true)]
-	[InlineData("P", "Ou", true)]
-	[InlineData("","Ou", true)]
-	[InlineData("P", "", true)]
+	[InlineData("", "", "", true)]
+	[InlineData("P", "Ou", "", true)]
+	[InlineData("", "Ou", "", true)]
+	[InlineData("P", "", "", true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_ReferenceIdentification(string referenceIdentification, string stateOrProvinceCode, string countrySubdivisionCode, bool isValidExpected)
 	{
 		var subject = new VID_ConveyanceIdentification();
@@ -110,10 +110,10 @@ public class VIDTests
 	}
 
 	[Theory]
-	[InlineData("","", true)]
-	[InlineData("3h", "Ou", true)]
-	[InlineData("","Ou", true)]
-	[InlineData("3h", "", true)]
+	[InlineData("", "", "", true)]
+	[InlineData("3h", "Ou", "", true)]
+	[InlineData("", "Ou", "", true)]
+	[InlineData("3h", "", "", true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_CountryCode(string countryCode, string stateOrProvinceCode, string countrySubdivisionCode, bool isValidExpected)
 	{
 		var subject = new VID_ConveyanceIdentification();

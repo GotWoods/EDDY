@@ -17,8 +17,8 @@ public class TEDTests
 			FreeFormMessage = "u",
 			SegmentIDCode = "uy",
 			SegmentPositionInTransactionSet = 7,
-			PositionInSegment = "",
-			ReferenceInSegment = "",
+			PositionInSegment = null,
+			ReferenceInSegment = null,
 			CopyOfBadDataElement = "r",
 			DataElementNewContent = "0",
 		};

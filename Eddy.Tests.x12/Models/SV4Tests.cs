@@ -14,7 +14,7 @@ public class SV4Tests
 		var expected = new SV4_DrugService()
 		{
 			ReferenceIdentification = "D",
-			CompositeMedicalProcedureIdentifier = "",
+			CompositeMedicalProcedureIdentifier = null,
 			ReferenceIdentification2 = "h",
 			YesNoConditionOrResponseCode = "7",
 			DispenseAsWrittenCode = "t",

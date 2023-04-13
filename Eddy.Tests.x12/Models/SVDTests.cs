@@ -15,7 +15,7 @@ public class SVDTests
 		{
 			PayerResponsibilitySequenceNumberCode = "w",
 			MonetaryAmount = 5,
-			CompositeMedicalProcedureIdentifier = "",
+			CompositeMedicalProcedureIdentifier = null,
 			ProductServiceID = "y",
 			Quantity = 9,
 			AssignedNumber = 9,

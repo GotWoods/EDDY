@@ -13,9 +13,9 @@ public class WINTests
 
 		var expected = new WIN_WineInformation()
 		{
-			CompositeGrapeVarietalSequence = "",
+			CompositeGrapeVarietalSequence = null,
 			Color = "kA",
-			CompositeDateTimePeriod = "",
+			CompositeDateTimePeriod = null,
 			WineQualityDesignation = "HL",
 		};
 

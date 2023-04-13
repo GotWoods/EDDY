@@ -15,7 +15,7 @@ public class STATests
 		{
 			StatisticCode = "FG",
 			MeasurementValue = 1,
-			CompositeUnitOfMeasure = "",
+			CompositeUnitOfMeasure = null,
 			MeasurementQualifier = "h",
 			MeasurementReferenceIDCode = "9H",
 			RangeMinimum = 2,

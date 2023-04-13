@@ -47,10 +47,10 @@ public class UDTests
 	}
 
 	[Theory]
-	[InlineData("",0, true)]
-	[InlineData("o", 6, true)]
-	[InlineData("",6, true)]
-	[InlineData("o", 0, true)]
+	[InlineData("",0, "", true)]
+	[InlineData("o", 6, "", true)]
+	[InlineData("", 6, "", true)]
+	[InlineData("o", 0, "", true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_Description2(string description2, decimal percentageAsDecimal, string amount, bool isValidExpected)
 	{
 		var subject = new UD_UnderwritingStatus();

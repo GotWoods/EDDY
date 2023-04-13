@@ -46,10 +46,10 @@ public class VEHTests
 	}
 
 	[Theory]
-	[InlineData("","", true)]
-	[InlineData("hj", "2", true)]
-	[InlineData("","2", true)]
-	[InlineData("hj", "", true)]
+	[InlineData("", "", "", true)]
+	[InlineData("hj", "2", "", true)]
+	[InlineData("", "2", "", true)]
+	[InlineData("hj", "", "", true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_AgencyQualifierCode(string agencyQualifierCode, string referenceIdentification, string referenceIdentification3, bool isValidExpected)
 	{
 		var subject = new VEH_VehicleInformation();
@@ -128,10 +128,10 @@ public class VEHTests
 	}
 
 	[Theory]
-	[InlineData("","", true)]
-	[InlineData("on", "L", true)]
-	[InlineData("","L", true)]
-	[InlineData("on", "", true)]
+	[InlineData("","", "",true)]
+	[InlineData("on", "L", "", true)]
+	[InlineData("", "L", "", true)]
+	[InlineData("on", "", "", true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_EquipmentDescriptionCode(string equipmentDescriptionCode, string vehicleIdentificationNumber, string referenceIdentification5, bool isValidExpected)
 	{
 		var subject = new VEH_VehicleInformation();

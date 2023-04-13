@@ -17,7 +17,7 @@ public class SPSTests
 			Count2 = 5,
 			Count3 = 9,
 			ConfidenceLimit = 2,
-			CompositeUnitOfMeasure = "",
+			CompositeUnitOfMeasure = null,
 			SampleFrequencyValuePerUnitOfMeasurementCode = 2,
 		};
 

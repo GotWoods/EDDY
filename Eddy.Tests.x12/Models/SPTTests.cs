@@ -17,7 +17,7 @@ public class SPTTests
 			SpiritStyle = "5b",
 			Color = "Xm",
 			LiqueurFlavor = "eG",
-			CompositeAddedFlavor = "",
+			CompositeAddedFlavor = null,
 			DistilledFromSpiritType = "Ac",
 			WhiskeyProductionType = "Fm",
 			YesNoConditionOrResponseCode = "i",

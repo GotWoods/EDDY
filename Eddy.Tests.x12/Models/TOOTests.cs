@@ -15,7 +15,7 @@ public class TOOTests
 		{
 			CodeListQualifierCode = "2",
 			IndustryCode = "R",
-			ToothSurface = "",
+			ToothSurface = null,
 		};
 
 		var actual = Map.MapObject<TOO_ToothIdentification>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);

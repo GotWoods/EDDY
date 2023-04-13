@@ -19,7 +19,7 @@ public class SV7Tests
 			CoverageLevelCode = "YKi",
 			ProductProcessCharacteristicCode = "DO",
 			YesNoConditionOrResponseCode = "S",
-			DrugUseReviewDUR = "",
+			DrugUseReviewDUR = null,
 		};
 
 		var actual = Map.MapObject<SV7_DrugAdjudication>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
