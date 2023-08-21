@@ -54,9 +54,16 @@ public class PO7Tests
     {
         var subject = new PO7_GiftContainerPhysicalDetails();
         if (length > 0)
+        {
             subject.Length = length;
+            subject.UnitOrBasisForMeasurementCode = "AA";
+        }
         if (itemDepth > 0)
+        {
             subject.ItemDepth = itemDepth;
+            subject.UnitOrBasisForMeasurementCode = "AA";
+            //subject.Width = 1;
+        }
 
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.OnlyOneOf);
     }
