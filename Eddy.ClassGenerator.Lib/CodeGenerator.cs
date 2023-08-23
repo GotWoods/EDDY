@@ -131,9 +131,14 @@ public class CodeGenerator
 
     }
 
-    private string RemoveSpecialCharacters(string input)
+    private static string RemoveSpecialCharacters(string input)
     {
         return input.Replace("/", "").Replace(" ", "").Replace("-", "").Replace(",", "").Replace("(", "").Replace(")", "").Replace("'", "").Replace(".", "");
+    }
+
+    public static string GetCodeClassName(string segmentType, string friendlyName)
+    {
+        return segmentType + "_" + RemoveSpecialCharacters(friendlyName);
     }
 
     public (string Code, string Test, string codeClassName) ParseData(HtmlNode document, ParseType parseType)
