@@ -83,38 +83,15 @@ public partial class Form1 : Form
 
     private async void btnx12BatchConvert_Click(object sender, EventArgs e)
     {
-        var page = await GetPage("https://www.stedi.com/edi/x12-008020/segment");
-        var pageText = "<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + page + Environment.NewLine + "</div>";
-        var newNode = HtmlNode.CreateNode(pageText);
-        var items = newNode.SelectNodes("/div/div/ul/li");
-
-        var existingFiles = GetExistingFiles();
-
-        var counter = 0;
-        var modelPath = projectBasePath + @"Eddy.x12\Models";
-        var testPath = projectBasePath + @"Eddy.Tests.x12\Models";
-        foreach (var item in items)
+        this.Cursor = Cursors.WaitCursor;
+        try
         {
-            var link = item.SelectSingleNode("a");
-            var type = link.SelectSingleNode("h2/span").InnerText;
-
-            if (existingFiles.Contains(type))
-                continue;
-
-            var s = await GetPage("https://www.stedi.com" + link.GetAttributeValue("href", ""));
-            var text = "<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + s + Environment.NewLine + "</div>";
-            var newNode2 = HtmlNode.CreateNode(text);
-            //     ParseData(newNode2, ParseType.x12);
-            var generator = new CodeGenerator();
-            var results = generator.ParseData(newNode2, ParseType.x12Segment);
-            counter++;
-
-            File.WriteAllText(modelPath + "\\" + results.codeClassName + ".cs", results.Code);
-            File.WriteAllText(testPath + "\\" + type + "Tests.cs", results.Test);
-
-
-            if (counter >= int.Parse(txtBatchCount.Text))
-                break;
+            var x = new BatchGenerator();
+            await x.Start( projectBasePath, 1);
+        }
+        finally
+        {
+            this.Cursor = Cursors.Default;
         }
     }
 
