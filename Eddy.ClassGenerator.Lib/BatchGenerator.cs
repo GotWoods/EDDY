@@ -101,7 +101,7 @@ public class BatchGenerator
                     var text = "<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + s + Environment.NewLine + "</div>";
                     var newNode2 = HtmlNode.CreateNode(text);
                     var generator = new CodeGenerator();
-                    var results = generator.ParseData(newNode2, ParseType.x12Segment);
+                    var results = generator.ParseAndGenerateData(newNode2, ParseType.x12Segment);
                     counter++;
 
                     File.WriteAllText(outputFileName, results.Code);

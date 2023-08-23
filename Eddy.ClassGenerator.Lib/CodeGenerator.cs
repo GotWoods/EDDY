@@ -10,6 +10,13 @@ using HtmlAgilityPack;
 
 namespace Eddy.ClassGenerator.Lib;
 
+public class ParsedSegment
+{
+    public string SegmentType { get; set; }
+    public string ClassName { get; set; }
+    public List<Model> Items { get; set; } = new();
+}
+
 public class CodeGenerator
 {
     private ValidationData ParseValidationMessage(string message, Regex elementNameRegEx)
@@ -141,14 +148,15 @@ public class CodeGenerator
         return segmentType + "_" + RemoveSpecialCharacters(friendlyName);
     }
 
-    public (string Code, string Test, string codeClassName) ParseData(HtmlNode document, ParseType parseType)
+    public ParsedSegment Parse(HtmlNode document, ParseType parseType)
     {
+        var result = new ParsedSegment();
         var textInfo = new CultureInfo("en-US", false).TextInfo;
 
         var header = document.SelectSingleNode("//h1");
-        var segmentType = header.SelectSingleNode("span").InnerText;
+        result.SegmentType = header.SelectSingleNode("span").InnerText;
         var segmentFriendlyName = textInfo.ToTitleCase(header.GetDirectInnerText());
-        var className = segmentType + "_" + RemoveSpecialCharacters(segmentFriendlyName);
+        result.ClassName = result.SegmentType + "_" + RemoveSpecialCharacters(segmentFriendlyName);
 
         if (document.InnerText.Contains("not present in"))
             throw new FileLoadException("This type may not be supported in this release");
@@ -163,7 +171,7 @@ public class CodeGenerator
 
 
 
-        var items = new List<Model>();
+        result.Items = new List<Model>();
 
         Model? currentItem = null;
 
@@ -179,13 +187,13 @@ public class CodeGenerator
                 var childRow = row.FirstChild.FirstChild.SelectSingleNode("div");
                 //complex type
                 var model = ParseRow(childRow, parseType, true);
-                items.Add(model);
+                result.Items.Add(model);
             }
 
             if (columns.Count > 3)
             {
                 currentItem = ParseRow(row, parseType, false);
-                items.Add(currentItem);
+                result.Items.Add(currentItem);
             }
             else
             {
@@ -196,12 +204,12 @@ public class CodeGenerator
             }
         }
 
-        items = items.Distinct().ToList();
+        result.Items = result.Items.Distinct().ToList();
 
         //fix name collisions
-        foreach (var item in items)
+        foreach (var item in result.Items)
         {
-            var matchingNames = items.Where(x => x.Name == item.Name).ToList();
+            var matchingNames = result.Items.Where(x => x.Name == item.Name).ToList();
             if (matchingNames.Count() > 1)
             {
                 for (int i = 1; i < matchingNames.Count(); i++)
@@ -211,6 +219,17 @@ public class CodeGenerator
             }
         }
 
+        return result;
+    }
+
+    public (string Code, string Test, string codeClassName) ParseAndGenerateData(HtmlNode document, ParseType parseType)
+    {
+        var parsed = Parse(document, parseType);
+        return GenerateData(parsed, parseType);
+    }
+
+    public (string Code, string Test, string codeClassName) GenerateData(ParsedSegment parsed, ParseType parseType)
+    {
         var sb = new StringBuilder();
         if (parseType == ParseType.x12Segment || parseType == ParseType.x12Element)
         {
@@ -223,25 +242,25 @@ public class CodeGenerator
             else
                 sb.AppendLine("namespace Eddy.x12.Models;");
             sb.AppendLine();
-            sb.AppendLine($"[Segment(\"{segmentType}\")]");
-            sb.Append($"public class {className} : ");
+            sb.AppendLine($"[Segment(\"{parsed.SegmentType}\")]");
+            sb.Append($"public class {parsed.ClassName} : ");
             sb.AppendLine(parseType == ParseType.x12Element ? "EdiX12Component" : "EdiX12Segment");
         }
         else if (parseType == ParseType.ediFactElement)
-            sb.AppendLine($"public class {className} : IElement ");
+            sb.AppendLine($"public class {parsed.ClassName} : IElement ");
         else if (parseType == ParseType.ediFactSegment)
-            sb.AppendLine($"public class {className} ");
+            sb.AppendLine($"public class {parsed.ClassName} ");
         sb.AppendLine("{");
 
-        foreach (var item in items) sb.AppendLine(item.ToString());
+        foreach (var item in parsed.Items) sb.AppendLine(item.ToString());
 
 
         sb.AppendLine("\tpublic override ValidationResult Validate()");
         sb.AppendLine("\t{");
-        sb.AppendLine($"\t\tvar validator = new BasicValidator<{className}>(this);");
+        sb.AppendLine($"\t\tvar validator = new BasicValidator<{parsed.ClassName}>(this);");
 
         //required validations
-        foreach (var model in items)
+        foreach (var model in parsed.Items)
         {
             if (model.IsRequired)
             {
@@ -250,37 +269,37 @@ public class CodeGenerator
 
             foreach (var x in model.AtLeastOneValidations)
             {
-                sb.AppendLine($"\t\tvalidator.AtLeastOneIsRequired(x=>x.{FindFieldByPosition(x.FirstFieldPosition, items).Name}, x=>x.{FindFieldByPosition(x.OtherFields[0], items).Name});");
+                sb.AppendLine($"\t\tvalidator.AtLeastOneIsRequired(x=>x.{FindFieldByPosition(x.FirstFieldPosition, parsed.Items).Name}, x=>x.{FindFieldByPosition(x.OtherFields[0], parsed.Items).Name});");
             }
 
             foreach (var x in model.IfOneIsFilledAllAreRequiredValidations)
             {
-               sb.AppendLine($"\t\tvalidator.IfOneIsFilled_AllAreRequired(x=>x.{FindFieldByPosition(x.FirstFieldPosition, items).Name}, x=>x.{FindFieldByPosition(x.OtherFields[0], items).Name});");
+               sb.AppendLine($"\t\tvalidator.IfOneIsFilled_AllAreRequired(x=>x.{FindFieldByPosition(x.FirstFieldPosition, parsed.Items).Name}, x=>x.{FindFieldByPosition(x.OtherFields[0], parsed.Items).Name});");
             }
 
             foreach (var x in model.ARequiresBValidation)
             {
-                sb.AppendLine($"\t\tvalidator.ARequiresB(x=>x.{FindFieldByPosition(x.FirstFieldPosition, items).Name}, x=>x.{FindFieldByPosition(x.OtherFields[0], items).Name});");
+                sb.AppendLine($"\t\tvalidator.ARequiresB(x=>x.{FindFieldByPosition(x.FirstFieldPosition, parsed.Items).Name}, x=>x.{FindFieldByPosition(x.OtherFields[0], parsed.Items).Name});");
             }
 
             foreach (var x in model.OnlyOneOfValidations)
             {
-                sb.AppendLine($"\t\tvalidator.OnlyOneOf(x=>x.{FindFieldByPosition(x.FirstFieldPosition, items).Name}, x=>x.{FindFieldByPosition(x.OtherFields[0], items).Name});");
+                sb.AppendLine($"\t\tvalidator.OnlyOneOf(x=>x.{FindFieldByPosition(x.FirstFieldPosition, parsed.Items).Name}, x=>x.{FindFieldByPosition(x.OtherFields[0], parsed.Items).Name});");
             }
 
             foreach (var x in model.IfOneIsFilledThenAtLeastOne)
             {
-                sb.Append($"\t\tvalidator.IfOneIsFilledThenAtLeastOne(x=>x.{FindFieldByPosition(x.FirstFieldPosition, items).Name}");
+                sb.Append($"\t\tvalidator.IfOneIsFilledThenAtLeastOne(x=>x.{FindFieldByPosition(x.FirstFieldPosition, parsed.Items).Name}");
                 foreach (var otherField in x.OtherFields)
                 {
-                    sb.Append($", x=>x.{FindFieldByPosition(otherField, items).Name}");
+                    sb.Append($", x=>x.{FindFieldByPosition(otherField, parsed.Items).Name}");
                 }
                 sb.AppendLine(");");
             }
         }
 
         //length validations
-        foreach (var model in items)
+        foreach (var model in parsed.Items)
         {
             if (model.Min == 0 && model.Max == 0) //it is a complex type and should not be validated
                 continue;
@@ -303,7 +322,7 @@ public class CodeGenerator
         sbTest.AppendLine();
         sbTest.AppendLine("namespace Eddy.Tests.x12.Models;");
         sbTest.AppendLine();
-        sbTest.AppendLine($"public class {segmentType}Tests");
+        sbTest.AppendLine($"public class {parsed.SegmentType}Tests");
         sbTest.AppendLine("{");
         sbTest.AppendLine("\t[Fact]");
         sbTest.AppendLine("\tpublic void Parse_ShouldReturnCorrectObject()");
@@ -314,17 +333,17 @@ public class CodeGenerator
         }
         else
         {
-            sbTest.Append($"\t\tstring x12Line = \"{segmentType}");
+            sbTest.Append($"\t\tstring x12Line = \"{parsed.SegmentType}");
         }
-        foreach (var model in items)
+        foreach (var model in parsed.Items)
         {
             sbTest.Append("*" + model.TestValue);
         }
         sbTest.AppendLine("\";");
         sbTest.AppendLine("");
-        sbTest.AppendLine($"\t\tvar expected = new {className}()");
+        sbTest.AppendLine($"\t\tvar expected = new {parsed.ClassName}()");
         sbTest.AppendLine("\t\t{");
-        foreach (var model in items)
+        foreach (var model in parsed.Items)
         {
             if (model.IsDataTypeNumeric)
                 sbTest.AppendLine($"\t\t\t{model.Name} = {model.TestValue},");
@@ -333,12 +352,12 @@ public class CodeGenerator
         }
         sbTest.AppendLine("\t\t};");
         sbTest.AppendLine("");
-        sbTest.AppendLine($"\t\tvar actual = Map.MapObject<{className}>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);");
+        sbTest.AppendLine($"\t\tvar actual = Map.MapObject<{parsed.ClassName}>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);");
         sbTest.AppendLine("\t\tAssert.Equivalent(expected, actual);");
         sbTest.AppendLine("\t}");
         sbTest.AppendLine();
 
-        foreach (var model in items) 
+        foreach (var model in parsed.Items) 
         {
             if (model.IsRequired)
             {
@@ -349,8 +368,8 @@ public class CodeGenerator
                 sbTest.Append($"{model.DataType.Replace("?", "")} {FirstCharToLowerCase(model.Name)}, "); //can not pass in a nullable with inline data
                 sbTest.AppendLine($"bool isValidExpected)");
                 sbTest.AppendLine("\t{");
-                sbTest.AppendLine($"\t\tvar subject = new {className}();");
-                foreach (var requiredItem in items.Where(x=>x.IsRequired && x.Name != model.Name))
+                sbTest.AppendLine($"\t\tvar subject = new {parsed.ClassName}();");
+                foreach (var requiredItem in parsed.Items.Where(x=>x.IsRequired && x.Name != model.Name))
                 {
                     if (requiredItem.IsDataTypeNumeric)
                         sbTest.AppendLine($"\t\tsubject.{requiredItem.Name} = {requiredItem.TestValue};");
@@ -373,14 +392,14 @@ public class CodeGenerator
 
             if (model.IfOneIsFilledAllAreRequiredValidations.Any())
             {
-                var orderedFields = OrderFieldsForTestSignature(model.IfOneIsFilledAllAreRequiredValidations, items);
+                var orderedFields = OrderFieldsForTestSignature(model.IfOneIsFilledAllAreRequiredValidations, parsed.Items);
                 sbTest.AppendLine("\t[Theory]");
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)},{GenerateInlineDataValue(orderedFields[1], true)}, true)]"); 
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], false)}, true)]");
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)}, {GenerateInlineDataValue(orderedFields[1], false)}, false)]");
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, false)]");
                 sbTest.Append($"\tpublic void Validation_AllAreRequired{model.Name}(");
-                sbTest.AppendLine(GenerateTestBody(model.IfOneIsFilledAllAreRequiredValidations, items, className));
+                sbTest.AppendLine(GenerateTestBody(model.IfOneIsFilledAllAreRequiredValidations, parsed.Items, parsed.ClassName));
                 sbTest.AppendLine($"\t\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.IfOneIsFilledAllAreRequired)});");
                 sbTest.AppendLine("\t}");
                 sbTest.AppendLine();
@@ -388,13 +407,13 @@ public class CodeGenerator
 
             if (model.ARequiresBValidation.Any())
             {
-                var orderedFields = OrderFieldsForTestSignature(model.ARequiresBValidation, items);
+                var orderedFields = OrderFieldsForTestSignature(model.ARequiresBValidation, parsed.Items);
                 sbTest.AppendLine("\t[Theory]");
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]");
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)}, {GenerateInlineDataValue(orderedFields[1], false)}, true)]");
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, false)]");
                 sbTest.Append($"\tpublic void Validation_ARequiresB{model.Name}(");
-                sbTest.AppendLine(GenerateTestBody(model.ARequiresBValidation, items, className));
+                sbTest.AppendLine(GenerateTestBody(model.ARequiresBValidation, parsed.Items, parsed.ClassName));
                 sbTest.AppendLine($"\t\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.ARequiresB)});");
                 sbTest.AppendLine("\t}");
                 sbTest.AppendLine();
@@ -402,14 +421,14 @@ public class CodeGenerator
 
             if (model.AtLeastOneValidations.Any())
             {
-                var orderedFields = OrderFieldsForTestSignature(model.AtLeastOneValidations, items);
+                var orderedFields = OrderFieldsForTestSignature(model.AtLeastOneValidations, parsed.Items);
                 sbTest.AppendLine("\t[Theory]");
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)},{GenerateInlineDataValue(orderedFields[1], true)}, false)]");
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)},{GenerateInlineDataValue(orderedFields[1], false)}, true)]");
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)}, {GenerateInlineDataValue(orderedFields[1], false)}, true)]");
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]");
                 sbTest.Append($"\tpublic void Validation_AtLeastOne{model.Name}(");
-                sbTest.AppendLine(GenerateTestBody(model.AtLeastOneValidations, items, className));
+                sbTest.AppendLine(GenerateTestBody(model.AtLeastOneValidations, parsed.Items, parsed.ClassName));
                 sbTest.AppendLine($"\t\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.AtLeastOneIsRequired)});");
                 sbTest.AppendLine("\t}");
                 sbTest.AppendLine();
@@ -417,14 +436,14 @@ public class CodeGenerator
 
             if (model.OnlyOneOfValidations.Any())
             {
-                var orderedFields = OrderFieldsForTestSignature(model.OnlyOneOfValidations, items);
+                var orderedFields = OrderFieldsForTestSignature(model.OnlyOneOfValidations, parsed.Items);
                 sbTest.AppendLine("\t[Theory]");
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]");
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], false)}, false)]");
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)}, {GenerateInlineDataValue(orderedFields[1], false)}, true)]");
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]");
                 sbTest.Append($"\tpublic void Validation_OnlyOneOf{model.Name}(");
-                sbTest.AppendLine(GenerateTestBody(model.OnlyOneOfValidations, items, className));
+                sbTest.AppendLine(GenerateTestBody(model.OnlyOneOfValidations, parsed.Items, parsed.ClassName));
                 sbTest.AppendLine($"\t\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.OnlyOneOf)});");
                 sbTest.AppendLine("\t}");
                 sbTest.AppendLine();
@@ -432,21 +451,21 @@ public class CodeGenerator
             
             if (model.IfOneIsFilledThenAtLeastOne.Any())
             {
-                var orderedFields = OrderFieldsForTestSignature(model.IfOneIsFilledThenAtLeastOne, items);
+                var orderedFields = OrderFieldsForTestSignature(model.IfOneIsFilledThenAtLeastOne, parsed.Items);
                 sbTest.AppendLine("\t[Theory]");
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)},{GenerateInlineDataValue(orderedFields[1], true)}, true)]");
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], false)}, true)]");
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)},{GenerateInlineDataValue(orderedFields[1], false)}, true)]");
                 sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]");
                 sbTest.Append($"\tpublic void Validation_IfOneSpecifiedThenOneMoreRequired_{model.Name}(");
-                sbTest.AppendLine(GenerateTestBody(model.IfOneIsFilledThenAtLeastOne, items, className));
+                sbTest.AppendLine(GenerateTestBody(model.IfOneIsFilledThenAtLeastOne, parsed.Items, parsed.ClassName));
                 sbTest.AppendLine($"\t\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.IfOneIsFilledThenAtLeastOneOtherIsRequired)});");
                 sbTest.AppendLine("\t}");
                 sbTest.AppendLine();
             }
         }
         sbTest.AppendLine("}");
-        return (Code: sb.ToString(), Test: sbTest.ToString(), codeClassName: className);
+        return (Code: sb.ToString(), Test: sbTest.ToString(), codeClassName: parsed.ClassName);
     }
 
     private string GenerateInlineDataValue(Model item, bool generateBlankDefault)

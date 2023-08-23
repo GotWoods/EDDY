@@ -41,7 +41,7 @@ public partial class Form1 : Form
         txtTest.Text = "";
 
         var generator = new CodeGenerator();
-        var results = generator.ParseData(document, parseType);
+        var results = generator.ParseAndGenerateData(document, parseType);
         txtOutput.Text = results.Code;
         txtTest.Text = results.Test;
     }
