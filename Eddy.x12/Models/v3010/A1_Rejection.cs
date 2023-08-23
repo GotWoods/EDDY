@@ -2,7 +2,7 @@ using Eddy.Core.Attributes;
 using Eddy.Core.Validation;
 using Eddy.x12.Models.Elements;
 
-namespace Eddy.x12.Models;
+namespace Eddy.x12.Models.v3010;
 
 [Segment("A1")]
 public class A1_Rejection : EdiX12Segment

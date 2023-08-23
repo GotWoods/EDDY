@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Eddy.Core.Validation;
 using HtmlAgilityPack;
+using ICSharpCode.SharpZipLib.Zip;
 
 namespace Eddy.ClassGenerator.Lib;
 
@@ -15,6 +16,23 @@ public class ParsedSegment
     public string SegmentType { get; set; }
     public string ClassName { get; set; }
     public List<Model> Items { get; set; } = new();
+
+    public override bool Equals(object obj)
+    {
+        var compareTo = obj as ParsedSegment;
+        if (compareTo == null)
+            return false;
+
+        if (this.Items.Count != compareTo.Items.Count)
+            return false;
+
+        for (var index = 0; index < this.Items.Count; index++)
+        {
+            if (!this.Items[index].DeepEquals(compareTo.Items[index]))
+                return false;
+        }
+        return true;
+    }
 }
 
 public class CodeGenerator
@@ -222,13 +240,13 @@ public class CodeGenerator
         return result;
     }
 
-    public (string Code, string Test, string codeClassName) ParseAndGenerateData(HtmlNode document, ParseType parseType)
+    public (string Code, string Test, string codeClassName) ParseAndGenerateData(HtmlNode document, ParseType parseType, string namespaceVersion)
     {
         var parsed = Parse(document, parseType);
-        return GenerateData(parsed, parseType);
+        return GenerateCode(parsed, parseType, namespaceVersion);
     }
 
-    public (string Code, string Test, string codeClassName) GenerateData(ParsedSegment parsed, ParseType parseType)
+    public (string Code, string Test, string codeClassName) GenerateCode(ParsedSegment parsed, ParseType parseType, string namespaceVersion)
     {
         var sb = new StringBuilder();
         if (parseType == ParseType.x12Segment || parseType == ParseType.x12Element)
@@ -240,7 +258,7 @@ public class CodeGenerator
             if (parseType == ParseType.x12Element)
                 sb.AppendLine("namespace Eddy.x12.Models.Elements;");
             else
-                sb.AppendLine("namespace Eddy.x12.Models;");
+                sb.AppendLine("namespace Eddy.x12.Models.v" + namespaceVersion + ";");
             sb.AppendLine();
             sb.AppendLine($"[Segment(\"{parsed.SegmentType}\")]");
             sb.Append($"public class {parsed.ClassName} : ");
@@ -586,6 +604,17 @@ public class CodeGenerator
         if (!string.IsNullOrEmpty(str) && char.IsUpper(str[0]))
             return str.Length == 1 ? char.ToLower(str[0]).ToString() : char.ToLower(str[0]) + str.Substring(1);
         return str;
+    }
+
+    public string GenerateInheritanceCodeFrom(ParsedSegment lastCode, string currentVersion, string lastVersion)
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine("namespace Eddy.x12.Models.v" + currentVersion + ";");
+        sb.AppendLine();
+        sb.AppendLine($"public class {lastCode.ClassName} : Eddy.x12.Models.v{lastVersion}.{lastCode.ClassName}");
+        sb.AppendLine("{");
+        sb.AppendLine("}");
+        return sb.ToString();
     }
 }
 

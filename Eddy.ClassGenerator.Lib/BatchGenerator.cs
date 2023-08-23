@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -83,35 +84,100 @@ public class BatchGenerator
 
     public async Task Start(string projectBasePath, int batchCount)
     {
+        //A1 only exists between 3010 and 3060
         var versionAndSegments = await LoadSegmentsAndVersionInfo(false);
         var counter = 0;
+        var generator = new CodeGenerator();
+
+        //make sure directories exist for all versions
         foreach (var versionAndSegment in versionAndSegments)
         {
-            var modelPath = projectBasePath + @"Eddy.x12\Models\v" + versionAndSegment.Key; //key is the string version name e.g. 04010
+            var modelPath = projectBasePath + @"Eddy.x12\Models\v" + versionAndSegment.Key;
             if (!Directory.Exists(modelPath))
                 Directory.CreateDirectory(modelPath);
+        }
+        
+        foreach (var versionAndSegment in versionAndSegments) //start at 3010 and go up
+        {
+            var version = versionAndSegment.Key;//key is the string version name e.g. 04010
+           
 
             //var testPath = projectBasePath + @"Eddy.Tests.x12\Models";
-            foreach (var segmentAndUrl in versionAndSegment.Value)
+            foreach (var segmentData in versionAndSegment.Value)
             {
-                var outputFileName = modelPath + "\\" + segmentAndUrl.Name + ".cs";
-                if (!File.Exists(outputFileName))
+                var segmentsInVersions = FindSegmentInAllVersions(segmentData.Type, versionAndSegments);
+
+                var parsedByVersion = new Dictionary<string, ParsedSegment>();
+                foreach (var otherSegment in segmentsInVersions)
                 {
-                    var s = await GetPage(segmentAndUrl.Url);
-                    var text = "<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + s + Environment.NewLine + "</div>";
-                    var newNode2 = HtmlNode.CreateNode(text);
-                    var generator = new CodeGenerator();
-                    var results = generator.ParseAndGenerateData(newNode2, ParseType.x12Segment);
+                    var rawPageData = await GetPage(segmentData.Url);
+                    //wrap the node in an element so that there is only one root element
+                    var wrappedNode = HtmlNode.CreateNode("<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + rawPageData + Environment.NewLine + "</div>");
+                    parsedByVersion.Add(otherSegment.Key, generator.Parse(wrappedNode, ParseType.x12Segment));
+                }
+
+                //write out the base item which would be the first item in the collection
+                var lastCode = parsedByVersion.First();
+                var generatedCode = generator.GenerateCode(lastCode.Value, ParseType.x12Segment, version);
+                var path = projectBasePath + @"Eddy.x12\Models\v" + versionAndSegment.Key  + "\\" + generatedCode.codeClassName + ".cs";
+                await File.WriteAllTextAsync(path, generatedCode.Code);
+                
+                foreach (var parsedSegment in parsedByVersion.Skip(1)) //skip the first record as we just wrote it out above as our base item
+                {
+                    if (lastCode.Value.Equals(parsedSegment.Value)) //no change between versions
+                    {
+                        path = projectBasePath + @"Eddy.x12\Models\v" + parsedSegment.Key + "\\" + generatedCode.codeClassName + ".cs";
+                        var generatedInheritanceCode = generator.GenerateInheritanceCodeFrom(lastCode.Value, parsedSegment.Key, lastCode.Key);
+                        await File.WriteAllTextAsync(path, generatedInheritanceCode);
+                        lastCode = parsedSegment;
+                    }
+                    else
+                    {
+                        //calculate differences and save?
+                    }
+                }
+
+
+
+                //var outputFileName = modelPath + "\\" + segmentAndUrl.Name + ".cs";
+                //if (!File.Exists(outputFileName))
+                //{
+
+
+                    // var rawPageData = await GetPage(segmentAndUrl.Url);
+                    // //wrap the node in an element so that there is only one root element
+                    // var wrappedNode = HtmlNode.CreateNode("<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + rawPageData + Environment.NewLine + "</div>");
+                    // var results = generator.Parse(wrappedNode, ParseType.x12Segment);
+                    
+                    
                     counter++;
 
-                    File.WriteAllText(outputFileName, results.Code);
+                    //File.WriteAllText(outputFileName, results.Code);
                     //File.WriteAllText(testPath + "\\" + type + "Tests.cs", results.Test);
 
                     if (counter >= batchCount)
                         return;
-                }
+                //}
+            }
+
+
+        }
+    }
+
+    private Dictionary<string, SegmentData> FindSegmentInAllVersions(string segmentType, Dictionary<string, List<SegmentData>> versionAndSegments)
+    {
+        var results = new Dictionary<string, SegmentData>();
+
+        foreach (var versionAndSegment in versionAndSegments)
+        {
+            var found = versionAndSegment.Value.FirstOrDefault(x => x.Type == segmentType);
+            if (found != null)
+            {
+                results.Add(versionAndSegment.Key, found);
             }
         }
+
+        return results;
     }
 
 

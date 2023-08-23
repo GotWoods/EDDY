@@ -57,17 +57,16 @@ public class Model
     public string Position { get; set; }
     public string Name { get; set; }
     public string DataType { get; set; }
-
     public int Min { get; set; }
     public int Max { get; set; }
+    public bool IsRequired { get; set; }
+    public bool IsDataTypeNumeric => DataType is "int?" or "decimal?";
     public List<ValidationData> IfOneIsFilledAllAreRequiredValidations { get; set; } = new();
     public List<ValidationData> AtLeastOneValidations { get; set; } = new();
     public List<ValidationData> ARequiresBValidation { get; set; } = new();
     public List<ValidationData> OnlyOneOfValidations { get; set; } = new();
     public List<ValidationData> IfOneIsFilledThenAtLeastOne { get; set; } = new();
-    public bool IsRequired { get; set; }
-
-    public bool IsDataTypeNumeric => DataType is "int?" or "decimal?";
+   
 
 
     public override string ToString()
@@ -91,6 +90,21 @@ public class Model
         if (ReferenceEquals(this, obj)) return true;
         if (obj.GetType() != this.GetType()) return false;
         return Equals((Model)obj);
+    }
+
+    public bool DeepEquals(Model compareTo)
+    {
+        if (this.Position != compareTo.Position)
+            return false;
+        if (this.Name != compareTo.Name) return false;
+        if (this.DataType != compareTo.DataType) return false;
+        if (this.Min != compareTo.Min) return false;
+        if (this.Max!= compareTo.Max) return false;
+        if (this.IsRequired != compareTo.IsRequired) return false;
+        if (this.IsDataTypeNumeric != compareTo.IsDataTypeNumeric) return false;
+
+        //TODO: check if validations vary
+        return true;
     }
 
     public override int GetHashCode()

@@ -41,7 +41,7 @@ public partial class Form1 : Form
         txtTest.Text = "";
 
         var generator = new CodeGenerator();
-        var results = generator.ParseAndGenerateData(document, parseType);
+        var results = generator.ParseAndGenerateData(document, parseType, "TODO");
         txtOutput.Text = results.Code;
         txtTest.Text = results.Test;
     }
