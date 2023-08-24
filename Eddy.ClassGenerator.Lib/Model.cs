@@ -108,8 +108,6 @@ public class Model
         if (!ListsEqual(ARequiresBValidation, compareTo.ARequiresBValidation)) return false;
         if (!ListsEqual(OnlyOneOfValidations, compareTo.OnlyOneOfValidations)) return false;
         if (!ListsEqual(IfOneIsFilledThenAtLeastOne, compareTo.IfOneIsFilledThenAtLeastOne)) return false;
-
-        //TODO: check if validations vary
         return true;
     }
 

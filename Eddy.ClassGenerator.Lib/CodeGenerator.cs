@@ -338,7 +338,7 @@ public class CodeGenerator
         sbTest.AppendLine("using Eddy.x12.Mapping;");
         sbTest.AppendLine("using Eddy.x12.Models.v" + namespaceVersion + ";");
         sbTest.AppendLine();
-        sbTest.AppendLine("namespace Eddy.Tests.x12.Models.v" + namespaceVersion + ";");
+        sbTest.AppendLine("namespace Eddy.x12.Tests.Models.v" + namespaceVersion + ";");
         sbTest.AppendLine();
         sbTest.AppendLine($"public class {parsed.SegmentType}Tests");
         sbTest.AppendLine("{");

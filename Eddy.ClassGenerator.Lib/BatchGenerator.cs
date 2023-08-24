@@ -126,6 +126,7 @@ public class BatchGenerator
                 var segmentsInVersions = FindSegmentInAllVersions(segmentData.Type, versionAndSegments);
                 OnProcessUpdate?.Invoke($"Segment also exists in the following versions: " + string.Join(", ", segmentsInVersions.Keys));
                 var parsedByVersion = new Dictionary<string, ParsedSegment>();
+                
                 foreach (var otherSegment in segmentsInVersions)
                 {
                     OnProcessUpdate?.Invoke($"Generating {otherSegment.Key}-{otherSegment.Value.Type}");
