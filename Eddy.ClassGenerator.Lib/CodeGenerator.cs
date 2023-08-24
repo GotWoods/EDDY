@@ -312,6 +312,11 @@ public class CodeGenerator
         return sbTest.ToString();
     }
 
+    private string GenerateIfOneFilled(List<Model> orderedFields)
+    {
+       
+    }
+
     private string GenerateInlineDataValue(Model item, bool generateBlankDefault)
     {
         if (generateBlankDefault)
