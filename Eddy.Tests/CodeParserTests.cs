@@ -18,16 +18,16 @@ namespace Eddy.Tests
     }
 
 
-    public class CodeGenTests
+    public class CodeParserTests
     {
         private Model _model;
-        private CodeGenerator _subject;
+        private CodeParser _subject;
         private Regex _elementNameRegEx;
 
-        public CodeGenTests()
+        public CodeParserTests()
         {
             _model = new Model("T1-01", "Field1", "string", 0, 0);
-            _subject = new CodeGenerator();
+            _subject = new CodeParser();
             _elementNameRegEx = new Regex("T1-\\d{2}");
         }
 
