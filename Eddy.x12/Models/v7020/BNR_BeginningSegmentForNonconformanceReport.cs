@@ -1,5 +1,0 @@
-namespace Eddy.x12.Models.v7020;
-
-public class BNR_BeginningSegmentForNonconformanceReport : Eddy.x12.Models.v7010.BNR_BeginningSegmentForNonconformanceReport
-{
-}

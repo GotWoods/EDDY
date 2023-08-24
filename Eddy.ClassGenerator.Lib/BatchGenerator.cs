@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -133,11 +134,14 @@ public class BatchGenerator
             //var testPath = projectBasePath + @"Eddy.Tests.x12\Models";
             foreach (var segmentData in versionAndSegment.Value)
             {
+
                 var codePath = codeBasePath + "\\v" + versionAndSegment.Key + "\\" + segmentData.Name + ".cs";
                 var testPath = testBasePath + "\\v" + versionAndSegment.Key + "\\" + segmentData.Type + "Tests.cs";
 
                 if (File.Exists(codePath)) //don't regen if already exists
                     continue;
+
+                var filesToWrite = new Dictionary<string, string>(); //path and code
 
                 OnProcessUpdate?.Invoke($"Processing segment {version}-{segmentData.Type}");
                 var segmentsInVersions = FindSegmentInAllVersions(segmentData.Type, versionAndSegments);
@@ -146,11 +150,12 @@ public class BatchGenerator
 
                 foreach (var otherSegment in segmentsInVersions)
                 {
-                    OnProcessUpdate?.Invoke($"Generating {otherSegment.Key}-{otherSegment.Value.Type}");
-                    var rawPageData = await GetPage(segmentData.Url);
-                    //wrap the node in an element so that there is only one root element
-                    var wrappedNode = HtmlNode.CreateNode("<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + rawPageData + Environment.NewLine + "</div>");
-                    parsedByVersion.Add(otherSegment.Key, generator.Parse(wrappedNode, ParseType.x12Segment));
+                        OnProcessUpdate?.Invoke($"Parsing {otherSegment.Key}-{otherSegment.Value.Type}");
+                        var rawPageData = await GetPage(otherSegment.Value.Url);
+                        //wrap the node in an element so that there is only one root element
+                        var wrappedNode = HtmlNode.CreateNode("<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + rawPageData + Environment.NewLine + "</div>");
+                        parsedByVersion.Add(otherSegment.Key, generator.Parse(wrappedNode, ParseType.x12Segment));
+                    
                 }
 
                 //write out the base item which would be the first item in the collection
@@ -159,9 +164,9 @@ public class BatchGenerator
 
 
                 if (!File.Exists(codePath))
-                    await File.WriteAllTextAsync(codePath, generatedCode.Code);
+                    filesToWrite.Add(codePath, generatedCode.Code);
                 if (!File.Exists(testPath))
-                    await File.WriteAllTextAsync(testPath, generatedCode.Test);
+                    filesToWrite.Add(testPath, generatedCode.Test);
 
                 OnProcessUpdate?.Invoke($"Initial code generated");
 
@@ -171,7 +176,7 @@ public class BatchGenerator
                         codePath = projectBasePath + @"Eddy.x12\Models\v" + parsedSegment.Key + "\\" + segmentData.Name + ".cs";
                         var generatedInheritanceCode = generator.GenerateInheritanceCodeFrom(lastCode.Value, parsedSegment.Key, lastCode.Key);
                         if (!File.Exists(codePath))
-                            await File.WriteAllTextAsync(codePath, generatedInheritanceCode);
+                            filesToWrite.Add(codePath, generatedInheritanceCode);
                         lastCode = parsedSegment;
                         //no test required
 
@@ -182,10 +187,16 @@ public class BatchGenerator
                         throw new NotSupportedException("No idea what to do now!");
                     }
 
+                foreach (var fileToWrite in filesToWrite)
+                {
+                    File.WriteAllText(fileToWrite.Key, fileToWrite.Value);
+                }
+
                 counter++;
                 OnProcessUpdate?.Invoke($"Batch {counter}/{batchCount} Completed");
                 if (counter >= batchCount)
                 {
+                    await _browser.CloseAsync();
                     return;
                 }
             }
@@ -219,12 +230,12 @@ public class BatchGenerator
     private async Task<string> GetPage(string url)
     {
         var page = await _browser.NewPageAsync();
-        await page.GoToAsync(url, 60, new[] { WaitUntilNavigation.Networkidle0 });
+        await page.GoToAsync(url, 30_000, new[] { WaitUntilNavigation.Networkidle0 });
 
         //await page.WaitForTimeoutAsync(2000);
         var select = await page.QuerySelectorAsync("main");
         var content = await page.EvaluateFunctionAsync<string>("e => e.innerHTML", select);
-       // await _browser.CloseAsync();
+       
 
         return content;
     }

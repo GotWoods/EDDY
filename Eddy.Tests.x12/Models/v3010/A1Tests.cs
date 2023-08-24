@@ -10,14 +10,14 @@ public class A1Tests
 	[Fact]
 	public void Parse_ShouldReturnCorrectObject()
 	{
-		string x12Line = "A1*qHDM*g1rl*7*O";
+		string x12Line = "A1*buQ1*n52b*8*k";
 
 		var expected = new A1_Rejection()
 		{
-			RejectedSetIdentifier = "qHDM",
-			ReferenceDesignator = "g1rl",
-			ErrorFieldData = "7",
-			ErrorConditionCode = "O",
+			RejectedSetIdentifier = "buQ1",
+			ReferenceDesignator = "n52b",
+			ErrorFieldData = "8",
+			ErrorConditionCode = "k",
 		};
 
 		var actual = Map.MapObject<A1_Rejection>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
@@ -26,36 +26,36 @@ public class A1Tests
 
 	[Theory]
 	[InlineData("", false)]
-	[InlineData("qHDM", true)]
+	[InlineData("buQ1", true)]
 	public void Validation_RequiredRejectedSetIdentifier(string rejectedSetIdentifier, bool isValidExpected)
 	{
 		var subject = new A1_Rejection();
-		subject.ReferenceDesignator = "g1rl";
-		subject.ErrorConditionCode = "O";
+		subject.ReferenceDesignator = "n52b";
+		subject.ErrorConditionCode = "k";
 		subject.RejectedSetIdentifier = rejectedSetIdentifier;
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
 	[InlineData("", false)]
-	[InlineData("g1rl", true)]
+	[InlineData("n52b", true)]
 	public void Validation_RequiredReferenceDesignator(string referenceDesignator, bool isValidExpected)
 	{
 		var subject = new A1_Rejection();
-		subject.RejectedSetIdentifier = "qHDM";
-		subject.ErrorConditionCode = "O";
+		subject.RejectedSetIdentifier = "buQ1";
+		subject.ErrorConditionCode = "k";
 		subject.ReferenceDesignator = referenceDesignator;
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
 	[Theory]
 	[InlineData("", false)]
-	[InlineData("O", true)]
+	[InlineData("k", true)]
 	public void Validation_RequiredErrorConditionCode(string errorConditionCode, bool isValidExpected)
 	{
 		var subject = new A1_Rejection();
-		subject.RejectedSetIdentifier = "qHDM";
-		subject.ReferenceDesignator = "g1rl";
+		subject.RejectedSetIdentifier = "buQ1";
+		subject.ReferenceDesignator = "n52b";
 		subject.ErrorConditionCode = errorConditionCode;
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}

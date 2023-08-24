@@ -10,11 +10,11 @@ public class A2Tests
 	[Fact]
 	public void Parse_ShouldReturnCorrectObject()
 	{
-		string x12Line = "A2*WIw0";
+		string x12Line = "A2*ZofZ";
 
 		var expected = new A2_AcceptanceDetail()
 		{
-			TransactionSetControlNumber = "WIw0",
+			TransactionSetControlNumber = "ZofZ",
 		};
 
 		var actual = Map.MapObject<A2_AcceptanceDetail>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
@@ -23,7 +23,7 @@ public class A2Tests
 
 	[Theory]
 	[InlineData("", false)]
-	[InlineData("WIw0", true)]
+	[InlineData("ZofZ", true)]
 	public void Validation_RequiredTransactionSetControlNumber(string transactionSetControlNumber, bool isValidExpected)
 	{
 		var subject = new A2_AcceptanceDetail();
