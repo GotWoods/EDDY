@@ -122,7 +122,7 @@ public class BatchGenerator
             //var testPath = projectBasePath + @"Eddy.Tests.x12\Models";
             foreach (var segmentData in versionAndSegment.Value)
             {
-                var codePath = codeBasePath + "\\v" + versionAndSegment.Key + "\\" + CodeGenerator.GetCodeClassName(segmentData.Type, segmentData.Name) + ".cs";
+                var codePath = codeBasePath + "\\v" + versionAndSegment.Key + "\\" + segmentData.Name + ".cs";
                 var testPath = testBasePath + "\\v" + versionAndSegment.Key + "\\" + segmentData.Type + "Tests.cs";
 
                 if (File.Exists(codePath)) //don't regen if already exists
@@ -157,7 +157,7 @@ public class BatchGenerator
                 foreach (var parsedSegment in parsedByVersion.Skip(1)) //skip the first record as we just wrote it out above as our base item
                     if (lastCode.Value.Equals(parsedSegment.Value)) //no change between versions
                     {
-                        codePath = projectBasePath + @"Eddy.x12\Models\v" + parsedSegment.Key + "\\" + CodeGenerator.GetCodeClassName(segmentData.Type, segmentData.Name) + ".cs";
+                        codePath = projectBasePath + @"Eddy.x12\Models\v" + parsedSegment.Key + "\\" + segmentData.Name + ".cs";
                         var generatedInheritanceCode = generator.GenerateInheritanceCodeFrom(lastCode.Value, parsedSegment.Key, lastCode.Key);
                         if (!File.Exists(codePath))
                             await File.WriteAllTextAsync(codePath, generatedInheritanceCode);
@@ -172,8 +172,10 @@ public class BatchGenerator
                     }
                 counter++;
                 if (counter >= batchCount)
+                {
+                    OnProcessUpdate?.Invoke($"Batch Completed");
                     return;
-            }
+                }
         }
     }
 
