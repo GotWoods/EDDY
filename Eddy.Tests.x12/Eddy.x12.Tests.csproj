@@ -26,4 +26,8 @@
     <ProjectReference Include="..\Eddy.x12\Eddy.x12.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\v3010\" />
+  </ItemGroup>
+
 </Project>

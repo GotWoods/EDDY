@@ -336,9 +336,9 @@ public class CodeGenerator
         var sbTest = new StringBuilder();
         sbTest.AppendLine("using Eddy.Core.Validation;");
         sbTest.AppendLine("using Eddy.x12.Mapping;");
-        sbTest.AppendLine("using Eddy.x12.Models;");
+        sbTest.AppendLine("using Eddy.x12.Models.v" + namespaceVersion + ";");
         sbTest.AppendLine();
-        sbTest.AppendLine("namespace Eddy.Tests.x12.Models;");
+        sbTest.AppendLine("namespace Eddy.Tests.x12.Models.v" + namespaceVersion + ";");
         sbTest.AppendLine();
         sbTest.AppendLine($"public class {parsed.SegmentType}Tests");
         sbTest.AppendLine("{");
