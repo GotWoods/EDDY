@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Eddy.Core.Attributes;
 using HtmlAgilityPack;
 using PuppeteerSharp;
-using System.Text.Json;
 
 namespace Eddy.ClassGenerator.Lib;
 
@@ -21,7 +18,9 @@ public class SegmentData
 
 public class BatchGenerator
 {
-    private string[] _x12Versions = new string[]
+    private readonly string _cacheFileName = "x12Segments.json";
+
+    private readonly string[] _x12Versions =
     {
         "3010", "3020", "3030", "3040", "3050", "3060", "3070",
         "4010", "4020", "4030", "4040", "4050", "4060",
@@ -30,14 +29,15 @@ public class BatchGenerator
         "7010", "7020", "7030", "7040", "7050", "7060",
         "8010", "8020", "8030", "8040"
     };
-    private string _cacheFileName = "x12Segments.json";
+
     private Dictionary<string, List<SegmentData>> LoadDictionaryFromFile(string filePath)
     {
         if (File.Exists(filePath))
         {
-            string jsonData = File.ReadAllText(filePath);
+            var jsonData = File.ReadAllText(filePath);
             return JsonSerializer.Deserialize<Dictionary<string, List<SegmentData>>>(jsonData);
         }
+
         return null;
     }
 
@@ -47,7 +47,7 @@ public class BatchGenerator
         {
             WriteIndented = true
         };
-        string jsonData = JsonSerializer.Serialize(data, options);
+        var jsonData = JsonSerializer.Serialize(data, options);
         File.WriteAllText(filePath, jsonData);
     }
 
@@ -64,7 +64,7 @@ public class BatchGenerator
                 var newNode = HtmlNode.CreateNode(pageText);
                 var segments = newNode.SelectNodes("/div/div/ul/li");
                 var segmentTypesAndUris = new List<SegmentData>();
-                
+
                 foreach (var item in segments)
                 {
                     var link = item.SelectSingleNode("a");
@@ -74,11 +74,13 @@ public class BatchGenerator
                     data.Url = "https://www.stedi.com" + link.GetAttributeValue("href", "");
                     segmentTypesAndUris.Add(data);
                 }
+
                 versionAndSegments.Add(version, segmentTypesAndUris);
             }
 
             SaveDictionaryToFile(versionAndSegments, _cacheFileName);
         }
+
         return versionAndSegments;
     }
 
@@ -89,18 +91,25 @@ public class BatchGenerator
         var counter = 0;
         var generator = new CodeGenerator();
 
+        var codeBasePath = projectBasePath + @"Eddy.x12\Models";
+        var testBasePath = projectBasePath + @"Eddy.x12.Tests\Models";
+
         //make sure directories exist for all versions
         foreach (var versionAndSegment in versionAndSegments)
         {
-            var modelPath = projectBasePath + @"Eddy.x12\Models\v" + versionAndSegment.Key;
-            if (!Directory.Exists(modelPath))
-                Directory.CreateDirectory(modelPath);
+            var codeFolder = codeBasePath + "\\v" + versionAndSegment.Key;
+            var testFolder = testBasePath + "\\v" + versionAndSegments.Keys;
+            if (!Directory.Exists(codeFolder))
+                Directory.CreateDirectory(codeFolder);
+
+            if (!Directory.Exists(testFolder))
+                Directory.CreateDirectory(testFolder);
         }
-        
+
         foreach (var versionAndSegment in versionAndSegments) //start at 3010 and go up
         {
-            var version = versionAndSegment.Key;//key is the string version name e.g. 04010
-           
+            var version = versionAndSegment.Key; //key is the string version name e.g. 04010
+
 
             //var testPath = projectBasePath + @"Eddy.Tests.x12\Models";
             foreach (var segmentData in versionAndSegment.Value)
@@ -119,48 +128,32 @@ public class BatchGenerator
                 //write out the base item which would be the first item in the collection
                 var lastCode = parsedByVersion.First();
                 var generatedCode = generator.GenerateCode(lastCode.Value, ParseType.x12Segment, version);
-                var path = projectBasePath + @"Eddy.x12\Models\v" + versionAndSegment.Key  + "\\" + generatedCode.codeClassName + ".cs";
-                await File.WriteAllTextAsync(path, generatedCode.Code);
-                
+                var codePath = codeBasePath + "\\v" + versionAndSegment.Key + "\\" + generatedCode.codeClassName + ".cs";
+                var testPath = testBasePath + "\\v" + versionAndSegment.Key + "\\" + segmentData.Type + "Tests.cs";
+                if (!File.Exists(codePath))
+                    await File.WriteAllTextAsync(codePath, generatedCode.Code);
+                if (!File.Exists(testPath))
+                    await File.WriteAllTextAsync(testPath, generatedCode.Test);
+
+
                 foreach (var parsedSegment in parsedByVersion.Skip(1)) //skip the first record as we just wrote it out above as our base item
-                {
                     if (lastCode.Value.Equals(parsedSegment.Value)) //no change between versions
                     {
-                        path = projectBasePath + @"Eddy.x12\Models\v" + parsedSegment.Key + "\\" + generatedCode.codeClassName + ".cs";
+                        codePath = projectBasePath + @"Eddy.x12\Models\v" + parsedSegment.Key + "\\" + generatedCode.codeClassName + ".cs";
                         var generatedInheritanceCode = generator.GenerateInheritanceCodeFrom(lastCode.Value, parsedSegment.Key, lastCode.Key);
-                        await File.WriteAllTextAsync(path, generatedInheritanceCode);
+                        if (!File.Exists(codePath))
+                            await File.WriteAllTextAsync(codePath, generatedInheritanceCode);
                         lastCode = parsedSegment;
+                        //no test required
                     }
                     else
                     {
-                        //calculate differences and save?
+                        throw new NotSupportedException("No idea what to do now!");
                     }
-                }
-
-
-
-                //var outputFileName = modelPath + "\\" + segmentAndUrl.Name + ".cs";
-                //if (!File.Exists(outputFileName))
-                //{
-
-
-                    // var rawPageData = await GetPage(segmentAndUrl.Url);
-                    // //wrap the node in an element so that there is only one root element
-                    // var wrappedNode = HtmlNode.CreateNode("<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + rawPageData + Environment.NewLine + "</div>");
-                    // var results = generator.Parse(wrappedNode, ParseType.x12Segment);
-                    
-                    
-                    counter++;
-
-                    //File.WriteAllText(outputFileName, results.Code);
-                    //File.WriteAllText(testPath + "\\" + type + "Tests.cs", results.Test);
-
-                    if (counter >= batchCount)
-                        return;
-                //}
+                counter++;
+                if (counter >= batchCount)
+                    return;
             }
-
-
         }
     }
 
@@ -171,10 +164,7 @@ public class BatchGenerator
         foreach (var versionAndSegment in versionAndSegments)
         {
             var found = versionAndSegment.Value.FirstOrDefault(x => x.Type == segmentType);
-            if (found != null)
-            {
-                results.Add(versionAndSegment.Key, found);
-            }
+            if (found != null) results.Add(versionAndSegment.Key, found);
         }
 
         return results;
@@ -189,8 +179,6 @@ public class BatchGenerator
     //  if there is no difference, then simple inheritance to blank class from previous
     //  if there is a difference, then find diffs
     //     create inherited class based on the diffs
-
-
 
 
     private async Task<string> GetPage(string url)

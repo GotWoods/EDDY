@@ -23,7 +23,7 @@ public partial class Form1 : Form
         {
             Headless = true
         });
-        
+
         var page = await browser.NewPageAsync();
         await page.GoToAsync(url, WaitUntilNavigation.Networkidle0);
 
@@ -46,20 +46,7 @@ public partial class Form1 : Form
         txtTest.Text = results.Test;
     }
 
-    private List<string> GetExistingFiles()
-    {
-        var path = projectBasePath + @"Eddy.x12\Models";
-        var results = new List<string>();
-        foreach (var file in Directory.GetFiles(path))
-            if (file.IndexOf("_") > -1)
-            {
-                var filename = file.Substring(0, file.IndexOf("_"));
-                filename = filename.Substring(file.LastIndexOf('\\') + 1);
-                results.Add(filename);
-            }
 
-        return results;
-    }
 
 
     private async void button5_Click(object sender, EventArgs e)
@@ -87,7 +74,7 @@ public partial class Form1 : Form
         try
         {
             var x = new BatchGenerator();
-            await x.Start( projectBasePath, 1);
+            await x.Start(projectBasePath, int.Parse(this.txtBatchCount.Text));
         }
         finally
         {

@@ -148,7 +148,7 @@
             txtBatchCount.Name = "txtBatchCount";
             txtBatchCount.Size = new Size(43, 23);
             txtBatchCount.TabIndex = 15;
-            txtBatchCount.Text = "20";
+            txtBatchCount.Text = "10";
             // 
             // Form1
             // 

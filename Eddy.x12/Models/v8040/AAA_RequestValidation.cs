@@ -1,7 +1,7 @@
 using Eddy.Core.Attributes;
 using Eddy.Core.Validation;
 
-namespace Eddy.x12.Models;
+namespace Eddy.x12.Models.v8040;
 
 [Segment("AAA")]
 public class AAA_RequestValidation : EdiX12Segment
