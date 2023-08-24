@@ -161,7 +161,7 @@
             txtBatchCount.Name = "txtBatchCount";
             txtBatchCount.Size = new Size(49, 27);
             txtBatchCount.TabIndex = 15;
-            txtBatchCount.Text = "10";
+            txtBatchCount.Text = "1";
             // 
             // txtLog
             // 
