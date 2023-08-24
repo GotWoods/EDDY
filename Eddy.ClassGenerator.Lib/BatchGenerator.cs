@@ -115,7 +115,7 @@ public class BatchGenerator
 
         foreach (var versionAndSegment in versionAndSegments) //start at 3010 and go up
         {
-          
+
             var version = versionAndSegment.Key; //key is the string version name e.g. 04010
             OnProcessUpdate?.Invoke($"Processing version {version}");
 
@@ -132,7 +132,7 @@ public class BatchGenerator
                 var segmentsInVersions = FindSegmentInAllVersions(segmentData.Type, versionAndSegments);
                 OnProcessUpdate?.Invoke($"Segment also exists in the following versions: " + string.Join(", ", segmentsInVersions.Keys));
                 var parsedByVersion = new Dictionary<string, ParsedSegment>();
-                
+
                 foreach (var otherSegment in segmentsInVersions)
                 {
                     OnProcessUpdate?.Invoke($"Generating {otherSegment.Key}-{otherSegment.Value.Type}");
@@ -145,8 +145,8 @@ public class BatchGenerator
                 //write out the base item which would be the first item in the collection
                 var lastCode = parsedByVersion.First();
                 var generatedCode = generator.GenerateCode(lastCode.Value, ParseType.x12Segment, version);
-              
-                
+
+
                 if (!File.Exists(codePath))
                     await File.WriteAllTextAsync(codePath, generatedCode.Code);
                 if (!File.Exists(testPath))
@@ -170,12 +170,14 @@ public class BatchGenerator
                     {
                         throw new NotSupportedException("No idea what to do now!");
                     }
+
                 counter++;
                 if (counter >= batchCount)
                 {
-                    OnProcessUpdate?.Invoke($"Batch Completed");
+                    OnProcessUpdate?.Invoke($"Batch {counter}/{batchCount} Completed");
                     return;
                 }
+            }
         }
     }
 
