@@ -18,6 +18,9 @@ public class SegmentData
 
 public class BatchGenerator
 {
+    public delegate void BatchGeneratorEventHandler(string message);
+    public event BatchGeneratorEventHandler OnProcessUpdate;
+
     private readonly string _cacheFileName = "x12Segments.json";
 
     private readonly string[] _x12Versions =
@@ -35,6 +38,7 @@ public class BatchGenerator
         if (File.Exists(filePath))
         {
             var jsonData = File.ReadAllText(filePath);
+            OnProcessUpdate?.Invoke($"Finished loading all versionAndSegments from cache");
             return JsonSerializer.Deserialize<Dictionary<string, List<SegmentData>>>(jsonData);
         }
 
@@ -47,6 +51,7 @@ public class BatchGenerator
         {
             WriteIndented = true
         };
+        OnProcessUpdate?.Invoke($"storing all versionAndSegments to cache");
         var jsonData = JsonSerializer.Serialize(data, options);
         File.WriteAllText(filePath, jsonData);
     }
@@ -104,16 +109,20 @@ public class BatchGenerator
 
             if (!Directory.Exists(testFolder))
                 Directory.CreateDirectory(testFolder);
+
+            OnProcessUpdate?.Invoke($"Code/Test folders created");
         }
 
         foreach (var versionAndSegment in versionAndSegments) //start at 3010 and go up
         {
-            var version = versionAndSegment.Key; //key is the string version name e.g. 04010
 
+            var version = versionAndSegment.Key; //key is the string version name e.g. 04010
+            OnProcessUpdate?.Invoke($"Processing version {version}");
 
             //var testPath = projectBasePath + @"Eddy.Tests.x12\Models";
             foreach (var segmentData in versionAndSegment.Value)
             {
+                OnProcessUpdate?.Invoke($"Processing segment {version}-{segmentData.Type}");
                 var segmentsInVersions = FindSegmentInAllVersions(segmentData.Type, versionAndSegments);
 
                 var parsedByVersion = new Dictionary<string, ParsedSegment>();
@@ -135,6 +144,7 @@ public class BatchGenerator
                 if (!File.Exists(testPath))
                     await File.WriteAllTextAsync(testPath, generatedCode.Test);
 
+                OnProcessUpdate?.Invoke($"Initial code generated");
 
                 foreach (var parsedSegment in parsedByVersion.Skip(1)) //skip the first record as we just wrote it out above as our base item
                     if (lastCode.Value.Equals(parsedSegment.Value)) //no change between versions
@@ -145,6 +155,8 @@ public class BatchGenerator
                             await File.WriteAllTextAsync(codePath, generatedInheritanceCode);
                         lastCode = parsedSegment;
                         //no test required
+
+                        OnProcessUpdate?.Invoke($"Inheritance code generated for {parsedSegment.Key}-{segmentData.Type}");
                     }
                     else
                     {

@@ -40,6 +40,7 @@
             btnx12Element = new Button();
             txtx12Element = new TextBox();
             txtBatchCount = new TextBox();
+            txtLog = new TextBox();
             SuspendLayout();
             // 
             // txtOutput
@@ -150,11 +151,22 @@
             txtBatchCount.TabIndex = 15;
             txtBatchCount.Text = "10";
             // 
+            // txtLog
+            // 
+            txtLog.Location = new Point(12, 183);
+            txtLog.Multiline = true;
+            txtLog.Name = "txtLog";
+            txtLog.ReadOnly = true;
+            txtLog.ScrollBars = ScrollBars.Vertical;
+            txtLog.Size = new Size(462, 268);
+            txtLog.TabIndex = 16;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1321, 463);
+            Controls.Add(txtLog);
             Controls.Add(txtBatchCount);
             Controls.Add(btnx12Element);
             Controls.Add(txtx12Element);
@@ -186,5 +198,6 @@
         private Button btnx12Element;
         private TextBox txtx12Element;
         private TextBox txtBatchCount;
+        private TextBox txtLog;
     }
 }

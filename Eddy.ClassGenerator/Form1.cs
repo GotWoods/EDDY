@@ -1,3 +1,4 @@
+using System.Reflection.Emit;
 using Eddy.ClassGenerator.Lib;
 using HtmlAgilityPack;
 using PuppeteerSharp;
@@ -74,12 +75,26 @@ public partial class Form1 : Form
         try
         {
             var x = new BatchGenerator();
+            x.OnProcessUpdate += GeneratorOnProcessUpdate;
             await x.Start(projectBasePath, int.Parse(this.txtBatchCount.Text));
         }
         finally
         {
             this.Cursor = Cursors.Default;
         }
+    }
+
+    private void GeneratorOnProcessUpdate(string message)
+    {
+        if (this.txtLog.InvokeRequired)
+        {
+            // Call this method again using Invoke
+            this.Invoke(new Action(() => GeneratorOnProcessUpdate(message)));
+            return;
+        }
+
+        // Update the TextBox
+        this.txtLog.AppendText(message + Environment.NewLine);
     }
 
     private async void btnEdifactElement_Click(object sender, EventArgs e)
