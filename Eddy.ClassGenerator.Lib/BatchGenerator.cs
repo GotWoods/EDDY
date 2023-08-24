@@ -108,6 +108,7 @@ public class BatchGenerator
         var versionAndSegments = await LoadSegmentsAndVersionInfo(false);
         var counter = 0;
         var generator = new CodeGenerator();
+        var parser = new CodeParser();
 
         var codeBasePath = projectBasePath + @"Eddy.x12\Models";
         var testBasePath = projectBasePath + @"Eddy.Tests.x12\Models";
@@ -154,19 +155,20 @@ public class BatchGenerator
                         var rawPageData = await GetPage(otherSegment.Value.Url);
                         //wrap the node in an element so that there is only one root element
                         var wrappedNode = HtmlNode.CreateNode("<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + rawPageData + Environment.NewLine + "</div>");
-                        parsedByVersion.Add(otherSegment.Key, generator.Parse(wrappedNode, ParseType.x12Segment));
+                        parsedByVersion.Add(otherSegment.Key, parser.Parse(wrappedNode, ParseType.x12Segment));
                     
                 }
 
                 //write out the base item which would be the first item in the collection
                 var lastCode = parsedByVersion.First();
-                var generatedCode = generator.GenerateCode(lastCode.Value, ParseType.x12Segment, version);
 
+                var generatedCode = generator.GenerateCode(lastCode.Value, ParseType.x12Segment, version);
+                var generatedTest = generator.GenerateTests(lastCode.Value, ParseType.x12Segment, version);
 
                 if (!File.Exists(codePath))
-                    filesToWrite.Add(codePath, generatedCode.Code);
+                    filesToWrite.Add(codePath, generatedCode);
                 if (!File.Exists(testPath))
-                    filesToWrite.Add(testPath, generatedCode.Test);
+                    filesToWrite.Add(testPath, generatedTest);
 
                 OnProcessUpdate?.Invoke($"Initial code generated");
 
@@ -188,10 +190,11 @@ public class BatchGenerator
                         codePath = projectBasePath + @"Eddy.x12\Models\v" + parsedSegment.Key + "\\" + segmentData.Name + ".cs";
                         testPath = testBasePath + "\\v" + parsedSegment.Key + "\\" + segmentData.Type + "Tests.cs";
                         generatedCode = generator.GenerateCode(parsedSegment.Value, ParseType.x12Segment, parsedSegment.Key);
+                        generatedTest = generator.GenerateTests(parsedSegment.Value, ParseType.x12Segment, parsedSegment.Key);
                         if (!File.Exists(codePath))
-                            filesToWrite.Add(codePath, generatedCode.Code);
+                            filesToWrite.Add(codePath, generatedCode);
                         if (!File.Exists(testPath))
-                            filesToWrite.Add(testPath, generatedCode.Test);
+                            filesToWrite.Add(testPath, generatedTest);
                         lastCode = parsedSegment;
                     }
 

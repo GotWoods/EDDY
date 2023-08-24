@@ -1,3 +1,4 @@
+using System.CodeDom.Compiler;
 using System.Reflection.Emit;
 using Eddy.ClassGenerator.Lib;
 using HtmlAgilityPack;
@@ -45,10 +46,13 @@ public partial class Form1 : Form
         txtOutput.Text = "";
         txtTest.Text = "";
 
-        var generator = new CodeGenerator();
-        var results = generator.ParseAndGenerateData(document, parseType, "TODO");
-        txtOutput.Text = results.Code;
-        txtTest.Text = results.Test;
+        var parser = new Eddy.ClassGenerator.Lib.CodeParser();
+        var parsed = parser.Parse(document, parseType);
+       
+        var generator = new Eddy.ClassGenerator.Lib.CodeGenerator();
+        //var results = generator.ParseAndGenerateData(document, parseType, "TODO");
+        txtOutput.Text = generator.GenerateCode(parsed, parseType, "TODO");
+        txtTest.Text = generator.GenerateTests(parsed,parseType, "TODO");
     }
 
 
