@@ -1,0 +1,5 @@
+namespace Eddy.x12.Models.v3020;
+
+public class A3_ApplicationRejection : Eddy.x12.Models.v3010.A3_ApplicationRejection
+{
+}

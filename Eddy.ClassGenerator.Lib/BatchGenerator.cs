@@ -115,13 +115,19 @@ public class BatchGenerator
 
         foreach (var versionAndSegment in versionAndSegments) //start at 3010 and go up
         {
-
+          
             var version = versionAndSegment.Key; //key is the string version name e.g. 04010
             OnProcessUpdate?.Invoke($"Processing version {version}");
 
             //var testPath = projectBasePath + @"Eddy.Tests.x12\Models";
             foreach (var segmentData in versionAndSegment.Value)
             {
+                var codePath = codeBasePath + "\\v" + versionAndSegment.Key + "\\" + CodeGenerator.GetCodeClassName(segmentData.Type, segmentData.Name) + ".cs";
+                var testPath = testBasePath + "\\v" + versionAndSegment.Key + "\\" + segmentData.Type + "Tests.cs";
+
+                if (File.Exists(codePath)) //don't regen if already exists
+                    continue;
+
                 OnProcessUpdate?.Invoke($"Processing segment {version}-{segmentData.Type}");
                 var segmentsInVersions = FindSegmentInAllVersions(segmentData.Type, versionAndSegments);
                 OnProcessUpdate?.Invoke($"Segment also exists in the following versions: " + string.Join(", ", segmentsInVersions.Keys));
@@ -139,8 +145,8 @@ public class BatchGenerator
                 //write out the base item which would be the first item in the collection
                 var lastCode = parsedByVersion.First();
                 var generatedCode = generator.GenerateCode(lastCode.Value, ParseType.x12Segment, version);
-                var codePath = codeBasePath + "\\v" + versionAndSegment.Key + "\\" + generatedCode.codeClassName + ".cs";
-                var testPath = testBasePath + "\\v" + versionAndSegment.Key + "\\" + segmentData.Type + "Tests.cs";
+              
+                
                 if (!File.Exists(codePath))
                     await File.WriteAllTextAsync(codePath, generatedCode.Code);
                 if (!File.Exists(testPath))
@@ -151,7 +157,7 @@ public class BatchGenerator
                 foreach (var parsedSegment in parsedByVersion.Skip(1)) //skip the first record as we just wrote it out above as our base item
                     if (lastCode.Value.Equals(parsedSegment.Value)) //no change between versions
                     {
-                        codePath = projectBasePath + @"Eddy.x12\Models\v" + parsedSegment.Key + "\\" + generatedCode.codeClassName + ".cs";
+                        codePath = projectBasePath + @"Eddy.x12\Models\v" + parsedSegment.Key + "\\" + CodeGenerator.GetCodeClassName(segmentData.Type, segmentData.Name) + ".cs";
                         var generatedInheritanceCode = generator.GenerateInheritanceCodeFrom(lastCode.Value, parsedSegment.Key, lastCode.Key);
                         if (!File.Exists(codePath))
                             await File.WriteAllTextAsync(codePath, generatedInheritanceCode);

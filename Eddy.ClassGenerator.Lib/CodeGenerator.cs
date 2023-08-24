@@ -33,6 +33,11 @@ public class ParsedSegment
         }
         return true;
     }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(SegmentType, ClassName, Items);
+    }
 }
 
 public class CodeGenerator
@@ -240,13 +245,13 @@ public class CodeGenerator
         return result;
     }
 
-    public (string Code, string Test, string codeClassName) ParseAndGenerateData(HtmlNode document, ParseType parseType, string namespaceVersion)
+    public (string Code, string Test) ParseAndGenerateData(HtmlNode document, ParseType parseType, string namespaceVersion)
     {
         var parsed = Parse(document, parseType);
         return GenerateCode(parsed, parseType, namespaceVersion);
     }
 
-    public (string Code, string Test, string codeClassName) GenerateCode(ParsedSegment parsed, ParseType parseType, string namespaceVersion)
+    public (string Code, string Test) GenerateCode(ParsedSegment parsed, ParseType parseType, string namespaceVersion)
     {
         var sb = new StringBuilder();
         if (parseType == ParseType.x12Segment || parseType == ParseType.x12Element)
@@ -484,7 +489,7 @@ public class CodeGenerator
             }
         }
         sbTest.AppendLine("}");
-        return (Code: sb.ToString(), Test: sbTest.ToString(), codeClassName: parsed.ClassName);
+        return (Code: sb.ToString(), Test: sbTest.ToString());
     }
 
     private string GenerateInlineDataValue(Model item, bool generateBlankDefault)
