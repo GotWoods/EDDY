@@ -97,13 +97,13 @@ public class BatchGenerator
         var generator = new CodeGenerator();
 
         var codeBasePath = projectBasePath + @"Eddy.x12\Models";
-        var testBasePath = projectBasePath + @"Eddy.x12.Tests\Models";
+        var testBasePath = projectBasePath + @"Eddy.Tests.x12\Models";
 
         //make sure directories exist for all versions
         foreach (var versionAndSegment in versionAndSegments)
         {
             var codeFolder = codeBasePath + "\\v" + versionAndSegment.Key;
-            var testFolder = testBasePath + "\\v" + versionAndSegments.Keys;
+            var testFolder = testBasePath + "\\v" + versionAndSegment.Key;
             if (!Directory.Exists(codeFolder))
                 Directory.CreateDirectory(codeFolder);
 
@@ -124,10 +124,11 @@ public class BatchGenerator
             {
                 OnProcessUpdate?.Invoke($"Processing segment {version}-{segmentData.Type}");
                 var segmentsInVersions = FindSegmentInAllVersions(segmentData.Type, versionAndSegments);
-
+                OnProcessUpdate?.Invoke($"Segment also exists in the following versions: " + string.Join(", ", segmentsInVersions.Keys));
                 var parsedByVersion = new Dictionary<string, ParsedSegment>();
                 foreach (var otherSegment in segmentsInVersions)
                 {
+                    OnProcessUpdate?.Invoke($"Generating {otherSegment.Key}-{otherSegment.Value.Type}");
                     var rawPageData = await GetPage(segmentData.Url);
                     //wrap the node in an element so that there is only one root element
                     var wrappedNode = HtmlNode.CreateNode("<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + rawPageData + Environment.NewLine + "</div>");
