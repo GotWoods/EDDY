@@ -184,7 +184,15 @@ public class BatchGenerator
                     }
                     else
                     {
-                        throw new NotSupportedException("No idea what to do now!");
+                        OnProcessUpdate?.Invoke($"Code Varied. Restarting inheritance tree {parsedSegment.Key}-{segmentData.Type}");
+                        codePath = projectBasePath + @"Eddy.x12\Models\v" + parsedSegment.Key + "\\" + segmentData.Name + ".cs";
+                        testPath = testBasePath + "\\v" + parsedSegment.Key + "\\" + segmentData.Type + "Tests.cs";
+                        generatedCode = generator.GenerateCode(parsedSegment.Value, ParseType.x12Segment, parsedSegment.Key);
+                        if (!File.Exists(codePath))
+                            filesToWrite.Add(codePath, generatedCode.Code);
+                        if (!File.Exists(testPath))
+                            filesToWrite.Add(testPath, generatedCode.Test);
+                        lastCode = parsedSegment;
                     }
 
                 foreach (var fileToWrite in filesToWrite)
