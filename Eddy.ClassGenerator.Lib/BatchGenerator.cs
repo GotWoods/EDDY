@@ -22,6 +22,18 @@ public class BatchGenerator
     public event BatchGeneratorEventHandler OnProcessUpdate;
 
     private readonly string _cacheFileName = "x12Segments.json";
+    private IBrowser _browser;
+    public BatchGenerator()
+    {
+        var fetcher = new BrowserFetcher();
+        var result = fetcher.DownloadAsync(BrowserFetcher.DefaultChromiumRevision).Result;
+
+        _browser = Puppeteer.LaunchAsync(new LaunchOptions
+        {
+            Headless = true
+        }).Result;
+
+    }
 
     private readonly string[] _x12Versions =
     {
@@ -108,10 +120,9 @@ public class BatchGenerator
                 Directory.CreateDirectory(codeFolder);
 
             if (!Directory.Exists(testFolder))
-                Directory.CreateDirectory(testFolder);
-
-            OnProcessUpdate?.Invoke($"Code/Test folders created");
+                Directory.CreateDirectory(testFolder);            
         }
+        OnProcessUpdate?.Invoke($"Code/Test folders created");
 
         foreach (var versionAndSegment in versionAndSegments) //start at 3010 and go up
         {
@@ -172,9 +183,9 @@ public class BatchGenerator
                     }
 
                 counter++;
+                OnProcessUpdate?.Invoke($"Batch {counter}/{batchCount} Completed");
                 if (counter >= batchCount)
                 {
-                    OnProcessUpdate?.Invoke($"Batch {counter}/{batchCount} Completed");
                     return;
                 }
             }
@@ -207,21 +218,13 @@ public class BatchGenerator
 
     private async Task<string> GetPage(string url)
     {
-        var fetcher = new BrowserFetcher();
-        var result = await fetcher.DownloadAsync(BrowserFetcher.DefaultChromiumRevision);
-
-        var browser = await Puppeteer.LaunchAsync(new LaunchOptions
-        {
-            Headless = true
-        });
-
-        var page = await browser.NewPageAsync();
-        await page.GoToAsync(url, WaitUntilNavigation.Networkidle0);
+        var page = await _browser.NewPageAsync();
+        await page.GoToAsync(url, 60, new[] { WaitUntilNavigation.Networkidle0 });
 
         //await page.WaitForTimeoutAsync(2000);
         var select = await page.QuerySelectorAsync("main");
         var content = await page.EvaluateFunctionAsync<string>("e => e.innerHTML", select);
-        await browser.CloseAsync();
+       // await _browser.CloseAsync();
 
         return content;
     }

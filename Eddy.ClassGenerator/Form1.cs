@@ -7,11 +7,15 @@ namespace Eddy.ClassGenerator;
 
 public partial class Form1 : Form
 {
-    private readonly string projectBasePath = @"C:\Source\EdiParser\";
+    private string projectBasePath = @"";
 
     public Form1()
     {
         InitializeComponent();
+        var x = new DirectoryInfo(Directory.GetCurrentDirectory());
+        //x.GetParent();
+        var dir = x.Parent.Parent.Parent.Parent;
+        projectBasePath = dir.FullName + "\\";
     }
 
 

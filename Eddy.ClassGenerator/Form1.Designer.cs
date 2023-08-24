@@ -45,26 +45,29 @@
             // 
             // txtOutput
             // 
-            txtOutput.Location = new Point(490, 12);
+            txtOutput.Location = new Point(560, 16);
+            txtOutput.Margin = new Padding(3, 4, 3, 4);
             txtOutput.Multiline = true;
             txtOutput.Name = "txtOutput";
             txtOutput.ScrollBars = ScrollBars.Vertical;
-            txtOutput.Size = new Size(371, 426);
+            txtOutput.Size = new Size(423, 567);
             txtOutput.TabIndex = 1;
             // 
             // txtEdifactElement
             // 
-            txtEdifactElement.Location = new Point(12, 38);
+            txtEdifactElement.Location = new Point(14, 51);
+            txtEdifactElement.Margin = new Padding(3, 4, 3, 4);
             txtEdifactElement.Name = "txtEdifactElement";
-            txtEdifactElement.Size = new Size(361, 23);
+            txtEdifactElement.Size = new Size(412, 27);
             txtEdifactElement.TabIndex = 5;
             txtEdifactElement.Text = "https://www.stedi.com/edi/edifact/elements/E017";
             // 
             // btnEdifactElement
             // 
-            btnEdifactElement.Location = new Point(379, 37);
+            btnEdifactElement.Location = new Point(433, 49);
+            btnEdifactElement.Margin = new Padding(3, 4, 3, 4);
             btnEdifactElement.Name = "btnEdifactElement";
-            btnEdifactElement.Size = new Size(95, 23);
+            btnEdifactElement.Size = new Size(109, 31);
             btnEdifactElement.TabIndex = 6;
             btnEdifactElement.Text = "Convert >>";
             btnEdifactElement.UseVisualStyleBackColor = true;
@@ -72,9 +75,10 @@
             // 
             // btnEdifactSegment
             // 
-            btnEdifactSegment.Location = new Point(379, 66);
+            btnEdifactSegment.Location = new Point(433, 88);
+            btnEdifactSegment.Margin = new Padding(3, 4, 3, 4);
             btnEdifactSegment.Name = "btnEdifactSegment";
-            btnEdifactSegment.Size = new Size(95, 23);
+            btnEdifactSegment.Size = new Size(109, 31);
             btnEdifactSegment.TabIndex = 8;
             btnEdifactSegment.Text = "Convert >>";
             btnEdifactSegment.UseVisualStyleBackColor = true;
@@ -82,17 +86,19 @@
             // 
             // txtEdifactSegment
             // 
-            txtEdifactSegment.Location = new Point(12, 67);
+            txtEdifactSegment.Location = new Point(14, 89);
+            txtEdifactSegment.Margin = new Padding(3, 4, 3, 4);
             txtEdifactSegment.Name = "txtEdifactSegment";
-            txtEdifactSegment.Size = new Size(361, 23);
+            txtEdifactSegment.Size = new Size(412, 27);
             txtEdifactSegment.TabIndex = 7;
             txtEdifactSegment.Text = "https://www.stedi.com/edi/edifact/segments/BGM";
             // 
             // btnx12Segment
             // 
-            btnx12Segment.Location = new Point(379, 95);
+            btnx12Segment.Location = new Point(433, 127);
+            btnx12Segment.Margin = new Padding(3, 4, 3, 4);
             btnx12Segment.Name = "btnx12Segment";
-            btnx12Segment.Size = new Size(95, 23);
+            btnx12Segment.Size = new Size(109, 31);
             btnx12Segment.TabIndex = 10;
             btnx12Segment.Text = "Convert >>";
             btnx12Segment.UseVisualStyleBackColor = true;
@@ -100,26 +106,29 @@
             // 
             // txtX12
             // 
-            txtX12.Location = new Point(12, 96);
+            txtX12.Location = new Point(14, 128);
+            txtX12.Margin = new Padding(3, 4, 3, 4);
             txtX12.Name = "txtX12";
-            txtX12.Size = new Size(361, 23);
+            txtX12.Size = new Size(412, 27);
             txtX12.TabIndex = 9;
             txtX12.Text = "https://www.stedi.com/edi/x12-008020/segment/MS1";
             // 
             // txtTest
             // 
-            txtTest.Location = new Point(886, 12);
+            txtTest.Location = new Point(1013, 16);
+            txtTest.Margin = new Padding(3, 4, 3, 4);
             txtTest.Multiline = true;
             txtTest.Name = "txtTest";
             txtTest.ScrollBars = ScrollBars.Vertical;
-            txtTest.Size = new Size(371, 426);
+            txtTest.Size = new Size(423, 567);
             txtTest.TabIndex = 11;
             // 
             // btnx12BatchConvert
             // 
-            btnx12BatchConvert.Location = new Point(61, 150);
+            btnx12BatchConvert.Location = new Point(70, 200);
+            btnx12BatchConvert.Margin = new Padding(3, 4, 3, 4);
             btnx12BatchConvert.Name = "btnx12BatchConvert";
-            btnx12BatchConvert.Size = new Size(312, 23);
+            btnx12BatchConvert.Size = new Size(357, 31);
             btnx12BatchConvert.TabIndex = 12;
             btnx12BatchConvert.Text = "Generate Next Batch of EDI x12 Segments";
             btnx12BatchConvert.UseVisualStyleBackColor = true;
@@ -127,9 +136,10 @@
             // 
             // btnx12Element
             // 
-            btnx12Element.Location = new Point(379, 124);
+            btnx12Element.Location = new Point(433, 165);
+            btnx12Element.Margin = new Padding(3, 4, 3, 4);
             btnx12Element.Name = "btnx12Element";
-            btnx12Element.Size = new Size(95, 23);
+            btnx12Element.Size = new Size(109, 31);
             btnx12Element.TabIndex = 14;
             btnx12Element.Text = "Convert >>";
             btnx12Element.UseVisualStyleBackColor = true;
@@ -137,35 +147,39 @@
             // 
             // txtx12Element
             // 
-            txtx12Element.Location = new Point(12, 125);
+            txtx12Element.Location = new Point(14, 167);
+            txtx12Element.Margin = new Padding(3, 4, 3, 4);
             txtx12Element.Name = "txtx12Element";
-            txtx12Element.Size = new Size(361, 23);
+            txtx12Element.Size = new Size(412, 27);
             txtx12Element.TabIndex = 13;
             txtx12Element.Text = "https://www.stedi.com/edi/x12-008020/element/C030";
             // 
             // txtBatchCount
             // 
-            txtBatchCount.Location = new Point(12, 154);
+            txtBatchCount.Location = new Point(14, 205);
+            txtBatchCount.Margin = new Padding(3, 4, 3, 4);
             txtBatchCount.Name = "txtBatchCount";
-            txtBatchCount.Size = new Size(43, 23);
+            txtBatchCount.Size = new Size(49, 27);
             txtBatchCount.TabIndex = 15;
             txtBatchCount.Text = "10";
             // 
             // txtLog
             // 
-            txtLog.Location = new Point(12, 183);
+            txtLog.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            txtLog.Location = new Point(14, 244);
+            txtLog.Margin = new Padding(3, 4, 3, 4);
             txtLog.Multiline = true;
             txtLog.Name = "txtLog";
             txtLog.ReadOnly = true;
             txtLog.ScrollBars = ScrollBars.Vertical;
-            txtLog.Size = new Size(462, 268);
+            txtLog.Size = new Size(527, 356);
             txtLog.TabIndex = 16;
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1321, 463);
+            ClientSize = new Size(1510, 617);
             Controls.Add(txtLog);
             Controls.Add(txtBatchCount);
             Controls.Add(btnx12Element);
@@ -179,6 +193,7 @@
             Controls.Add(btnEdifactElement);
             Controls.Add(txtEdifactElement);
             Controls.Add(txtOutput);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "Form1";
             Text = "Form1";
             ResumeLayout(false);
