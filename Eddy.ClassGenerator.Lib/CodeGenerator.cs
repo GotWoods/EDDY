@@ -296,11 +296,12 @@ public class CodeGenerator
             if (model.IfOneIsFilledThenAtLeastOne.Any())
             {
                 var orderedFields = OrderFieldsForTestSignature(model.IfOneIsFilledThenAtLeastOne, parsed.Items);
-                sbTest.AppendLine("\t[Theory]");
-                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)},{GenerateInlineDataValue(orderedFields[1], true)}, true)]");
-                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], false)}, true)]");
-                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)},{GenerateInlineDataValue(orderedFields[1], false)}, true)]");
-                sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]");
+                // sbTest.AppendLine("\t[Theory]");
+                // sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)},{GenerateInlineDataValue(orderedFields[1], true)}, true)]"); //all filled
+                // sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], false)}, true)]"); //all empty
+                // sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)},{GenerateInlineDataValue(orderedFields[1], false)}, true)]"); //first filled, remaining empty
+                // sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]"); //first is empty, remaining are true
+                sbTest.Append(GenerateIfOneFilled(orderedFields));
                 sbTest.Append($"\tpublic void Validation_IfOneSpecifiedThenOneMoreRequired_{model.Name}(");
                 sbTest.AppendLine(GenerateTestBody(model.IfOneIsFilledThenAtLeastOne, parsed.Items, parsed.ClassName));
                 sbTest.AppendLine($"\t\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{nameof(ErrorCodes.IfOneIsFilledThenAtLeastOneOtherIsRequired)});");
@@ -314,7 +315,48 @@ public class CodeGenerator
 
     private string GenerateIfOneFilled(List<Model> orderedFields)
     {
-       
+        var result = new StringBuilder();
+        result.AppendLine("\t[Theory]");
+        //all filled is a pass
+        result.Append("\t[InlineData(");
+        for (int i = 0; i < orderedFields.Count; i++)
+        {
+           result.Append(GenerateInlineDataValue(orderedFields[i], true));
+           result.Append(", ");
+        }
+        result.AppendLine("true)]");
+
+        //all empty is a  pass
+        result.Append("\t[InlineData(");
+        for (int i = 0; i < orderedFields.Count; i++)
+        {
+            result.Append(GenerateInlineDataValue(orderedFields[i], false));
+            result.Append(", ");
+        }
+        result.AppendLine("true)]");
+
+        //first is filled but remaining are blank is a fail
+        result.Append("\t[InlineData(");
+        result.Append(GenerateInlineDataValue(orderedFields[0], false));
+        for (int i = 1; i < orderedFields.Count; i++) //start at 1 instead of zero this time
+        {
+            result.Append(GenerateInlineDataValue(orderedFields[i], true));
+            result.Append(", ");
+        }
+        result.AppendLine("false)]");
+
+        //first is empty, remaining are filled is a pass
+        result.Append("\t[InlineData(");
+        result.Append(GenerateInlineDataValue(orderedFields[0], true));
+        for (int i = 1; i < orderedFields.Count; i++) //start at 1 instead of zero this time
+        {
+            result.Append(GenerateInlineDataValue(orderedFields[i], false));
+            result.Append(", ");
+        }
+        result.AppendLine("true)]");
+
+
+        return result.ToString();
     }
 
     private string GenerateInlineDataValue(Model item, bool generateBlankDefault)
