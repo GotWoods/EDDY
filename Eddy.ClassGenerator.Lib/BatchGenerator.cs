@@ -107,7 +107,8 @@ public class BatchGenerator
         //A1 only exists between 3010 and 3060
         var versionAndSegments = await LoadSegmentsAndVersionInfo(false);
         var counter = 0;
-        var generator = new CodeGenerator();
+        var codeGenerator = new CodeGenerator();
+        var testGenerator = new TestGenerator();
         var parser = new CodeParser();
 
         var codeBasePath = projectBasePath + @"Eddy.x12\Models";
@@ -162,8 +163,8 @@ public class BatchGenerator
                 //write out the base item which would be the first item in the collection
                 var lastCode = parsedByVersion.First();
 
-                var generatedCode = generator.GenerateCode(lastCode.Value, ParseType.x12Segment, version);
-                var generatedTest = generator.GenerateTests(lastCode.Value, ParseType.x12Segment, version);
+                var generatedCode = codeGenerator.GenerateCode(lastCode.Value, ParseType.x12Segment, version);
+                var generatedTest = testGenerator.GenerateTests(lastCode.Value, ParseType.x12Segment, version);
 
                 if (!File.Exists(codePath))
                     filesToWrite.Add(codePath, generatedCode);
@@ -176,7 +177,7 @@ public class BatchGenerator
                     if (lastCode.Value.Equals(parsedSegment.Value)) //no change between versions
                     {
                         codePath = projectBasePath + @"Eddy.x12\Models\v" + parsedSegment.Key + "\\" + segmentData.Name + ".cs";
-                        var generatedInheritanceCode = generator.GenerateInheritanceCodeFrom(lastCode.Value, parsedSegment.Key, lastCode.Key);
+                        var generatedInheritanceCode = codeGenerator.GenerateInheritanceCodeFrom(lastCode.Value, parsedSegment.Key, lastCode.Key);
                         if (!File.Exists(codePath))
                             filesToWrite.Add(codePath, generatedInheritanceCode);
                         lastCode = parsedSegment;
@@ -189,8 +190,8 @@ public class BatchGenerator
                         OnProcessUpdate?.Invoke($"Code Varied. Restarting inheritance tree {parsedSegment.Key}-{segmentData.Type}");
                         codePath = projectBasePath + @"Eddy.x12\Models\v" + parsedSegment.Key + "\\" + segmentData.Name + ".cs";
                         testPath = testBasePath + "\\v" + parsedSegment.Key + "\\" + segmentData.Type + "Tests.cs";
-                        generatedCode = generator.GenerateCode(parsedSegment.Value, ParseType.x12Segment, parsedSegment.Key);
-                        generatedTest = generator.GenerateTests(parsedSegment.Value, ParseType.x12Segment, parsedSegment.Key);
+                        generatedCode = codeGenerator.GenerateCode(parsedSegment.Value, ParseType.x12Segment, parsedSegment.Key);
+                        generatedTest = testGenerator.GenerateTests(parsedSegment.Value, ParseType.x12Segment, parsedSegment.Key);
                         if (!File.Exists(codePath))
                             filesToWrite.Add(codePath, generatedCode);
                         if (!File.Exists(testPath))
