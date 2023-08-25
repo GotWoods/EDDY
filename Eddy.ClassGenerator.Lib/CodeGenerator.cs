@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.XPath;
 using Eddy.Core.Validation;
 
 namespace Eddy.ClassGenerator.Lib;
@@ -338,6 +339,7 @@ public class CodeGenerator
         //first is filled but remaining are blank is a fail
         result.Append("\t[InlineData(");
         result.Append(GenerateInlineDataValue(orderedFields[0], false));
+        result.Append(", ");
         for (int i = 1; i < orderedFields.Count; i++) //start at 1 instead of zero this time
         {
             result.Append(GenerateInlineDataValue(orderedFields[i], true));
@@ -348,6 +350,7 @@ public class CodeGenerator
         //first is empty, remaining are filled is a pass
         result.Append("\t[InlineData(");
         result.Append(GenerateInlineDataValue(orderedFields[0], true));
+        result.Append(", ");
         for (int i = 1; i < orderedFields.Count; i++) //start at 1 instead of zero this time
         {
             result.Append(GenerateInlineDataValue(orderedFields[i], false));
