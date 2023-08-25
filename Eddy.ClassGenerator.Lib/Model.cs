@@ -45,6 +45,7 @@ public class Model
                 return _testValue;
             }
         }
+        set => _testValue = value;
     }
 
     private char RandomLetter()
