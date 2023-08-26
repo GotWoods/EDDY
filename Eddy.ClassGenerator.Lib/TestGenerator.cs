@@ -14,23 +14,10 @@ public enum TestType
     ARequiresBValidation,
     AtLeastOneValidations,
     OnlyOneOfValidations,
-    IfOneIsFilledThenAtLeastOne
+    IfOneIsFilledThenAtLeastOne,
+    Required
 }
 
-public class TestTheoryRules
-{
-    public TestTheoryFieldAction AllFilled { get; set; }
-    public TestTheoryFieldAction AllEmpty { get; set; }
-    public TestTheoryFieldAction FirstFilled_RemainingEmpty { get; set; }
-    public TestTheoryFieldAction FirstEmpty_AnyOtherFilled { get; set; }
-}
-
-public enum TestTheoryFieldAction
-{
-    Pass,
-    Fail,
-    Ignore
-}
 
 public class TestGenerator
 {
@@ -74,301 +61,46 @@ public class TestGenerator
 
         foreach (var model in parsed.Items)
         {
+            TestModel tm;
+            
             if (model.IsRequired)
             {
-                var requiredTestModel = new TestModel();
-                requiredTestModel.PrimaryItem = model;
-                requiredTestModel.Theories.Add($"\t[InlineData({GenerateInlineDataValue(model, true)}, false)]");
-                requiredTestModel.Theories.Add($"\t[InlineData({GenerateInlineDataValue(model, false)}, true)]");
-                requiredTestModel.TestName = $"Validation_Required{model.Name}";
-                requiredTestModel.SubjectName = parsed.ClassName;
-                sbTest.AppendLine(requiredTestModel.Generate());
+                tm = new TestModel(model, parsed.ClassName, parsed.Items, TestType.Required);
+                sbTest.AppendLine(tm.Generate());
             }
-
-
+            
             if (model.IfOneIsFilledAllAreRequiredValidations.Any())
             {
-                //var orderedFields = OrderFieldsForTestSignature(model.IfOneIsFilledAllAreRequiredValidations, parsed.Items);
-                // var theories = new List<string>
-                // {
-                //     
-                //
-                //
-                //     $"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)},{GenerateInlineDataValue(orderedFields[1], true)}, true)]", //all filled
-                //     $"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], false)}, true)]", //all empty
-                //     $"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)}, {GenerateInlineDataValue(orderedFields[1], false)}, false)]", //first filled, remainint empty
-                //     $"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, false)]" //first empty, any other filled
-                // };
-                sbTest.AppendLine(GenerateTestBody(TestType.IfOneIsFilledAllAreRequiredValidations, model, parsed.Items, parsed.ClassName, nameof(ErrorCodes.IfOneIsFilledAllAreRequired)));
+                tm = new TestModel(model, parsed.ClassName, parsed.Items, TestType.IfOneIsFilledAllAreRequiredValidations);
+                sbTest.AppendLine(tm.Generate());
             }
 
             if (model.ARequiresBValidation.Any())
             {
-              //  var orderedFields = OrderFieldsForTestSignature(model.ARequiresBValidation, parsed.Items);
-                // var theories = new List<string>
-                // {
-                //     // sbTest.AppendLine("\t[Theory]");
-                //     $"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]", //all filled
-                //     $"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)}, {GenerateInlineDataValue(orderedFields[1], false)}, true)]", //all empty
-                //     $"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, false)]" //first empty, any other filled
-                // };
-                sbTest.AppendLine(GenerateTestBody(TestType.ARequiresBValidation, model, parsed.Items, parsed.ClassName, nameof(ErrorCodes.ARequiresB)));
+                tm = new TestModel(model, parsed.ClassName, parsed.Items,TestType.ARequiresBValidation);
+                sbTest.AppendLine(tm.Generate());
             }
 
             if (model.AtLeastOneValidations.Any())
             {
-              //  var orderedFields = OrderFieldsForTestSignature(model.AtLeastOneValidations, parsed.Items);
-                // var theories = new List<string>
-                // {
-                //     $"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)},{GenerateInlineDataValue(orderedFields[1], true)}, false)]", //all filled
-                //     $"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)},{GenerateInlineDataValue(orderedFields[1], false)}, true)]", //all empty
-                //     $"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)}, {GenerateInlineDataValue(orderedFields[1], false)}, true)]", //first filled, remaining empty
-                //     $"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]" //first empty, any other filled
-                // };
-
-                sbTest.AppendLine(GenerateTestBody(TestType.AtLeastOneValidations, model, parsed.Items, parsed.ClassName, nameof(ErrorCodes.AtLeastOneIsRequired)));
+                tm = new TestModel(model, parsed.ClassName, parsed.Items, TestType.AtLeastOneValidations);
+                sbTest.AppendLine(tm.Generate());
             }
 
             if (model.OnlyOneOfValidations.Any())
             {
-               // var orderedFields = OrderFieldsForTestSignature(model.OnlyOneOfValidations, parsed.Items);
-                // var theories = new List<string>
-                // {
-                //     $"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]", //all filled
-                //     $"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], false)}, false)]", //all empty
-                //     $"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)}, {GenerateInlineDataValue(orderedFields[1], false)}, true)]", //first filled, remainingEmpty
-                //     $"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]" //first empty, any other filled
-                // };
-
-                sbTest.AppendLine(GenerateTestBody(TestType.OnlyOneOfValidations, model, parsed.Items, parsed.ClassName, nameof(ErrorCodes.OnlyOneOf)));
+                tm = new TestModel(model, parsed.ClassName, parsed.Items, TestType.OnlyOneOfValidations);
+                sbTest.AppendLine(tm.Generate());
             }
 
             if (model.IfOneIsFilledThenAtLeastOne.Any())
             {
-               // var orderedFields = OrderFieldsForTestSignature(model.IfOneIsFilledThenAtLeastOne, parsed.Items);
-                // sbTest.AppendLine("\t[Theory]");
-                // sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)},{GenerateInlineDataValue(orderedFields[1], true)}, true)]"); //all filled
-                // sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], false)}, true)]"); //all empty
-                // sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], true)},{GenerateInlineDataValue(orderedFields[1], false)}, true)]"); //first filled, remaining empty
-                // sbTest.AppendLine($"\t[InlineData({GenerateInlineDataValue(orderedFields[0], false)}, {GenerateInlineDataValue(orderedFields[1], true)}, true)]"); //first is empty, remaining are true
-                //var theories = GenerateTheoriesFromRules(orderedFields, rules);
-                sbTest.AppendLine(GenerateTestBody(TestType.IfOneIsFilledThenAtLeastOne, model, parsed.Items, parsed.ClassName, nameof(ErrorCodes.IfOneIsFilledThenAtLeastOneOtherIsRequired)));
+                tm = new TestModel(model, parsed.ClassName, parsed.Items, TestType.IfOneIsFilledThenAtLeastOne);
+                sbTest.AppendLine(tm.Generate());
             }
         }
 
         sbTest.AppendLine("}");
         return sbTest.ToString();
-    }
-
-
-    // private string FirstCharToLowerCase(string str)
-    // {
-    //     if (!string.IsNullOrEmpty(str) && char.IsUpper(str[0]))
-    //         return str.Length == 1 ? char.ToLower(str[0]).ToString() : char.ToLower(str[0]) + str.Substring(1);
-    //     return str;
-    // }
-
-    private List<Model> OrderFieldsForTestSignature(List<ValidationData> validations, List<Model> items)
-    {
-        var result = new List<Model>();
-        foreach (var validationData in validations)
-        foreach (var field in validationData.GetAllFieldDataOrdered())
-        {
-            var foundField = FindFieldByPosition(field, items);
-            result.Add(foundField);
-        }
-
-        return result;
-    }
-
-    private List<string> GenerateTheoriesFromRules(List<Model> orderedFields, TestTheoryRules rules)
-    {
-        var theories = new List<string>();
-
-        var result = new StringBuilder();
-
-        if (rules.AllFilled != TestTheoryFieldAction.Ignore)
-        {
-            result.Append("\t[InlineData(");
-            for (var i = 0; i < orderedFields.Count; i++)
-            {
-                result.Append(GenerateInlineDataValue(orderedFields[i], true));
-                result.Append(", ");
-            }
-
-            if (rules.AllFilled == TestTheoryFieldAction.Pass)
-                result.Append("true)]");
-            else
-                result.Append("false)]");
-
-            theories.Add(result.ToString());
-        }
-
-        if (rules.AllEmpty != TestTheoryFieldAction.Ignore)
-        {
-            result = new StringBuilder();
-            result.Append("\t[InlineData(");
-            for (var i = 0; i < orderedFields.Count; i++)
-            {
-                result.Append(GenerateInlineDataValue(orderedFields[i], false));
-                result.Append(", ");
-            }
-            
-            if (rules.AllEmpty == TestTheoryFieldAction.Pass)
-                result.Append("true)]");
-            else
-                result.Append("false)]");
-
-            theories.Add(result.ToString());
-        }
-
-
-        if (rules.FirstFilled_RemainingEmpty != TestTheoryFieldAction.Ignore)
-        {
-            result = new StringBuilder();
-            result.Append("\t[InlineData(");
-            result.Append(GenerateInlineDataValue(orderedFields[0], false));
-            result.Append(", ");
-            for (var i = 1; i < orderedFields.Count; i++) //start at 1 instead of zero this time
-            {
-                result.Append(GenerateInlineDataValue(orderedFields[i], true));
-                result.Append(", ");
-            }
-
-            if (rules.FirstFilled_RemainingEmpty == TestTheoryFieldAction.Pass)
-                result.Append("true)]");
-            else
-                result.Append("false)]");
-
-            theories.Add(result.ToString());
-        }
-
-        if (rules.FirstEmpty_AnyOtherFilled != TestTheoryFieldAction.Ignore)
-        {
-            result = new StringBuilder();
-            //first is empty, remaining are filled is a pass
-            result.Append("\t[InlineData(");
-            result.Append(GenerateInlineDataValue(orderedFields[0], true));
-            result.Append(", ");
-            for (var i = 1; i < orderedFields.Count; i++) //start at 1 instead of zero this time
-            {
-                result.Append(GenerateInlineDataValue(orderedFields[i], false));
-                result.Append(", ");
-            }
-        }
-
-        if (rules.FirstEmpty_AnyOtherFilled == TestTheoryFieldAction.Pass)
-            result.Append("true)]");
-        else
-            result.Append("false)]");
-
-        theories.Add(result.ToString());
-
-        return theories;
-    }
-
-    public string GenerateTestBody(TestType testType, Model model, List<Model> items, string classToTest, string expectedErrorCode)
-    {
-        var tm = new TestModel();
-        tm.PrimaryItem = model;
-        tm.SubjectName = classToTest;
-        tm.ExpectedErrorCode = expectedErrorCode;
-
-        // foreach (var theory in theories)
-        // {
-        //     tm.Theories.Add(theory);
-        // }
-
-        List<ValidationData> validations = null;
-        var rules = new TestTheoryRules();
-        switch (testType)
-        {
-            case TestType.ARequiresBValidation:
-                tm.TestName = $"Validation_ARequiresB{model.Name}";
-                rules.AllFilled = TestTheoryFieldAction.Pass;
-                rules.AllEmpty = TestTheoryFieldAction.Pass;
-                rules.FirstFilled_RemainingEmpty = TestTheoryFieldAction.Fail;
-                rules.FirstEmpty_AnyOtherFilled = TestTheoryFieldAction.Pass;
-                tm.Theories = GenerateTheoriesFromRules(OrderFieldsForTestSignature(model.ARequiresBValidation, items), rules);
-                validations = model.ARequiresBValidation;
-                break;
-            case TestType.AtLeastOneValidations:
-                tm.TestName = $"Validation_AtLeastOne{model.Name}";
-                rules.AllFilled = TestTheoryFieldAction.Fail;
-                rules.AllEmpty = TestTheoryFieldAction.Pass;
-                rules.FirstFilled_RemainingEmpty = TestTheoryFieldAction.Pass;
-                rules.FirstEmpty_AnyOtherFilled = TestTheoryFieldAction.Pass;
-                tm.Theories = GenerateTheoriesFromRules(OrderFieldsForTestSignature(model.AtLeastOneValidations, items), rules);
-                validations = model.AtLeastOneValidations;
-                break;
-            case TestType.IfOneIsFilledAllAreRequiredValidations:
-                tm.TestName = $"Validation_AllAreRequired{model.Name}";
-                rules.AllFilled = TestTheoryFieldAction.Pass;
-                rules.AllEmpty = TestTheoryFieldAction.Pass;
-                rules.FirstFilled_RemainingEmpty = TestTheoryFieldAction.Fail;
-                rules.FirstEmpty_AnyOtherFilled = TestTheoryFieldAction.Fail;
-
-                tm.Theories = GenerateTheoriesFromRules(OrderFieldsForTestSignature(model.IfOneIsFilledAllAreRequiredValidations, items), rules);
-                validations = model.IfOneIsFilledAllAreRequiredValidations;
-            
-                break;
-            case TestType.IfOneIsFilledThenAtLeastOne:
-                tm.TestName = $"Validation_IfOneSpecifiedThenOneMoreRequired_{model.Name}";
-                rules.AllFilled = TestTheoryFieldAction.Pass;
-                rules.AllEmpty = TestTheoryFieldAction.Pass;
-                rules.FirstFilled_RemainingEmpty = TestTheoryFieldAction.Fail;
-                rules.FirstEmpty_AnyOtherFilled = TestTheoryFieldAction.Pass;
-                tm.Theories = GenerateTheoriesFromRules(OrderFieldsForTestSignature(model.IfOneIsFilledThenAtLeastOne, items), rules);
-                validations = model.IfOneIsFilledThenAtLeastOne;
-            break;
-            case TestType.OnlyOneOfValidations:
-                tm.TestName = $"Validation_OnlyOneOf{model.Name}";
-                rules.AllFilled = TestTheoryFieldAction.Pass;
-                rules.AllEmpty = TestTheoryFieldAction.Fail;
-                rules.FirstFilled_RemainingEmpty = TestTheoryFieldAction.Pass;
-                rules.FirstEmpty_AnyOtherFilled = TestTheoryFieldAction.Pass;
-                tm.Theories = GenerateTheoriesFromRules(OrderFieldsForTestSignature(model.OnlyOneOfValidations, items), rules);
-                validations = model.OnlyOneOfValidations;
-        
-                break;
-            default:
-                throw new NotSupportedException("Test type is not supported " + testType);
-        }
-        
-        foreach (var validationData in validations)
-        foreach (var field in validationData.GetAllFieldDataOrdered())
-        {
-            var foundField = FindFieldByPosition(field, items);
-            tm.TestParameter.Add(foundField);
-        }
-
-        foreach (var requiredItem in items.Where(x => x.IsRequired))
-        {
-            tm.RequiredTestItems.Add(requiredItem);
-        }
-        
-        return tm.Generate();
-    }
-
-    private Model FindFieldByPosition(string position, List<Model> fields)
-    {
-        foreach (var field in fields)
-            if (position == field.Position)
-                return field;
-        return new Model(position, position, "string", 0, 0);
-    }
-
-    private string GenerateInlineDataValue(Model item, bool generateBlankDefault)
-    {
-        if (generateBlankDefault)
-        {
-            if (item.IsDataTypeNumeric)
-                return "0";
-            return "\"\"";
-        }
-
-        if (item.IsDataTypeNumeric)
-            return item.TestValue;
-        return $"\"{item.TestValue}\"";
     }
 }
