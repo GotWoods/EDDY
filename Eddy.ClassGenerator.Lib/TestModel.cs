@@ -213,7 +213,7 @@ public class TestModel
     public Dictionary<Model, List<string>> GetARequiresBRules()
     {
         var result = new Dictionary<Model, List<string>>();
-        foreach (var testParameter in AllParameters.Where(x=>x.Position != PrimaryItem.Position)) //make sure we do not include the property under test
+        foreach (var testParameter in TestParameters.Where(x=>x.Position != PrimaryItem.Position)) //make sure we do not include the property under test
         {
             if (TestType != TestType.ARequiresBValidation)
             {
