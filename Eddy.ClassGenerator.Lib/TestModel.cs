@@ -23,16 +23,6 @@ public enum TestTheoryFieldAction
 
 public class TestModel
 {
-    private string TestName { get; set; }
-    private List<string> Theories { get; set; } = new();
-    private string SubjectName { get; set; }
-    private List<Model> RequiredTestItems { get; } = new();
-    private Model PrimaryItem { get; set; }
-    private List<Model> TestParameters { get; } = new();
-    private string ExpectedErrorCode { get; set; }
-    private List<Model> AllParameters { get; set; }
-    public TestType TestType { get; set; }
-
     public TestModel(Model primaryItem, string subjectName, List<Model> allParameters, TestType testType)
     {
         PrimaryItem = primaryItem;
@@ -40,6 +30,16 @@ public class TestModel
         AllParameters = allParameters;
         TestType = testType;
     }
+
+    private string TestName { get; set; }
+    private List<string> Theories { get; set; } = new();
+    private string SubjectName { get; }
+    private List<Model> RequiredTestItems { get; } = new();
+    private Model PrimaryItem { get; }
+    private List<Model> TestParameters { get; } = new();
+    private string ExpectedErrorCode { get; set; }
+    private List<Model> AllParameters { get; }
+    public TestType TestType { get; set; }
 
     public string Generate()
     {
@@ -112,16 +112,14 @@ public class TestModel
         }
 
         if (validations != null)
-        {
             foreach (var validationData in validations)
             foreach (var field in validationData.GetAllFieldDataOrdered())
             {
                 var foundField = FindFieldByPosition(field, AllParameters);
                 TestParameters.Add(foundField);
             }
-        }
 
-        foreach (var requiredItem in AllParameters.Where(x => x.IsRequired && x.Position != PrimaryItem.Position)) 
+        foreach (var requiredItem in AllParameters.Where(x => x.IsRequired && x.Position != PrimaryItem.Position))
             RequiredTestItems.Add(requiredItem);
 
 
@@ -156,32 +154,32 @@ public class TestModel
         //     sbTest.AppendLine($"\t\tif ({FirstCharToLowerCase(PrimaryItem.Name)} > 0)");
         // sbTest.AppendLine($"\t\tsubject.{PrimaryItem.Name} = {FirstCharToLowerCase(PrimaryItem.Name)};");
 
-      
-            var dependentRules = GetARequiresBRules();
 
-            foreach (var dependentRule in dependentRules)
+        var dependentRules = GetARequiresBRules();
+
+        foreach (var dependentRule in dependentRules)
+        {
+            sbTest.AppendLine($"\t\tif ({FirstCharToLowerCase(dependentRule.Key.Name)} != \"\")");
+            if (dependentRule.Value.Count > 1)
             {
-                sbTest.AppendLine($"\t\tif ({FirstCharToLowerCase(dependentRule.Key.Name)} != \"\")");
-                if (dependentRule.Value.Count > 1)
-                {
-                    sbTest.AppendLine("\t\t{");
-                    sbTest.AppendLine($"\t\t\t{dependentRule.Value[0]} == {dependentRule.Value[0]};");
-                    sbTest.AppendLine("\t\t}");
-                }
-                else
-                {
-                    var field = FindFieldByPosition(dependentRule.Value[0], AllParameters);
-                    sbTest.AppendLine($"\t\t\tsubject.{field.Name} = \"{field.TestValue}\";");
-                }
+                sbTest.AppendLine("\t\t{");
+                sbTest.AppendLine($"\t\t\t{dependentRule.Value[0]} == {dependentRule.Value[0]};");
+                sbTest.AppendLine("\t\t}");
             }
-
-            var atleastOneOfRules = GetAtLeastOneRules();
-
-            foreach (var dependentRule in atleastOneOfRules)
+            else
             {
-               var field = FindFieldByPosition(dependentRule, AllParameters);
-               sbTest.AppendLine($"\t\tsubject.{field.Name} = \"{field.TestValue}\";");
+                var field = FindFieldByPosition(dependentRule.Value[0], AllParameters);
+                sbTest.AppendLine($"\t\t\tsubject.{field.Name} = \"{field.TestValue}\";");
             }
+        }
+
+        var atleastOneOfRules = GetAtLeastOneRules();
+
+        foreach (var dependentRule in atleastOneOfRules)
+        {
+            var field = FindFieldByPosition(dependentRule, AllParameters);
+            sbTest.AppendLine($"\t\tsubject.{field.Name} = \"{field.TestValue}\";");
+        }
 
 
         sbTest.AppendLine($"\t\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{ExpectedErrorCode});");
@@ -213,28 +211,21 @@ public class TestModel
     public Dictionary<Model, List<string>> GetARequiresBRules()
     {
         var result = new Dictionary<Model, List<string>>();
-        foreach (var testParameter in TestParameters.Where(x=>x.Position != PrimaryItem.Position)) //make sure we do not include the property under test
-        {
-            if (TestType != TestType.ARequiresBValidation)
-            {
-                if (testParameter.ARequiresBValidation.Any())
-                {
-                    foreach (var validationData in testParameter.ARequiresBValidation)
-                        if (validationData.FirstFieldPosition == testParameter.Position) //One of tte test parameters has an ARequiresB rule on it as well
-                        {
-                            if (!result.ContainsKey(testParameter))
-                                result.Add(testParameter, new List<string>());
-                            result[testParameter].AddRange(validationData.OtherFields);
-                        }
-                }
-            }
-            
-            // if (testParameter.AtLeastOneValidations.Any()) //this is similar to required in that one them needs to be there
-            // {
-            //     foreach (var validationData in testParameter.AtLeastOneValidations) //we should look to see which of the parameters is not part of the TestParameters and use that. For this one, we can just do FieldName=TestValue
-            //         result.Add(testParameter, new List<string>() { validationData.FirstFieldPosition }); //just add the first field which would satisfy the AtLeastOne rule
-            // }
-        }
+        foreach (var testParameter in TestParameters.Where(x => x.Position != PrimaryItem.Position)) //make sure we do not include the property under test
+            if (testParameter.ARequiresBValidation.Any())
+                foreach (var validationData in testParameter.ARequiresBValidation)
+                    if (validationData.FirstFieldPosition == testParameter.Position) //One of tte test parameters has an ARequiresB rule on it as well
+                    {
+                        if (!result.ContainsKey(testParameter))
+                            result.Add(testParameter, new List<string>());
+                        result[testParameter].AddRange(validationData.OtherFields);
+                    }
+
+        // if (testParameter.AtLeastOneValidations.Any()) //this is similar to required in that one them needs to be there
+        // {
+        //     foreach (var validationData in testParameter.AtLeastOneValidations) //we should look to see which of the parameters is not part of the TestParameters and use that. For this one, we can just do FieldName=TestValue
+        //         result.Add(testParameter, new List<string>() { validationData.FirstFieldPosition }); //just add the first field which would satisfy the AtLeastOne rule
+        // }
         return result;
     }
 
@@ -242,13 +233,9 @@ public class TestModel
     {
         var result = new List<string>();
         foreach (var testParameter in AllParameters.Where(x => x.Position != PrimaryItem.Position)) //make sure we do not include the property under test
-        {
             if (testParameter.AtLeastOneValidations.Any()) //this is similar to required in that one them needs to be there
-            {
                 foreach (var validationData in testParameter.AtLeastOneValidations) //we should look to see which of the parameters is not part of the TestParameters and use that. For this one, we can just do FieldName=TestValue
                     result.Add(validationData.FirstFieldPosition); //just add the first field which would satisfy the AtLeastOne rule
-            }
-        }
         return result;
     }
 
