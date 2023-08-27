@@ -3,7 +3,7 @@ using Eddy.Core.Validation;
 
 namespace Eddy.Tests;
 
-public class TestGeneratorTests
+public class TestModelTests
 {
     [Fact]
     public void GenerateRequired()
@@ -228,6 +228,39 @@ public class TestGeneratorTests
         var subject = new ClassGenerator.Lib.TestModel(firstField, "DUM_Dummy", allItems, TestType.IfOneIsFilledAllAreRequiredValidations);
         var result = subject.Generate(); //GenerateTestBody(TestType.IfOneIsFilledAllAreRequiredValidations, allItems[0], allItems, "DUM_Dummy", nameof(ErrorCodes.IfOneIsFilledAllAreRequired));
         var expected = "\t[Theory]\r\n\t[InlineData(0, \"\", true)]\r\n\t[InlineData(9, \"vF\", true)]\r\n\t[InlineData(9, \"\", false)]\r\n\t[InlineData(0, \"vF\", false)]\r\n\tpublic void Validation_AllAreRequiredQuantity(decimal quantity, string unitOrBasisForMeasurementCode, bool isValidExpected)\r\n\t{\r\n\t\tvar subject = new DUM_Dummy();\r\n\t\tif (quantity > 0)\r\n\t\t\tsubject.Quantity = quantity;\r\n\t\tsubject.UnitOrBasisForMeasurementCode = unitOrBasisForMeasurementCode;\r\n\t\tif (unitOrBasisForMeasurementCode != \"\")\r\n\t\t\tsubject.LineItemStatusCode == \"RH\"\r\n\t\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);\r\n\t}\r\n";
+        Assert.Equal(expected, result);
+    }
+
+    [Fact]
+    public void GenerateWithDependentAtLeastOneOfRule()
+    {
+        var firstField = new Model("01", "Quantity", "decimal?", 5, 10)
+        {
+            IsRequired = true,
+            TestValue = "9",
+            //IfOneIsFilledAllAreRequiredValidations = new List<ValidationData> { new() { FirstFieldPosition = "01", OtherFields = new List<string> { "02" } } }
+        };
+        var secondField = new Model("02", "UnitOrBasisForMeasurementCode", "string", 5, 10)
+        {
+            TestValue = "vF",
+            AtLeastOneValidations = new List<ValidationData> { new() { FirstFieldPosition = "02", OtherFields = new List<string> { "03" } } } //when this gets filled in the test, then  either this or the LineItemStatusCode would be required
+        };
+        var thirdField = new Model("03", "LineItemStatusCode", "string", 5, 10)
+        {
+            IsRequired = false,
+            TestValue = "RH"
+        };
+
+        var allItems = new List<Model>
+        {
+            firstField,
+            secondField,
+            thirdField
+        };
+
+        var subject = new ClassGenerator.Lib.TestModel(firstField, "DUM_Dummy", allItems, TestType.Required);
+        var result = subject.Generate(); //GenerateTestBody(TestType.IfOneIsFilledAllAreRequiredValidations, allItems[0], allItems, "DUM_Dummy", nameof(ErrorCodes.IfOneIsFilledAllAreRequired));
+        var expected = "";
         Assert.Equal(expected, result);
     }
 }

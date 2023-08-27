@@ -28,7 +28,7 @@ public class TestModel
     private string SubjectName { get; set; }
     private List<Model> RequiredTestItems { get; } = new();
     private Model PrimaryItem { get; set; }
-    private List<Model> TestParameter { get; } = new();
+    private List<Model> TestParameters { get; } = new();
     private string ExpectedErrorCode { get; set; }
     private List<Model> AllParameters { get; set; }
     public TestType TestType { get; set; }
@@ -53,7 +53,7 @@ public class TestModel
                 TestName = $"Validation_Required{PrimaryItem.Name}";
                 Theories.Add($"\t[InlineData({GenerateInlineDataValue(PrimaryItem, true)}, false)]");
                 Theories.Add($"\t[InlineData({GenerateInlineDataValue(PrimaryItem, false)}, true)]");
-                TestParameter.Add(PrimaryItem);
+                TestParameters.Add(PrimaryItem);
                 ExpectedErrorCode = nameof(ErrorCodes.Required);
                 break;
             case TestType.ARequiresBValidation:
@@ -117,17 +117,18 @@ public class TestModel
             foreach (var field in validationData.GetAllFieldDataOrdered())
             {
                 var foundField = FindFieldByPosition(field, AllParameters);
-                TestParameter.Add(foundField);
+                TestParameters.Add(foundField);
             }
         }
 
-        foreach (var requiredItem in AllParameters.Where(x => x.IsRequired)) RequiredTestItems.Add(requiredItem);
+        foreach (var requiredItem in AllParameters.Where(x => x.IsRequired && x.Position != PrimaryItem.Position)) 
+            RequiredTestItems.Add(requiredItem);
 
 
         sbTest.AppendLine("\t[Theory]");
         foreach (var theory in Theories) sbTest.AppendLine(theory);
         sbTest.Append($"\tpublic void {TestName}(");
-        foreach (var testParameter in TestParameter)
+        foreach (var testParameter in TestParameters)
             sbTest.Append($"{testParameter.DataType.Replace("?", "")} {FirstCharToLowerCase(testParameter.Name)}, "); //can not pass in a nullable with inline data
 
         sbTest.AppendLine("bool isValidExpected)");
@@ -139,7 +140,7 @@ public class TestModel
             else
                 sbTest.AppendLine($"\t\tsubject.{requiredItem.Name} = \"{requiredItem.TestValue}\";");
 
-        foreach (var testParameter in TestParameter)
+        foreach (var testParameter in TestParameters)
         {
             var indent = "\t\t";
             if (testParameter.IsDataTypeNumeric)
@@ -155,11 +156,10 @@ public class TestModel
         //     sbTest.AppendLine($"\t\tif ({FirstCharToLowerCase(PrimaryItem.Name)} > 0)");
         // sbTest.AppendLine($"\t\tsubject.{PrimaryItem.Name} = {FirstCharToLowerCase(PrimaryItem.Name)};");
 
-        if (TestType != TestType.ARequiresBValidation)
-        {
-            var aRequiresB = GetDependentRules();
+      
+            var dependentRules = GetARequiresBRules();
 
-            foreach (var dependentRule in aRequiresB)
+            foreach (var dependentRule in dependentRules)
             {
                 sbTest.AppendLine($"\t\tif ({FirstCharToLowerCase(dependentRule.Key.Name)} != \"\")");
                 if (dependentRule.Value.Count > 1)
@@ -174,7 +174,14 @@ public class TestModel
                     sbTest.AppendLine($"\t\t\tsubject.{field.Name} == \"{field.TestValue}\"");
                 }
             }
-        }
+
+            var atleastOneOfRules = GetAtLeastOneRules();
+
+            foreach (var dependentRule in atleastOneOfRules)
+            {
+               var field = FindFieldByPosition(dependentRule, AllParameters);
+               sbTest.AppendLine($"\t\tsubject.{field.Name} == \"{field.TestValue}\"");
+            }
 
 
         sbTest.AppendLine($"\t\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{ExpectedErrorCode});");
@@ -203,21 +210,48 @@ public class TestModel
         return new Model(position, position, "string", 0, 0);
     }
 
-    public Dictionary<Model, List<string>> GetDependentRules()
+    public Dictionary<Model, List<string>> GetARequiresBRules()
     {
         var result = new Dictionary<Model, List<string>>();
-        foreach (var testParameter in TestParameter)
-            if (testParameter.ARequiresBValidation.Any())
-                foreach (var validationData in testParameter.ARequiresBValidation)
-                    if (validationData.FirstFieldPosition == testParameter.Position) //One of hte test parameters has an ARequiresB rule on it as well
-                    {
-                        if (!result.ContainsKey(testParameter))
-                            result.Add(testParameter, new List<string>());
-                        result[testParameter].AddRange(validationData.OtherFields);
-                    }
-
+        foreach (var testParameter in AllParameters.Where(x=>x.Position != PrimaryItem.Position)) //make sure we do not include the property under test
+        {
+            if (TestType != TestType.ARequiresBValidation)
+            {
+                if (testParameter.ARequiresBValidation.Any())
+                {
+                    foreach (var validationData in testParameter.ARequiresBValidation)
+                        if (validationData.FirstFieldPosition == testParameter.Position) //One of tte test parameters has an ARequiresB rule on it as well
+                        {
+                            if (!result.ContainsKey(testParameter))
+                                result.Add(testParameter, new List<string>());
+                            result[testParameter].AddRange(validationData.OtherFields);
+                        }
+                }
+            }
+            
+            // if (testParameter.AtLeastOneValidations.Any()) //this is similar to required in that one them needs to be there
+            // {
+            //     foreach (var validationData in testParameter.AtLeastOneValidations) //we should look to see which of the parameters is not part of the TestParameters and use that. For this one, we can just do FieldName=TestValue
+            //         result.Add(testParameter, new List<string>() { validationData.FirstFieldPosition }); //just add the first field which would satisfy the AtLeastOne rule
+            // }
+        }
         return result;
     }
+
+    public List<string> GetAtLeastOneRules()
+    {
+        var result = new List<string>();
+        foreach (var testParameter in AllParameters.Where(x => x.Position != PrimaryItem.Position)) //make sure we do not include the property under test
+        {
+            if (testParameter.AtLeastOneValidations.Any()) //this is similar to required in that one them needs to be there
+            {
+                foreach (var validationData in testParameter.AtLeastOneValidations) //we should look to see which of the parameters is not part of the TestParameters and use that. For this one, we can just do FieldName=TestValue
+                    result.Add(validationData.FirstFieldPosition); //just add the first field which would satisfy the AtLeastOne rule
+            }
+        }
+        return result;
+    }
+
 
     private List<string> GenerateTheoriesFromRules(List<Model> orderedFields, TestTheoryRules rules)
     {
