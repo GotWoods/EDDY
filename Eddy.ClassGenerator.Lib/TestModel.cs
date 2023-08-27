@@ -165,13 +165,13 @@ public class TestModel
                 if (dependentRule.Value.Count > 1)
                 {
                     sbTest.AppendLine("\t\t{");
-                    sbTest.AppendLine($"\t\t\t{dependentRule.Value[0]} == {dependentRule.Value[0]}");
+                    sbTest.AppendLine($"\t\t\t{dependentRule.Value[0]} == {dependentRule.Value[0]};");
                     sbTest.AppendLine("\t\t}");
                 }
                 else
                 {
                     var field = FindFieldByPosition(dependentRule.Value[0], AllParameters);
-                    sbTest.AppendLine($"\t\t\tsubject.{field.Name} == \"{field.TestValue}\"");
+                    sbTest.AppendLine($"\t\t\tsubject.{field.Name} = \"{field.TestValue}\";");
                 }
             }
 
@@ -180,7 +180,7 @@ public class TestModel
             foreach (var dependentRule in atleastOneOfRules)
             {
                var field = FindFieldByPosition(dependentRule, AllParameters);
-               sbTest.AppendLine($"\t\tsubject.{field.Name} == \"{field.TestValue}\"");
+               sbTest.AppendLine($"\t\tsubject.{field.Name} = \"{field.TestValue}\";");
             }
 
 
