@@ -159,7 +159,8 @@ public class BatchGenerator
                 var concurrentParsedResults = new ConcurrentDictionary<string, ParsedSegment>();
 
                 //max is 50% of segments. I found that often times I was getting 95% in one batch of parallel queries then the other 5% would start which was less efficient
-                await Parallel.ForEachAsync(segmentsInVersions, new ParallelOptions { MaxDegreeOfParallelism = segmentsInVersions.Count/2 }, async (otherSegment, token) =>
+                // new ParallelOptions { MaxDegreeOfParallelism = segmentsInVersions.Count/2 }
+                await Parallel.ForEachAsync(segmentsInVersions, async (otherSegment, token) =>
                 {
                     OnProcessUpdate?.Invoke($"Parsing {otherSegment.Key}-{otherSegment.Value.Type}");
                     var rawPageData = await GetPage(otherSegment.Value.Url);
