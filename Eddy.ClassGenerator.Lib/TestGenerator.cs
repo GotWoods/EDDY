@@ -27,6 +27,7 @@ public class TestGenerator
         sbTest.AppendLine("using Eddy.Core.Validation;");
         sbTest.AppendLine("using Eddy.Tests.x12;");
         sbTest.AppendLine("using Eddy.x12.Mapping;");
+        sbTest.AppendLine("using Eddy.x12.Models.Elements;");
         sbTest.AppendLine("using Eddy.x12.Models.v" + namespaceVersion + ";");
         sbTest.AppendLine();
         sbTest.AppendLine("namespace Eddy.x12.Tests.Models.v" + namespaceVersion + ";");
@@ -50,6 +51,8 @@ public class TestGenerator
         foreach (var model in parsed.Items)
             if (model.IsDataTypeNumeric)
                 sbTest.AppendLine($"\t\t\t{model.Name} = {model.TestValue},");
+            else if(model.DataType.StartsWith("C")) //compose type
+                sbTest.AppendLine($"\t\t\t{model.Name} = null,");
             else
                 sbTest.AppendLine($"\t\t\t{model.Name} = \"{model.TestValue}\",");
         sbTest.AppendLine("\t\t};");

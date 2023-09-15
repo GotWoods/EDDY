@@ -125,16 +125,29 @@ public class TestModel
         foreach (var theory in Theories) sbTest.AppendLine(theory);
         sbTest.Append($"\tpublic void {TestName}(");
         foreach (var testParameter in TestParameters)
-            sbTest.Append($"{testParameter.DataType.Replace("?", "")} {FirstCharToLowerCase(testParameter.Name)}, "); //can not pass in a nullable with inline data
+        {
+            if (testParameter.DataType.StartsWith("C")) //Composite Type
+            {
+                sbTest.Append($"string {FirstCharToLowerCase(testParameter.Name)}, "); 
+            }
+            else
+            {
+                sbTest.Append($"{testParameter.DataType.Replace("?", "")} {FirstCharToLowerCase(testParameter.Name)}, "); //can not pass in a nullable with inline data
+            }
+        }
 
         sbTest.AppendLine("bool isValidExpected)");
         sbTest.AppendLine("\t{");
         sbTest.AppendLine($"\t\tvar subject = new {SubjectName}();");
         foreach (var requiredItem in RequiredTestItems)
+        {
             if (requiredItem.IsDataTypeNumeric)
                 sbTest.AppendLine($"\t\tsubject.{requiredItem.Name} = {requiredItem.TestValue};");
+            else if (requiredItem.DataType.StartsWith("C")) //Composite Type)
+                sbTest.AppendLine($"\t\tsubject.{requiredItem.Name} = new {requiredItem.DataType}();");
             else
                 sbTest.AppendLine($"\t\tsubject.{requiredItem.Name} = \"{requiredItem.TestValue}\";");
+        }
 
         foreach (var testParameter in TestParameters)
         {
@@ -145,7 +158,15 @@ public class TestModel
                 indent = "\t\t\t";
             }
 
-            sbTest.AppendLine($"{indent}subject.{testParameter.Name} = {FirstCharToLowerCase(testParameter.Name)};");
+            if (testParameter.DataType.StartsWith("C")) //Composite Type
+            {
+                sbTest.AppendLine($"{indent}subject.{testParameter.Name} = new {testParameter.DataType}();");
+            }
+            else
+            {
+                sbTest.AppendLine($"{indent}subject.{testParameter.Name} = {FirstCharToLowerCase(testParameter.Name)};");
+            }
+                
         }
 
         // if (PrimaryItem.IsDataTypeNumeric) 
