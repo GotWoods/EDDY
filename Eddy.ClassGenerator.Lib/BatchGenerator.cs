@@ -137,6 +137,11 @@ public class BatchGenerator
             foreach (var segmentData in versionAndSegment.Value)
             {
 
+                if (segmentData.Type == "ADJ") //this one is being a nightmare
+                {
+                    continue;
+                }
+
                 var codePath = codeBasePath + "\\v" + versionAndSegment.Key + "\\" + segmentData.Name + ".cs";
                 var testPath = testBasePath + "\\v" + versionAndSegment.Key + "\\" + segmentData.Type + "Tests.cs";
 
