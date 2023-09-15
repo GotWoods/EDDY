@@ -114,7 +114,7 @@ public class BatchGenerator
 
         var codeBasePath = projectBasePath + @"Eddy.x12\Models";
         var testBasePath = projectBasePath + @"Eddy.Tests.x12\Models";
-        var ignored = new List<string>() {"ADJ", "B10", "CD", "CTP", "D1", "CUR", "F04", "F07", "FK", "G48", "G62", "G69", "G83", "H6"}; //ones that are not generating very well
+        var ignored = new List<string>() {"ADJ", "B10", "CD", "CTP", "D1", "CUR", "F04", "F07", "FK", "G48", "G62", "G69", "G83", "H6", "L11", "M11", "M6"}; //ones that are not generating very well
         //CTP/F04 is causing an Object Reference exception
 
         //make sure directories exist for all versions
@@ -140,7 +140,7 @@ public class BatchGenerator
             foreach (var segmentData in versionAndSegment.Value)
             {
 
-                if (ignored.Contains(segmentData.Type)) //this one is being a nightmare
+                if (ignored.Contains(segmentData.Type)) 
                 {
                     continue;
                 }
