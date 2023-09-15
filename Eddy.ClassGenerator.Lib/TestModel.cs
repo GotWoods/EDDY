@@ -29,21 +29,6 @@ public class TestModel
         SubjectName = subjectName;
         AllParameters = allParameters;
         TestType = testType;
-    }
-
-    private string TestName { get; set; }
-    private List<string> Theories { get; set; } = new();
-    private string SubjectName { get; }
-    private List<Model> RequiredTestItems { get; } = new();
-    private Model PrimaryItem { get; }
-    private List<Model> TestParameters { get; } = new();
-    private string ExpectedErrorCode { get; set; }
-    private List<Model> AllParameters { get; }
-    public TestType TestType { get; set; }
-
-    public string Generate()
-    {
-        var sbTest = new StringBuilder();
 
         var rules = new TestTheoryRules();
         List<ValidationData> validations = null;
@@ -121,8 +106,21 @@ public class TestModel
 
         foreach (var requiredItem in AllParameters.Where(x => x.IsRequired && x.Position != PrimaryItem.Position))
             RequiredTestItems.Add(requiredItem);
+    }
 
+    private string TestName { get; }
+    private List<string> Theories { get; } = new();
+    private string SubjectName { get; }
+    private List<Model> RequiredTestItems { get; } = new();
+    private Model PrimaryItem { get; }
+    private List<Model> TestParameters { get; } = new();
+    private string ExpectedErrorCode { get; }
+    private List<Model> AllParameters { get; }
+    public TestType TestType { get; set; }
 
+    public string Generate()
+    {
+        var sbTest = new StringBuilder();
         sbTest.AppendLine("\t[Theory]");
         foreach (var theory in Theories) sbTest.AppendLine(theory);
         sbTest.Append($"\tpublic void {TestName}(");
@@ -155,32 +153,88 @@ public class TestModel
         // sbTest.AppendLine($"\t\tsubject.{PrimaryItem.Name} = {FirstCharToLowerCase(PrimaryItem.Name)};");
 
 
-        var dependentRules = GetARequiresBRules();
-
-        foreach (var dependentRule in dependentRules)
+        foreach (var dependentRule in GetARequiresBRules())
         {
-            sbTest.AppendLine($"\t\tif ({FirstCharToLowerCase(dependentRule.Key.Name)} != \"\")");
+            if (dependentRule.Key.IsDataTypeNumeric)
+                sbTest.AppendLine($"\t\tif ({FirstCharToLowerCase(dependentRule.Key.Name)} > 0)");
+            else
+                sbTest.AppendLine($"\t\tif ({FirstCharToLowerCase(dependentRule.Key.Name)} != \"\")");
+
             if (dependentRule.Value.Count > 1)
             {
+                throw new NotImplementedException();
                 sbTest.AppendLine("\t\t{");
                 sbTest.AppendLine($"\t\t\t{dependentRule.Value[0]} == {dependentRule.Value[0]};");
                 sbTest.AppendLine("\t\t}");
             }
+
+            var field = FindFieldByPosition(dependentRule.Value[0], AllParameters);
+            if (field.IsDataTypeNumeric)
+                sbTest.AppendLine($"\t\t\tsubject.{field.Name} = {field.TestValue};");
             else
-            {
-                var field = FindFieldByPosition(dependentRule.Value[0], AllParameters);
                 sbTest.AppendLine($"\t\t\tsubject.{field.Name} = \"{field.TestValue}\";");
-            }
         }
 
-        var atleastOneOfRules = GetAtLeastOneRules();
-
-        foreach (var dependentRule in atleastOneOfRules)
+        foreach (var dependentRule in GetAtLeastOneRules())
         {
             var field = FindFieldByPosition(dependentRule, AllParameters);
-            sbTest.AppendLine($"\t\tsubject.{field.Name} = \"{field.TestValue}\";");
+            if (field.IsDataTypeNumeric)
+                sbTest.AppendLine($"\t\t\tsubject.{field.Name} = {field.TestValue};");
+            else
+                sbTest.AppendLine($"\t\t\tsubject.{field.Name} = \"{field.TestValue}\";");
         }
 
+        foreach (var dependentRule in GetIfOneIsFilledAllAreRequiredRules())
+        {
+
+
+            var conditions = new List<string>();
+            if (dependentRule.Key.IsDataTypeNumeric)
+            {
+                //sbTest.AppendLine($"\t\tif ({FirstCharToLowerCase(dependentRule.Key.Name)} > 0)");
+                conditions.Add($"subject.{dependentRule.Key.Name} > 0");
+
+            }
+            else
+            {
+                //sbTest.AppendLine($"\t\tif ({FirstCharToLowerCase(dependentRule.Key.Name)} != \"\")");
+                conditions.Add($"subject.{dependentRule.Key.Name} != \"\"");
+            }
+
+            foreach (var otherFields in dependentRule.Value)
+            {
+                var conditionField = FindFieldByPosition(otherFields, AllParameters);
+                if (conditionField.IsDataTypeNumeric)
+                {
+                    conditions.Add($"subject.{conditionField.Name} > 0");
+                }
+                else
+                {
+                    conditions.Add($"subject.{conditionField.Name} != \"\"");
+                }
+            }
+
+            sbTest.AppendLine($"\t\tif({string.Join("||", conditions)})");
+            sbTest.AppendLine("\t\t{");
+            // if (dependentRule.Value.Count > 1)
+            // {
+            //     throw new NotImplementedException();
+            //     sbTest.AppendLine("\t\t{");
+            //     sbTest.AppendLine($"\t\t\t{dependentRule.Value[0]} == {dependentRule.Value[0]};");
+            //     sbTest.AppendLine("\t\t}");
+            // }
+
+            foreach (var fieldPosition in dependentRule.Value)
+            {
+                var field = FindFieldByPosition(fieldPosition, AllParameters);
+                if (field.IsDataTypeNumeric)
+                    sbTest.AppendLine($"\t\t\tsubject.{field.Name} = {field.TestValue};");
+                else
+                    sbTest.AppendLine($"\t\t\tsubject.{field.Name} = \"{field.TestValue}\";");
+            }
+            
+            sbTest.AppendLine("\t\t}");
+        }
 
         sbTest.AppendLine($"\t\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{ExpectedErrorCode});");
         sbTest.AppendLine("\t}");
@@ -214,7 +268,7 @@ public class TestModel
         foreach (var testParameter in TestParameters.Where(x => x.Position != PrimaryItem.Position)) //make sure we do not include the property under test
             if (testParameter.ARequiresBValidation.Any())
                 foreach (var validationData in testParameter.ARequiresBValidation)
-                    if (validationData.FirstFieldPosition == testParameter.Position) //One of tte test parameters has an ARequiresB rule on it as well
+                    if (validationData.FirstFieldPosition == testParameter.Position) //One of the test parameters has an ARequiresB rule on it as well
                     {
                         if (!result.ContainsKey(testParameter))
                             result.Add(testParameter, new List<string>());
@@ -236,6 +290,24 @@ public class TestModel
             if (testParameter.AtLeastOneValidations.Any()) //this is similar to required in that one them needs to be there
                 foreach (var validationData in testParameter.AtLeastOneValidations) //we should look to see which of the parameters is not part of the TestParameters and use that. For this one, we can just do FieldName=TestValue
                     result.Add(validationData.FirstFieldPosition); //just add the first field which would satisfy the AtLeastOne rule
+        return result;
+    }
+
+    public Dictionary<Model, List<string>> GetIfOneIsFilledAllAreRequiredRules()
+    {
+        var result = new Dictionary<Model, List<string>>();
+        foreach (var parameter in AllParameters.Where(x => x.Position != PrimaryItem.Position)) //make sure we do not include the property under test
+        {
+            foreach (var validationData in parameter.IfOneIsFilledAllAreRequiredValidations)
+                if (validationData.FirstFieldPosition == parameter.Position) //One of the test parameters has a rule on it as well
+                {
+                    if (!result.ContainsKey(parameter))
+                        result.Add(parameter, new List<string>());
+                    result[parameter].Add(validationData.FirstFieldPosition);
+                    result[parameter].AddRange(validationData.OtherFields);
+                }
+        }
+
         return result;
     }
 
@@ -346,4 +418,11 @@ public class TestModel
             return item.TestValue;
         return $"\"{item.TestValue}\"";
     }
+}
+
+
+public class RuleSet
+{
+    public string FieldPosition { get; set; }
+    public List<string> OtherFields { get; set; }
 }

@@ -263,4 +263,70 @@ public class TestModelTests
         var expected = "";
         Assert.Equal(expected, result);
     }
+
+    [Fact]
+    public void GetAllAreRequiredRules_PrimaryField()
+    {
+        var firstField = new Model("01", "Quantity", "decimal?", 5, 10)
+        {
+            TestValue = "9",
+        };
+        var secondField = new Model("02", "UnitOrBasisForMeasurementCode", "string", 5, 10)
+        {
+            TestValue = "vF",
+            IfOneIsFilledAllAreRequiredValidations = new List<ValidationData> { new() { FirstFieldPosition = "02", OtherFields = new List<string> { "03" } } }
+        };
+        var thirdField = new Model("03", "LineItemStatusCode", "string", 5, 10)
+        {
+            TestValue = "RH"
+        };
+
+        var allItems = new List<Model>
+        {
+            firstField,
+            secondField,
+            thirdField
+        };
+
+        var subject = new ClassGenerator.Lib.TestModel(firstField, "DUM_Dummy", allItems, TestType.Required);
+        var rules = subject.GetIfOneIsFilledAllAreRequiredRules();
+
+        Assert.Single(rules);
+        Assert.Equal(secondField, rules.First().Key);
+        Assert.Equal("03", rules.First().Value[0]); 
+    }
+
+    [Fact]
+    public void GetAllAreRequiredRules_SecondaryField()
+    {
+        //in this case the field we care about is the 03 field which is included in the rule in that 02 field
+
+        var firstField = new Model("01", "Quantity", "decimal?", 5, 10)
+        {
+            TestValue = "9",
+        };
+        var secondField = new Model("02", "UnitOrBasisForMeasurementCode", "string", 5, 10)
+        {
+            TestValue = "vF",
+            IfOneIsFilledAllAreRequiredValidations = new List<ValidationData> { new() { FirstFieldPosition = "02", OtherFields = new List<string> { "03" } } }
+        };
+        var thirdField = new Model("03", "LineItemStatusCode", "string", 5, 10)
+        {
+            TestValue = "RH"
+        };
+
+        var allItems = new List<Model>
+        {
+            firstField,
+            secondField,
+            thirdField
+        };
+
+        var subject = new ClassGenerator.Lib.TestModel(firstField, "DUM_Dummy", allItems, TestType.Required);
+        var rules = subject.GetIfOneIsFilledAllAreRequiredRules();
+
+        Assert.Single(rules);
+        Assert.Equal(secondField, rules.First().Key);
+        Assert.Equal("03", rules.First().Value[0]);
+    }
 }
