@@ -113,6 +113,7 @@ public class BatchGenerator
 
         var codeBasePath = projectBasePath + @"Eddy.x12\Models";
         var testBasePath = projectBasePath + @"Eddy.Tests.x12\Models";
+        var ignored = new List<string>() {"ADJ", "B10"}; //ones that are not generating very well
 
         //make sure directories exist for all versions
         foreach (var versionAndSegment in versionAndSegments)
@@ -137,7 +138,7 @@ public class BatchGenerator
             foreach (var segmentData in versionAndSegment.Value)
             {
 
-                if (segmentData.Type == "ADJ") //this one is being a nightmare
+                if (ignored.Contains(segmentData.Type)) //this one is being a nightmare
                 {
                     continue;
                 }
