@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\v4030\" />
     <Folder Include="Models\v5030\" />
   </ItemGroup>
 
