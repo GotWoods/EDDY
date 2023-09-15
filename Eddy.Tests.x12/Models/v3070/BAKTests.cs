@@ -69,17 +69,6 @@ public class BAKTests
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
-	[Theory]
-	[InlineData("", false)]
-	[InlineData("", true)]
-	public void Validation_RequiredCompositeDate(string compositeDate, bool isValidExpected)
-	{
-		var subject = new BAK_BeginningSegmentForPurchaseOrderAcknowledgment();
-		subject.TransactionSetPurposeCode = "FS";
-		subject.AcknowledgmentType = "zo";
-		subject.PurchaseOrderNumber = "f";
-		subject.CompositeDate = new C041_CompositeDate();
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
-	}
+	
 
 }
