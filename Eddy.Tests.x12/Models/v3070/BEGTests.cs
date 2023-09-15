@@ -6,45 +6,40 @@ using Eddy.x12.Models.v3070;
 
 namespace Eddy.x12.Tests.Models.v3070;
 
-public class BCHTests
+public class BEGTests
 {
 	[Fact]
 	public void Parse_ShouldReturnCorrectObject()
 	{
-		string x12Line = "BCH*kR*UZ*7*P*q**x*s*9***SY*C5*NX*cv*G5";
+		string x12Line = "BEG*wV*Au*6*7**K*3J*YkW*5n*NI*qU";
 
-		var expected = new BCH_BeginningSegmentForPurchaseOrderChange()
+		var expected = new BEG_BeginningSegmentForPurchaseOrder()
 		{
-			TransactionSetPurposeCode = "kR",
-			PurchaseOrderTypeCode = "UZ",
-			PurchaseOrderNumber = "7",
-			ReleaseNumber = "P",
-			ChangeOrderSequenceNumber = "q",
+			TransactionSetPurposeCode = "wV",
+			PurchaseOrderTypeCode = "Au",
+			PurchaseOrderNumber = "6",
+			ReleaseNumber = "7",
 			CompositeDate = null,
-			RequestReferenceNumber = "x",
-			ContractNumber = "s",
-			ReferenceIdentification = "9",
-			CompositeDate2 = null,
-			CompositeDate3 = null,
-			ContractTypeCode = "SY",
-			SecurityLevelCode = "C5",
-			AcknowledgmentType = "NX",
-			TransactionTypeCode = "cv",
-			PurchaseCategory = "G5",
+			ContractNumber = "K",
+			AcknowledgmentType = "3J",
+			InvoiceTypeCode = "YkW",
+			ContractTypeCode = "5n",
+			PurchaseCategory = "NI",
+			SecurityLevelCode = "qU",
 		};
 
-		var actual = Map.MapObject<BCH_BeginningSegmentForPurchaseOrderChange>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
+		var actual = Map.MapObject<BEG_BeginningSegmentForPurchaseOrder>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
 		Assert.Equivalent(expected, actual);
 	}
 
 	[Theory]
 	[InlineData("", false)]
-	[InlineData("kR", true)]
+	[InlineData("wV", true)]
 	public void Validation_RequiredTransactionSetPurposeCode(string transactionSetPurposeCode, bool isValidExpected)
 	{
-		var subject = new BCH_BeginningSegmentForPurchaseOrderChange();
-		subject.PurchaseOrderTypeCode = "UZ";
-		subject.PurchaseOrderNumber = "7";
+		var subject = new BEG_BeginningSegmentForPurchaseOrder();
+		subject.PurchaseOrderTypeCode = "Au";
+		subject.PurchaseOrderNumber = "6";
 		subject.CompositeDate = new C041_CompositeDate();
 		subject.TransactionSetPurposeCode = transactionSetPurposeCode;
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
@@ -52,12 +47,12 @@ public class BCHTests
 
 	[Theory]
 	[InlineData("", false)]
-	[InlineData("UZ", true)]
+	[InlineData("Au", true)]
 	public void Validation_RequiredPurchaseOrderTypeCode(string purchaseOrderTypeCode, bool isValidExpected)
 	{
-		var subject = new BCH_BeginningSegmentForPurchaseOrderChange();
-		subject.TransactionSetPurposeCode = "kR";
-		subject.PurchaseOrderNumber = "7";
+		var subject = new BEG_BeginningSegmentForPurchaseOrder();
+		subject.TransactionSetPurposeCode = "wV";
+		subject.PurchaseOrderNumber = "6";
 		subject.CompositeDate = new C041_CompositeDate();
 		subject.PurchaseOrderTypeCode = purchaseOrderTypeCode;
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
@@ -65,12 +60,12 @@ public class BCHTests
 
 	[Theory]
 	[InlineData("", false)]
-	[InlineData("7", true)]
+	[InlineData("6", true)]
 	public void Validation_RequiredPurchaseOrderNumber(string purchaseOrderNumber, bool isValidExpected)
 	{
-		var subject = new BCH_BeginningSegmentForPurchaseOrderChange();
-		subject.TransactionSetPurposeCode = "kR";
-		subject.PurchaseOrderTypeCode = "UZ";
+		var subject = new BEG_BeginningSegmentForPurchaseOrder();
+		subject.TransactionSetPurposeCode = "wV";
+		subject.PurchaseOrderTypeCode = "Au";
 		subject.CompositeDate = new C041_CompositeDate();
 		subject.PurchaseOrderNumber = purchaseOrderNumber;
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
