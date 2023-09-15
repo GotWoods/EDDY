@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
@@ -154,19 +155,32 @@ public class BatchGenerator
                 OnProcessUpdate?.Invoke($"Processing segment {version}-{segmentData.Type}");
                 var segmentsInVersions = FindSegmentInAllVersions(segmentData.Type, versionAndSegments);
                 OnProcessUpdate?.Invoke($"Segment also exists in the following versions: " + string.Join(", ", segmentsInVersions.Keys));
-                var parsedByVersion = new Dictionary<string, ParsedSegment>();
+                var concurrentParsedResults = new ConcurrentDictionary<string, ParsedSegment>();
 
-                foreach (var otherSegment in segmentsInVersions)
+                //second parameter: new ParallelOptions { MaxDegreeOfParallelism = 4 }
+                await Parallel.ForEachAsync(segmentsInVersions, async (otherSegment, token) =>
                 {
-                        OnProcessUpdate?.Invoke($"Parsing {otherSegment.Key}-{otherSegment.Value.Type}");
-                        var rawPageData = await GetPage(otherSegment.Value.Url);
-                        //wrap the node in an element so that there is only one root element
-                        var wrappedNode = HtmlNode.CreateNode("<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + rawPageData + Environment.NewLine + "</div>");
-                        parsedByVersion.Add(otherSegment.Key, parser.Parse(wrappedNode, ParseType.x12Segment));
-                    
-                }
+                    OnProcessUpdate?.Invoke($"Parsing {otherSegment.Key}-{otherSegment.Value.Type}");
+                    var rawPageData = await GetPage(otherSegment.Value.Url);
+                    //wrap the node in an element so that there is only one root element
+                    var wrappedNode = HtmlNode.CreateNode("<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + rawPageData + Environment.NewLine + "</div>");
+                    concurrentParsedResults.TryAdd(otherSegment.Key, parser.Parse(wrappedNode, ParseType.x12Segment));
+                } );
+                
+                // foreach (var otherSegment in segmentsInVersions)
+                // {
+                //         OnProcessUpdate?.Invoke($"Parsing {otherSegment.Key}-{otherSegment.Value.Type}");
+                //         var rawPageData = await GetPage(otherSegment.Value.Url);
+                //         //wrap the node in an element so that there is only one root element
+                //         var wrappedNode = HtmlNode.CreateNode("<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + rawPageData + Environment.NewLine + "</div>");
+                //         parsedByVersion.TryAdd(otherSegment.Key, parser.Parse(wrappedNode, ParseType.x12Segment));
+                //     
+                // }
 
                 //write out the base item which would be the first item in the collection
+                var parsedByVersion = concurrentParsedResults.OrderBy(kvp=>kvp.Key).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+
                 var lastCode = parsedByVersion.First();
 
                 var generatedCode = codeGenerator.GenerateCode(lastCode.Value, ParseType.x12Segment, version);
@@ -247,8 +261,8 @@ public class BatchGenerator
 
     private async Task<string> GetPage(string url)
     {
-        var page = await _browser.NewPageAsync();
-        await page.GoToAsync(url, 30_000, new[] { WaitUntilNavigation.Networkidle0 });
+        var page = await _browser.NewPageAsync().ConfigureAwait(false);
+        await page.GoToAsync(url, 30_000, new[] { WaitUntilNavigation.Networkidle0 }).ConfigureAwait(false); 
 
         //await page.WaitForTimeoutAsync(2000);
         var select = await page.QuerySelectorAsync("main");
