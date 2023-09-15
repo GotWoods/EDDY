@@ -1,0 +1,5 @@
+namespace Eddy.x12.Models.v4060;
+
+public class BOS_BeginningSegmentForJointInterestBillingAndOperatingExpenseStatement : Eddy.x12.Models.v4050.BOS_BeginningSegmentForJointInterestBillingAndOperatingExpenseStatement
+{
+}
