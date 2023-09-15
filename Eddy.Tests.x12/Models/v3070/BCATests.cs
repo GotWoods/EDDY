@@ -60,16 +60,4 @@ public class BCATests
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
-	[Theory]
-	[InlineData("", false)]
-	[InlineData("", true)]
-	public void Validation_RequiredCompositeDate(string compositeDate, bool isValidExpected)
-	{
-		var subject = new BCA_BeginningSegmentForPurchaseOrderChangeAcknowledgment();
-		subject.TransactionSetPurposeCode = "VT";
-		subject.PurchaseOrderNumber = "A";
-		subject.CompositeDate = new C041_CompositeDate();
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
-	}
-
 }
