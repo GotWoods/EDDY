@@ -186,8 +186,6 @@ public class TestModel
 
         foreach (var dependentRule in GetIfOneIsFilledAllAreRequiredRules())
         {
-
-
             var conditions = new List<string>();
             if (dependentRule.Key.IsDataTypeNumeric)
             {
@@ -198,7 +196,7 @@ public class TestModel
             else
             {
                 //sbTest.AppendLine($"\t\tif ({FirstCharToLowerCase(dependentRule.Key.Name)} != \"\")");
-                conditions.Add($"subject.{dependentRule.Key.Name} != \"\"");
+                conditions.Add($"!string.IsNullOrEmpty(subject.{dependentRule.Key.Name})");
             }
 
             foreach (var otherFields in dependentRule.Value)
@@ -210,20 +208,14 @@ public class TestModel
                 }
                 else
                 {
-                    conditions.Add($"subject.{conditionField.Name} != \"\"");
+                    conditions.Add($"!string.IsNullOrEmpty(subject.{conditionField.Name})");
                 }
             }
 
-            sbTest.AppendLine($"\t\tif({string.Join("||", conditions)})");
+            sbTest.AppendLine("\t\t//If one is filled, all are required");
+            sbTest.AppendLine($"\t\tif({string.Join(" || ", conditions)})");
             sbTest.AppendLine("\t\t{");
-            // if (dependentRule.Value.Count > 1)
-            // {
-            //     throw new NotImplementedException();
-            //     sbTest.AppendLine("\t\t{");
-            //     sbTest.AppendLine($"\t\t\t{dependentRule.Value[0]} == {dependentRule.Value[0]};");
-            //     sbTest.AppendLine("\t\t}");
-            // }
-
+          
             foreach (var fieldPosition in dependentRule.Value)
             {
                 var field = FindFieldByPosition(fieldPosition, AllParameters);
@@ -235,6 +227,51 @@ public class TestModel
             
             sbTest.AppendLine("\t\t}");
         }
+
+        foreach (var dependentRule in GetIfOneIsFilledThenAtLeastOneRules())
+        {
+            var conditions = new List<string>();
+            if (dependentRule.Key.IsDataTypeNumeric)
+            {
+                //sbTest.AppendLine($"\t\tif ({FirstCharToLowerCase(dependentRule.Key.Name)} > 0)");
+                conditions.Add($"subject.{dependentRule.Key.Name} > 0");
+
+            }
+            else
+            {
+                //sbTest.AppendLine($"\t\tif ({FirstCharToLowerCase(dependentRule.Key.Name)} != \"\")");
+                conditions.Add($"!string.IsNullOrEmpty(subject.{dependentRule.Key.Name})");
+            }
+
+            foreach (var otherFields in dependentRule.Value)
+            {
+                var conditionField = FindFieldByPosition(otherFields, AllParameters);
+                if (conditionField.IsDataTypeNumeric)
+                {
+                    conditions.Add($"subject.{conditionField.Name} > 0");
+                }
+                else
+                {
+                    conditions.Add($"!string.IsNullOrEmpty(subject.{conditionField.Name})");
+                }
+            }
+            
+            sbTest.AppendLine("\t\t//If one is filled, at least one more is required");
+            sbTest.AppendLine($"\t\tif({string.Join(" || ", conditions)})");
+            sbTest.AppendLine("\t\t{");
+
+            foreach (var fieldPosition in dependentRule.Value)
+            {
+                var field = FindFieldByPosition(fieldPosition, AllParameters);
+                if (field.IsDataTypeNumeric)
+                    sbTest.AppendLine($"\t\t\tsubject.{field.Name} = {field.TestValue};");
+                else
+                    sbTest.AppendLine($"\t\t\tsubject.{field.Name} = \"{field.TestValue}\";");
+            }
+
+            sbTest.AppendLine("\t\t}");
+        }
+
 
         sbTest.AppendLine($"\t\tTestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.{ExpectedErrorCode});");
         sbTest.AppendLine("\t}");
@@ -299,6 +336,24 @@ public class TestModel
         foreach (var parameter in AllParameters.Where(x => x.Position != PrimaryItem.Position)) //make sure we do not include the property under test
         {
             foreach (var validationData in parameter.IfOneIsFilledAllAreRequiredValidations)
+                if (validationData.FirstFieldPosition == parameter.Position) //One of the test parameters has a rule on it as well
+                {
+                    if (!result.ContainsKey(parameter))
+                        result.Add(parameter, new List<string>());
+                    result[parameter].Add(validationData.FirstFieldPosition);
+                    result[parameter].AddRange(validationData.OtherFields);
+                }
+        }
+
+        return result;
+    }
+
+    public Dictionary<Model, List<string>> GetIfOneIsFilledThenAtLeastOneRules()
+    {
+        var result = new Dictionary<Model, List<string>>();
+        foreach (var parameter in AllParameters.Where(x => x.Position != PrimaryItem.Position)) //make sure we do not include the property under test
+        {
+            foreach (var validationData in parameter.IfOneIsFilledThenAtLeastOne)
                 if (validationData.FirstFieldPosition == parameter.Position) //One of the test parameters has a rule on it as well
                 {
                     if (!result.ContainsKey(parameter))
