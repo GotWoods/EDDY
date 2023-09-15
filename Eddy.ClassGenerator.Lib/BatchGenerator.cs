@@ -114,7 +114,8 @@ public class BatchGenerator
 
         var codeBasePath = projectBasePath + @"Eddy.x12\Models";
         var testBasePath = projectBasePath + @"Eddy.Tests.x12\Models";
-        var ignored = new List<string>() {"ADJ", "B10", "CD"}; //ones that are not generating very well
+        var ignored = new List<string>() {"ADJ", "B10", "CD", "CTP", "D1", "CUR"}; //ones that are not generating very well
+        //CTP is causing an Object Reference exception
 
         //make sure directories exist for all versions
         foreach (var versionAndSegment in versionAndSegments)
