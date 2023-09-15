@@ -1,0 +1,5 @@
+namespace Eddy.x12.Models.v8040;
+
+public class G66_TransportationInstructions : Eddy.x12.Models.v8030.G66_TransportationInstructions
+{
+}
