@@ -152,7 +152,8 @@ public class BatchGenerator
             "SHP", 
             "TD4", 
             "TIA",
-            "V1"
+            "V1",
+            "UIT",
         }; //ones that are not generating very well
       
 
