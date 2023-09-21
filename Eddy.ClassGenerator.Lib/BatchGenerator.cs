@@ -117,12 +117,11 @@ public class BatchGenerator
         var ignored = new List<string>()
         {
             "ADJ", 
-           // "B10", //declaring a required value that excludes an optional parameter used in test
             "CD", //a requires b failing
-            "CTP", //ObjectReference
+            //"CTP", //ObjectReference
            // "D1", //looks like a field is required but also part of the test parameters?
            // "CUR", //a requires b failing
-            "F04", //ObjectReference
+           // "F04", //ObjectReference
            // "F07", //if one is specified, one more required is being false
            // "FK", //one means all are required
             // "G48", //at least one is required
@@ -200,7 +199,7 @@ public class BatchGenerator
 
                 //max is 50% of segments. I found that often times I was getting 95% in one batch of parallel queries then the other 5% would start which was less efficient
                 // new ParallelOptions { MaxDegreeOfParallelism = segmentsInVersions.Count/2 }
-                await Parallel.ForEachAsync(segmentsInVersions, async (otherSegment, token) =>
+                await Parallel.ForEachAsync(segmentsInVersions, new ParallelOptions { MaxDegreeOfParallelism = 1 }, async (otherSegment, token) =>
                 {
                     OnProcessUpdate?.Invoke($"Parsing {otherSegment.Key}-{otherSegment.Value.Type}");
                     var rawPageData = await GetPage(otherSegment.Value.Url);

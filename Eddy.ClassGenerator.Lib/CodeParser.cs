@@ -129,6 +129,7 @@ namespace Eddy.ClassGenerator.Lib
 
             Model? currentItem = null;
 
+            
             var elementNameRegEx = new Regex("^[A-Za-z0-9]{1,4}-\\d{2}");
 
             foreach (var row in tableRoot.SelectNodes("div").Skip(1)) //skip the header row
@@ -147,7 +148,8 @@ namespace Eddy.ClassGenerator.Lib
                 if (columns.Count > 3)
                 {
                     currentItem = ParseRow(row, parseType, false);
-                    result.Items.Add(currentItem);
+                    if (currentItem!=null) 
+                        result.Items.Add(currentItem);
                 }
                 else
                 {
