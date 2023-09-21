@@ -117,26 +117,26 @@ public class BatchGenerator
         var ignored = new List<string>()
         {
             "ADJ", 
-            "B10", 
-            "CD", 
+           // "B10", //declaring a required value that excludes an optional parameter used in test
+            "CD", //a requires b failing
             "CTP", //ObjectReference
-            "D1", 
-            "CUR", 
+           // "D1", //looks like a field is required but also part of the test parameters?
+           // "CUR", //a requires b failing
             "F04", //ObjectReference
-            "F07", 
-            "FK", 
-            "G48", 
-            "G62", 
-            "G69", 
-            "G83", 
-            "H6", 
-            "L11", 
-            "M11", 
-            "M6", 
-            "MEA", 
-            "N12", 
-            "RCD", 
-            "POC", 
+           // "F07", //if one is specified, one more required is being false
+           // "FK", //one means all are required
+            // "G48", //at least one is required
+            // "G62", //at least one is required
+            // "G69", 
+            // "G83", //different rule than expected failed
+            // "H6", //a requires b 
+            // "L11", //at least one
+            // "M11", 
+            // "M6", 
+            // "MEA", 
+            // "N12", 
+            // "RCD", 
+            // "POC", 
             "NCA", 
             "PID", 
             "PKG", 
