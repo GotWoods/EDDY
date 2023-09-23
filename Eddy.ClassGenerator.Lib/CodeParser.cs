@@ -1,4 +1,5 @@
-﻿using HtmlAgilityPack;
+﻿#nullable enable
+using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -17,7 +18,7 @@ namespace Eddy.ClassGenerator.Lib
             return input.Replace("/", "").Replace(" ", "").Replace("-", "").Replace(",", "").Replace("(", "").Replace(")", "").Replace("'", "").Replace(".", "");
         }
 
-        private Model ParseRow(HtmlNode row, ParseType parseType, bool parseAsComplexType)
+        private Model? ParseRow(HtmlNode row, ParseType parseType, bool parseAsComplexType)
         {
             var textInfo = new CultureInfo("en-US", false).TextInfo;
 

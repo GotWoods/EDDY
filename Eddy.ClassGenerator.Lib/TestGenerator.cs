@@ -51,7 +51,7 @@ public class TestGenerator
         foreach (var model in parsed.Items)
             if (model.IsDataTypeNumeric)
                 sbTest.AppendLine($"\t\t\t{model.Name} = {model.TestValue},");
-            else if(model.DataType.StartsWith("C")) //compose type
+            else if(model.IsDataTypeComposite) 
                 sbTest.AppendLine($"\t\t\t{model.Name} = null,");
             else
                 sbTest.AppendLine($"\t\t\t{model.Name} = \"{model.TestValue}\",");

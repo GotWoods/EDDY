@@ -83,7 +83,6 @@ public class LC1Tests
     [Theory]
     [InlineData("", 0, 0, true)]
     [InlineData("qG", 8, 0, true)]
-    [InlineData("qG", 8, 0, true)]
     [InlineData("qG", 0, 8, true)]
     public void Validation_IfOneSpecifiedThenOneMoreRequired_RateValueQualifier(string rateValueQualifier, decimal freightRate, decimal freightRate2, bool isValidExpected)
     {

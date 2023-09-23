@@ -63,6 +63,7 @@ public class Model
     public int Max { get; set; }
     public bool IsRequired { get; set; }
     public bool IsDataTypeNumeric => DataType is "int?" or "decimal?";
+    public bool IsDataTypeComposite => DataType.StartsWith("C");
     public List<ValidationData> IfOneIsFilledAllAreRequiredValidations { get; set; } = new();
     public List<ValidationData> AtLeastOneValidations { get; set; } = new();
     public List<ValidationData> ARequiresBValidation { get; set; } = new();

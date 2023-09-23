@@ -9,7 +9,7 @@ namespace Eddy.x12.Mapping.Cache;
 
 public class RepresentationMap
 {
-    public new List<Representation> Representations { get; set; } = new();
+    public List<Representation> Representations { get; set; } = new();
 
     public static RepresentationMap From(Type t)
     {

@@ -126,7 +126,7 @@ public class TestModel
         sbTest.Append($"\tpublic void {TestName}(");
         foreach (var testParameter in TestParameters)
         {
-            if (testParameter.DataType.StartsWith("C")) //Composite Type
+            if (testParameter.IsDataTypeComposite)
             {
                 sbTest.Append($"string {FirstCharToLowerCase(testParameter.Name)}, "); 
             }
@@ -143,7 +143,7 @@ public class TestModel
         {
             if (requiredItem.IsDataTypeNumeric)
                 sbTest.AppendLine($"\t\tsubject.{requiredItem.Name} = {requiredItem.TestValue};");
-            else if (requiredItem.DataType.StartsWith("C")) //Composite Type)
+            else if (requiredItem.IsDataTypeComposite) //Composite Type)
                 sbTest.AppendLine($"\t\tsubject.{requiredItem.Name} = new {requiredItem.DataType}();");
             else
                 sbTest.AppendLine($"\t\tsubject.{requiredItem.Name} = \"{requiredItem.TestValue}\";");
@@ -158,7 +158,7 @@ public class TestModel
                 indent = "\t\t\t";
             }
 
-            if (testParameter.DataType.StartsWith("C")) //Composite Type
+            if (testParameter.IsDataTypeComposite)
             {
                 sbTest.AppendLine($"{indent}subject.{testParameter.Name} = new {testParameter.DataType}();");
             }
@@ -184,9 +184,9 @@ public class TestModel
             if (dependentRule.Value.Count > 1)
             {
                 throw new NotImplementedException();
-                sbTest.AppendLine("\t\t{");
-                sbTest.AppendLine($"\t\t\t{dependentRule.Value[0]} == {dependentRule.Value[0]};");
-                sbTest.AppendLine("\t\t}");
+                // sbTest.AppendLine("\t\t{");
+                // sbTest.AppendLine($"\t\t\t{dependentRule.Value[0]} == {dependentRule.Value[0]};");
+                // sbTest.AppendLine("\t\t}");
             }
 
             var field = FindFieldByPosition(dependentRule.Value[0], AllParameters);

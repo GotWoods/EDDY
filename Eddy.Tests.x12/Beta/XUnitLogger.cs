@@ -28,7 +28,7 @@ internal sealed class XUnitLoggerProvider : ILoggerProvider
 internal sealed class XUnitLogger<T> : XUnitLogger, ILogger<T>
 {
     public XUnitLogger(ITestOutputHelper testOutputHelper, LoggerExternalScopeProvider scopeProvider)
-        : base(testOutputHelper, scopeProvider, typeof(T).FullName)
+        : base(testOutputHelper, scopeProvider, typeof(T).FullName!)
     {
     }
 }
@@ -78,12 +78,12 @@ internal class XUnitLogger : ILogger
 
     public IDisposable BeginScope<TState>(TState state) => _scopeProvider.Push(state);
 
-    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception, string> formatter)
     {
         var sb = new StringBuilder();
         sb.Append(GetLogLevelString(logLevel))
             .Append(" [").Append(_categoryName).Append("] ")
-            .Append(formatter(state, exception));
+            .Append(formatter(state, exception!));
 
         if (exception != null)
         {
@@ -101,7 +101,7 @@ internal class XUnitLogger : ILogger
         {
             _testOutputHelper.WriteLine(sb.ToString());
         }
-        catch (InvalidOperationException ex)
+        catch (InvalidOperationException)
         {
             //this can happen when running multiple tests for some reason
         }
