@@ -139,6 +139,7 @@ public class TestModel
         sbTest.AppendLine("bool isValidExpected)");
         sbTest.AppendLine("\t{");
         sbTest.AppendLine($"\t\tvar subject = new {SubjectName}();");
+        sbTest.AppendLine($"\t\t//Required fields");
         foreach (var requiredItem in RequiredTestItems)
         {
             if (requiredItem.IsDataTypeNumeric)
@@ -149,15 +150,16 @@ public class TestModel
                 sbTest.AppendLine($"\t\tsubject.{requiredItem.Name} = \"{requiredItem.TestValue}\";");
         }
 
+        sbTest.AppendLine($"\t\t//Test Parameters");
         foreach (var testParameter in TestParameters)
         {
             var indent = "\t\t";
             if (testParameter.IsDataTypeNumeric)
             {
-                sbTest.AppendLine($"{indent}if ({FirstCharToLowerCase(testParameter.Name)} > 0)");
+                sbTest.AppendLine($"{indent}if ({FirstCharToLowerCase(testParameter.Name)} > 0) ");
                 indent = "\t\t\t";
             }
-
+            
             if (testParameter.IsDataTypeComposite)
             {
                 sbTest.AppendLine($"{indent}subject.{testParameter.Name} = new {testParameter.DataType}();");
@@ -173,7 +175,7 @@ public class TestModel
         //     sbTest.AppendLine($"\t\tif ({FirstCharToLowerCase(PrimaryItem.Name)} > 0)");
         // sbTest.AppendLine($"\t\tsubject.{PrimaryItem.Name} = {FirstCharToLowerCase(PrimaryItem.Name)};");
 
-
+        sbTest.AppendLine($"\t\t//A Requires B");
         foreach (var dependentRule in GetARequiresBRules())
         {
             if (dependentRule.Key.IsDataTypeNumeric)
@@ -196,6 +198,7 @@ public class TestModel
                 sbTest.AppendLine($"\t\t\tsubject.{field.Name} = \"{field.TestValue}\";");
         }
 
+        sbTest.AppendLine($"\t\t//At Least one");
         foreach (var dependentRule in GetAtLeastOneRules())
         {
             var field = FindFieldByPosition(dependentRule, AllParameters);
@@ -205,18 +208,20 @@ public class TestModel
                 sbTest.AppendLine($"\t\t\tsubject.{field.Name} = \"{field.TestValue}\";");
         }
 
+        sbTest.AppendLine($"\t\t//If one filled, all required");
         foreach (var dependentRule in GetIfOneIsFilledAllAreRequiredRules())
         {
             var conditions = new List<string>();
             if (dependentRule.Key.IsDataTypeNumeric)
             {
-                //sbTest.AppendLine($"\t\tif ({FirstCharToLowerCase(dependentRule.Key.Name)} > 0)");
                 conditions.Add($"subject.{dependentRule.Key.Name} > 0");
-
+            }
+            else if (dependentRule.Key.IsDataTypeComposite)
+            {
+                conditions.Add($"subject.{dependentRule.Key.Name} != null");
             }
             else
             {
-                //sbTest.AppendLine($"\t\tif ({FirstCharToLowerCase(dependentRule.Key.Name)} != \"\")");
                 conditions.Add($"!string.IsNullOrEmpty(subject.{dependentRule.Key.Name})");
             }
 
@@ -226,6 +231,10 @@ public class TestModel
                 if (conditionField.IsDataTypeNumeric)
                 {
                     conditions.Add($"subject.{conditionField.Name} > 0");
+                }
+                else if (conditionField.IsDataTypeComposite)
+                {
+                    conditions.Add($"subject.{dependentRule.Key.Name} != null");
                 }
                 else
                 {
@@ -242,6 +251,8 @@ public class TestModel
                 var field = FindFieldByPosition(fieldPosition, AllParameters);
                 if (field.IsDataTypeNumeric)
                     sbTest.AppendLine($"\t\t\tsubject.{field.Name} = {field.TestValue};");
+                else if (field.IsDataTypeComposite)
+                    sbTest.AppendLine($"\t\t\tsubject.{field.Name} = new {field.DataType}();");
                 else
                     sbTest.AppendLine($"\t\t\tsubject.{field.Name} = \"{field.TestValue}\";");
             }
@@ -249,6 +260,7 @@ public class TestModel
             sbTest.AppendLine("\t\t}");
         }
 
+        sbTest.AppendLine($"\t\t//If one, at least one");
         foreach (var dependentRule in GetIfOneIsFilledThenAtLeastOneRules())
         {
             var conditions = new List<string>();
@@ -257,6 +269,10 @@ public class TestModel
                 //sbTest.AppendLine($"\t\tif ({FirstCharToLowerCase(dependentRule.Key.Name)} > 0)");
                 conditions.Add($"subject.{dependentRule.Key.Name} > 0");
 
+            }
+            else if (dependentRule.Key.IsDataTypeComposite)
+            {
+                conditions.Add($"subject.{dependentRule.Key.Name} != null");
             }
             else
             {
@@ -270,6 +286,10 @@ public class TestModel
                 if (conditionField.IsDataTypeNumeric)
                 {
                     conditions.Add($"subject.{conditionField.Name} > 0");
+                }
+                else if (dependentRule.Key.IsDataTypeComposite)
+                {
+                    conditions.Add($"subject.{dependentRule.Key.Name} != null");
                 }
                 else
                 {

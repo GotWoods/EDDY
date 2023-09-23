@@ -65,13 +65,12 @@ public class TestGenerator
         foreach (var model in parsed.Items)
         {
             TestModel tm;
-            
             if (model.IsRequired)
             {
                 tm = new TestModel(model, parsed.ClassName, parsed.Items, TestType.Required);
                 sbTest.AppendLine(tm.Generate());
             }
-            
+
             if (model.IfOneIsFilledAllAreRequiredValidations.Any())
             {
                 tm = new TestModel(model, parsed.ClassName, parsed.Items, TestType.IfOneIsFilledAllAreRequiredValidations);
