@@ -1,0 +1,43 @@
+using Eddy.Core.Attributes;
+using Eddy.Core.Validation;
+using Eddy.x12.Models.Elements;
+
+namespace Eddy.x12.Models.v3010;
+
+[Segment("SHP")]
+public class SHP_ShippedReceivedInformation : EdiX12Segment
+{
+	[Position(01)]
+	public string QuantityQualifier { get; set; }
+
+	[Position(02)]
+	public decimal? Quantity { get; set; }
+
+	[Position(03)]
+	public string DateTimeQualifier { get; set; }
+
+	[Position(04)]
+	public string Date { get; set; }
+
+	[Position(05)]
+	public string Time { get; set; }
+
+	[Position(06)]
+	public string Date2 { get; set; }
+
+	[Position(07)]
+	public string Time2 { get; set; }
+
+	public override ValidationResult Validate()
+	{
+		var validator = new BasicValidator<SHP_ShippedReceivedInformation>(this);
+		validator.Length(x => x.QuantityQualifier, 2);
+		validator.Length(x => x.Quantity, 1, 10);
+		validator.Length(x => x.DateTimeQualifier, 3);
+		validator.Length(x => x.Date, 6);
+		validator.Length(x => x.Time, 4);
+		validator.Length(x => x.Date2, 6);
+		validator.Length(x => x.Time2, 4);
+		return validator.Results;
+	}
+}
