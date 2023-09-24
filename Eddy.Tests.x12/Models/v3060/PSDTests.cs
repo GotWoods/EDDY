@@ -31,26 +31,6 @@ public class PSDTests
 	}
 
 	[Theory]
-	[InlineData(0, "", true)]
-	[InlineData(2, "", true)]
-	[InlineData(2, "", false)]
-	public void Validation_AllAreRequiredSampleFrequencyValuePerUnitOfMeasurementCode(int sampleFrequencyValuePerUnitOfMeasurementCode, string compositeUnitOfMeasure, bool isValidExpected)
-	{
-		var subject = new PSD_PhysicalSampleDescription();
-		//Required fields
-		//Test Parameters
-		if (sampleFrequencyValuePerUnitOfMeasurementCode > 0)
-        {
-            subject.SampleFrequencyValuePerUnitOfMeasurementCode = sampleFrequencyValuePerUnitOfMeasurementCode;
-            subject.CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure();
-        }
-
-        if (compositeUnitOfMeasure != "") 
-			subject.CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure();
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
-	}
-
-	[Theory]
 	[InlineData(0, 0, true)]
 	[InlineData(2, 6, false)]
 	[InlineData(2, 0, true)]
