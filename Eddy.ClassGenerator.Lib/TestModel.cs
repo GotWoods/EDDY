@@ -162,7 +162,8 @@ public class TestModel
             
             if (testParameter.IsDataTypeComposite)
             {
-                sbTest.AppendLine($"{indent}subject.{testParameter.Name} = new {testParameter.DataType}();");
+                sbTest.AppendLine($"{indent}if ({FirstCharToLowerCase(testParameter.Name)} != \"\") ");
+                sbTest.AppendLine($"{indent}\tsubject.{testParameter.Name} = new {testParameter.DataType}();");
             }
             else
             {

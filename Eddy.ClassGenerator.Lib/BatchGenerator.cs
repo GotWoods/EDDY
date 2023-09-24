@@ -133,14 +133,14 @@ public class BatchGenerator
             "PKG", //at least one of PackagingDescriptionCode (PKG-4), or Description (PKG-5) is required
             "N12",
             "NCA", //Specifying one of Quantity (NCA-4), or CompositeUnitOfMeasure (NCA-5) means all are required
+            "Q2",  //parse error (Seems like item 14 was not generated
+            "PSD", //Specifying one of SampleFrequencyValuePerUnitOfMeasurementCode (PSD-3), or CompositeUnitOfMeasure (PSD-4) means all are required
             // "M6", 
-            // "RCD", 
-            // "Q2",  
-            // "PSD", 
+            "RCD", 
             // "PO4", 
             // "SCH", 
             // "SDQ", 
-            // "QTY", 
+            "QTY", 
             // "PS", 
             // "SLN", 
             // "SHP", 
