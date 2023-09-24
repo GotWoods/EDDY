@@ -47,23 +47,4 @@ public class NCATests
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}
 
-	[Theory]
-	[InlineData(0, "", true)]
-	[InlineData(9, "", true)]
-	[InlineData(9, "", false)]
-	[InlineData(0, "", false)]
-	public void Validation_AllAreRequiredQuantity(decimal quantity, string compositeUnitOfMeasure, bool isValidExpected)
-	{
-		var subject = new NCA_NonconformanceAction();
-		//Required fields
-		//Test Parameters
-		if (quantity > 0) 
-			subject.Quantity = quantity;
-		if (compositeUnitOfMeasure != "") 
-			subject.CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure();
-		//At Least one
-		subject.NonconformanceResultantResponseCode = "o";
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
-	}
-
 }
