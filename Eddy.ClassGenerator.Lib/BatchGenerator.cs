@@ -119,16 +119,13 @@ public class BatchGenerator
             "ADJ", 
             "CTP", //a requires b failing
             "F04", //Not implemented exception
-            //"POC", //Specifying one of Quantity (POC-3), or CompositeUnitOfMeasure (POC-5) means all are required
-            //"PR", //at least one of CommodityCodeQualifier (PR-2), or StandardCarrierAlphaCode (PR-6) is required
             "MEA", //ArequiresB not handling composite
             "N12",
-            //This is 10
             "NCA", //Specifying one of Quantity (NCA-4), or CompositeUnitOfMeasure (NCA-5) means all are required
             "Q2",  //parse error (Seems like item 14 was not generated
-            "PSD", //Specifying one of SampleFrequencyValuePerUnitOfMeasurementCode (PSD-3), or CompositeUnitOfMeasure (PSD-4) means all are required
-            "RCD",
-            "QTY", 
+            //"PSD", //Specifying one of SampleFrequencyValuePerUnitOfMeasurementCode (PSD-3), or CompositeUnitOfMeasure (PSD-4) means all are required
+            //"RCD",
+            //"QTY", 
             "TIA", //Specifying one of Quantity (TIA-4), or CompositeUnitOfMeasure (TIA-5) means all are required
         }; //ones that are not generating very well
       

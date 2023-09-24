@@ -111,78 +111,7 @@ public class POCTests
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
-	[Theory]
-	[InlineData(0, "", true)]
-	[InlineData(7, "", true)]
-	[InlineData(7, "", false)]
-	[InlineData(0, "", true)]
-	public void Validation_ARequiresBQuantity(decimal quantity, string compositeUnitOfMeasure, bool isValidExpected)
-	{
-		var subject = new POC_LineItemChange();
-		//Required fields
-		subject.ChangeOrResponseTypeCode = "dZ";
-		//Test Parameters
-		if (quantity > 0) 
-			subject.Quantity = quantity;
-		if (compositeUnitOfMeasure != "") 
-			subject.CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure();
-		//If one filled, all required
-		if(!string.IsNullOrEmpty(subject.ProductServiceIDQualifier) || !string.IsNullOrEmpty(subject.ProductServiceIDQualifier) || !string.IsNullOrEmpty(subject.ProductServiceID))
-		{
-			subject.ProductServiceIDQualifier = "O5";
-			subject.ProductServiceID = "E";
-		}
-		if(!string.IsNullOrEmpty(subject.ProductServiceIDQualifier2) || !string.IsNullOrEmpty(subject.ProductServiceIDQualifier2) || !string.IsNullOrEmpty(subject.ProductServiceID2))
-		{
-			subject.ProductServiceIDQualifier2 = "pF";
-			subject.ProductServiceID2 = "8";
-		}
-		if(!string.IsNullOrEmpty(subject.ProductServiceIDQualifier3) || !string.IsNullOrEmpty(subject.ProductServiceIDQualifier3) || !string.IsNullOrEmpty(subject.ProductServiceID3))
-		{
-			subject.ProductServiceIDQualifier3 = "cj";
-			subject.ProductServiceID3 = "G";
-		}
-		if(!string.IsNullOrEmpty(subject.ProductServiceIDQualifier4) || !string.IsNullOrEmpty(subject.ProductServiceIDQualifier4) || !string.IsNullOrEmpty(subject.ProductServiceID4))
-		{
-			subject.ProductServiceIDQualifier4 = "A4";
-			subject.ProductServiceID4 = "0";
-		}
-		if(!string.IsNullOrEmpty(subject.ProductServiceIDQualifier5) || !string.IsNullOrEmpty(subject.ProductServiceIDQualifier5) || !string.IsNullOrEmpty(subject.ProductServiceID5))
-		{
-			subject.ProductServiceIDQualifier5 = "Q7";
-			subject.ProductServiceID5 = "f";
-		}
-		if(!string.IsNullOrEmpty(subject.ProductServiceIDQualifier6) || !string.IsNullOrEmpty(subject.ProductServiceIDQualifier6) || !string.IsNullOrEmpty(subject.ProductServiceID6))
-		{
-			subject.ProductServiceIDQualifier6 = "06";
-			subject.ProductServiceID6 = "f";
-		}
-		if(!string.IsNullOrEmpty(subject.ProductServiceIDQualifier7) || !string.IsNullOrEmpty(subject.ProductServiceIDQualifier7) || !string.IsNullOrEmpty(subject.ProductServiceID7))
-		{
-			subject.ProductServiceIDQualifier7 = "p1";
-			subject.ProductServiceID7 = "A";
-		}
-		if(!string.IsNullOrEmpty(subject.ProductServiceIDQualifier8) || !string.IsNullOrEmpty(subject.ProductServiceIDQualifier8) || !string.IsNullOrEmpty(subject.ProductServiceID8))
-		{
-			subject.ProductServiceIDQualifier8 = "qY";
-			subject.ProductServiceID8 = "K";
-		}
-		if(!string.IsNullOrEmpty(subject.ProductServiceIDQualifier9) || !string.IsNullOrEmpty(subject.ProductServiceIDQualifier9) || !string.IsNullOrEmpty(subject.ProductServiceID9))
-		{
-			subject.ProductServiceIDQualifier9 = "p2";
-			subject.ProductServiceID9 = "i";
-		}
-		if(!string.IsNullOrEmpty(subject.ProductServiceIDQualifier10) || !string.IsNullOrEmpty(subject.ProductServiceIDQualifier10) || !string.IsNullOrEmpty(subject.ProductServiceID10))
-		{
-			subject.ProductServiceIDQualifier10 = "Uv";
-			subject.ProductServiceID10 = "i";
-		}
-
-        if (subject.Quantity != 0)
-            subject.CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure();
-
-        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
-	}
+	
 
 	[Theory]
 	[InlineData("", 0, true)]

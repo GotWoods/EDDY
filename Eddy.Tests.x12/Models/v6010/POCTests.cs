@@ -190,9 +190,6 @@ public class POCTests
 			subject.ProductServiceID10 = "e";
 		}
 
-        if (subject.QuantityLeftToReceive != 0)
-            subject.CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure();
-
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
@@ -210,7 +207,7 @@ public class POCTests
 		subject.ProductServiceIDQualifier = productServiceIDQualifier;
 		subject.ProductServiceID = productServiceID;
 		//If one filled, all required
-		if(subject.Quantity > 0 || subject.Quantity > 0 || subject.Quantity != null)
+		if(subject.Quantity > 0 || subject.Quantity != null)
 		{
 			subject.Quantity = 8;
 			subject.CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure();

@@ -138,7 +138,7 @@ public class POCTests
 
         
 
-		if(subject.Quantity > 0 || subject.Quantity > 0 || subject.Quantity != null)
+		if(subject.Quantity > 0 || subject.Quantity != null)
 		{
 			subject.Quantity = 4;
 			subject.CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure();
@@ -194,9 +194,6 @@ public class POCTests
 			subject.ProductServiceID10 = "i";
 		}
         
-        if (subject.QuantityLeftToReceive != 0) 
-            subject.CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure();
-
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
