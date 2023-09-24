@@ -138,7 +138,6 @@ public class BatchGenerator
             "RCD",
             "QTY", 
             "TIA", //Specifying one of Quantity (TIA-4), or CompositeUnitOfMeasure (TIA-5) means all are required
-            //"UIT",//CompositeUnitOfMeasure (UIT-1) is required
             // "M6", 
             // "PO4", 
             // "PS", 
