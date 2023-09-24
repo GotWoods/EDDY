@@ -69,7 +69,7 @@ public class G62Tests
 		}
 
         if (subject.DateQualifier != "")
-            subject.Date = "AAAAAA";
+            subject.Date = "AAAAAAAA";
 
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}

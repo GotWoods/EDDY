@@ -120,13 +120,9 @@ public class BatchGenerator
             "CTP", //a requires b failing
             "F04", //Not implemented exception
             "FK", //one means all are required
-
-            //"G62", //at least one is required
-            "L11", //at least one
-            "PKG", //at least one of PackagingDescriptionCode (PKG-4), or Description (PKG-5) is required
-
+            //"L11", //at least one
+            //"PKG", //at least one of PackagingDescriptionCode (PKG-4), or Description (PKG-5) is required
             "G83", //different rule than expected failed
-
             "M11", //When StandardCarrierAlphaCode4 (M11-15) is present, StandardCarrierAlphaCode3 (M11-14) is also required
             "PID", //When ProductDescriptionCode (PID-4) is present, AgencyQualifierCode (PID-3) is also required
             "POC", //Specifying one of Quantity (POC-3), or CompositeUnitOfMeasure (POC-5) means all are required
