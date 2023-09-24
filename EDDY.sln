@@ -24,7 +24,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eddy.x12.Tests", "Eddy.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eddy.Edifact", "Eddy.Edifact\Eddy.Edifact.csproj", "{32E7B730-EE8B-46D0-8B61-5A7ED73CD026}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eddy.Edifact.Tests", "Eddy.Edifact.Tests\Eddy.Edifact.Tests.csproj", "{15E5C22A-130D-4FBE-91B9-3EB0B3B24C04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eddy.Edifact.Tests", "Eddy.Edifact.Tests\Eddy.Edifact.Tests.csproj", "{15E5C22A-130D-4FBE-91B9-3EB0B3B24C04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eddy.X12.Tests.Passing", "Eddy.X12.Tests.Passing\Eddy.X12.Tests.Passing.csproj", "{A85389FC-D37A-40EC-B544-296D31276958}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,6 +70,10 @@ Global
 		{15E5C22A-130D-4FBE-91B9-3EB0B3B24C04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15E5C22A-130D-4FBE-91B9-3EB0B3B24C04}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15E5C22A-130D-4FBE-91B9-3EB0B3B24C04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A85389FC-D37A-40EC-B544-296D31276958}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A85389FC-D37A-40EC-B544-296D31276958}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A85389FC-D37A-40EC-B544-296D31276958}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A85389FC-D37A-40EC-B544-296D31276958}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
