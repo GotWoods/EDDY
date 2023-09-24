@@ -117,25 +117,25 @@ public class BatchGenerator
         var ignored = new List<string>()
         {
             "ADJ", 
-            "CD", //a requires b failing
-            //"CTP", //ObjectReference
-           // "D1", //looks like a field is required but also part of the test parameters?
-           // "CUR", //a requires b failing
-           // "F04", //ObjectReference
-           // "F07", //if one is specified, one more required is being false
-           // "FK", //one means all are required
-            // "G48", //at least one is required
-            // "G62", //at least one is required
-            // "G69", 
-            // "G83", //different rule than expected failed
-            // "H6", //a requires b 
-            // "L11", //at least one
-            // "M11", 
-            // "M6", 
-            // "MEA", 
-            // "N12", 
-            // "RCD", 
-            // "POC", 
+           // "CD", //a requires b failing
+            "CTP", //a requires b failing
+            "CUR", //a requires b failing
+            "H6", //a requires b 
+            "D1", //looks like a field is required but also part of the test parameters?
+            "F04", //Not implemented exception
+            "F07", //if one is specified, one more required is being false
+            "FK", //one means all are required
+            "G48", //at least one is required
+            "G62", //at least one is required
+            "G69", 
+            "G83", //different rule than expected failed
+            "L11", //at least one
+            "M11", 
+            "M6", 
+            "MEA", 
+            "N12", 
+            "RCD", 
+            "POC", 
             "NCA", 
             "PID", 
             "PKG", 

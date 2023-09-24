@@ -100,7 +100,7 @@ public class TestModel
             foreach (var validationData in validations)
             foreach (var field in validationData.GetAllFieldDataOrdered())
             {
-                var foundField = FindFieldByPosition(field, AllParameters);
+                var foundField = FindFieldByPosition(field);
                 TestParameters.Add(foundField);
             }
 
@@ -175,7 +175,8 @@ public class TestModel
         //     sbTest.AppendLine($"\t\tif ({FirstCharToLowerCase(PrimaryItem.Name)} > 0)");
         // sbTest.AppendLine($"\t\tsubject.{PrimaryItem.Name} = {FirstCharToLowerCase(PrimaryItem.Name)};");
 
-        sbTest.AppendLine($"\t\t//A Requires B");
+        if (GetARequiresBRules().Any())
+            sbTest.AppendLine($"\t\t//A Requires B");
         foreach (var dependentRule in GetARequiresBRules())
         {
             if (dependentRule.Key.IsDataTypeNumeric)
@@ -191,24 +192,26 @@ public class TestModel
                 // sbTest.AppendLine("\t\t}");
             }
 
-            var field = FindFieldByPosition(dependentRule.Value[0], AllParameters);
+            var field = FindFieldByPosition(dependentRule.Value[0]);
             if (field.IsDataTypeNumeric)
                 sbTest.AppendLine($"\t\t\tsubject.{field.Name} = {field.TestValue};");
             else
                 sbTest.AppendLine($"\t\t\tsubject.{field.Name} = \"{field.TestValue}\";");
         }
 
-        sbTest.AppendLine($"\t\t//At Least one");
+        if (GetAtLeastOneRules().Any())
+            sbTest.AppendLine($"\t\t//At Least one");
         foreach (var dependentRule in GetAtLeastOneRules())
         {
-            var field = FindFieldByPosition(dependentRule, AllParameters);
+            var field = FindFieldByPosition(dependentRule);
             if (field.IsDataTypeNumeric)
-                sbTest.AppendLine($"\t\t\tsubject.{field.Name} = {field.TestValue};");
+                sbTest.AppendLine($"\t\tsubject.{field.Name} = {field.TestValue};");
             else
-                sbTest.AppendLine($"\t\t\tsubject.{field.Name} = \"{field.TestValue}\";");
+                sbTest.AppendLine($"\t\tsubject.{field.Name} = \"{field.TestValue}\";");
         }
 
-        sbTest.AppendLine($"\t\t//If one filled, all required");
+        if (GetIfOneIsFilledAllAreRequiredRules().Any())
+            sbTest.AppendLine($"\t\t//If one filled, all required");
         foreach (var dependentRule in GetIfOneIsFilledAllAreRequiredRules())
         {
             var conditions = new List<string>();
@@ -227,7 +230,7 @@ public class TestModel
 
             foreach (var otherFields in dependentRule.Value)
             {
-                var conditionField = FindFieldByPosition(otherFields, AllParameters);
+                var conditionField = FindFieldByPosition(otherFields);
                 if (conditionField.IsDataTypeNumeric)
                 {
                     conditions.Add($"subject.{conditionField.Name} > 0");
@@ -242,13 +245,12 @@ public class TestModel
                 }
             }
 
-            sbTest.AppendLine("\t\t//If one is filled, all are required");
             sbTest.AppendLine($"\t\tif({string.Join(" || ", conditions)})");
             sbTest.AppendLine("\t\t{");
           
             foreach (var fieldPosition in dependentRule.Value)
             {
-                var field = FindFieldByPosition(fieldPosition, AllParameters);
+                var field = FindFieldByPosition(fieldPosition);
                 if (field.IsDataTypeNumeric)
                     sbTest.AppendLine($"\t\t\tsubject.{field.Name} = {field.TestValue};");
                 else if (field.IsDataTypeComposite)
@@ -260,7 +262,8 @@ public class TestModel
             sbTest.AppendLine("\t\t}");
         }
 
-        sbTest.AppendLine($"\t\t//If one, at least one");
+        if (GetIfOneIsFilledThenAtLeastOneRules().Any())
+            sbTest.AppendLine($"\t\t//If one, at least one");
         foreach (var dependentRule in GetIfOneIsFilledThenAtLeastOneRules())
         {
             var conditions = new List<string>();
@@ -282,7 +285,7 @@ public class TestModel
 
             foreach (var otherFields in dependentRule.Value)
             {
-                var conditionField = FindFieldByPosition(otherFields, AllParameters);
+                var conditionField = FindFieldByPosition(otherFields);
                 if (conditionField.IsDataTypeNumeric)
                 {
                     conditions.Add($"subject.{conditionField.Name} > 0");
@@ -297,13 +300,12 @@ public class TestModel
                 }
             }
             
-            sbTest.AppendLine("\t\t//If one is filled, at least one more is required");
             sbTest.AppendLine($"\t\tif({string.Join(" || ", conditions)})");
             sbTest.AppendLine("\t\t{");
 
             foreach (var fieldPosition in dependentRule.Value)
             {
-                var field = FindFieldByPosition(fieldPosition, AllParameters);
+                var field = FindFieldByPosition(fieldPosition);
                 if (field.IsDataTypeNumeric)
                     sbTest.AppendLine($"\t\t\tsubject.{field.Name} = {field.TestValue};");
                 else
@@ -325,16 +327,16 @@ public class TestModel
         foreach (var validationData in validations)
         foreach (var field in validationData.GetAllFieldDataOrdered())
         {
-            var foundField = FindFieldByPosition(field, items);
+            var foundField = FindFieldByPosition(field);
             result.Add(foundField);
         }
 
         return result;
     }
 
-    private Model FindFieldByPosition(string position, List<Model> fields)
+    private Model FindFieldByPosition(string position)
     {
-        foreach (var field in fields)
+        foreach (var field in AllParameters)
             if (position == field.Position)
                 return field;
         return new Model(position, position, "string", 0, 0);
@@ -363,11 +365,27 @@ public class TestModel
 
     public List<string> GetAtLeastOneRules()
     {
+        //var parameters = AllParameters.Except(TestParameters);
+            
         var result = new List<string>();
         foreach (var testParameter in AllParameters.Where(x => x.Position != PrimaryItem.Position)) //make sure we do not include the property under test
             if (testParameter.AtLeastOneValidations.Any()) //this is similar to required in that one them needs to be there
+            {
                 foreach (var validationData in testParameter.AtLeastOneValidations) //we should look to see which of the parameters is not part of the TestParameters and use that. For this one, we can just do FieldName=TestValue
-                    result.Add(validationData.FirstFieldPosition); //just add the first field which would satisfy the AtLeastOne rule
+                {
+                    //convert the positions to model objects
+                    var allFields = new List<Model>() { FindFieldByPosition(validationData.FirstFieldPosition) };
+                    foreach (var validationDataOtherField in validationData.OtherFields)
+                    {
+                        allFields.Add(FindFieldByPosition(validationDataOtherField));
+                    }
+                    //find a field that satisfies the rule that is not used in the test parameters
+                    var firstUsableParameter = allFields.Except(TestParameters).FirstOrDefault();
+                    if (firstUsableParameter != null)
+                        result.Add(firstUsableParameter.Position);
+                }
+            }
+
         return result;
     }
 
