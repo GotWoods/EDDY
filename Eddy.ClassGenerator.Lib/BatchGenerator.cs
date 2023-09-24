@@ -118,8 +118,7 @@ public class BatchGenerator
         {
             "ADJ", 
             "CTP", //a requires b failing
-            //"CUR", //a requires b failing
-            "H6", //a requires b 
+            //"H6", //a requires b 
             "D1", //looks like a field is required but also part of the test parameters?
             "F04", //Not implemented exception
             "F07", //if one is specified, one more required is being false
