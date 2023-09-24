@@ -120,8 +120,6 @@ public class BatchGenerator
             "CTP", //a requires b failing
             "F04", //Not implemented exception
             "MEA", //ArequiresB not handling composite
-            //"N12",
-            //"Q2",  //parse error (Seems like item 14 was not generated
             //"TIA", //Specifying one of Quantity (TIA-4), or CompositeUnitOfMeasure (TIA-5) means all are required
         }; //ones that are not generating very well
       
