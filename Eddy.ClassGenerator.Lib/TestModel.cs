@@ -185,21 +185,34 @@ public class TestModel
             else
                 sbTest.AppendLine($"\t\tif ({FirstCharToLowerCase(dependentRule.Key.Name)} != \"\")");
 
+
             if (dependentRule.Value.Count > 1)
             {
-                throw new NotImplementedException();
-                // sbTest.AppendLine("\t\t{");
-                // sbTest.AppendLine($"\t\t\t{dependentRule.Value[0]} == {dependentRule.Value[0]};");
-                // sbTest.AppendLine("\t\t}");
-            }
+                sbTest.AppendLine("{");
 
-            var field = FindFieldByPosition(dependentRule.Value[0]);
-            if (field.IsDataTypeNumeric)
-                sbTest.AppendLine($"\t\t\tsubject.{field.Name} = {field.TestValue};");
-            else if (field.IsDataTypeComposite)
-                sbTest.AppendLine($"\t\t\tsubject.{field.Name} = new {field.DataType}();");
+                foreach (var fieldPosition in dependentRule.Value)
+                {
+                    var field = FindFieldByPosition(fieldPosition);
+                    if (field.IsDataTypeNumeric)
+                        sbTest.AppendLine($"\t\t\tsubject.{field.Name} = {field.TestValue};");
+                    else if (field.IsDataTypeComposite)
+                        sbTest.AppendLine($"\t\t\tsubject.{field.Name} = new {field.DataType}();");
+                    else
+                        sbTest.AppendLine($"\t\t\tsubject.{field.Name} = \"{field.TestValue}\";");
+                }
+
+                sbTest.AppendLine("}");
+            }
             else
-                sbTest.AppendLine($"\t\t\tsubject.{field.Name} = \"{field.TestValue}\";");
+            {
+                var field = FindFieldByPosition(dependentRule.Value[0]);
+                if (field.IsDataTypeNumeric)
+                    sbTest.AppendLine($"\t\t\tsubject.{field.Name} = {field.TestValue};");
+                else if (field.IsDataTypeComposite)
+                    sbTest.AppendLine($"\t\t\tsubject.{field.Name} = new {field.DataType}();");
+                else
+                    sbTest.AppendLine($"\t\t\tsubject.{field.Name} = \"{field.TestValue}\";");
+            }
         }
 
         if (GetAtLeastOneRules().Any())

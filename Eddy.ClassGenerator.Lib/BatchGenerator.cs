@@ -116,8 +116,7 @@ public class BatchGenerator
         var testBasePath = projectBasePath + @"Eddy.Tests.x12\Models";
         var ignored = new List<string>()
         {
-            //"ADJ", 
-            "F04", //Not implemented exception
+            //"F04", //Not implemented exception
         }; //ones that are not generating very well
       
 
