@@ -417,9 +417,34 @@ public class TestModel
                 {
                     if (!result.ContainsKey(parameter))
                         result.Add(parameter, new List<string>());
+
                     result[parameter].Add(validationData.FirstFieldPosition);
                     result[parameter].AddRange(validationData.OtherFields);
                 }
+        }
+
+        //remove any match where a test parameter is adjusted as the test should be the one doing that!
+        List<Model> keys = new List<Model>(result.Keys);
+        foreach (var key in keys)
+        {
+            List<string> valuesToRemove = new List<string>();
+            foreach (var field in result[key])
+            {
+                if (TestParameters.Any(x => x.Position == field))
+                {
+                    valuesToRemove.Add(field);
+                }
+            }
+
+            foreach (var value in valuesToRemove)
+            {
+                result[key].Remove(value);
+            }
+
+            if (!result[key].Any())  // If the list is empty after removals, remove the key itself
+            {
+                result.Remove(key);
+            }
         }
 
         return result;

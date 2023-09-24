@@ -117,9 +117,8 @@ public class BatchGenerator
         var ignored = new List<string>()
         {
             "ADJ", 
-           // "CD", //a requires b failing
             "CTP", //a requires b failing
-            "CUR", //a requires b failing
+            //"CUR", //a requires b failing
             "H6", //a requires b 
             "D1", //looks like a field is required but also part of the test parameters?
             "F04", //Not implemented exception
