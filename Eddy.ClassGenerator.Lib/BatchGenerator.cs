@@ -121,8 +121,7 @@ public class BatchGenerator
             "F04", //Not implemented exception
             "FK", //one means all are required
 
-            //"G48", //at least one is required
-            "G62", //at least one is required
+            //"G62", //at least one is required
             "L11", //at least one
             "PKG", //at least one of PackagingDescriptionCode (PKG-4), or Description (PKG-5) is required
 
