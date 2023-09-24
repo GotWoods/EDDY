@@ -123,32 +123,31 @@ public class BatchGenerator
             "FK", //one means all are required
             "G48", //at least one is required
             "G62", //at least one is required
-            //"G69", 
             "G83", //different rule than expected failed
             "L11", //at least one
-            "M11", 
-            "M6", 
-            "MEA", 
-            "N12", 
-            "RCD", 
-            "POC", 
-            "NCA", 
-            "PID", 
-            "PKG", 
-            "Q2",  
-            "PSD", 
-            "PO4", 
-            "SCH", 
-            "SDQ", 
-            "QTY", 
-            "PS", 
-            "PR", 
-            "SLN", 
-            "SHP", 
-            "TD4", 
-            "TIA",
-            "V1",
-            "UIT",
+            "M11", //When StandardCarrierAlphaCode4 (M11-15) is present, StandardCarrierAlphaCode3 (M11-14) is also required
+            "PID", //When ProductDescriptionCode (PID-4) is present, AgencyQualifierCode (PID-3) is also required
+            "POC", //Specifying one of Quantity (POC-3), or CompositeUnitOfMeasure (POC-5) means all are required
+            "PR", //at least one of CommodityCodeQualifier (PR-2), or StandardCarrierAlphaCode (PR-6) is required
+            "MEA", //ArequiresB not handling composite
+            "PKG", //at least one of PackagingDescriptionCode (PKG-4), or Description (PKG-5) is required
+            "N12",
+            "NCA", //Specifying one of Quantity (NCA-4), or CompositeUnitOfMeasure (NCA-5) means all are required
+            // "M6", 
+            // "RCD", 
+            // "Q2",  
+            // "PSD", 
+            // "PO4", 
+            // "SCH", 
+            // "SDQ", 
+            // "QTY", 
+            // "PS", 
+            // "SLN", 
+            // "SHP", 
+            // "TD4", 
+            // "TIA",
+            // "V1",
+            // "UIT",
         }; //ones that are not generating very well
       
 
