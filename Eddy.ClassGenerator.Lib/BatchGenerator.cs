@@ -120,11 +120,10 @@ public class BatchGenerator
             "CTP", //a requires b failing
             "D1", //looks like a field is required but also part of the test parameters?
             "F04", //Not implemented exception
-            //"F07", //if one is specified, one more required is being false
             "FK", //one means all are required
             "G48", //at least one is required
             "G62", //at least one is required
-            "G69", 
+            //"G69", 
             "G83", //different rule than expected failed
             "L11", //at least one
             "M11", 
