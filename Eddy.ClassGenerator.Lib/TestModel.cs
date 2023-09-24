@@ -196,6 +196,8 @@ public class TestModel
             var field = FindFieldByPosition(dependentRule.Value[0]);
             if (field.IsDataTypeNumeric)
                 sbTest.AppendLine($"\t\t\tsubject.{field.Name} = {field.TestValue};");
+            else if (field.IsDataTypeComposite)
+                sbTest.AppendLine($"\t\t\tsubject.{field.Name} = new {field.DataType}();");
             else
                 sbTest.AppendLine($"\t\t\tsubject.{field.Name} = \"{field.TestValue}\";");
         }
@@ -291,7 +293,7 @@ public class TestModel
                 {
                     conditions.Add($"subject.{conditionField.Name} > 0");
                 }
-                else if (dependentRule.Key.IsDataTypeComposite)
+                else if (conditionField.IsDataTypeComposite)
                 {
                     conditions.Add($"subject.{dependentRule.Key.Name} != null");
                 }

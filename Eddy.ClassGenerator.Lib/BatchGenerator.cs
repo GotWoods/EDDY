@@ -117,10 +117,8 @@ public class BatchGenerator
         var ignored = new List<string>()
         {
             "ADJ", 
-            "CTP", //a requires b failing
             "F04", //Not implemented exception
-            "MEA", //ArequiresB not handling composite
-            //"TIA", //Specifying one of Quantity (TIA-4), or CompositeUnitOfMeasure (TIA-5) means all are required
+            //"MEA", //ArequiresB not handling composite
         }; //ones that are not generating very well
       
 
