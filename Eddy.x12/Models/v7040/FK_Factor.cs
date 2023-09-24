@@ -1,0 +1,5 @@
+namespace Eddy.x12.Models.v7040;
+
+public class FK_Factor : Eddy.x12.Models.v7030.FK_Factor
+{
+}
