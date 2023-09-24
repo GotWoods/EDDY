@@ -248,73 +248,7 @@ public class SLNTests
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 
-	[Theory]
-	[InlineData("", false)]
-	[InlineData("", true)]
-	public void Validation_RequiredCompositeUnitOfMeasure(string compositeUnitOfMeasure, bool isValidExpected)
-	{
-		var subject = new SLN_SublineItemDetail();
-		//Required fields
-		subject.AssignedIdentification = "y";
-		subject.RelationshipCode = "W";
-		subject.Quantity = 9;
-		//Test Parameters
-		if (compositeUnitOfMeasure != "") 
-			subject.CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure();
-		//If one filled, all required
-		if(!string.IsNullOrEmpty(subject.ProductServiceIDQualifier) || !string.IsNullOrEmpty(subject.ProductServiceIDQualifier) || !string.IsNullOrEmpty(subject.ProductServiceID))
-		{
-			subject.ProductServiceIDQualifier = "9x";
-			subject.ProductServiceID = "R";
-		}
-		if(!string.IsNullOrEmpty(subject.ProductServiceIDQualifier2) || !string.IsNullOrEmpty(subject.ProductServiceIDQualifier2) || !string.IsNullOrEmpty(subject.ProductServiceID2))
-		{
-			subject.ProductServiceIDQualifier2 = "6g";
-			subject.ProductServiceID2 = "8";
-		}
-		if(!string.IsNullOrEmpty(subject.ProductServiceIDQualifier3) || !string.IsNullOrEmpty(subject.ProductServiceIDQualifier3) || !string.IsNullOrEmpty(subject.ProductServiceID3))
-		{
-			subject.ProductServiceIDQualifier3 = "WD";
-			subject.ProductServiceID3 = "F";
-		}
-		if(!string.IsNullOrEmpty(subject.ProductServiceIDQualifier4) || !string.IsNullOrEmpty(subject.ProductServiceIDQualifier4) || !string.IsNullOrEmpty(subject.ProductServiceID4))
-		{
-			subject.ProductServiceIDQualifier4 = "3Y";
-			subject.ProductServiceID4 = "Z";
-		}
-		if(!string.IsNullOrEmpty(subject.ProductServiceIDQualifier5) || !string.IsNullOrEmpty(subject.ProductServiceIDQualifier5) || !string.IsNullOrEmpty(subject.ProductServiceID5))
-		{
-			subject.ProductServiceIDQualifier5 = "g8";
-			subject.ProductServiceID5 = "c";
-		}
-		if(!string.IsNullOrEmpty(subject.ProductServiceIDQualifier6) || !string.IsNullOrEmpty(subject.ProductServiceIDQualifier6) || !string.IsNullOrEmpty(subject.ProductServiceID6))
-		{
-			subject.ProductServiceIDQualifier6 = "6q";
-			subject.ProductServiceID6 = "q";
-		}
-		if(!string.IsNullOrEmpty(subject.ProductServiceIDQualifier7) || !string.IsNullOrEmpty(subject.ProductServiceIDQualifier7) || !string.IsNullOrEmpty(subject.ProductServiceID7))
-		{
-			subject.ProductServiceIDQualifier7 = "aV";
-			subject.ProductServiceID7 = "5";
-		}
-		if(!string.IsNullOrEmpty(subject.ProductServiceIDQualifier8) || !string.IsNullOrEmpty(subject.ProductServiceIDQualifier8) || !string.IsNullOrEmpty(subject.ProductServiceID8))
-		{
-			subject.ProductServiceIDQualifier8 = "lw";
-			subject.ProductServiceID8 = "u";
-		}
-		if(!string.IsNullOrEmpty(subject.ProductServiceIDQualifier9) || !string.IsNullOrEmpty(subject.ProductServiceIDQualifier9) || !string.IsNullOrEmpty(subject.ProductServiceID9))
-		{
-			subject.ProductServiceIDQualifier9 = "gG";
-			subject.ProductServiceID9 = "g";
-		}
-		if(!string.IsNullOrEmpty(subject.ProductServiceIDQualifier10) || !string.IsNullOrEmpty(subject.ProductServiceIDQualifier10) || !string.IsNullOrEmpty(subject.ProductServiceID10))
-		{
-			subject.ProductServiceIDQualifier10 = "16";
-			subject.ProductServiceID10 = "J";
-		}
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
-	}
-
+	
 	[Theory]
 	[InlineData("", 0, true)]
 	[InlineData("0D", 4, true)]

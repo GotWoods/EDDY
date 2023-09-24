@@ -137,16 +137,13 @@ public class BatchGenerator
             "PSD", //Specifying one of SampleFrequencyValuePerUnitOfMeasurementCode (PSD-3), or CompositeUnitOfMeasure (PSD-4) means all are required
             "RCD",
             "QTY", 
-            // "SLN", 
-            // "TD4", //C078
-
-
+            "TIA", //Specifying one of Quantity (TIA-4), or CompositeUnitOfMeasure (TIA-5) means all are required
+            //"UIT",//CompositeUnitOfMeasure (UIT-1) is required
             // "M6", 
             // "PO4", 
             // "PS", 
-            // "TIA",
             // "V1",
-            // "UIT",
+            
         }; //ones that are not generating very well
       
 

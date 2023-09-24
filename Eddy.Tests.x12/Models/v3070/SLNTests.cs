@@ -273,7 +273,7 @@ public class SLNTests
 		if (unitPrice > 0) 
 			subject.UnitPrice = unitPrice;
 		//If one filled, all required
-		if(subject.Quantity > 0 || subject.Quantity > 0 || subject.Quantity != null)
+		if(subject.Quantity > 0 || subject.Quantity != null)
 		{
 			subject.Quantity = 4;
 			subject.CompositeUnitOfMeasure = new C001_CompositeUnitOfMeasure();
