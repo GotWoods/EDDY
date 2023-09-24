@@ -119,10 +119,8 @@ public class BatchGenerator
             "ADJ", 
             "CTP", //a requires b failing
             "F04", //Not implemented exception
-            //"FK", //one means all are required
-            //"G83", //different rule than expected failed
-            "M11", //When StandardCarrierAlphaCode4 (M11-15) is present, StandardCarrierAlphaCode3 (M11-14) is also required
-            "PID", //When ProductDescriptionCode (PID-4) is present, AgencyQualifierCode (PID-3) is also required
+            //"M11", //When StandardCarrierAlphaCode4 (M11-15) is present, StandardCarrierAlphaCode3 (M11-14) is also required
+            //"PID", //When ProductDescriptionCode (PID-4) is present, AgencyQualifierCode (PID-3) is also required
             "POC", //Specifying one of Quantity (POC-3), or CompositeUnitOfMeasure (POC-5) means all are required
             "PR", //at least one of CommodityCodeQualifier (PR-2), or StandardCarrierAlphaCode (PR-6) is required
             "MEA", //ArequiresB not handling composite
