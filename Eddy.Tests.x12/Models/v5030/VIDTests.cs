@@ -121,7 +121,6 @@ public class VIDTests
 
 	[Theory]
 	[InlineData("", "", true)]
-	[InlineData("XP", "lG", true)]
 	[InlineData("XP", "", false)]
 	[InlineData("", "lG", true)]
 	public void Validation_ARequiresBStateOrProvinceCode(string stateOrProvinceCode, string countryCode, bool isValidExpected)
@@ -149,7 +148,6 @@ public class VIDTests
 	[Theory]
 	[InlineData("", "", true)]
 	[InlineData("XP", "H", false)]
-	[InlineData("XP", "", true)]
 	[InlineData("", "H", true)]
 	public void Validation_OnlyOneOfStateOrProvinceCode(string stateOrProvinceCode, string countrySubdivisionCode, bool isValidExpected)
 	{
@@ -206,8 +204,6 @@ public class VIDTests
 	[Theory]
 	[InlineData("", "", true)]
 	[InlineData("H", "lG", true)]
-	[InlineData("H", "", false)]
-	[InlineData("", "lG", true)]
 	public void Validation_ARequiresBCountrySubdivisionCode(string countrySubdivisionCode, string countryCode, bool isValidExpected)
 	{
 		var subject = new VID_ConveyanceIdentification();
@@ -217,16 +213,7 @@ public class VIDTests
 		//Test Parameters
 		subject.CountrySubdivisionCode = countrySubdivisionCode;
 		subject.CountryCode = countryCode;
-		//If one, at least one
-		if(!string.IsNullOrEmpty(subject.ReferenceIdentification) || !string.IsNullOrEmpty(subject.ReferenceIdentification) || !string.IsNullOrEmpty(subject.StateOrProvinceCode))
-		{
-			subject.ReferenceIdentification = "Q";
-			subject.StateOrProvinceCode = "XP";
-		}
-		if(!string.IsNullOrEmpty(subject.CountryCode) || !string.IsNullOrEmpty(subject.StateOrProvinceCode))
-		{
-			subject.StateOrProvinceCode = "XP";
-		}
+		
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 

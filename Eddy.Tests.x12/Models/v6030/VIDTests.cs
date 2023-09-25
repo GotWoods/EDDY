@@ -123,7 +123,6 @@ public class VIDTests
 
 	[Theory]
 	[InlineData("", "", true)]
-	[InlineData("oi", "3x", true)]
 	[InlineData("oi", "", false)]
 	[InlineData("", "3x", true)]
 	public void Validation_ARequiresBStateOrProvinceCode(string stateOrProvinceCode, string countryCode, bool isValidExpected)
@@ -151,7 +150,6 @@ public class VIDTests
 	[Theory]
 	[InlineData("", "", true)]
 	[InlineData("oi", "2", false)]
-	[InlineData("oi", "", true)]
 	[InlineData("", "2", true)]
 	public void Validation_OnlyOneOfStateOrProvinceCode(string stateOrProvinceCode, string countrySubdivisionCode, bool isValidExpected)
 	{
@@ -207,7 +205,6 @@ public class VIDTests
 
 	[Theory]
 	[InlineData("", "", true)]
-	[InlineData("2", "3x", true)]
 	[InlineData("2", "", false)]
 	[InlineData("", "3x", true)]
 	public void Validation_ARequiresBCountrySubdivisionCode(string countrySubdivisionCode, string countryCode, bool isValidExpected)

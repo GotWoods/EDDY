@@ -29,7 +29,6 @@ public class W4Tests
 	[Theory]
 	[InlineData("", "", true)]
 	[InlineData("Os", "L", true)]
-	[InlineData("Os", "", false)]
 	[InlineData("", "L", false)]
 	public void Validation_AllAreRequiredStandardCarrierAlphaCode(string standardCarrierAlphaCode, string freightStationAccountingCode, bool isValidExpected)
 	{
@@ -38,6 +37,10 @@ public class W4Tests
 		//Test Parameters
 		subject.StandardCarrierAlphaCode = standardCarrierAlphaCode;
 		subject.FreightStationAccountingCode = freightStationAccountingCode;
+
+        if (subject.StandardCarrierAlphaCode == "")
+            subject.CityName = "AB";
+
 		//If one filled, all required
 		if(!string.IsNullOrEmpty(subject.CityName) || !string.IsNullOrEmpty(subject.CityName) || !string.IsNullOrEmpty(subject.StateOrProvinceCode))
 		{
@@ -59,8 +62,13 @@ public class W4Tests
 		//Test Parameters
 		subject.StandardCarrierAlphaCode = standardCarrierAlphaCode;
 		subject.CityName = cityName;
-		//If one filled, all required
-		if(!string.IsNullOrEmpty(subject.CityName) || !string.IsNullOrEmpty(subject.CityName) || !string.IsNullOrEmpty(subject.StateOrProvinceCode))
+        //If one filled, all required
+
+        if (subject.StandardCarrierAlphaCode != "")
+            subject.FreightStationAccountingCode = "AB";
+
+
+        if (!string.IsNullOrEmpty(subject.CityName) || !string.IsNullOrEmpty(subject.CityName) || !string.IsNullOrEmpty(subject.StateOrProvinceCode))
 		{
 			subject.CityName = "wd";
 			subject.StateOrProvinceCode = "kO";

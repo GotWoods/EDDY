@@ -38,8 +38,12 @@ public class W4Tests
 		//Test Parameters
 		subject.StandardCarrierAlphaCode = standardCarrierAlphaCode;
 		subject.FreightStationAccountingCode = freightStationAccountingCode;
-		//If one filled, all required
-		if(!string.IsNullOrEmpty(subject.CityName) || !string.IsNullOrEmpty(subject.CityName) || !string.IsNullOrEmpty(subject.StateOrProvinceCode))
+
+        if (subject.StandardCarrierAlphaCode == "")
+            subject.CityName = "AB";
+
+        //If one filled, all required
+        if (!string.IsNullOrEmpty(subject.CityName) || !string.IsNullOrEmpty(subject.CityName) || !string.IsNullOrEmpty(subject.StateOrProvinceCode))
 		{
 			subject.CityName = "wD";
 			subject.StateOrProvinceCode = "QM";
@@ -59,8 +63,13 @@ public class W4Tests
 		//Test Parameters
 		subject.StandardCarrierAlphaCode = standardCarrierAlphaCode;
 		subject.CityName = cityName;
-		//If one filled, all required
-		if(!string.IsNullOrEmpty(subject.CityName) || !string.IsNullOrEmpty(subject.CityName) || !string.IsNullOrEmpty(subject.StateOrProvinceCode))
+
+        if (subject.StandardCarrierAlphaCode != "")
+            subject.FreightStationAccountingCode = "AB";
+
+
+        //If one filled, all required
+        if (!string.IsNullOrEmpty(subject.CityName) || !string.IsNullOrEmpty(subject.CityName) || !string.IsNullOrEmpty(subject.StateOrProvinceCode))
 		{
 			subject.CityName = "wD";
 			subject.StateOrProvinceCode = "QM";
