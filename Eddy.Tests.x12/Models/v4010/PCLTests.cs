@@ -69,7 +69,11 @@ public class PCLTests
 			subject.DateTimePeriodFormatQualifier = "QH";
 			subject.DateTimePeriod = "K";
 		}
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
+
+        if (subject.IdentificationCodeQualifier != "")
+            subject.IdentificationCode = "AB";
+
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}
 
 	[Theory]

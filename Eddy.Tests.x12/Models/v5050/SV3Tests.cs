@@ -1,0 +1,48 @@
+using Eddy.Core.Validation;
+using Eddy.Tests.x12;
+using Eddy.x12.Mapping;
+using Eddy.x12.Models.Elements;
+using Eddy.x12.Models.v5050;
+
+namespace Eddy.x12.Tests.Models.v5050;
+
+public class SV3Tests
+{
+	[Fact]
+	public void Parse_ShouldReturnCorrectObject()
+	{
+		string x12Line = "SV3**9*M**F*4*M*s*4*0*3";
+
+		var expected = new SV3_DentalService()
+		{
+			CompositeMedicalProcedureIdentifier = null,
+			MonetaryAmount = 9,
+			FacilityCodeValue = "M",
+			OralCavityDesignation = null,
+			ProsthesisCrownOrInlayCode = "F",
+			Quantity = 4,
+			Description = "M",
+			CopayStatusCode = "s",
+			ProviderAgreementCode = "4",
+			YesNoConditionOrResponseCode = "0",
+			DiagnosisCodePointer = 3,
+		};
+
+		var actual = Map.MapObject<SV3_DentalService>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
+		Assert.Equivalent(expected, actual);
+	}
+
+	[Theory]
+	[InlineData("", false)]
+	[InlineData("A", true)]
+	public void Validation_RequiredCompositeMedicalProcedureIdentifier(string compositeMedicalProcedureIdentifier, bool isValidExpected)
+	{
+		var subject = new SV3_DentalService();
+		//Required fields
+		//Test Parameters
+		if (compositeMedicalProcedureIdentifier != "") 
+			subject.CompositeMedicalProcedureIdentifier = new C003_CompositeMedicalProcedureIdentifier();
+		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+	}
+
+}
