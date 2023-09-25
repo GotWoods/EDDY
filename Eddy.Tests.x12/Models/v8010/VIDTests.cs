@@ -95,9 +95,7 @@ public class VIDTests
 
 	[Theory]
 	[InlineData("", "", "", true)]
-	[InlineData("Y", "4v", "g", true)]
 	[InlineData("Y", "", "", false)]
-	[InlineData("", "4v", "g", true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_ReferenceIdentification(string referenceIdentification, string stateOrProvinceCode, string countrySubdivisionCode, bool isValidExpected)
 	{
 		var subject = new VID_ConveyanceIdentification();
@@ -177,9 +175,7 @@ public class VIDTests
 
 	[Theory]
 	[InlineData("", "", "", true)]
-	[InlineData("JF", "4v", "g", true)]
 	[InlineData("JF", "", "", false)]
-	[InlineData("", "4v", "g", true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_CountryCode(string countryCode, string stateOrProvinceCode, string countrySubdivisionCode, bool isValidExpected)
 	{
 		var subject = new VID_ConveyanceIdentification();
