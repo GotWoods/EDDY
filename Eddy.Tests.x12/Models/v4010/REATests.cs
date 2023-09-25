@@ -36,7 +36,7 @@ public class REATests
 
 	[Theory]
 	[InlineData("", false)]
-	[InlineData("", true)]
+	[InlineData("A", true)]
 	public void Validation_RequiredCompositeTypeOfRealEstateAssetCode(string compositeTypeOfRealEstateAssetCode, bool isValidExpected)
 	{
 		var subject = new REA_RealEstatePropertyInformation();

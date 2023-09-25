@@ -46,7 +46,7 @@ public class TXNTests
 
 	[Theory]
 	[InlineData("", "", true)]
-	[InlineData("5", "", false)]
+	[InlineData("5", "A", false)]
 	[InlineData("5", "", true)]
 	[InlineData("", "", true)]
 	public void Validation_OnlyOneOfVersionReleaseIndustryIdentifierCode(string versionReleaseIndustryIdentifierCode, string standardsInformation, bool isValidExpected)

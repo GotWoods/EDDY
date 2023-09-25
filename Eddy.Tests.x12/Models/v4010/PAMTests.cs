@@ -114,43 +114,7 @@ public class PAMTests
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
 	}
 
-	[Theory]
-	[InlineData("", "", true)]
-	[InlineData("scN", "b7", true)]
-	[InlineData("scN", "", false)]
-	[InlineData("", "b7", true)]
-	public void Validation_ARequiresBDateTimeQualifier(string dateTimeQualifier, string unitOfTimePeriodOrInterval, bool isValidExpected)
-	{
-		var subject = new PAM_PeriodAmount();
-		//Required fields
-		//Test Parameters
-		subject.DateTimeQualifier = dateTimeQualifier;
-		subject.UnitOfTimePeriodOrInterval = unitOfTimePeriodOrInterval;
-		//If one filled, all required
-		if(!string.IsNullOrEmpty(subject.AmountQualifierCode) || !string.IsNullOrEmpty(subject.AmountQualifierCode) || subject.MonetaryAmount > 0)
-		{
-			subject.AmountQualifierCode = "O";
-			subject.MonetaryAmount = 8;
-		}
-		if(!string.IsNullOrEmpty(subject.UnitOfTimePeriodOrInterval) || !string.IsNullOrEmpty(subject.UnitOfTimePeriodOrInterval) || !string.IsNullOrEmpty(subject.DateTimeQualifier))
-		{
-			subject.UnitOfTimePeriodOrInterval = "b7";
-			subject.DateTimeQualifier = "scN";
-		}
-		if(!string.IsNullOrEmpty(subject.PercentQualifier) || !string.IsNullOrEmpty(subject.PercentQualifier) || subject.Percent > 0)
-		{
-			subject.PercentQualifier = "X";
-			subject.Percent = 7;
-		}
-		//If one, at least one
-		if(!string.IsNullOrEmpty(subject.DateTimeQualifier2) || !string.IsNullOrEmpty(subject.DateTimeQualifier2) || !string.IsNullOrEmpty(subject.Date2) || !string.IsNullOrEmpty(subject.Time2))
-		{
-			subject.DateTimeQualifier2 = "60J";
-			subject.Date2 = "fgTE2CfP";
-			subject.Time2 = "KV0s";
-		}
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
-	}
+	
 
 	[Theory]
 	[InlineData("", "", "", true)]

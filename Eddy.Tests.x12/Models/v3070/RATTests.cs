@@ -40,7 +40,7 @@ public class RATTests
 
 	[Theory]
 	[InlineData("", false)]
-	[InlineData("", true)]
+	[InlineData("A", true)]
 	public void Validation_RequiredCompositeUnitOfMeasure(string compositeUnitOfMeasure, bool isValidExpected)
 	{
 		var subject = new RAT_AdjustableRateDescription();
@@ -195,7 +195,7 @@ public class RATTests
 
 	[Theory]
 	[InlineData("", false)]
-	[InlineData("", true)]
+	[InlineData("A", true)]
 	public void Validation_RequiredCompositeUnitOfMeasure2(string compositeUnitOfMeasure2, bool isValidExpected)
 	{
 		var subject = new RAT_AdjustableRateDescription();

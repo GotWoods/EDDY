@@ -80,7 +80,7 @@ public class DMGTests
 
 	[Theory]
 	[InlineData("", "", true)]
-	[InlineData("f", "", true)]
+	[InlineData("f", "A", true)]
 	[InlineData("f", "", false)]
 	[InlineData("", "", true)]
 	public void Validation_ARequiresBIndustryCode(string industryCode, string compositeRaceOrEthnicityInformation, bool isValidExpected)
