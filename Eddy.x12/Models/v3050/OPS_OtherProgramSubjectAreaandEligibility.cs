@@ -1,0 +1,36 @@
+using Eddy.Core.Attributes;
+using Eddy.Core.Validation;
+using Eddy.x12.Models.Elements;
+
+namespace Eddy.x12.Models.v3050;
+
+[Segment("OPS")]
+public class OPS_OtherProgramSubjectAreaAndEligibility : EdiX12Segment
+{
+	[Position(01)]
+	public string IdentificationCodeQualifier { get; set; }
+
+	[Position(02)]
+	public string IdentificationCode { get; set; }
+
+	[Position(03)]
+	public string PlacementCriteriaCode { get; set; }
+
+	[Position(04)]
+	public string YesNoConditionOrResponseCode { get; set; }
+
+	[Position(05)]
+	public string InstructionalSettingCode { get; set; }
+
+	public override ValidationResult Validate()
+	{
+		var validator = new BasicValidator<OPS_OtherProgramSubjectAreaAndEligibility>(this);
+		validator.IfOneIsFilled_AllAreRequired(x=>x.IdentificationCodeQualifier, x=>x.IdentificationCode);
+		validator.Length(x => x.IdentificationCodeQualifier, 1, 2);
+		validator.Length(x => x.IdentificationCode, 2, 20);
+		validator.Length(x => x.PlacementCriteriaCode, 1);
+		validator.Length(x => x.YesNoConditionOrResponseCode, 1);
+		validator.Length(x => x.InstructionalSettingCode, 1, 2);
+		return validator.Results;
+	}
+}
