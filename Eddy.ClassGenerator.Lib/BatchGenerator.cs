@@ -148,10 +148,14 @@ public class BatchGenerator
                     continue;
                 }
 
+                //var fileSeachPath = codeBasePath + "\\v" + versionAndSegment.Key + "\\" + segmentData.Type + "_*.cs";
                 var codePath = codeBasePath + "\\v" + versionAndSegment.Key + "\\" + segmentData.Name + ".cs";
                 var testPath = testBasePath + "\\v" + versionAndSegment.Key + "\\" + segmentData.Type + "Tests.cs";
 
-                if (File.Exists(codePath)) //don't regen if already exists
+                //we use a wildcard here as files can change name but keep the same prefix (e.g. 3010\BMG_BeginingSegmentForText[Transaction] and 3020\BMG_BeginingSegmentForText[Message])
+                var matchingFiles = System.IO.Directory.GetFiles(codeBasePath + "\\v" + versionAndSegment.Key + "\\", segmentData.Type + "_*.cs");
+
+                if (matchingFiles.Length > 0) //don't regen if already exists
                     continue;
 
                 var filesToWrite = new Dictionary<string, string>(); //path and code
