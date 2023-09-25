@@ -125,11 +125,9 @@ public class SD1Tests
 		//Test Parameters
 		subject.ProductDescriptionCode = productDescriptionCode;
 		subject.Description = description;
-		//If one, at least one
-		if(!string.IsNullOrEmpty(subject.AgencyQualifierCode) || !string.IsNullOrEmpty(subject.AgencyQualifierCode))
-		{
-			subject.AgencyQualifierCode = "Dc";
-		}
+        //If one, at least one
+        if (productDescriptionCode != "")
+            subject.AgencyQualifierCode = "AB";
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.AtLeastOneIsRequired);
 	}
 

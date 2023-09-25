@@ -1,0 +1,5 @@
+namespace Eddy.x12.Models.v8030;
+
+public class BSC_BeginningSegmentForCommissionSalesReportAndPeriodicCompensation : Eddy.x12.Models.v8020.BSC_BeginningSegmentForCommissionSalesReportAndPeriodicCompensation
+{
+}

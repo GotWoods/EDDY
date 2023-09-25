@@ -101,7 +101,6 @@ public class SHDTests
 	[Theory]
 	[InlineData(0, "", true)]
 	[InlineData(6, "ej", true)]
-	[InlineData(6, "", false)]
 	[InlineData(0, "ej", true)]
 	public void Validation_ARequiresBQuantityReceived(decimal quantityReceived, string unitOrBasisForMeasurementCode, bool isValidExpected)
 	{

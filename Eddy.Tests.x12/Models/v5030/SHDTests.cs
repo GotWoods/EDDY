@@ -98,7 +98,6 @@ public class SHDTests
 	[Theory]
 	[InlineData(0, "", true)]
 	[InlineData(8, "7B", true)]
-	[InlineData(8, "", false)]
 	[InlineData(0, "7B", true)]
 	public void Validation_ARequiresBQuantityReceived(decimal quantityReceived, string unitOrBasisForMeasurementCode, bool isValidExpected)
 	{

@@ -1,0 +1,5 @@
+namespace Eddy.x12.Models.v6040;
+
+public class BTS_BeginningSegmentForTrainSheets : Eddy.x12.Models.v6030.BTS_BeginningSegmentForTrainSheets
+{
+}

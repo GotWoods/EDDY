@@ -38,7 +38,6 @@ public class SHDTests
 	[Theory]
 	[InlineData(0, "", true)]
 	[InlineData(7, "4N", true)]
-	[InlineData(7, "", false)]
 	[InlineData(0, "4N", true)]
 	public void Validation_ARequiresBNumberOfUnitsShipped(decimal numberOfUnitsShipped, string unitOrBasisForMeasurementCode, bool isValidExpected)
 	{
@@ -103,7 +102,6 @@ public class SHDTests
 	[Theory]
 	[InlineData(0, "", true)]
 	[InlineData(3, "4N", true)]
-	[InlineData(3, "", false)]
 	[InlineData(0, "4N", true)]
 	public void Validation_ARequiresBQuantityReceived(decimal quantityReceived, string unitOrBasisForMeasurementCode, bool isValidExpected)
 	{

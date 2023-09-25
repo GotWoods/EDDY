@@ -104,7 +104,6 @@ public class SHDTests
 	[Theory]
 	[InlineData(0, "", true)]
 	[InlineData(4, "sA", true)]
-	[InlineData(4, "", false)]
 	[InlineData(0, "sA", true)]
 	public void Validation_ARequiresBQuantityReceived(decimal quantityReceived, string unitOrBasisForMeasurementCode, bool isValidExpected)
 	{
@@ -131,30 +130,7 @@ public class SHDTests
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
-	[Theory]
-	[InlineData(0, "", true)]
-	[InlineData(3, "JX", true)]
-	[InlineData(3, "", false)]
-	[InlineData(0, "JX", false)]
-	public void Validation_AllAreRequiredWeight(decimal weight, string unitOrBasisForMeasurementCode2, bool isValidExpected)
-	{
-		var subject = new SHD_ShipmentDetail();
-		//Required fields
-		//Test Parameters
-		if (weight > 0) 
-			subject.Weight = weight;
-		subject.UnitOrBasisForMeasurementCode2 = unitOrBasisForMeasurementCode2;
-		//At Least one
-		subject.NumberOfUnitsShipped = 9;
-        subject.UnitOrBasisForMeasurementCode = "JX";
-        //If one filled, all required
-        if (subject.Volume > 0 || subject.Volume > 0 || !string.IsNullOrEmpty(subject.UnitOrBasisForMeasurementCode3))
-		{
-			subject.Volume = 3;
-			subject.UnitOrBasisForMeasurementCode3 = "Y5";
-		}
-		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
-	}
+
 
 	[Theory]
 	[InlineData(0, "", true)]

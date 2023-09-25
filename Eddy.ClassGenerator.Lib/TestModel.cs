@@ -571,6 +571,8 @@ public class TestModel
 
         if (item.IsDataTypeNumeric)
             return item.TestValue;
+        if (item.IsDataTypeComposite)
+            return "\"A\"";
         return $"\"{item.TestValue}\"";
     }
 }
