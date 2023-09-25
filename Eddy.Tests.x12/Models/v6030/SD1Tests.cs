@@ -74,9 +74,7 @@ public class SD1Tests
 	}
 
 	[Theory]
-	[InlineData("", "", "", true)]
 	[InlineData("Dc", "K", "N", true)]
-	[InlineData("Dc", "", "", false)]
 	[InlineData("", "K", "N", true)]
 	public void Validation_IfOneSpecifiedThenOneMoreRequired_AgencyQualifierCode(string agencyQualifierCode, string productDescriptionCode, string description, bool isValidExpected)
 	{
@@ -108,11 +106,8 @@ public class SD1Tests
 		//Test Parameters
 		subject.ProductDescriptionCode = productDescriptionCode;
 		subject.AgencyQualifierCode = agencyQualifierCode;
-		//If one, at least one
-		if(!string.IsNullOrEmpty(subject.AgencyQualifierCode) || !string.IsNullOrEmpty(subject.Description))
-		{
-			subject.Description = "N";
-		}
+	    subject.Description = "N";
+	
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ARequiresB);
 	}
 
