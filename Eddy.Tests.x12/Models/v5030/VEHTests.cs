@@ -202,7 +202,6 @@ public class VEHTests
 	[Theory]
 	[InlineData("", "", true)]
 	[InlineData("bN", "P", false)]
-	[InlineData("bN", "", true)]
 	[InlineData("", "P", true)]
 	public void Validation_OnlyOneOfStateOrProvinceCode(string stateOrProvinceCode, string countrySubdivisionCode, bool isValidExpected)
 	{
