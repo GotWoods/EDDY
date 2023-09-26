@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Eddy.Core.Attributes;
-using Eddy.x12.Models;
+using Eddy.x12.Models.v4010;
 
 namespace Eddy.x12.DomainModels._4010._214;
 
@@ -17,5 +17,5 @@ public class PurchaseOrderCartonDetail
 
 
     [SectionPosition(4)]
-    public List<MAN_MarksAndNumbersInformation> MarksAndNumbersInformation { get; set; } = new();
+    public List<MAN_MarksAndNumbers> MarksAndNumbersInformation { get; set; } = new();
 }

@@ -2,7 +2,7 @@
 using Eddy.x12.DomainModels._8020;
 using Eddy.x12.Mapping;
 using Eddy.x12.Models;
-
+using Eddy.x12.Models.v8040;
 namespace Eddy.Tests.x12.Beta;
 
 public partial class DomainMapperTests

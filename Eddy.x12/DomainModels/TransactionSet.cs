@@ -1,7 +1,7 @@
-﻿namespace Eddy.x12.DomainModels;
-
-public class TransactionSet
-{
-
-
-}
+﻿// namespace Eddy.x12.DomainModels;
+//
+// public class TransactionSet
+// {
+//
+//
+// }

@@ -1,5 +1,5 @@
 ﻿using Eddy.x12;
-using Eddy.x12.Models;
+using Eddy.x12.Models.v8040;
 
 namespace Eddy.Tests.x12.Beta
 {

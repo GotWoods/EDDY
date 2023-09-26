@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using Eddy.Core.Attributes;
-using Eddy.x12.Models;
+using Eddy.x12.Models.v4010;
 
 namespace Eddy.x12.DomainModels._4010._210;
 
     public class TransactionSet
     {
-        [SectionPosition(1)]  public LX_TransactionSetLineNumber TransactionSetLineNumber { get; set; }
+        [SectionPosition(1)]  public LX_AssignedNumber TransactionSetLineNumber { get; set; }
         [SectionPosition(2)] public List<L11_BusinessInstructionsAndReferenceNumber> BusinessInstructionsAndReferenceNumber { get; set; } = new();
         [SectionPosition(3)] public List<L5_DescriptionMarksAndNumbers> DescriptionMarksAndNumbers { get; set; } = new();
         [SectionPosition(4)] public List<H1_HazardousMaterial> HazardousMaterial { get; set; } = new();

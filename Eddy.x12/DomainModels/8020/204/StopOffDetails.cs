@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Eddy.Core.Attributes;
-using Eddy.x12.Models;
+using Eddy.x12.Models.v8020;
 
 namespace Eddy.x12.DomainModels._8020._204
 {
@@ -29,7 +29,7 @@ namespace Eddy.x12.DomainModels._8020._204
         public PLD_PalletShipmentInformation PalletInformation { get; set; }
 
         [SectionPosition(8)]
-        public List<NTE_Note> Notes { get; set; } = new();
+        public List<NTE_NoteSpecialInstruction> Notes { get; set; } = new();
         
         [SectionPosition(9)] //SpecialMap
         public Entity Entity {  get; set; }

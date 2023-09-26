@@ -5,7 +5,7 @@ using Eddy.x12.DomainModels._8020._204;
 using Eddy.x12.Mapping;
 using Eddy.x12.Models;
 using Xunit.Abstractions;
-
+using Eddy.x12.Models.v8020;
 namespace Eddy.Tests.x12.DomainTests;
 
 public class Edi204MotorCarrierLoadTenderTests
@@ -37,8 +37,8 @@ public class Edi204MotorCarrierLoadTenderTests
         });
         sourceModel.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentificationQualifier = "OTH", ReferenceIdentification = "1st type" });
         sourceModel.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentificationQualifier = "ZZZ", ReferenceIdentification = "2nd type" });
-        sourceModel.Notes.Add(new NTE_Note { NoteReferenceCode = "ABC", Description = "Note1" });
-        sourceModel.Notes.Add(new NTE_Note { NoteReferenceCode = "123", Description = "Note2" });
+        sourceModel.Notes.Add(new NTE_NoteSpecialInstruction() { NoteReferenceCode = "ABC", Description = "Note1" });
+        sourceModel.Notes.Add(new NTE_NoteSpecialInstruction() { NoteReferenceCode = "123", Description = "Note2" });
         sourceModel.Stops.Add(new StopOffDetails
         {
             Detail = new S5_StopOffDetails()
@@ -54,8 +54,8 @@ public class Edi204MotorCarrierLoadTenderTests
         expected.Segments.Add(new B2A_SetPurpose { TransactionSetPurposeCode = sourceModel.SetPurpose.TransactionSetPurposeCode });
         expected.Segments.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentification = sourceModel.ReferenceNumbers[0].ReferenceIdentification, ReferenceIdentificationQualifier = sourceModel.ReferenceNumbers[0].ReferenceIdentificationQualifier });
         expected.Segments.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentification = sourceModel.ReferenceNumbers[1].ReferenceIdentification, ReferenceIdentificationQualifier = sourceModel.ReferenceNumbers[1].ReferenceIdentificationQualifier });
-        expected.Segments.Add(new NTE_Note { Description = sourceModel.Notes[0].Description, NoteReferenceCode = sourceModel.Notes[0].NoteReferenceCode });
-        expected.Segments.Add(new NTE_Note { Description = sourceModel.Notes[1].Description, NoteReferenceCode = sourceModel.Notes[1].NoteReferenceCode });
+        expected.Segments.Add(new NTE_NoteSpecialInstruction { Description = sourceModel.Notes[0].Description, NoteReferenceCode = sourceModel.Notes[0].NoteReferenceCode });
+        expected.Segments.Add(new NTE_NoteSpecialInstruction { Description = sourceModel.Notes[1].Description, NoteReferenceCode = sourceModel.Notes[1].NoteReferenceCode });
         expected.Segments.Add(new N1_PartyIdentification
         {
             EntityIdentifierCode = sourceModel.Entities[0].PartyIdentification.EntityIdentifierCode,

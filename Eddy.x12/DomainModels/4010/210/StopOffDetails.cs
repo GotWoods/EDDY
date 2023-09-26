@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Eddy.Core.Attributes;
-using Eddy.x12.Models;
+using Eddy.x12.Models.v4010;
 
 namespace Eddy.x12.DomainModels._4010._210
 {
@@ -11,7 +11,7 @@ namespace Eddy.x12.DomainModels._4010._210
         public S5_StopOffDetails Detail { get; set; }
 
         [SectionPosition(2)]
-        public List<N9_ExtendedReferenceInformation> ReferenceInformation{ get; set; } = new();
+        public List<N9_ReferenceIdentification> ReferenceInformation{ get; set; } = new();
 
         [SectionPosition(3)]
         public List<G62_DateTime> Dates { get; set; } = new();

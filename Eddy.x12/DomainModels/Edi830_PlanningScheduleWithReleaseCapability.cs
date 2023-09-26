@@ -1,6 +1,6 @@
-﻿namespace Eddy.x12.DomainModels;
-
-public class Edi830_PlanningScheduleWithReleaseCapability
-{
-
-}
+﻿// namespace Eddy.x12.DomainModels;
+//
+// public class Edi830_PlanningScheduleWithReleaseCapability
+// {
+//
+// }

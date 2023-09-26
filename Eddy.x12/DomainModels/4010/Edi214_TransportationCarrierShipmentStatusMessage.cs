@@ -2,7 +2,7 @@
 using Eddy.Core.Attributes;
 using Eddy.x12.DomainModels._4010._214;
 using Eddy.x12.Mapping;
-using Eddy.x12.Models;
+using Eddy.x12.Models.v4010;
 
 namespace Eddy.x12.DomainModels._4010;
 
@@ -15,7 +15,7 @@ public class Edi214_TransportationCarrierShipmentStatusMessage
     public List<L11_BusinessInstructionsAndReferenceNumber> BusinessInstructionsAndReferenceNumbers { get; set; } = new();
 
     [SectionPosition(3)]
-    public List<MAN_MarksAndNumbersInformation> MarksAndNumbers { get; set; } = new();
+    public List<MAN_MarksAndNumbers> MarksAndNumbers { get; set; } = new();
 
     [SectionPosition(4)]
     public List<K1_Remarks> Remarks { get; set; } = new();

@@ -2,7 +2,7 @@
 using Eddy.Core.Attributes;
 using Eddy.x12.DomainModels._4010._210;
 using Eddy.x12.Mapping;
-using Eddy.x12.Models;
+using Eddy.x12.Models.v4010;
 
 namespace Eddy.x12.DomainModels._4010;
 
@@ -11,9 +11,9 @@ public class Edi210_MotorCarrierFreightDetailsAndInvoice
     //Header
     [SectionPosition(1)] public B3_BeginningSegmentForCarriersInvoice Details { get; set; } = new();
     [SectionPosition(2)] public C2_BankID BankIdentification { get; set; }
-    [SectionPosition(3)] public C3_CurrencyIdentifier Currency { get; set; }
+    [SectionPosition(3)] public C3_Currency Currency { get; set; }
     [SectionPosition(4)] public ITD_TermsOfSaleDeferredTermsOfSale TermsOfSale { get; set; }
-    [SectionPosition(5)] public List<N9_ExtendedReferenceInformation> ReferenceInformation { get; set; } = new();
+    [SectionPosition(5)] public List<N9_ReferenceIdentification> ReferenceInformation { get; set; } = new();
     [SectionPosition(6)] public List<G62_DateTime> DateTime { get; set; } = new();
     [SectionPosition(7)] public List<R3_RouteInformationMotor> RouteInformation { get; set; } = new();
     [SectionPosition(8)] public List<H3_SpecialHandlingInstructions> SpecialHandlingInstructions { get; set; } = new();

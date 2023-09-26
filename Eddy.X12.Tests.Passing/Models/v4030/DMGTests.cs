@@ -81,7 +81,6 @@ public class DMGTests
 	[InlineData("", "", true)]
 	[InlineData("A", "A", true)]
 	[InlineData("A", "", false)]
-	[InlineData("", "", true)]
 	public void Validation_ARequiresBIndustryCode(string industryCode, string compositeRaceOrEthnicityInformation, bool isValidExpected)
 	{
 		var subject = new DMG_DemographicInformation();

@@ -4,7 +4,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Eddy.Core;
 using Eddy.x12.Mapping;
-using Eddy.x12.Models;
+using Eddy.x12.Models; //TODO: this should not be set to a specific version
 
 namespace Eddy.x12;
 

@@ -48,7 +48,6 @@ public class TXNTests
 	[InlineData("", "", true)]
 	[InlineData("5", "A", false)]
 	[InlineData("5", "", true)]
-	[InlineData("", "", true)]
 	public void Validation_OnlyOneOfVersionReleaseIndustryIdentifierCode(string versionReleaseIndustryIdentifierCode, string standardsInformation, bool isValidExpected)
 	{
 		var subject = new TXN_TransactionCapabilities();

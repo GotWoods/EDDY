@@ -59,7 +59,6 @@ public class MEATests
 	[InlineData(0, "", true)]
 	[InlineData(5, "A", true)]
 	[InlineData(5, "", false)]
-	[InlineData(0, "", true)]
 	public void Validation_ARequiresBRangeMinimum(decimal rangeMinimum, string compositeUnitOfMeasure, bool isValidExpected)
 	{
 		var subject = new MEA_Measurements();
@@ -83,7 +82,6 @@ public class MEATests
 	[InlineData(0, "", true)]
 	[InlineData(7, "A", true)]
 	[InlineData(7, "", false)]
-	[InlineData(0, "", true)]
 	public void Validation_ARequiresBRangeMaximum(decimal rangeMaximum, string compositeUnitOfMeasure, bool isValidExpected)
 	{
 		var subject = new MEA_Measurements();

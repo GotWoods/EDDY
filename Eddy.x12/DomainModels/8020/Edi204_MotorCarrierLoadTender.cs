@@ -2,7 +2,7 @@
 using Eddy.Core.Attributes;
 using Eddy.x12.DomainModels._8020._204;
 using Eddy.x12.Mapping;
-using Eddy.x12.Models;
+using Eddy.x12.Models.v8020;
 
 namespace Eddy.x12.DomainModels._8020;
 
@@ -25,7 +25,7 @@ public class Edi204_MotorCarrierLoadTender
 
     [SectionPosition(8)] public List<LH6_HazardousCertification> HazardousCertifications { get; set; } = new();
 
-    [SectionPosition(9)] public List<NTE_Note> Notes { get; set; } = new();
+    [SectionPosition(9)] public List<NTE_NoteSpecialInstruction> Notes { get; set; } = new();
 
     [SectionPosition(10)] //N1
     public List<Entity> Entities { get; set; } = new();

@@ -32,4 +32,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Eddy.Core\Eddy.Core.csproj" />
+    <ProjectReference Include="..\Eddy.x12\Eddy.x12.csproj" />
+  </ItemGroup>
+
 </Project>
