@@ -51,7 +51,9 @@ public class BSFTests
 		//Test Parameters
 		subject.ClassOfTradeCode = classOfTradeCode;
 		subject.CodeListQualifierCode = codeListQualifierCode;
-       
+
+        if (subject.CodeListQualifierCode != "")
+            subject.IndustryCode = "AB";
         TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.OnlyOneOf);
 	}
 
