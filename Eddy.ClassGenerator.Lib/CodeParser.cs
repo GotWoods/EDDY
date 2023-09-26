@@ -113,8 +113,8 @@ namespace Eddy.ClassGenerator.Lib
             var segmentFriendlyName = textInfo.ToTitleCase(header.GetDirectInnerText());
             result.ClassName = result.SegmentType + "_" + RemoveSpecialCharacters(segmentFriendlyName);
 
-            if (document.InnerText.Contains("not present in"))
-                throw new FileLoadException("This type may not be supported in this release");
+            // if (document.InnerText.Contains("not present in"))
+            //     throw new FileLoadException("This type may not be supported in this release");
 
             var tableRoot = document.SelectSingleNode("div/div[3]"); //holds table and header
             var tableHeader = tableRoot.SelectSingleNode("div/div"); //first row and then first column
