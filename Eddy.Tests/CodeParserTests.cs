@@ -34,7 +34,6 @@ namespace Eddy.Tests
         [Fact]
         public void ExtractARequiresB()
         {
-            //TODO: If MS1-01 is present, then at least one of MS1-02 or MS1-03 is required
             var text = "If T1-02 is present, then T1-01 is required"; //ARequiresB
             
             //var text3 = "If T1-01 is present, then at least one of T1-02 or T1-03 is required";

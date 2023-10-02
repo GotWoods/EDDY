@@ -4,19 +4,25 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Eddy.Core;
 using Eddy.x12.Mapping;
-using Eddy.x12.Models; //TODO: this should not be set to a specific version
+using Eddy.x12.Models;
+
+using SE_TransactionSetTrailer = Eddy.x12.Models.SE_TransactionSetTrailer;
+using ST_TransactionSetHeader = Eddy.x12.Models.ST_TransactionSetHeader;
 
 namespace Eddy.x12;
 
 public class x12Document
 {
+    public GenericInterchangeControlHeader InterchangeControlHeader { get; set; }
+    public GenericFunctionalGroupHeader GsHeader { get; set; }
 
     public string ToString(MapOptions options)
     {
+        //TODO: ISA for this document version
         var sb = new StringBuilder();
         //Should we be creating a footer array at the same time?
-        sb.Append(this.IsaInterchangeControlHeader.ToString(options));
-        sb.Append(Map.SegmentToString(GsHeader, options));
+        //sb.Append(this.IsaInterchangeControlHeader.ToString(options));
+       // sb.Append(GetHeader());
         foreach (var section in Sections)
         {
             var header = new ST_TransactionSetHeader();
@@ -38,15 +44,16 @@ public class x12Document
             footer.TransactionSetControlNumber = section.TransactionSetControlNumber;
             sb.Append(Map.SegmentToString(footer, options));
         }
-        var groupEnd = new GE_FunctionalGroupTrailer();
-        groupEnd.NumberOfTransactionSetsIncluded = Sections.Count;
-        groupEnd.GroupControlNumber = int.Parse(GsHeader.GroupControlNumber);
-        sb.Append(Map.SegmentToString(groupEnd, options));
+        // var groupEnd = new GE_FunctionalGroupTrailer();
+        // groupEnd.NumberOfTransactionSetsIncluded = Sections.Count;
+        // groupEnd.GroupControlNumber = int.Parse(GsHeader.GroupControlNumber);
+        //sb.Append(GetFooter());
 
-        var isaEnd = new IEA_InterchangeControlTrailer();
-        isaEnd.InterchangeControlNumber = this.IsaInterchangeControlHeader.InterchangeControlNumber;
-        isaEnd.NumberOfIncludedFunctionalGroups = 1;
-        sb.Append(Map.SegmentToString(isaEnd, options));
+//        var isaEnd = new IEA_InterchangeControlTrailer();
+        //TODO: interchange control number
+//        isaEnd.InterchangeControlNumber = this.IsaInterchangeControlHeader.InterchangeControlNumber;
+//        isaEnd.NumberOfIncludedFunctionalGroups = 1;
+//        sb.Append(Map.SegmentToString(isaEnd, options));
         return sb.ToString();
     }
 
@@ -60,44 +67,32 @@ public class x12Document
         var regex = new Regex(pattern);
         var match = regex.Match(data);
 
-        
-
         // if (!match.Success)
         //     throw new InvalidFileFormatException("Non ASCII characters detected in file at position " + (match.Index + match.Length));
         //
 
-
         data = data.Replace("\r\n", "\n"); //normalize newlines
-        //var lines = data.Split('\n');
-
-        var options = new MapOptions();
-        options.Separator = "*"; //x12 standard
-        options.ComponentElementSeparator = ">";
-
-        var result = new x12Document();
-
+        
         if (data.Length < 106)
             throw new InvalidFileFormatException($"Expected file to be at least 106 characters long but was {data.Length} characters");
 
-        var isa = data.Substring(0, 106); //fixed length string
+        var r2 = new x12Document();
+        r2.InterchangeControlHeader = GenericInterchangeControlHeader.FromString(data.Substring(0, 106)); //fixed length string
 
-        options.Separator = isa.Substring(103, 1);
-        //component seperator is at 104
-        options.LineEnding = isa.Substring(105, 1);
-        //options.LineEnding = result.IsaInterchangeControlHeader.ComponentElementSeparator.Substring(1); //strip the leading > character
+        var options = new MapOptions();
+        options.Separator = r2.InterchangeControlHeader.DataElementSeparator.ToString();
+        options.ComponentElementSeparator = r2.InterchangeControlHeader.ComponentDataElementSeparator;
+        options.LineEnding = r2.InterchangeControlHeader.ElementSeparator.ToString();
+        options.StandardsVersion = r2.InterchangeControlHeader.InterchangeControlVersionNumberCode + "0";
 
-        result.IsaInterchangeControlHeader = Map.MapObject<ISA_InterchangeControlHeader>(isa, options);
-        
-        if (string.IsNullOrWhiteSpace(options.LineEnding))
-            options.LineEnding = "\n";
         var lines = data.Split(options.LineEnding.ToCharArray());
 
-        result.GsHeader = Map.MapObject<GS_FunctionalGroupHeader>(lines[1],options);
-        if (result.GsHeader.ResponsibleAgencyCode == "X")
-            options.StandardsVersion = result.GsHeader.VersionReleaseIndustryIdentifierCode;
-        //GS can run from GS to GE (but a GE is not required)
+        r2.GsHeader = Map.MapObject<GenericFunctionalGroupHeader>(lines[1], options);
 
-        var sections = new List<Section>();
+        //TODO: parse these lines in raw to get the parameters
+        //result.GsHeader = GsHeaderFactory.FromVersion(version, lines[1], options); // Map.MapObject<GS_FunctionalGroupHeader>(lines[1],options);
+        
+        //var sections = new List<Section>();
         Section currentSection = null;
         foreach (var line in lines)
         {
@@ -114,11 +109,11 @@ public class x12Document
                 currentSection = new Section();
                 currentSection.SectionType = st.TransactionSetIdentifierCode;
                 currentSection.TransactionSetControlNumber = st.TransactionSetControlNumber;
-                result.Sections.Add(currentSection);
+                r2.Sections.Add(currentSection);
             }
             else if (currentSection != null)
             {
-                currentSection.Segments.Add(EdiSectionParserFactory.Parse(trimmedLine, options));
+                currentSection.Segments.Add(EdiSectionParserFactory.Parse(options.StandardsVersion,trimmedLine, options));
             }
             else if (trimmedLine.StartsWith("SE"))
             {
@@ -127,15 +122,15 @@ public class x12Document
                     throw new Exception($"SE said there would be {se.NumberOfIncludedSegments} but there were actually {currentSection.Segments.Count}");
                 if (se.TransactionSetControlNumber != currentSection.TransactionSetControlNumber)
                     throw new Exception($"The starting control number ({currentSection.TransactionSetControlNumber}) did not match the ending control number ({se.TransactionSetControlNumber})");
-                result.Sections.Add(currentSection);
+                r2.Sections.Add(currentSection);
             }
         }
-        return result;
+        return r2;
     }
 
     public List<Section> Sections { get; set; } = new();
 
-    public GS_FunctionalGroupHeader GsHeader { get; set; }
+    //public GS_FunctionalGroupHeader GsHeader { get; set; }
 
-    public ISA_InterchangeControlHeader IsaInterchangeControlHeader { get; set; }
+    //public ISA_InterchangeControlHeader IsaInterchangeControlHeader { get; set; }
 }

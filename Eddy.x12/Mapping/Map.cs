@@ -21,7 +21,7 @@ public class Map
         return (T)Convert.ChangeType(segment, typeof(T));
     }
 
-    private static EdiX12Segment MapObject(Type t, string line, string separator, MapOptions options) //seperator is explict here as we use the regular separator normally but can use the component element separator as well
+    private static EdiX12Segment MapObject(Type t, string line, string separator, MapOptions options) //separator is explicit here as we use the regular separator normally but can use the component element separator as well
     {
         List<string> values;
         if (line.Contains(separator))

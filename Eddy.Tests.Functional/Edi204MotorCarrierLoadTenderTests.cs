@@ -101,7 +101,7 @@ public class Edi204MotorCarrierLoadTenderTests
 
 
                 var newDocument = new x12Document();
-                newDocument.IsaInterchangeControlHeader = document.IsaInterchangeControlHeader;
+                newDocument.InterchangeControlHeader = document.InterchangeControlHeader;
                 newDocument.GsHeader = document.GsHeader;
                 foreach (var documentSection in documentSections) newDocument.Sections.Add(documentSection);
 
@@ -254,7 +254,7 @@ N7**ZZZZ*173*G*******TV****0100*****0*0~";
     [Fact]
     public void LoadDocument()
     {
-        var data = @"ISA*01*0000000000*01*0000000000*ZZ*ABCDEFGHIJKLMNO*ZZ*123456789012345*101127*1719*U*00400*000003438*0*P*>~
+        var data = @"ISA*01*0000000000*01*0000000000*ZZ*ABCDEFGHIJKLMNO*ZZ*123456789012345*101127*1719*U*00401*000003438*0*P*>~
 	                    GS*SM*4405197800*999999999*20111219*1747*2100*X*004010~
 	                    ST*204*0001~
 	                    B2**XXXX**9999955559**PP~
@@ -277,7 +277,7 @@ N7**ZZZZ*173*G*******TV****0100*****0*0~";
         // var edi204 = new Edi204_MotorCarrierLoadTender();
         // edi204.LoadFrom(document.Sections[0]);
         var mapper = new DomainMapper(document.Sections[0].Segments);
-        var edi204 = mapper.Map<Edi204_MotorCarrierLoadTender>();
+        var edi204 = mapper.Map< Eddy.x12.DomainModels._4010.Edi204_MotorCarrierLoadTender >();
 
         var expected = new Edi204_MotorCarrierLoadTender();
         expected.ShipmentInformation.StandardCarrierAlphaCode = "XXXX";
@@ -311,7 +311,7 @@ N7**ZZZZ*173*G*******TV****0100*****0*0~";
         expected.Stops[0].ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "CR", ReferenceIdentification = "9999669887" });
 
         //checking the stop first gives easier to read failures then when a collection compare fails
-        Assert.Equivalent(expected.Stops[0], edi204.Stops[0]);
+     //   Assert.Equivalent(expected.Stops[0], edi204.Stops[0]);
         Assert.Equivalent(expected, edi204);
     }
 }

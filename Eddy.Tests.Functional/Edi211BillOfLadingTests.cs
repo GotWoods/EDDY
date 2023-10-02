@@ -43,7 +43,7 @@ public class Edi211BillOfLadingTests
 
 
                 var newDocument = new x12Document();
-                newDocument.IsaInterchangeControlHeader = document.IsaInterchangeControlHeader;
+                newDocument.InterchangeControlHeader = document.InterchangeControlHeader;
                 newDocument.GsHeader = document.GsHeader;
                 foreach (var documentSection in documentSections) newDocument.Sections.Add(documentSection);
 

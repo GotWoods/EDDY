@@ -5,32 +5,8 @@ using Eddy.x12.Models.Elements;
 namespace Eddy.x12.Models.v3040;
 
 [Segment("GS")]
-public class GS_FunctionalGroupHeader : EdiX12Segment
+public class GS_FunctionalGroupHeader : Eddy.x12.Models.v3030.GS_FunctionalGroupHeader
 {
-	[Position(01)]
-	public string FunctionalIdentifierCode { get; set; }
-
-	[Position(02)]
-	public string ApplicationSendersCode { get; set; }
-
-	[Position(03)]
-	public string ApplicationReceiversCode { get; set; }
-
-	[Position(04)]
-	public string Date { get; set; }
-
-	[Position(05)]
-	public string Time { get; set; }
-
-	[Position(06)]
-	public int? GroupControlNumber { get; set; }
-
-	[Position(07)]
-	public string ResponsibleAgencyCode { get; set; }
-
-	[Position(08)]
-	public string VersionReleaseIndustryIdentifierCode { get; set; }
-
 	public override ValidationResult Validate()
 	{
 		var validator = new BasicValidator<GS_FunctionalGroupHeader>(this);
