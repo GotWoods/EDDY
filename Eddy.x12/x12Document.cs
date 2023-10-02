@@ -18,11 +18,9 @@ public class x12Document
 
     public string ToString(MapOptions options)
     {
-        //TODO: ISA for this document version
         var sb = new StringBuilder();
         //Should we be creating a footer array at the same time?
-        //sb.Append(this.IsaInterchangeControlHeader.ToString(options));
-       // sb.Append(GetHeader());
+        sb.Append(this.InterchangeControlHeader.ToString());
         foreach (var section in Sections)
         {
             var header = new ST_TransactionSetHeader();

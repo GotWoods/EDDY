@@ -13,15 +13,12 @@ public class Party
     public N2_AdditionalNameInformation AdditionalNameInformation { get; set; }
 
     [SectionPosition(3)]
-    public List<N3_AddressInformation> PartyLocations { get; set; } = new();
+    public List<N3_AddressInformation> PartyLocation { get; set; } = new();
 
     [SectionPosition(4)]
     public N4_GeographicLocation GeographicLocation { get; set; }
 
     [SectionPosition(5)]
-    public List<N9_ReferenceIdentification> ReferenceInformation { get; set; } = new();
-
-    [SectionPosition(6)]
-    public List<G61_Contact> Contacts{ get; set; } = new();
+    public List<G61_Contact> Contacts { get; set; } = new();
 
 }

@@ -12,57 +12,19 @@ public class Edi204_MotorCarrierLoadTender
 
     [SectionPosition(2)] public B2A_SetPurpose SetPurpose { get; set; } = new();
 
-    [SectionPosition(3)] public Y6_Authentication Authentication { get; set; }
+    [SectionPosition(3)] public List<L11_BusinessInstructionsAndReferenceNumber> BusinessInstructionsAndReferenceNumbers { get; set; } = new();
 
-    [SectionPosition(4)] public C2_BankID BankId { get; set; }
+    [SectionPosition(4)] public G62_DateTime DateTime { get; set; }
 
-    [SectionPosition(5)] public C3_Currency Currency { get; set; }
-
-    [SectionPosition(6)] public ITD_TermsOfSaleDeferredTermsOfSale TermsOfSale { get; set; }
-
-    [SectionPosition(7)] public List<N9_ReferenceIdentification> ReferenceIdentification { get; set; } = new();
-
-    [SectionPosition(8)] public List<MAN_MarksAndNumbers> MarksAndNumbers { get; set; } = new();
-
-    [SectionPosition(9)] public List<G62_DateTime> DateTime { get; set; } = new();
-
-    [SectionPosition(10)] public List<R3_RouteInformationMotor> RouteInformation { get; set; } = new();
-
-    [SectionPosition(11)] public List<H3_SpecialHandlingInstructions> SpecialHandlingInstructions { get; set; } = new();
-
-    [SectionPosition(12)] public List<H6_SpecialServices> SpecialServices { get; set; } = new();
-
-    [SectionPosition(13)] public List<LH6_HazardousCertification> HazardousCertification { get; set; } = new();
-
-    [SectionPosition(14)] public List<K1_Remarks> Remarks { get; set; } = new();
-
-    [SectionPosition(15)] public List<Party> Entities { get; set; } = new();
-    [SectionPosition(16)] public List<EquipmentDetails> EquipmentDetails { get; set; } = new();
-
-    //TODO: continue this
-
-    // [SectionPosition(4)] public G62_DateTime OrderDate { get; set; }
-    //
-    // [SectionPosition(5)] public MS3_InterlineInformation InterlineInformation { get; set; }
-    //
-    // [SectionPosition(6)] //AT5
-    // public List<BillOfLadingHandlingInfo> BillOfLadingHandlingInfo { get; set; } = new();
-    //
-    // [SectionPosition(7)] public PLD_PalletShipmentInformation PalletInformation { get; set; }
-    //
-    // [SectionPosition(8)] public List<LH6_HazardousCertification> HazardousCertifications { get; set; } = new();
-    //
-    // [SectionPosition(9)] public List<NTE_NoteSpecialInstruction> Notes { get; set; } = new();
-    //
-
-    //
-
-    //
-    //
-    // [SectionPosition(12)] //N5
-    // public List<StopOffDetails> Stops { get; set; } = new();
-    //
-    // [SectionPosition(13)] public L3_TotalWeightAndCharges Totals { get; set; }
+    [SectionPosition(5)] public MS3_InterlineInformation InterlineInformation { get; set; }
+    [SectionPosition(6)] public List<AT5_BillOfLadingHandlingRequirements> BillOfLadingHandlingRequirements { get; set; }
+    [SectionPosition(7)] public PLD_PalletInformation PalletInformation { get; set; }
+    [SectionPosition(8)] public List<LH6_HazardousCertification> HazardousCertification { get; set; } = new();
+    [SectionPosition(9)] public List<NTE_NoteSpecialInstruction> Notes { get; set; } = new();
+    [SectionPosition(10)] public List<Party> Entities { get; set; } = new();
+    [SectionPosition(11)] public List<EquipmentDetails> EquipmentDetails { get; set; } = new();
+    [SectionPosition(12)] public List<StopOffDetails> StopOffDetails { get; set; } = new();
+    [SectionPosition(13)] public L3_TotalWeightAndCharges Totals { get; set; }
 
     public Section ToDocumentSection(string transactionSetControlNumber)
     {

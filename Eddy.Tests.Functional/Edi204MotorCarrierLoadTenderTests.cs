@@ -277,7 +277,7 @@ N7**ZZZZ*173*G*******TV****0100*****0*0~";
         // var edi204 = new Edi204_MotorCarrierLoadTender();
         // edi204.LoadFrom(document.Sections[0]);
         var mapper = new DomainMapper(document.Sections[0].Segments);
-        var edi204 = mapper.Map< Eddy.x12.DomainModels._4010.Edi204_MotorCarrierLoadTender >();
+        var edi204 = mapper.Map<Eddy.x12.DomainModels._4010.Edi204_MotorCarrierLoadTender>();
 
         var expected = new Edi204_MotorCarrierLoadTender();
         expected.ShipmentInformation.StandardCarrierAlphaCode = "XXXX";
@@ -311,7 +311,7 @@ N7**ZZZZ*173*G*******TV****0100*****0*0~";
         expected.Stops[0].ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "CR", ReferenceIdentification = "9999669887" });
 
         //checking the stop first gives easier to read failures then when a collection compare fails
-     //   Assert.Equivalent(expected.Stops[0], edi204.Stops[0]);
+        Assert.Equivalent(expected.Stops[0], edi204.StopOffDetails[0]);
         Assert.Equivalent(expected, edi204);
     }
 }

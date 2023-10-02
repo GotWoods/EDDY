@@ -87,7 +87,7 @@ public class Edi204MotorCarrierLoadTenderTests
     [Fact]
     public void LoadDocument()
     {
-        var data = @"ISA*01*0000000000*01*0000000000*ZZ*ABCDEFGHIJKLMNO*ZZ*123456789012345*101127*1719*U*00400*000003438*0*P*>~
+        var data = @"ISA*01*0000000000*01*0000000000*ZZ*ABCDEFGHIJKLMNO*ZZ*123456789012345*101127*1719*U*00401*000003438*0*P*>~
 	                    GS*SM*4405197800*999999999*20111219*1747*2100*X*004010~
 	                    ST*204*0001~
 	                    B2**XXXX**9999955559**PP~
