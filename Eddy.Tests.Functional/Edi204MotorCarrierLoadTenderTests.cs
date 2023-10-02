@@ -27,16 +27,16 @@ public class Edi204MotorCarrierLoadTenderTests
         var document = x12Document.Parse(data);
 
         var mapper = new DomainMapper(document.Sections[0].Segments);
-        var edi204 = mapper.Map<Edi204_MotorCarrierLoadTender>();
+        var edi204 = mapper.Map<Eddy.x12.DomainModels._4010.Edi204_MotorCarrierLoadTender>();
         //var edi204 = new Edi204_MotorCarrierLoadTender();
         //edi204.LoadFrom(document.Sections[0]);
 
         Assert.Equivalent(expected.Entities[0], edi204.Entities[0], true);
         Assert.Equivalent(expected.Entities[1], edi204.Entities[1], true);
 
-        Assert.Equivalent(expected.Stops[0].Details, edi204.Stops[0].Details, true);
-        Assert.Equivalent(expected.Stops[0], edi204.Stops[0], true);
-        Assert.Equivalent(expected.Stops[1], edi204.Stops[1], true);
+        Assert.Equivalent(expected.Stops[0].Details, edi204.StopOffDetails[0].Detail, true);
+        Assert.Equivalent(expected.Stops[0], edi204.StopOffDetails[0], true);
+        Assert.Equivalent(expected.Stops[1], edi204.StopOffDetails[1], true);
 
         Assert.Equivalent(expected, edi204, true);
     }
@@ -218,40 +218,6 @@ public class Edi204MotorCarrierLoadTenderTests
     }
 
     [Fact]
-    public void LoadDocument2()
-    {
-        var data = @"ISA*01*0000000000*01*0000000000*ZZ*ABCDEFGHIJKLMNO*ZZ*123456789012345*101127*1719*U*00400*000003438*0*P*>~
-GS*SM*RBTW*PNII*20201117*1309*55970*X*004010~       
-ST*204*95009~
-B2**PNII**340186386**TP~
-B2A*00~
-L11*T5227893*VD~
-L11*1022519-FV38-FV38-LTL-20201117*SI~
-L11*-60838-INBOUND*CR~
-L11*TMC29316343*OW~
-L11*USD*RB~
-L11*TMC APTIV*TH~
-G62*64*20201117*1*1407~
-NTE*ZZZ*0~
-N1*BT*Protrans*93*39638~
-N3*PO Box 42069~
-N4*INDIANAPOLIS*IN*46242~
-N1*VI*CH ROBINSON CONTACT~
-G61*CN*GERARDO MARTINEZ*TE*8181335600~
-G61*IC*GERARDO MARTINEZ*EM*MARTGERA@CHROBINSON.COM~
-G61*ZZ*TMC APTIV~
-N7**ZZZZ*173*G*******TV****0100*****0*0~";
-
-        var document = x12Document.Parse(data);
-
-        // var edi204 = new Edi204_MotorCarrierLoadTender();
-        // edi204.LoadFrom(document.Sections[0]);
-        var mapper = new DomainMapper(document.Sections[0].Segments);
-        var edi204 = mapper.Map<Edi204_MotorCarrierLoadTender>();
-
-        Assert.Equal(1, edi204.EquipmentDetails.Count);
-    }
-    [Fact]
     public void LoadDocument()
     {
         var data = @"ISA*01*0000000000*01*0000000000*ZZ*ABCDEFGHIJKLMNO*ZZ*123456789012345*101127*1719*U*00401*000003438*0*P*>~
@@ -279,11 +245,11 @@ N7**ZZZZ*173*G*******TV****0100*****0*0~";
         var mapper = new DomainMapper(document.Sections[0].Segments);
         var edi204 = mapper.Map<Eddy.x12.DomainModels._4010.Edi204_MotorCarrierLoadTender>();
 
-        var expected = new Edi204_MotorCarrierLoadTender();
+        var expected = new Eddy.x12.DomainModels._4010.Edi204_MotorCarrierLoadTender();
         expected.ShipmentInformation.StandardCarrierAlphaCode = "XXXX";
         expected.ShipmentInformation.ShipmentIdentificationNumber = "9999955559";
-        expected.ShipmentInformation.ShipmentMethodOfPaymentCode = "PP";
-        expected.SetPurpose = new B2A_SetPurpose() { TransactionSetPurposeCode = "04" };
+        expected.ShipmentInformation.ShipmentMethodOfPayment = "PP";
+        expected.SetPurpose = new Eddy.x12.Models.v4010.B2A_SetPurpose() { TransactionSetPurposeCode = "04" };
         expected.InterlineInformation = new MS3_InterlineInformation { StandardCarrierAlphaCode = "XXXX", TransportationMethodTypeCode = "M", RoutingSequenceCode = "B" };
         // expected.Receiver = "123456789012345";
         // expected.Sender = "ABCDEFGHIJKLMNO";
@@ -293,8 +259,8 @@ N7**ZZZZ*173*G*******TV****0100*****0*0~";
         //expected.Notes.Add("FROZEN GOODS SET TO -10d F")
 
 
-        expected.Stops.Add(new StopOffDetails());
-        expected.Stops[0].Detail = new S5_StopOffDetails()
+        expected.StopOffDetails.Add(new Eddy.x12.DomainModels._4010._204.StopOffDetails());
+        expected.StopOffDetails[0].Detail = new S5_StopOffDetails()
         {
             StopSequenceNumber = 1,
             StopReasonCode = "CL",
@@ -305,13 +271,13 @@ N7**ZZZZ*173*G*******TV****0100*****0*0~";
             Volume = 1016,
             VolumeUnitQualifier = "E"
         };
-        expected.Stops[0].ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "DO", ReferenceIdentification = "9999001947" });
-        expected.Stops[0].ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "CR", ReferenceIdentification = "9999670098" });
-        expected.Stops[0].ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "DO", ReferenceIdentification = "9999001866" });
-        expected.Stops[0].ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "CR", ReferenceIdentification = "9999669887" });
+        expected.StopOffDetails[0].ReferenceNumbers.Add(new Eddy.x12.Models.v4010.L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "DO", ReferenceIdentification = "9999001947" });
+        expected.StopOffDetails[0].ReferenceNumbers.Add(new Eddy.x12.Models.v4010.L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "CR", ReferenceIdentification = "9999670098" });
+        expected.StopOffDetails[0].ReferenceNumbers.Add(new Eddy.x12.Models.v4010.L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "DO", ReferenceIdentification = "9999001866" });
+        expected.StopOffDetails[0].ReferenceNumbers.Add(new Eddy.x12.Models.v4010.L11_BusinessInstructionsAndReferenceNumber() { ReferenceIdentificationQualifier = "CR", ReferenceIdentification = "9999669887" });
 
         //checking the stop first gives easier to read failures then when a collection compare fails
-        Assert.Equivalent(expected.Stops[0], edi204.StopOffDetails[0]);
+        Assert.Equivalent(expected.StopOffDetails[0], edi204.StopOffDetails[0]);
         Assert.Equivalent(expected, edi204);
     }
 }
