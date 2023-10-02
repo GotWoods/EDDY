@@ -26,7 +26,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eddy.Edifact", "Eddy.Edifac
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eddy.Edifact.Tests", "Eddy.Edifact.Tests\Eddy.Edifact.Tests.csproj", "{15E5C22A-130D-4FBE-91B9-3EB0B3B24C04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eddy.X12.Tests.Passing", "Eddy.X12.Tests.Passing\Eddy.X12.Tests.Passing.csproj", "{A85389FC-D37A-40EC-B544-296D31276958}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eddy.X12.Tests.Passing", "Eddy.X12.Tests.Passing\Eddy.X12.Tests.Passing.csproj", "{A85389FC-D37A-40EC-B544-296D31276958}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "x12", "x12", "{7097943A-5EE3-4101-93A9-E09C527B5B9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eddy.x12.DomainModels.Transportation", "Eddy.x12.DomainModels.Transportation\Eddy.x12.DomainModels.Transportation.csproj", "{F515A3DD-E6EC-45C5-9D41-FC2E05784136}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,9 +78,19 @@ Global
 		{A85389FC-D37A-40EC-B544-296D31276958}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A85389FC-D37A-40EC-B544-296D31276958}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A85389FC-D37A-40EC-B544-296D31276958}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F515A3DD-E6EC-45C5-9D41-FC2E05784136}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F515A3DD-E6EC-45C5-9D41-FC2E05784136}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F515A3DD-E6EC-45C5-9D41-FC2E05784136}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F515A3DD-E6EC-45C5-9D41-FC2E05784136}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{65716958-B8F1-45D6-A4DB-593587C1BF02} = {7097943A-5EE3-4101-93A9-E09C527B5B9C}
+		{95C81A0A-7A37-4226-A225-928E20DE91B6} = {7097943A-5EE3-4101-93A9-E09C527B5B9C}
+		{A85389FC-D37A-40EC-B544-296D31276958} = {7097943A-5EE3-4101-93A9-E09C527B5B9C}
+		{F515A3DD-E6EC-45C5-9D41-FC2E05784136} = {7097943A-5EE3-4101-93A9-E09C527B5B9C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D58D1717-CF45-42BE-B5EE-1349EE67A48C}

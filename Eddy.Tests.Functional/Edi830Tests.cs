@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using Eddy.x12;
-using Eddy.x12.DomainModels._4010;
+using Eddy.x12.DomainModels.Transportation.v4010;
 using Eddy.x12.Mapping;
 using Xunit.Abstractions;
-using Edi210_MotorCarrierFreightDetailsAndInvoice = Eddy.x12.DomainModels._4010.Edi210_MotorCarrierFreightDetailsAndInvoice;
+using Edi210_MotorCarrierFreightDetailsAndInvoice = Eddy.x12.DomainModels.Transportation.v4010.Edi210_MotorCarrierFreightDetailsAndInvoice;
 
 namespace Eddy.Tests.Functional;
 

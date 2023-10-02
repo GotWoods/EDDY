@@ -1,8 +1,6 @@
 ﻿using Eddy.x12;
-using Eddy.x12.DomainModels;
-using Eddy.x12.DomainModels._8020;
-using Eddy.x12.DomainModels._8020._204;
-
+using Eddy.x12.DomainModels.Transportation.v8020._204;
+using Eddy.x12.DomainModels.Transportation.v8020;
 using Eddy.x12.Mapping;
 using Eddy.x12.Models.v8020;
 using Xunit.Abstractions;
@@ -27,7 +25,7 @@ public class Edi204MotorCarrierLoadTenderTests
         var document = x12Document.Parse(data);
 
         var mapper = new DomainMapper(document.Sections[0].Segments);
-        var edi204 = mapper.Map<Eddy.x12.DomainModels._4010.Edi204_MotorCarrierLoadTender>();
+        var edi204 = mapper.Map<Eddy.x12.DomainModels.Transportation.v4010.Edi204_MotorCarrierLoadTender>();
         //var edi204 = new Edi204_MotorCarrierLoadTender();
         //edi204.LoadFrom(document.Sections[0]);
 
@@ -66,39 +64,14 @@ public class Edi204MotorCarrierLoadTenderTests
             try
             {
                 var data = File.ReadAllText(file);
-
-
-                // var data = @"ISA*01*0000000000*01*0000000000*ZZ*ABCDEFGHIJKLMNO*ZZ*123456789012345*101127*1719*U*00400*000003438*0*P*>~
-                //              GS*SM*4405197800*999999999*20111219*1747*2100*X*004010~
-                //              ST*204*0001~
-                //              B2**XXXX**9999955559**PP~
-                //              B2A*04~
-                //              L11*NONPRIMARY*OK~
-                //              NTE**FROZEN GOODS SET TO -10d F~
-                //              N1*PF*XYZ CORP*9*9995555500000~
-                //              N3*31875 SOLON RD~
-                //              N4*SOLON*OH*44139~
-                //                 N7**NONE*********FF****5300~
-                //              S5*1*CL*27800*L*2444*CA*1016*E~
-                //              L11*9999001947*DO~
-                //              L11*9999670098*CR~
-                //              L11*9999001866*DO~
-                //              L11*9999669887*CR~".Replace("\t", "").Replace(" ", "");
-
                 var document = x12Document.Parse(data);
-
                 var documentSections = new List<Section>();
                 foreach (var section in document.Sections)
                 {
-                    // var edi204 = new Edi204_MotorCarrierLoadTender();
-                    // edi204.LoadFrom(section);
                     var mapper = new DomainMapper(section.Segments);
-                    var edi204 = mapper.Map<Edi204_MotorCarrierLoadTender>();
-                    
+                    var edi204 = mapper.Map<Eddy.x12.DomainModels.Transportation.v4010.Edi204_MotorCarrierLoadTender>();
                     documentSections.Add(edi204.ToDocumentSection(section.TransactionSetControlNumber));
-                    
                 }
-
 
                 var newDocument = new x12Document();
                 newDocument.InterchangeControlHeader = document.InterchangeControlHeader;
@@ -243,9 +216,9 @@ public class Edi204MotorCarrierLoadTenderTests
         // var edi204 = new Edi204_MotorCarrierLoadTender();
         // edi204.LoadFrom(document.Sections[0]);
         var mapper = new DomainMapper(document.Sections[0].Segments);
-        var edi204 = mapper.Map<Eddy.x12.DomainModels._4010.Edi204_MotorCarrierLoadTender>();
+        var edi204 = mapper.Map<Eddy.x12.DomainModels.Transportation.v4010.Edi204_MotorCarrierLoadTender>();
 
-        var expected = new Eddy.x12.DomainModels._4010.Edi204_MotorCarrierLoadTender();
+        var expected = new Eddy.x12.DomainModels.Transportation.v4010.Edi204_MotorCarrierLoadTender();
         expected.ShipmentInformation.StandardCarrierAlphaCode = "XXXX";
         expected.ShipmentInformation.ShipmentIdentificationNumber = "9999955559";
         expected.ShipmentInformation.ShipmentMethodOfPayment = "PP";
@@ -259,7 +232,7 @@ public class Edi204MotorCarrierLoadTenderTests
         //expected.Notes.Add("FROZEN GOODS SET TO -10d F")
 
 
-        expected.StopOffDetails.Add(new Eddy.x12.DomainModels._4010._204.StopOffDetails());
+        expected.StopOffDetails.Add(new Eddy.x12.DomainModels.Transportation.v4010._204.StopOffDetails());
         expected.StopOffDetails[0].Detail = new S5_StopOffDetails()
         {
             StopSequenceNumber = 1,

@@ -1,11 +1,12 @@
 ﻿using Eddy.x12;
-using Eddy.x12.DomainModels;
-using Eddy.x12.DomainModels._8020;
-using Eddy.x12.DomainModels._8020._204;
+using Eddy.x12.DomainModels.Transportation.v8020;
+using Eddy.x12.DomainModels.Transportation.v8020._204;
 using Eddy.x12.Mapping;
 using Eddy.x12.Models;
 using Xunit.Abstractions;
 using Eddy.x12.Models.v8020;
+using Edi204_MotorCarrierLoadTender = Eddy.x12.DomainModels.Transportation.v8020.Edi204_MotorCarrierLoadTender;
+
 namespace Eddy.Tests.x12.DomainTests;
 
 public class Edi204MotorCarrierLoadTenderTests
@@ -39,7 +40,7 @@ public class Edi204MotorCarrierLoadTenderTests
         sourceModel.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentificationQualifier = "ZZZ", ReferenceIdentification = "2nd type" });
         sourceModel.Notes.Add(new NTE_NoteSpecialInstruction() { NoteReferenceCode = "ABC", Description = "Note1" });
         sourceModel.Notes.Add(new NTE_NoteSpecialInstruction() { NoteReferenceCode = "123", Description = "Note2" });
-        sourceModel.Stops.Add(new StopOffDetails
+        sourceModel.Stops.Add(new StopOffDetails()
         {
             Detail = new S5_StopOffDetails()
             {

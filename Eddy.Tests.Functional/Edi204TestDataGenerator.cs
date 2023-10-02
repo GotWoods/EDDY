@@ -1,7 +1,6 @@
 ﻿using System.Collections;
-using Eddy.x12.DomainModels;
-using Eddy.x12.DomainModels._8020;
-using Eddy.x12.DomainModels._8020._204;
+using Eddy.x12.DomainModels.Transportation.v8020;
+using Eddy.x12.DomainModels.Transportation.v8020._204;
 using Eddy.x12.Models.v8020;
 
 namespace Eddy.Tests.Functional;

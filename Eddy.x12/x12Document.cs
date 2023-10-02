@@ -21,6 +21,8 @@ public class x12Document
         var sb = new StringBuilder();
         //Should we be creating a footer array at the same time?
         sb.Append(this.InterchangeControlHeader.ToString());
+        sb.Append(Map.SegmentToString(this.GsHeader, options));
+
         foreach (var section in Sections)
         {
             var header = new ST_TransactionSetHeader();
@@ -42,16 +44,16 @@ public class x12Document
             footer.TransactionSetControlNumber = section.TransactionSetControlNumber;
             sb.Append(Map.SegmentToString(footer, options));
         }
-        // var groupEnd = new GE_FunctionalGroupTrailer();
-        // groupEnd.NumberOfTransactionSetsIncluded = Sections.Count;
-        // groupEnd.GroupControlNumber = int.Parse(GsHeader.GroupControlNumber);
-        //sb.Append(GetFooter());
 
-//        var isaEnd = new IEA_InterchangeControlTrailer();
-        //TODO: interchange control number
-//        isaEnd.InterchangeControlNumber = this.IsaInterchangeControlHeader.InterchangeControlNumber;
-//        isaEnd.NumberOfIncludedFunctionalGroups = 1;
-//        sb.Append(Map.SegmentToString(isaEnd, options));
+        var groupEnd = new GenericFunctionalGroupTrailer();
+        groupEnd.NumberOfTransactionSetsIncluded = Sections.Count;
+        groupEnd.GroupControlNumber = int.Parse(GsHeader.GroupControlNumber);
+        sb.Append(Map.SegmentToString(groupEnd, options));
+        
+        var isaEnd = new GenericInterchangeControlTrailer();
+        isaEnd.InterchangeControlNumber = this.InterchangeControlHeader.InterchangeControlNumber.ToString().PadLeft(9, '0');
+        isaEnd.NumberOfIncludedFunctionalGroups = 1;
+        sb.Append(Map.SegmentToString(isaEnd, options));
         return sb.ToString();
     }
 
