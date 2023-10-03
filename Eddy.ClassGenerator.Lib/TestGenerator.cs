@@ -109,6 +109,7 @@ public class TestGenerator
         }
 
         sbTest.AppendLine("}");
-        return sbTest.ToString();
+        var generatedTests = sbTest.ToString();
+        return generatedTests;
     }
 }

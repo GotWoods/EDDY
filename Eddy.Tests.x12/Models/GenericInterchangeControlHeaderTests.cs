@@ -23,7 +23,7 @@ namespace Eddy.x12.Tests.Models
             Assert.Equal("211019", header.InterchangeDate);
             Assert.Equal("1011", header.InterchangeTime);
             Assert.Equal("U", header.RepetitionSeparator);
-            Assert.Equal("00401", header.InterchangeControlVersionNumberCode);
+            Assert.Equal("401", header.InterchangeControlVersionNumberCode);
             Assert.Equal(21, header.InterchangeControlNumber);
             Assert.Equal("7", header.AcknowledgmentRequestedCode);
             Assert.Equal("P", header.InterchangeUsageIndicatorCode);

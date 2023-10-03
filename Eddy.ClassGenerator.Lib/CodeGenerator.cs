@@ -116,10 +116,46 @@ public class CodeGenerator
         sb.AppendLine("\t}");
 
         sb.AppendLine("}");
-      
 
-       
-        return sb.ToString();
+        var code = sb.ToString();
+        if (parseType == ParseType.x12Element) //ugly but it works to change the composites to be 0 based instead of 1 based like the segmetns are
+        {
+            code = code
+                .Replace("[Position(01)]", "[Position(00)]")
+                .Replace("[Position(02)]", "[Position(01)]")
+                .Replace("[Position(03)]", "[Position(02)]")
+                .Replace("[Position(04)]", "[Position(03)]")
+                .Replace("[Position(05)]", "[Position(04)]")
+                .Replace("[Position(06)]", "[Position(05)]")
+                .Replace("[Position(07)]", "[Position(06)]")
+                .Replace("[Position(08)]", "[Position(07)]")
+                .Replace("[Position(09)]", "[Position(08)]")
+                .Replace("[Position(10)]", "[Position(09)]")
+                .Replace("[Position(11)]", "[Position(10)]")
+                .Replace("[Position(12)]", "[Position(11)]")
+                .Replace("[Position(13)]", "[Position(12)]")
+                .Replace("[Position(14)]", "[Position(13)]")
+                .Replace("[Position(15)]", "[Position(14)]")
+                .Replace("[Position(16)]", "[Position(15)]")
+                .Replace("[Position(17)]", "[Position(16)]")
+                .Replace("[Position(18)]", "[Position(17)]")
+                .Replace("[Position(19)]", "[Position(18)]")
+                .Replace("[Position(20)]", "[Position(19)]")
+                .Replace("[Position(21)]", "[Position(20)]")
+                .Replace("[Position(22)]", "[Position(21)]")
+                .Replace("[Position(23)]", "[Position(22)]")
+                .Replace("[Position(24)]", "[Position(23)]")
+                .Replace("[Position(25)]", "[Position(24)]")
+                .Replace("[Position(26)]", "[Position(25)]")
+                .Replace("[Position(27)]", "[Position(26)]")
+                .Replace("[Position(28)]", "[Position(27)]")
+                .Replace("[Position(29)]", "[Position(28)]")
+                .Replace("[Position(30)]", "[Position(29)]");
+
+
+        }
+
+        return code;
     }
     
     public string GenerateInheritanceCodeFrom(ParsedSegment lastCode, string currentVersion, string lastVersion, ParseType parseType)

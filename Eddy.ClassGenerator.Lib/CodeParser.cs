@@ -58,14 +58,14 @@ namespace Eddy.ClassGenerator.Lib
 
             position = position.Substring(position.IndexOf("-") + 1);
 
-            if (parseType == ParseType.x12Element) //these start at 00 but docs have them at 01
-            {
-                var intPosition = int.Parse(position) - 1;
-                if (intPosition < 10)
-                    position = "0" + intPosition;
-                else
-                    position = intPosition.ToString();
-            }
+            // if (parseType == ParseType.x12Element) //these start at 00 but docs have them at 01
+            // {
+            //     var intPosition = int.Parse(position) - 1;
+            //     if (intPosition < 10)
+            //         position = "0" + intPosition;
+            //     else
+            //         position = intPosition.ToString();
+            // }
 
             var tempName = textInfo.ToTitleCase(columns[2 + offset].InnerText);
             var name = RemoveSpecialCharacters(tempName);
