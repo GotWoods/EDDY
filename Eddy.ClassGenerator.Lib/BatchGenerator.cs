@@ -156,7 +156,13 @@ public class BatchGenerator
                 Directory.CreateDirectory(codeFolder);
 
             if (!Directory.Exists(testFolder))
-                Directory.CreateDirectory(testFolder);            
+                Directory.CreateDirectory(testFolder);
+
+            if (!Directory.Exists(codeFolder + "\\Composites"))
+                Directory.CreateDirectory(codeFolder + "\\Composites");
+
+            if (!Directory.Exists(testFolder + "\\Composites"))
+                Directory.CreateDirectory(testFolder + "\\Composites");
         }
         OnProcessUpdate?.Invoke($"Code/Test folders created");
 
@@ -182,13 +188,12 @@ public class BatchGenerator
                 {
                     codePath += "Composites\\";
                     testPath += "Composites\\";
-                    if (!Directory.Exists(codePath))
-                        Directory.CreateDirectory(codePath);
 
-                    if (!Directory.Exists(testPath))
-                        Directory.CreateDirectory(testPath);
                 }
-               
+
+                var parseType = ParseType.x12Segment;
+                if (segmentData.IsCompositeType)
+                    parseType = ParseType.x12Element;
 
                 //var fileSeachPath = codeBasePath + "\\v" + versionAndSegment.Key + "\\" + segmentData.Type + "_*.cs";
                 codePath += segmentData.Name + ".cs";
@@ -220,7 +225,7 @@ public class BatchGenerator
                     var rawPageData = await GetPage(otherSegment.Value.Url);
                     //wrap the node in an element so that there is only one root element
                     var wrappedNode = HtmlNode.CreateNode("<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + rawPageData + Environment.NewLine + "</div>");
-                    concurrentParsedResults.TryAdd(otherSegment.Key, parser.Parse(wrappedNode, ParseType.x12Segment));
+                    concurrentParsedResults.TryAdd(otherSegment.Key, parser.Parse(wrappedNode, parseType));
                 } );
                 
                 //write out the base item which would be the first item in the collection
@@ -228,9 +233,7 @@ public class BatchGenerator
 
                 var lastCode = parsedByVersion.First();
 
-                var parseType = ParseType.x12Segment;
-                if (segmentData.IsCompositeType)
-                    parseType = ParseType.x12Element;
+          
 
                 var generatedCode = codeGenerator.GenerateCode(lastCode.Value,parseType, version);
                 var generatedTest = testGenerator.GenerateTests(lastCode.Value, parseType, version);
@@ -242,25 +245,45 @@ public class BatchGenerator
 
                 OnProcessUpdate?.Invoke($"Initial code generated");
 
+                //I think there is a bug with this. It should take after the current version... not all versions
                 foreach (var parsedSegment in parsedByVersion.Skip(1)) //skip the first record as we just wrote it out above as our base item
                     if (lastCode.Value.Equals(parsedSegment.Value)) //no change between versions
                     {
-                        codePath = projectBasePath + @"Eddy.x12\Models\v" + parsedSegment.Key + "\\" + segmentData.Name + ".cs";
-                        var generatedInheritanceCode = codeGenerator.GenerateInheritanceCodeFrom(lastCode.Value, parsedSegment.Key, lastCode.Key);
+                        OnProcessUpdate?.Invoke($"generating inheritance code for {parsedSegment.Key}-{segmentData.Type}");
+                        codePath = projectBasePath + @"Eddy.x12\Models\v" + parsedSegment.Key + "\\";
+                        if (segmentData.IsCompositeType)
+                        {
+                            codePath += "Composites\\";
+                        }
+                        codePath += segmentData.Name + ".cs";
+
+
+
+                        var generatedInheritanceCode = codeGenerator.GenerateInheritanceCodeFrom(lastCode.Value, parsedSegment.Key, lastCode.Key, parseType);
                         if (!File.Exists(codePath))
                             filesToWrite.Add(codePath, generatedInheritanceCode);
                         lastCode = parsedSegment;
                         //no test required
 
-                        OnProcessUpdate?.Invoke($"Inheritance code generated for {parsedSegment.Key}-{segmentData.Type}");
+                        
                     }
                     else
                     {
                         OnProcessUpdate?.Invoke($"Code Varied. Restarting inheritance tree {parsedSegment.Key}-{segmentData.Type}");
-                        codePath = projectBasePath + @"Eddy.x12\Models\v" + parsedSegment.Key + "\\" + segmentData.Name + ".cs";
-                        testPath = testBasePath + "\\v" + parsedSegment.Key + "\\" + segmentData.Type + "Tests.cs";
-                        generatedCode = codeGenerator.GenerateCode(parsedSegment.Value, ParseType.x12Segment, parsedSegment.Key);
-                        generatedTest = testGenerator.GenerateTests(parsedSegment.Value, ParseType.x12Segment, parsedSegment.Key);
+                        codePath = projectBasePath + @"Eddy.x12\Models\v" + parsedSegment.Key + "\\";
+                        testPath = testBasePath + "\\v" + parsedSegment.Key + "\\";
+
+                        if (segmentData.IsCompositeType)
+                        {
+                            codePath += "Composites\\";
+                            testPath += "Composites\\";
+                        }
+                        codePath += segmentData.Name + ".cs";
+                        testPath += segmentData.Type + "Tests.cs";
+                        
+
+                        generatedCode = codeGenerator.GenerateCode(parsedSegment.Value,parseType, parsedSegment.Key);
+                        generatedTest = testGenerator.GenerateTests(parsedSegment.Value, parseType, parsedSegment.Key);
                         if (!File.Exists(codePath))
                             filesToWrite.Add(codePath, generatedCode);
                         if (!File.Exists(testPath))
@@ -282,6 +305,8 @@ public class BatchGenerator
                 }
             }
         }
+
+        OnProcessUpdate?.Invoke($"All Versions Completed");
     }
 
     private Dictionary<string, SegmentData> FindSegmentInAllVersions(string segmentType, Dictionary<string, List<SegmentData>> versionAndSegments)

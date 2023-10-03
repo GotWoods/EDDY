@@ -54,7 +54,8 @@ public class CodeGenerator
             sb.AppendLine($"public class {parsed.ClassName} ");
         sb.AppendLine("{");
 
-        foreach (var item in parsed.Items) sb.AppendLine(item.ToString());
+        foreach (var item in parsed.Items) 
+            sb.AppendLine(item.ToString());
 
 
         sb.AppendLine("\tpublic override ValidationResult Validate()");
@@ -121,12 +122,22 @@ public class CodeGenerator
         return sb.ToString();
     }
     
-    public string GenerateInheritanceCodeFrom(ParsedSegment lastCode, string currentVersion, string lastVersion)
+    public string GenerateInheritanceCodeFrom(ParsedSegment lastCode, string currentVersion, string lastVersion, ParseType parseType)
     {
         var sb = new StringBuilder();
-        sb.AppendLine("namespace Eddy.x12.Models.v" + currentVersion + ";");
-        sb.AppendLine();
-        sb.AppendLine($"public class {lastCode.ClassName} : Eddy.x12.Models.v{lastVersion}.{lastCode.ClassName}");
+
+        if (parseType == ParseType.ediFactSegment)
+        {
+            sb.AppendLine("namespace Eddy.x12.Models.v" + currentVersion + ";");
+            sb.AppendLine();
+            sb.AppendLine($"public class {lastCode.ClassName} : Eddy.x12.Models.v{lastVersion}.{lastCode.ClassName}");
+        }
+        else
+        {
+            sb.AppendLine("namespace Eddy.x12.Models.v" + currentVersion + ".Composites;");
+            sb.AppendLine();
+            sb.AppendLine($"public class {lastCode.ClassName} : Eddy.x12.Models.v{lastVersion}.Composites.{lastCode.ClassName}");
+        }
         sb.AppendLine("{");
         sb.AppendLine("}");
         return sb.ToString();

@@ -27,8 +27,9 @@ public class TestGenerator
         sbTest.AppendLine("using Eddy.Core.Validation;");
         sbTest.AppendLine("using Eddy.Tests.x12;");
         sbTest.AppendLine("using Eddy.x12.Mapping;");
-        sbTest.AppendLine("using Eddy.x12.Models.Elements;");
+        //sbTest.AppendLine("using Eddy.x12.Models.Elements;");
         sbTest.AppendLine("using Eddy.x12.Models.v" + namespaceVersion + ";");
+        sbTest.AppendLine("using Eddy.x12.Models.v" + namespaceVersion + ".Composites;");
         sbTest.AppendLine();
         if (parseType == ParseType.x12Element)
             sbTest.AppendLine("namespace Eddy.x12.Tests.Models.v" + namespaceVersion + ".Composites;");
@@ -46,8 +47,9 @@ public class TestGenerator
         if (parseType == ParseType.x12Element)
             sbTest.Append("\t\tvar x12Line = \"");
         else
-            sbTest.Append($"\t\tstring x12Line = \"{parsed.SegmentType}");
-        foreach (var model in parsed.Items) sbTest.Append("*" + model.TestValue);
+            sbTest.Append($"\t\tstring x12Line = \"{parsed.SegmentType}*");
+        foreach (var model in parsed.Items) sbTest.Append(model.TestValue + "*");
+        sbTest.Remove(sbTest.Length - 1, 1);
         sbTest.AppendLine("\";");
         sbTest.AppendLine("");
         sbTest.AppendLine($"\t\tvar expected = new {parsed.ClassName}()");
