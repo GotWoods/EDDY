@@ -16,6 +16,7 @@ public class SegmentData
     public string Type { get; set; } //e.g. ACD
     public string Name { get; set; } //e.g. Account Description
     public string Url { get; set; } //e.g. https://www.stedi.com/edi/x12-008020/segment/ACD
+    public bool IsCompositeType { get; set; }
 }
 
 public class BatchGenerator
@@ -78,10 +79,21 @@ public class BatchGenerator
             versionAndSegments = new Dictionary<string, List<SegmentData>>();
             foreach (var version in _x12Versions)
             {
-                var page = await GetPage("https://www.stedi.com/edi/x12-00" + version + "/segment");
-                var pageText = "<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + page + Environment.NewLine + "</div>";
-                var newNode = HtmlNode.CreateNode(pageText);
-                var segments = newNode.SelectNodes("/div/div/ul/li");
+                var segmentPage = await GetPage("https://www.stedi.com/edi/x12-00" + version + "/segment");
+                var compositeDataElementsPage = await GetPage("https://www.stedi.com/edi/x12-00" + version + "/element");
+                
+                var segmentPageText = "<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + segmentPage + Environment.NewLine + "</div>";
+                var compositePageText = "<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + compositeDataElementsPage + Environment.NewLine + "</div>";
+
+                var segmentNode = HtmlNode.CreateNode(segmentPageText);
+                var compositeNode = HtmlNode.CreateNode(compositePageText);
+
+                var segments = segmentNode.SelectNodes("/div/div/ul/li");
+                var composites = compositeNode.SelectNodes("/div/div/div/ul/li");
+                // var composite2 = compositeNode.SelectNodes("/div/ul/li");
+                // var composite3 = compositeNode.SelectNodes("/div/div/h2");
+                // var composite4 = compositeNode.SelectNodes("/div/h2");
+
                 var segmentTypesAndUris = new List<SegmentData>();
 
                 foreach (var item in segments)
@@ -91,6 +103,17 @@ public class BatchGenerator
                     data.Type = link.SelectSingleNode("h2/span").InnerText;
                     data.Name = CodeGenerator.GetCodeClassName(data.Type, link.SelectSingleNode("h2").ChildNodes[1].InnerText);
                     data.Url = "https://www.stedi.com" + link.GetAttributeValue("href", "");
+                    segmentTypesAndUris.Add(data);
+                }
+
+                foreach (var item in composites)
+                {
+                    var link = item.SelectSingleNode("a");
+                    var data = new SegmentData();
+                    data.Type = link.SelectSingleNode("h2/span").InnerText;
+                    data.Name = CodeGenerator.GetCodeClassName(data.Type, link.SelectSingleNode("h2").ChildNodes[1].InnerText);
+                    data.Url = "https://www.stedi.com" + link.GetAttributeValue("href", "");
+                    data.IsCompositeType = true;
                     segmentTypesAndUris.Add(data);
                 }
 
@@ -106,7 +129,7 @@ public class BatchGenerator
     public async Task Start(string projectBasePath, int batchCount)
     {
         //A1 only exists between 3010 and 3060
-        var versionAndSegments = await LoadSegmentsAndVersionInfo(false);
+        var versionAndSegments = await LoadSegmentsAndVersionInfo(true);
         var counter = 0;
         var codeGenerator = new CodeGenerator();
         var testGenerator = new TestGenerator();
@@ -148,9 +171,24 @@ public class BatchGenerator
                     continue;
                 }
 
+                var codePath = codeBasePath + "\\v" + versionAndSegment.Key + "\\";
+                var testPath = testBasePath + "\\v" + versionAndSegment.Key + "\\";
+
+                if (segmentData.IsCompositeType)
+                {
+                    codePath += "Composites";
+                    testPath += "Composites";
+                    if (!Directory.Exists(codePath))
+                        Directory.CreateDirectory(codePath);
+
+                    if (!Directory.Exists(testPath))
+                        Directory.CreateDirectory(testPath);
+                }
+               
+
                 //var fileSeachPath = codeBasePath + "\\v" + versionAndSegment.Key + "\\" + segmentData.Type + "_*.cs";
-                var codePath = codeBasePath + "\\v" + versionAndSegment.Key + "\\" + segmentData.Name + ".cs";
-                var testPath = testBasePath + "\\v" + versionAndSegment.Key + "\\" + segmentData.Type + "Tests.cs";
+                codePath += segmentData.Name + ".cs";
+                testPath += segmentData.Type + "Tests.cs";
 
                 //we use a wildcard here as files can change name but keep the same prefix (e.g. 3010\BMG_BeginingSegmentForText[Transaction] and 3020\BMG_BeginingSegmentForText[Message])
                 var matchingFiles = System.IO.Directory.GetFiles(codeBasePath + "\\v" + versionAndSegment.Key + "\\", segmentData.Type + "_*.cs");
@@ -177,19 +215,8 @@ public class BatchGenerator
                     concurrentParsedResults.TryAdd(otherSegment.Key, parser.Parse(wrappedNode, ParseType.x12Segment));
                 } );
                 
-                // foreach (var otherSegment in segmentsInVersions)
-                // {
-                //         OnProcessUpdate?.Invoke($"Parsing {otherSegment.Key}-{otherSegment.Value.Type}");
-                //         var rawPageData = await GetPage(otherSegment.Value.Url);
-                //         //wrap the node in an element so that there is only one root element
-                //         var wrappedNode = HtmlNode.CreateNode("<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + rawPageData + Environment.NewLine + "</div>");
-                //         parsedByVersion.TryAdd(otherSegment.Key, parser.Parse(wrappedNode, ParseType.x12Segment));
-                //     
-                // }
-
                 //write out the base item which would be the first item in the collection
                 var parsedByVersion = concurrentParsedResults.OrderBy(kvp=>kvp.Key).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-
 
                 var lastCode = parsedByVersion.First();
 
