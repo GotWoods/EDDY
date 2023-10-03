@@ -3,6 +3,7 @@ using Eddy.Tests.x12;
 using Eddy.x12.Mapping;
 using Eddy.x12.Models.Elements;
 using Eddy.x12.Models.v6040;
+using Eddy.x12.Models.v6040.Composites;
 
 namespace Eddy.x12.Tests.Models.v6040;
 

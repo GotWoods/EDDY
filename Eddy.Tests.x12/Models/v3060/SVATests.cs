@@ -3,6 +3,7 @@ using Eddy.Tests.x12;
 using Eddy.x12.Mapping;
 using Eddy.x12.Models.Elements;
 using Eddy.x12.Models.v3060;
+using Eddy.x12.Models.v3060.Composites;
 
 namespace Eddy.x12.Tests.Models.v3060;
 
@@ -32,7 +33,7 @@ public class SVATests
 		var subject = new SVA_SecurityValue();
 		//Required fields
 		subject.VersionIdentifier = "o";
-		subject.SecurityValue = new C033_SecurityTokenValue();
+		subject.SecurityValue = new C033_SecurityValue();
 		//Test Parameters
 		subject.FilterIDCode = filterIDCode;
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
@@ -46,7 +47,7 @@ public class SVATests
 		var subject = new SVA_SecurityValue();
 		//Required fields
 		subject.FilterIDCode = "528";
-		subject.SecurityValue = new C033_SecurityTokenValue();
+		subject.SecurityValue = new C033_SecurityValue();
 		//Test Parameters
 		subject.VersionIdentifier = versionIdentifier;
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
@@ -63,7 +64,7 @@ public class SVATests
 		subject.VersionIdentifier = "o";
 		//Test Parameters
 		if (securityValue != "") 
-			subject.SecurityValue = new C033_SecurityTokenValue();
+			subject.SecurityValue = new C033_SecurityValue();
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
 

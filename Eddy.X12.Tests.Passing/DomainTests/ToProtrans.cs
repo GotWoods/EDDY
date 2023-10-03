@@ -1,4 +1,4 @@
-﻿using Eddy.x12.DomainModels._8020;
+﻿using Eddy.x12.DomainModels.Transportation.v8020;
 
 namespace Eddy.Tests.x12.DomainTests;
 

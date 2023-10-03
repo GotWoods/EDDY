@@ -1,5 +1,7 @@
 ﻿using Eddy.Core;
 using Eddy.x12;
+using Eddy.x12.DomainModels.Transportation.v8020;
+using Eddy.x12.DomainModels.Transportation.v8020._204;
 using Eddy.x12.Mapping;
 using Eddy.x12.Models;
 using Eddy.x12.Models.v8020;
