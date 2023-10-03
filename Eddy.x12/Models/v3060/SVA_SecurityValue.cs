@@ -1,6 +1,6 @@
 using Eddy.Core.Attributes;
 using Eddy.Core.Validation;
-using Eddy.x12.Models.Elements;
+using Eddy.x12.Models.v3060.Composites;
 
 namespace Eddy.x12.Models.v3060;
 
@@ -14,7 +14,7 @@ public class SVA_SecurityValue : EdiX12Segment
 	public string VersionIdentifier { get; set; }
 
 	[Position(03)]
-	public C033_SecurityTokenValue SecurityValue { get; set; }
+	public C033_SecurityValue SecurityValue { get; set; }
 
 	public override ValidationResult Validate()
 	{

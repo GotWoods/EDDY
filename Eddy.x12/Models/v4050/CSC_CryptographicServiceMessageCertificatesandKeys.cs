@@ -1,6 +1,6 @@
 using Eddy.Core.Attributes;
 using Eddy.Core.Validation;
-using Eddy.x12.Models.Elements;
+using Eddy.x12.Models.v4050.Composites;
 
 namespace Eddy.x12.Models.v4050;
 
@@ -32,7 +32,7 @@ public class CSC_CryptographicServiceMessageCertificatesAndKeys : EdiX12Segment
 	public string LengthOfData { get; set; }
 
 	[Position(09)]
-	public C033_SecurityTokenValue SecurityTokenValue { get; set; }
+	public C033_SecurityValue SecurityTokenValue { get; set; }
 
 	public override ValidationResult Validate()
 	{

@@ -1,11 +1,10 @@
 ﻿using Eddy.Core;
 using Eddy.x12;
-using Eddy.x12.DomainModels._8020;
-using Eddy.x12.DomainModels._8020._204;
 using Eddy.x12.Mapping;
 using Eddy.x12.Models;
 using Eddy.x12.Models.v8020;
 using Xunit.Abstractions;
+using Eddy.x12.Models.v8020.Composites;
 
 namespace Eddy.Tests.x12.Beta;
 

@@ -1,6 +1,7 @@
 using Eddy.Core.Attributes;
 using Eddy.Core.Validation;
-using Eddy.x12.Models.Elements;
+using Eddy.x12.Models.v3070.Composites;
+
 
 namespace Eddy.x12.Models.v3070;
 
