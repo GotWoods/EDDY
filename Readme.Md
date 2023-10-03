@@ -1,6 +1,6 @@
 Formats
-x12 - Partially Supported
-EDIFACT - Partially Supported
+x12 - All element/composite types supported
+EDIFACT - started
 TradaCOMS - Not Supported (mostly used in the UK)
 UBL - Not Supported (XML format)
 VDA - Not Supported (fixed length format)
