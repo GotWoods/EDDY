@@ -40,7 +40,7 @@ public class CodeGenerator
             sb.AppendLine("using Eddy.x12.Models.Elements;");
             sb.AppendLine();
             if (parseType == ParseType.x12Element)
-                sb.AppendLine("namespace Eddy.x12.Models.Elements;");
+                sb.AppendLine("namespace Eddy.x12.Models.v" + namespaceVersion + ".Composites;");
             else
                 sb.AppendLine("namespace Eddy.x12.Models.v" + namespaceVersion + ";");
             sb.AppendLine();

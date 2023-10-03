@@ -30,7 +30,11 @@ public class TestGenerator
         sbTest.AppendLine("using Eddy.x12.Models.Elements;");
         sbTest.AppendLine("using Eddy.x12.Models.v" + namespaceVersion + ";");
         sbTest.AppendLine();
-        sbTest.AppendLine("namespace Eddy.x12.Tests.Models.v" + namespaceVersion + ";");
+        if (parseType == ParseType.x12Element)
+            sbTest.AppendLine("namespace Eddy.x12.Tests.Models.v" + namespaceVersion + ".Composites;");
+        else
+            sbTest.AppendLine("namespace Eddy.x12.Tests.Models.v" + namespaceVersion + ";");
+
         sbTest.AppendLine();
         sbTest.AppendLine($"public class {parsed.SegmentType}Tests");
         sbTest.AppendLine("{");

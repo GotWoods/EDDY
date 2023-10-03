@@ -79,6 +79,7 @@ public class BatchGenerator
             versionAndSegments = new Dictionary<string, List<SegmentData>>();
             foreach (var version in _x12Versions)
             {
+                OnProcessUpdate?.Invoke($"Getting segments/elements for version " + version);
                 var segmentPage = await GetPage("https://www.stedi.com/edi/x12-00" + version + "/segment");
                 var compositeDataElementsPage = await GetPage("https://www.stedi.com/edi/x12-00" + version + "/element");
                 
@@ -106,15 +107,18 @@ public class BatchGenerator
                     segmentTypesAndUris.Add(data);
                 }
 
-                foreach (var item in composites)
+                if (composites != null)
                 {
-                    var link = item.SelectSingleNode("a");
-                    var data = new SegmentData();
-                    data.Type = link.SelectSingleNode("h2/span").InnerText;
-                    data.Name = CodeGenerator.GetCodeClassName(data.Type, link.SelectSingleNode("h2").ChildNodes[1].InnerText);
-                    data.Url = "https://www.stedi.com" + link.GetAttributeValue("href", "");
-                    data.IsCompositeType = true;
-                    segmentTypesAndUris.Add(data);
+                    foreach (var item in composites)
+                    {
+                        var link = item.SelectSingleNode("a");
+                        var data = new SegmentData();
+                        data.Type = link.SelectSingleNode("h2/span").InnerText;
+                        data.Name = CodeGenerator.GetCodeClassName(data.Type, link.SelectSingleNode("h2").ChildNodes[1].InnerText);
+                        data.Url = "https://www.stedi.com" + link.GetAttributeValue("href", "");
+                        data.IsCompositeType = true;
+                        segmentTypesAndUris.Add(data);
+                    }
                 }
 
                 versionAndSegments.Add(version, segmentTypesAndUris);
@@ -129,7 +133,7 @@ public class BatchGenerator
     public async Task Start(string projectBasePath, int batchCount)
     {
         //A1 only exists between 3010 and 3060
-        var versionAndSegments = await LoadSegmentsAndVersionInfo(true);
+        var versionAndSegments = await LoadSegmentsAndVersionInfo(false);
         var counter = 0;
         var codeGenerator = new CodeGenerator();
         var testGenerator = new TestGenerator();
@@ -176,8 +180,8 @@ public class BatchGenerator
 
                 if (segmentData.IsCompositeType)
                 {
-                    codePath += "Composites";
-                    testPath += "Composites";
+                    codePath += "Composites\\";
+                    testPath += "Composites\\";
                     if (!Directory.Exists(codePath))
                         Directory.CreateDirectory(codePath);
 
@@ -191,7 +195,11 @@ public class BatchGenerator
                 testPath += segmentData.Type + "Tests.cs";
 
                 //we use a wildcard here as files can change name but keep the same prefix (e.g. 3010\BMG_BeginingSegmentForText[Transaction] and 3020\BMG_BeginingSegmentForText[Message])
-                var matchingFiles = System.IO.Directory.GetFiles(codeBasePath + "\\v" + versionAndSegment.Key + "\\", segmentData.Type + "_*.cs");
+                string[] matchingFiles;
+                if (segmentData.IsCompositeType)
+                    matchingFiles = System.IO.Directory.GetFiles(codeBasePath + "\\v" + versionAndSegment.Key + "\\Composites\\", segmentData.Type + "_*.cs");
+                else
+                    matchingFiles= System.IO.Directory.GetFiles(codeBasePath + "\\v" + versionAndSegment.Key + "\\", segmentData.Type + "_*.cs");
 
                 if (matchingFiles.Length > 0) //don't regen if already exists
                     continue;
@@ -220,8 +228,12 @@ public class BatchGenerator
 
                 var lastCode = parsedByVersion.First();
 
-                var generatedCode = codeGenerator.GenerateCode(lastCode.Value, ParseType.x12Segment, version);
-                var generatedTest = testGenerator.GenerateTests(lastCode.Value, ParseType.x12Segment, version);
+                var parseType = ParseType.x12Segment;
+                if (segmentData.IsCompositeType)
+                    parseType = ParseType.x12Element;
+
+                var generatedCode = codeGenerator.GenerateCode(lastCode.Value,parseType, version);
+                var generatedTest = testGenerator.GenerateTests(lastCode.Value, parseType, version);
 
                 if (!File.Exists(codePath))
                     filesToWrite.Add(codePath, generatedCode);
