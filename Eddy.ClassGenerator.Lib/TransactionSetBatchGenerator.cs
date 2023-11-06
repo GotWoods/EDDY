@@ -283,7 +283,7 @@ public class TransactionSetBatchGenerator
 
 
 
-                var generatedCode = codeGenerator.GenerateCode(lastCode.Value, version);
+                var generatedCode = codeGenerator.GenerateCode(lastCode.Value, "Eddy.x12.DomainModels.Transportation2", version);
                 var rootFile = generatedCode.First();
                 var codeBasePath = projectBasePath + "\\Eddy.x12.DomainModels.Transportation2\\v" + versionAndSegment.Key + "\\";
                 WriteIfNotExists(codeBasePath, rootFile);

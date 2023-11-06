@@ -196,7 +196,15 @@ public class TransactionSetLineModel : ITransactionSetModel
         var segmentWithoutPrefix = segment.Name.Substring(segment.Name.IndexOf("_")+1);
         var sb = new StringBuilder();
         sb.AppendLine($"\t[SectionPosition({Position})]");
-        sb.Append($"\tpublic {segment.Name} {segmentWithoutPrefix} {{ get; set; }}");
+        if (Max > 1)
+            sb.Append($"\tpublic List<{segment.Name}> {segmentWithoutPrefix} {{ get; set; }} = new();");
+        else
+        {
+            if (Required)
+                sb.Append($"\tpublic {segment.Name} {segmentWithoutPrefix} {{ get; set; }} = new();");
+            else
+                sb.Append($"\tpublic {segment.Name}? {segmentWithoutPrefix} {{ get; set; }}");
+        }
 
         return sb.ToString();
     }
@@ -212,7 +220,7 @@ public class TransactionSetLoopModel : ITransactionSetModel
     public int Min { get; set; }
 
 
-    public List<KeyValuePair<string, string>> GenerateFiles(string prefix)
+    public List<KeyValuePair<string, string>> GenerateFiles(string prefix, string @namespace)
     {
         var results = new List<KeyValuePair<string, string>>();
         var sb = new StringBuilder();
@@ -221,7 +229,10 @@ public class TransactionSetLoopModel : ITransactionSetModel
         sb.AppendLine("using Eddy.x12.Models.Elements;");
         sb.AppendLine();
         sb.AppendLine();
-        sb.AppendLine($"Public class {prefix}{Name} {{");
+
+        sb.AppendLine($"namespace {@namespace}");
+        sb.AppendLine();
+        sb.AppendLine($"public class {prefix}{Name} {{");
         foreach (var item in Children)
         {
             if (item is TransactionSetLoopModel loop)
@@ -237,7 +248,7 @@ public class TransactionSetLoopModel : ITransactionSetModel
                     newPrefix = prefix + "_" + Name + "_";
                 }
 
-                results.AddRange(loop.GenerateFiles(newPrefix));
+                results.AddRange(loop.GenerateFiles(newPrefix, @namespace));
             }
             else
             {
