@@ -17,6 +17,7 @@ public class SegmentData
     public string Name { get; set; } //e.g. Account Description
     public string Url { get; set; } //e.g. https://www.stedi.com/edi/x12-008020/segment/ACD
     public bool IsCompositeType { get; set; }
+    public string Industry { get; set; }
 }
 
 public class BatchGenerator

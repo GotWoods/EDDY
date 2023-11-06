@@ -20,7 +20,7 @@ public class CodeGenerator
         return new Model(position, position, "string", 0, 0);
     }
 
-    private static string RemoveSpecialCharacters(string input)
+    internal static string RemoveSpecialCharacters(string input)
     {
         return input.Replace("/", "").Replace(" ", "").Replace("-", "").Replace(",", "").Replace("(", "").Replace(")", "").Replace("'", "").Replace(".", "");
     }

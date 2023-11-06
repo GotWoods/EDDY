@@ -1,5 +1,14 @@
+EDDY 
+
+Eddy is a strongly typed representation of EDI document formats consisting of the following components
+
+-Eddy.Core: Contains the basic logic for parsing/attributes/validation
+-Eddy.x12: This is used to part the data elements (e.g. ISA, GS, B2, N1, etc.) across all versions of the spec
+-Eddy.x12.DomainModels.[domain]: This contains transaction sets for various formats (e.g. 204_MotorCarrierLoadTender)
+
+
 Formats
-x12 - All element/composite types supported
+x12 - All element/composite types supported. Transaction types are limited 
 EDIFACT - started
 TradaCOMS - Not Supported (mostly used in the UK)
 UBL - Not Supported (XML format)
@@ -13,32 +22,32 @@ RosettaNet - not supported
 SWIFT - not supported
 
 
-EdiParser works on multiple levels
+Parsing an x12Document
+```
+var data = File.ReadAllText(fileName);
+var document = x12Document.Parse(data);
 
-Standard Level Domain Model Based 
-These are done per standard (e.g x12 has 214 for a location update and EDIFact has DESADV for a location update)
-These will allow you to get an object that represents an EDI transaction. Internally this loads an x12Document and
-interpets/interogates the data to create a representation of an EDI Transaciton type. E.g. Edi214.Parse() will take raw text and 
-try it's best to create a 214 for you to use. 
+var date = document.InterchangeControlHeader.InterchangeDate
+var sender = document.GsHeader.ApplicationSendersCode;
 
+var segments = document.Sections[0].Segments //Sections are all data contained between a ST/SE element pair
+foreach (var segment in segments)
+{
+   if (segment.GetType() == typeof(N1_Name)) 
+   {
+		var name = ((N1_Name)segment).Name
+   }
+}
+```
 
-Document Based
-x12Document.Parse() allows you to load in an x12document and access the ISA/GS headers and the sections with the document. 
-Each ST/SE pair becomes a section with a list of "lines" that have been parsed within it. Internally this uses the line based readers to 
-parse data and assemble the document
-*Mention Grouped Reader here?
+Pasing an x12 Document into a Transaction Set
 
-Line Based
-You can use our line parsers yourself to process the data yourself. If you know the document has an MS1 line you could call MS1.Parse()
-to convert that line to an object.
-
-
-Mapping
-How do we handle where a business does any of the follwing:
-1. Supplies a unique top level type (e.g. instead of using N1 for Party Identification, they use their own code of G55 with their own rules)
-2. Uses their own qualifiers or mis-appropriates a qualifier for their own purpose (e.g. Rail shipment in the spec actually means Air shipment for this sender)
-3. Uses a field to convey additional data
-
+```
+var data = File.ReadAllText(fileName);
+var document = x12Document.Parse(data);
+var mapper = new DomainMapper(document.Sections[0].Segments);
+var edi204 = mapper.Map<Eddy.x12.DomainModels.Transportation.v4010.Edi204_MotorCarrierLoadTender>();
+```
 
 Validation
 when reading a line some basic validations can be turned on using the Options:
@@ -49,5 +58,7 @@ IfOne_ThenAllRequired: If A or B is specified, then both must be filled in. If A
 AtLeastOneOf: A or B (or both) must be specified
 OnlyOneOf: 
 
+Caching and Startup
+The first time a map operation is called. All the maps will be determined and cached
 
-Caching
+

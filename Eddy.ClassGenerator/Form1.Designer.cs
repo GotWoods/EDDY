@@ -41,6 +41,8 @@
             txtx12Element = new TextBox();
             txtBatchCount = new TextBox();
             txtLog = new TextBox();
+            textBox1 = new TextBox();
+            button1 = new Button();
             SuspendLayout();
             // 
             // txtOutput
@@ -154,19 +156,40 @@
             // txtLog
             // 
             txtLog.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            txtLog.Location = new Point(12, 183);
+            txtLog.Location = new Point(12, 213);
             txtLog.Multiline = true;
             txtLog.Name = "txtLog";
             txtLog.ReadOnly = true;
             txtLog.ScrollBars = ScrollBars.Vertical;
-            txtLog.Size = new Size(462, 835);
+            txtLog.Size = new Size(462, 805);
             txtLog.TabIndex = 16;
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(12, 183);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(43, 23);
+            textBox1.TabIndex = 18;
+            textBox1.Text = "1";
+            textBox1.TextChanged += textBox1_TextChanged;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(61, 179);
+            button1.Name = "button1";
+            button1.Size = new Size(312, 23);
+            button1.TabIndex = 17;
+            button1.Text = "Generate Next Batch of EDI x12 Transaction Sets";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1321, 1030);
+            Controls.Add(textBox1);
+            Controls.Add(button1);
             Controls.Add(txtLog);
             Controls.Add(txtBatchCount);
             Controls.Add(btnx12Element);
@@ -200,5 +223,7 @@
         private TextBox txtx12Element;
         private TextBox txtBatchCount;
         private TextBox txtLog;
+        private TextBox textBox1;
+        private Button button1;
     }
 }

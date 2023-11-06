@@ -46,7 +46,8 @@ public class EdiSectionParserFactory
         {
             var name = segmentProvider.GetCustomAttribute<Segment>().Name;
             var version = segmentProvider.Namespace.Substring(segmentProvider.Namespace.LastIndexOf(".")+2); //+2 to get rid of .v in .v8010
-            matches.Add(version + "." + name, segmentProvider);
+            if (!matches.ContainsKey(version + "." + name))
+                matches.Add(version + "." + name, segmentProvider);
         }
 
         return matches;
