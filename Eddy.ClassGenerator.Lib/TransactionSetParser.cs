@@ -192,7 +192,7 @@ public class TransactionSetLineModel : ITransactionSetModel
     public string Name { get; set; } = string.Empty;
     public int Min { get; set; }
 
-    public override string ToString()
+    public string GenerateCode(string childObjectPrefix)
     {
         //var name = Name.Substring(0, Name.IndexOf("_") - 1);
         var segment = EdiSectionParserFactory.GetSegmentFor("3010", SegmentType);
@@ -239,7 +239,7 @@ public class TransactionSetLoopModel : ITransactionSetModel
         {
             if (item is TransactionSetLoopModel loop)
             {
-                sb.AppendLine($"\t[SectionPosition({Position})] List<{loop.Name}> {loop.Name} {{get;set;}}");
+                
                 var newPrefix = "";
                 if (prefix == "")
                 {
@@ -249,12 +249,12 @@ public class TransactionSetLoopModel : ITransactionSetModel
                 {
                     newPrefix = prefix + "_" + Name + "_";
                 }
-
+                sb.AppendLine($"\t[SectionPosition({Position})] List<{newPrefix}{loop.Name}> {loop.Name} {{get;set;}}");
                 results.AddRange(loop.GenerateFiles(newPrefix, modelNamespace, @namespace));
             }
-            else
+            else if (item is TransactionSetLineModel line)
             {
-                sb.AppendLine(item.ToString());
+                sb.AppendLine(line.GenerateCode(prefix));
             }
         }
         sb.AppendLine("}");

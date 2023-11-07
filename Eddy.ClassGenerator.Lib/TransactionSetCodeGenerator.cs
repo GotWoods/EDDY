@@ -37,11 +37,10 @@ public class TransactionSetCodeGenerator
                 files.AddRange(loop.GenerateFiles("", modelNamespace, @namespace));
                 //need to write out the files
             }
-            else
+            else if (part is TransactionSetLineModel line)
             {
-                sb.AppendLine(part.ToString());
+                sb.AppendLine(line.GenerateCode(""));
             }
-
         return (sb.ToString(), files);
     }
 
