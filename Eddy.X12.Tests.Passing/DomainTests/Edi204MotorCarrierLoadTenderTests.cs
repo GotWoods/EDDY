@@ -1,11 +1,12 @@
 ﻿using Eddy.x12;
+using Eddy.x12.DomainModels.Transportation.Old.v8020;
 using Eddy.x12.DomainModels.Transportation.v8020;
 using Eddy.x12.DomainModels.Transportation.v8020._204;
 using Eddy.x12.Mapping;
 using Eddy.x12.Models;
 using Xunit.Abstractions;
 using Eddy.x12.Models.v8020;
-using Edi204_MotorCarrierLoadTender = Eddy.x12.DomainModels.Transportation.v8020.Edi204_MotorCarrierLoadTender;
+using Edi204_MotorCarrierLoadTender = Eddy.x12.DomainModels.Transportation.Old.v8020.Edi204_MotorCarrierLoadTender;
 
 namespace Eddy.Tests.x12.DomainTests;
 

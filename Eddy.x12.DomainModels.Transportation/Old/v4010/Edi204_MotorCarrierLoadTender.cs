@@ -4,7 +4,7 @@ using Eddy.x12.DomainModels.Transportation.v4010._204;
 using Eddy.x12.Mapping;
 using Eddy.x12.Models.v4010;
 
-namespace Eddy.x12.DomainModels.Transportation.v4010;
+namespace Eddy.x12.DomainModels.Transportation.Old.v4010;
 
 public class Edi204_MotorCarrierLoadTender
 {
