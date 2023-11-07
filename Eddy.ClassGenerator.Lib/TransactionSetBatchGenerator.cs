@@ -168,7 +168,7 @@ public class TransactionSetBatchGenerator
         foreach (var versionAndSegment in versionAndSegments)
         {
             //var transportation = versionAndSegment.Value.FirstOrDefault(x => x.Name == "Transportation");
-            var versionFolder = projectBasePath + "\\Eddy.x12.DomainModels.Transportation2\\v" + versionAndSegment.Key;
+            var versionFolder = projectBasePath + "\\Eddy.x12.DomainModels.Transportation\\v" + versionAndSegment.Key;
             // var testFolder = testBasePath + "\\v" + versionAndSegment.Key;
             if (!Directory.Exists(versionFolder))
                 Directory.CreateDirectory(versionFolder);
@@ -183,7 +183,7 @@ public class TransactionSetBatchGenerator
 
             foreach (var transportationTransactionSet in transportationSegments)
             {
-                var segmentFolder = projectBasePath + "\\Eddy.x12.DomainModels.Transportation2\\v" + versionAndSegment.Key + "\\" + transportationTransactionSet.Type;
+                var segmentFolder = projectBasePath + "\\Eddy.x12.DomainModels.Transportation\\v" + versionAndSegment.Key + "\\" + transportationTransactionSet.Type;
                 if (!Directory.Exists(segmentFolder))
                     Directory.CreateDirectory(segmentFolder);
 
@@ -246,7 +246,7 @@ public class TransactionSetBatchGenerator
 
                 //we use a wildcard here as files can change name but keep the same prefix (e.g. 3010\BMG_BeginingSegmentForText[Transaction] and 3020\BMG_BeginingSegmentForText[Message])
                 string[] matchingFiles;
-                matchingFiles = System.IO.Directory.GetFiles(projectBasePath + "\\Eddy.x12.DomainModels.Transportation2\\v" + versionAndSegment.Key + "\\" , segmentData.Type + "_*.cs");
+                matchingFiles = System.IO.Directory.GetFiles(projectBasePath + "\\Eddy.x12.DomainModels.Transportation\\v" + versionAndSegment.Key + "\\" , segmentData.Type + "_*.cs");
 
                 // if (segmentData.IsCompositeType)
                 //     
@@ -283,9 +283,9 @@ public class TransactionSetBatchGenerator
 
 
 
-                var generatedCode = codeGenerator.GenerateCode(lastCode.Value, "Eddy.x12.DomainModels.Transportation2", version);
+                var generatedCode = codeGenerator.GenerateCode(lastCode.Value, "Eddy.x12.DomainModels.Transportation", version);
                 var rootFile = generatedCode.First();
-                var codeBasePath = projectBasePath + "\\Eddy.x12.DomainModels.Transportation2\\v" + versionAndSegment.Key + "\\";
+                var codeBasePath = projectBasePath + "\\Eddy.x12.DomainModels.Transportation\\v" + versionAndSegment.Key + "\\";
                 WriteIfNotExists(codeBasePath, rootFile);
 
                 foreach (var keyValuePair in generatedCode.Skip(1))

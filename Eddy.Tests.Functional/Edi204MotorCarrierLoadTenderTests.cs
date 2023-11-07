@@ -4,6 +4,9 @@ using Eddy.x12.DomainModels.Transportation.v8020;
 using Eddy.x12.Mapping;
 using Eddy.x12.Models.v8020;
 using Xunit.Abstractions;
+using Eddy.x12.DomainModels.Transportation.Old.v8020;
+using Eddy.x12.DomainModels.Transportation.Old.v4010;
+using Edi204_MotorCarrierLoadTender = Eddy.x12.DomainModels.Transportation.Old.v8020.Edi204_MotorCarrierLoadTender;
 
 namespace Eddy.Tests.Functional;
 
@@ -25,7 +28,7 @@ public class Edi204MotorCarrierLoadTenderTests
         var document = x12Document.Parse(data);
 
         var mapper = new DomainMapper(document.Sections[0].Segments);
-        var edi204 = mapper.Map<Eddy.x12.DomainModels.Transportation.v4010.Edi204_MotorCarrierLoadTender>();
+        var edi204 = mapper.Map<x12.DomainModels.Transportation.Old.v4010.Edi204_MotorCarrierLoadTender>();
         //var edi204 = new Edi204_MotorCarrierLoadTender();
         //edi204.LoadFrom(document.Sections[0]);
 
@@ -69,7 +72,7 @@ public class Edi204MotorCarrierLoadTenderTests
                 foreach (var section in document.Sections)
                 {
                     var mapper = new DomainMapper(section.Segments);
-                    var edi204 = mapper.Map<Eddy.x12.DomainModels.Transportation.v4010.Edi204_MotorCarrierLoadTender>();
+                    var edi204 = mapper.Map<x12.DomainModels.Transportation.Old.v4010.Edi204_MotorCarrierLoadTender>();
                     documentSections.Add(edi204.ToDocumentSection(section.TransactionSetControlNumber));
                 }
 
@@ -216,9 +219,9 @@ public class Edi204MotorCarrierLoadTenderTests
         // var edi204 = new Edi204_MotorCarrierLoadTender();
         // edi204.LoadFrom(document.Sections[0]);
         var mapper = new DomainMapper(document.Sections[0].Segments);
-        var edi204 = mapper.Map<Eddy.x12.DomainModels.Transportation.v4010.Edi204_MotorCarrierLoadTender>();
+        var edi204 = mapper.Map<x12.DomainModels.Transportation.Old.v4010.Edi204_MotorCarrierLoadTender>();
 
-        var expected = new Eddy.x12.DomainModels.Transportation.v4010.Edi204_MotorCarrierLoadTender();
+        var expected = new Eddy.x12.DomainModels.Transportation.Old.v4010.Edi204_MotorCarrierLoadTender();
         expected.ShipmentInformation.StandardCarrierAlphaCode = "XXXX";
         expected.ShipmentInformation.ShipmentIdentificationNumber = "9999955559";
         expected.ShipmentInformation.ShipmentMethodOfPayment = "PP";

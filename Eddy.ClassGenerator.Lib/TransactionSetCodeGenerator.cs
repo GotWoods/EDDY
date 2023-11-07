@@ -25,7 +25,7 @@ public class TransactionSetCodeGenerator
         return segmentType + "_" + RemoveSpecialCharacters(friendlyName);
     }
 
-    private (string code, List<KeyValuePair<string,string>> files) GenerateSection(List<ITransactionSetModel> parts, string @namespace)
+    private (string code, List<KeyValuePair<string,string>> files) GenerateSection(List<ITransactionSetModel> parts, string modelNamespace, string @namespace)
     {
         var sb = new StringBuilder();
         List<KeyValuePair<string, string>> files = new();
@@ -34,7 +34,7 @@ public class TransactionSetCodeGenerator
             if (part is TransactionSetLoopModel loop)
             {
                 sb.AppendLine($"\t[SectionPosition({part.Position})] List<{part.Name}> {part.Name} {{get;set;}} = new();");
-                files.AddRange(loop.GenerateFiles("", @namespace));
+                files.AddRange(loop.GenerateFiles("", modelNamespace, @namespace));
                 //need to write out the files
             }
             else
@@ -47,27 +47,28 @@ public class TransactionSetCodeGenerator
 
     public List<KeyValuePair<string, string>> GenerateCode(ParsedTransactionSet parsed, string baseNamespace, string version)
     {
+        var modelNamespace = $"Eddy.x12.Models.v{version}";
+        var childFileNamespace = $"{baseNamespace}.v{version}._{parsed.SegmentType}";
+
         var sb = new StringBuilder();
+        sb.AppendLine("using System.Collections.Generic;");
         sb.AppendLine("using Eddy.Core.Attributes;");
         sb.AppendLine("using Eddy.Core.Validation;");
-        sb.AppendLine($"using Eddy.x12.Models.v{version};");
-        var childFileNamespace = $"{baseNamespace}.v{version}._{parsed.SegmentType}";
+        sb.AppendLine($"using {modelNamespace};");
         sb.AppendLine($"using {childFileNamespace};");
-        
-        sb.AppendLine();
         sb.AppendLine();
         sb.AppendLine($"namespace {baseNamespace}.v{version};");
-
+        sb.AppendLine();
         sb.AppendLine($"public class Edi{parsed.ClassName} {{");
 
-        var header = GenerateSection(parsed.Header, childFileNamespace);
-        var detail = GenerateSection(parsed.Detail, childFileNamespace);
-        var summary= GenerateSection(parsed.Summary, childFileNamespace);
+        var header = GenerateSection(parsed.Header, modelNamespace, childFileNamespace);
+        var detail = GenerateSection(parsed.Detail, modelNamespace, childFileNamespace);
+        var summary= GenerateSection(parsed.Summary, modelNamespace, childFileNamespace);
 
         sb.AppendLine(header.code);
-        sb.AppendLine("\t#Details");
+        sb.AppendLine("\t//Details");
         sb.AppendLine(detail.code);
-        sb.AppendLine("\t#Summary");
+        sb.AppendLine("\t//Summary");
         sb.AppendLine(summary.code);
 
         sb.AppendLine("}");

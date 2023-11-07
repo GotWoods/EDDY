@@ -1,4 +1,5 @@
 ﻿using Eddy.x12;
+using Eddy.x12.DomainModels.Transportation.Old.v4010;
 using Eddy.x12.DomainModels.Transportation.v4010;
 using Eddy.x12.Mapping;
 using Xunit.Abstractions;

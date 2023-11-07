@@ -27,7 +27,6 @@ public class TestGenerator
         sbTest.AppendLine("using Eddy.Core.Validation;");
         sbTest.AppendLine("using Eddy.Tests.x12;");
         sbTest.AppendLine("using Eddy.x12.Mapping;");
-        //sbTest.AppendLine("using Eddy.x12.Models.Elements;");
         sbTest.AppendLine("using Eddy.x12.Models.v" + namespaceVersion + ";");
         sbTest.AppendLine("using Eddy.x12.Models.v" + namespaceVersion + ".Composites;");
         sbTest.AppendLine();

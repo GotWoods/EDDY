@@ -61,23 +61,21 @@ public class TransactionSetParser
         if (dataRoot.Count > 2)
             result.Summary = ParseSection(dataRoot[2], "Summary");
 
-        var counter = 1;
+        var position = 1;
         foreach (var transactionSetModel in result.Header)
         {
-            transactionSetModel.Position = counter.ToString().PadLeft(3, '0');
-            counter++;
+            transactionSetModel.Position = position;
+            position++;
         }
-
         foreach (var transactionSetModel in result.Detail)
         {
-            transactionSetModel.Position = counter.ToString().PadLeft(3, '0');
-            counter++;
+            transactionSetModel.Position = position;
+            position++;
         }
-
         foreach (var transactionSetModel in result.Summary)
         {
-            transactionSetModel.Position = counter.ToString().PadLeft(3, '0');
-            counter++;
+            transactionSetModel.Position = position;
+            position++;
         }
 
         return result;
@@ -91,7 +89,6 @@ public class TransactionSetParser
         {
             var columns = row.FirstChild.ChildNodes.ToList(); //these are spans that have the data
             var m = new TransactionSetLineModel();
-            m.Position = columns[0].InnerText;
             m.SegmentType = columns[1].InnerText;
             m.Name = columns[2].InnerText;
 
@@ -124,6 +121,7 @@ public class TransactionSetParser
         }
         else if (row.FirstChild.Name == "details")
         {
+           
             var nameRow = row.FirstChild.SelectSingleNode("summary/div");
             //get the name
             var childModel = new TransactionSetLoopModel();
@@ -150,9 +148,14 @@ public class TransactionSetParser
                 childModel.Max = int.Parse(maxText);
             }
 
+            var position = 1;
             foreach (var childItems in row.FirstChild.SelectNodes("ol/li"))
             {
-                childModel.Children.Add(ParseRow(childItems));
+                
+                var transactionSetModel = ParseRow(childItems);
+                transactionSetModel.Position = position;
+                childModel.Children.Add(transactionSetModel);
+                position++;
             }
 
             return childModel;
@@ -173,7 +176,7 @@ public class TransactionSetParser
 
 public interface ITransactionSetModel
 {
-    string Position { get; set; }
+    int Position { get; set; }
     string Name { get; set; }
     public bool Required { get; set; }
     public int Max { get; set; }
@@ -181,7 +184,7 @@ public interface ITransactionSetModel
 
 public class TransactionSetLineModel : ITransactionSetModel
 {
-    public string Position { get; set; } = string.Empty;
+    public int Position { get; set; }
     public string SegmentType { get; set; } = string.Empty;
 
     public bool Required { get; set;}
@@ -212,7 +215,7 @@ public class TransactionSetLineModel : ITransactionSetModel
 
 public class TransactionSetLoopModel : ITransactionSetModel
 {
-    public string Position { get; set; } = string.Empty;
+    public int Position { get; set; } 
     public string Name { get; set; } = string.Empty;
     public List<ITransactionSetModel> Children { get; set; } = new();
     public bool Required { get; set; }
@@ -220,24 +223,23 @@ public class TransactionSetLoopModel : ITransactionSetModel
     public int Min { get; set; }
 
 
-    public List<KeyValuePair<string, string>> GenerateFiles(string prefix, string @namespace)
+    public List<KeyValuePair<string, string>> GenerateFiles(string prefix, string modelNamespace, string @namespace)
     {
         var results = new List<KeyValuePair<string, string>>();
         var sb = new StringBuilder();
+        sb.AppendLine("using System.Collections.Generic;");
         sb.AppendLine("using Eddy.Core.Attributes;");
         sb.AppendLine("using Eddy.Core.Validation;");
-        sb.AppendLine("using Eddy.x12.Models.Elements;");
+        sb.AppendLine($"using {modelNamespace};");
         sb.AppendLine();
-        sb.AppendLine();
-
-        sb.AppendLine($"namespace {@namespace}");
+        sb.AppendLine($"namespace {@namespace};");
         sb.AppendLine();
         sb.AppendLine($"public class {prefix}{Name} {{");
         foreach (var item in Children)
         {
             if (item is TransactionSetLoopModel loop)
             {
-                sb.AppendLine($"\t[UnknownPosition] List<{loop.Name}> {loop.Name} {{get;set;}}");
+                sb.AppendLine($"\t[SectionPosition({Position})] List<{loop.Name}> {loop.Name} {{get;set;}}");
                 var newPrefix = "";
                 if (prefix == "")
                 {
@@ -248,7 +250,7 @@ public class TransactionSetLoopModel : ITransactionSetModel
                     newPrefix = prefix + "_" + Name + "_";
                 }
 
-                results.AddRange(loop.GenerateFiles(newPrefix, @namespace));
+                results.AddRange(loop.GenerateFiles(newPrefix, modelNamespace, @namespace));
             }
             else
             {
@@ -261,7 +263,7 @@ public class TransactionSetLoopModel : ITransactionSetModel
         // sb.Append($"\tpublic {Name} ");
         // sb.AppendLine("{ get; set; }");
         //
-        results.Add(new KeyValuePair<string, string>(Name, sb.ToString()));
+        results.Add(new KeyValuePair<string, string>(prefix+Name, sb.ToString()));
         return results;
     }
 } 
