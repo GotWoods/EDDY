@@ -18,4 +18,8 @@
     <ProjectReference Include="..\Eddy.ClassGenerator.Lib\Eddy.ClassGenerator.Lib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="NewFolder\" />
+  </ItemGroup>
+
 </Project>

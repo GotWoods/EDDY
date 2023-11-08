@@ -25,7 +25,7 @@ public class TransactionSetCodeGenerator
         return segmentType + "_" + RemoveSpecialCharacters(friendlyName);
     }
 
-    private (string code, List<KeyValuePair<string,string>> files) GenerateSection(List<ITransactionSetModel> parts, string modelNamespace, string @namespace)
+    private (string code, List<KeyValuePair<string,string>> files) GenerateSection(List<ITransactionSetModel> parts, string modelNamespace, string @namespace, string version)
     {
         var sb = new StringBuilder();
         List<KeyValuePair<string, string>> files = new();
@@ -33,13 +33,13 @@ public class TransactionSetCodeGenerator
         foreach (var part in parts)
             if (part is TransactionSetLoopModel loop)
             {
-                sb.AppendLine($"\t[SectionPosition({part.Position})] List<{part.Name}> {part.Name} {{get;set;}} = new();");
-                files.AddRange(loop.GenerateFiles("", modelNamespace, @namespace));
+                sb.AppendLine($"\t[SectionPosition({part.Position})] public List<{part.Name}> {part.Name} {{get;set;}} = new();");
+                files.AddRange(loop.GenerateFiles("", modelNamespace, @namespace, version));
                 //need to write out the files
             }
             else if (part is TransactionSetLineModel line)
             {
-                sb.AppendLine(line.GenerateCode(""));
+                sb.AppendLine(line.GenerateCode(version, ""));
             }
         return (sb.ToString(), files);
     }
@@ -60,9 +60,9 @@ public class TransactionSetCodeGenerator
         sb.AppendLine();
         sb.AppendLine($"public class Edi{parsed.ClassName} {{");
 
-        var header = GenerateSection(parsed.Header, modelNamespace, childFileNamespace);
-        var detail = GenerateSection(parsed.Detail, modelNamespace, childFileNamespace);
-        var summary= GenerateSection(parsed.Summary, modelNamespace, childFileNamespace);
+        var header = GenerateSection(parsed.Header, modelNamespace, childFileNamespace, version);
+        var detail = GenerateSection(parsed.Detail, modelNamespace, childFileNamespace, version);
+        var summary= GenerateSection(parsed.Summary, modelNamespace, childFileNamespace, version);
 
         sb.AppendLine(header.code);
         sb.AppendLine("\t//Details");

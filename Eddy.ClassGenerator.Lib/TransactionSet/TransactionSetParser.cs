@@ -1,15 +1,9 @@
 ﻿#nullable enable
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using Eddy.x12;
 using HtmlAgilityPack;
-using PuppeteerSharp.Messaging;
 
 namespace Eddy.ClassGenerator.Lib;
 
@@ -67,15 +61,42 @@ public class TransactionSetParser
             transactionSetModel.Position = position;
             position++;
         }
+
         foreach (var transactionSetModel in result.Detail)
         {
             transactionSetModel.Position = position;
             position++;
         }
+
         foreach (var transactionSetModel in result.Summary)
         {
             transactionSetModel.Position = position;
             position++;
+        }
+
+        //fix name collisions
+        foreach (var item in result.Header)
+        {
+            var matchingNames = result.Header.Where(x => x.Name == item.Name).ToList();
+            if (matchingNames.Count() > 1)
+                for (var i = 1; i < matchingNames.Count(); i++)
+                    matchingNames[i].Name += i + 1;
+        }
+
+        foreach (var item in result.Detail)
+        {
+            var matchingNames = result.Header.Where(x => x.Name == item.Name).ToList();
+            if (matchingNames.Count() > 1)
+                for (var i = 1; i < matchingNames.Count(); i++)
+                    matchingNames[i].Name += i + 1;
+        }
+
+        foreach (var item in result.Summary)
+        {
+            var matchingNames = result.Header.Where(x => x.Name == item.Name).ToList();
+            if (matchingNames.Count() > 1)
+                for (var i = 1; i < matchingNames.Count(); i++)
+                    matchingNames[i].Name += i + 1;
         }
 
         return result;
@@ -99,12 +120,11 @@ public class TransactionSetParser
             }
 
             m.Name = m.Name.Replace("Optional-&gt;", "");
-
+            m.Name = CodeGenerator.RemoveSpecialCharacters(m.Name);
             var maxText = columns[3].InnerText;
             if (!maxText.Contains("Max"))
                 throw new Exception("Expected Max Use column to contain the word Max");
 
-            
 
             maxText = maxText.Replace("Max ", "");
             if (maxText == "&gt;1")
@@ -119,9 +139,9 @@ public class TransactionSetParser
 
             return m;
         }
-        else if (row.FirstChild.Name == "details")
+
+        if (row.FirstChild.Name == "details")
         {
-           
             var nameRow = row.FirstChild.SelectSingleNode("summary/div");
             //get the name
             var childModel = new TransactionSetLoopModel();
@@ -133,9 +153,9 @@ public class TransactionSetParser
              */
 
             var spans = nameRow.SelectNodes("span");
-            childModel.Name = spans[0].InnerText;
+            childModel.Name = CodeGenerator.RemoveSpecialCharacters(spans[0].InnerText);
             childModel.Required = spans[1].InnerText?.IndexOf("Mandatory") > 0;
-            
+
             var maxText = nameRow.SelectSingleNode("div").InnerText;
             maxText = maxText.Replace("Repeat", "").Replace("<!-- -->", "").Trim();
             if (maxText == "&gt;1")
@@ -151,154 +171,16 @@ public class TransactionSetParser
             var position = 1;
             foreach (var childItems in row.FirstChild.SelectNodes("ol/li"))
             {
-                
                 var transactionSetModel = ParseRow(childItems);
                 transactionSetModel.Position = position;
                 childModel.Children.Add(transactionSetModel);
                 position++;
             }
 
+
             return childModel;
         }
-        else
-            throw new Exception("Could not parse parent type");
+
+        throw new Exception("Could not parse parent type");
     }
-}
-
-
-/*
- * lines
- * N1 loop
- *  lines
- * lines
- *
- */
-
-public interface ITransactionSetModel
-{
-    int Position { get; set; }
-    string Name { get; set; }
-    public bool Required { get; set; }
-    public int Max { get; set; }
-}
-
-public class TransactionSetLineModel : ITransactionSetModel
-{
-    public int Position { get; set; }
-    public string SegmentType { get; set; } = string.Empty;
-
-    public bool Required { get; set;}
-    public int Max { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public int Min { get; set; }
-
-    public string GenerateCode(string childObjectPrefix)
-    {
-        //var name = Name.Substring(0, Name.IndexOf("_") - 1);
-        var segment = EdiSectionParserFactory.GetSegmentFor("3010", SegmentType);
-        var segmentWithoutPrefix = segment.Name.Substring(segment.Name.IndexOf("_")+1);
-        var sb = new StringBuilder();
-        sb.AppendLine($"\t[SectionPosition({Position})]");
-        if (Max > 1)
-            sb.Append($"\tpublic List<{segment.Name}> {segmentWithoutPrefix} {{ get; set; }} = new();");
-        else
-        {
-            if (Required)
-                sb.Append($"\tpublic {segment.Name} {segmentWithoutPrefix} {{ get; set; }} = new();");
-            else
-                sb.Append($"\tpublic {segment.Name}? {segmentWithoutPrefix} {{ get; set; }}");
-        }
-
-        return sb.ToString();
-    }
-}
-
-public class TransactionSetLoopModel : ITransactionSetModel
-{
-    public int Position { get; set; } 
-    public string Name { get; set; } = string.Empty;
-    public List<ITransactionSetModel> Children { get; set; } = new();
-    public bool Required { get; set; }
-    public int Max { get; set; }
-    public int Min { get; set; }
-
-
-    public List<KeyValuePair<string, string>> GenerateFiles(string prefix, string modelNamespace, string @namespace)
-    {
-        var results = new List<KeyValuePair<string, string>>();
-        var sb = new StringBuilder();
-        sb.AppendLine("using System.Collections.Generic;");
-        sb.AppendLine("using Eddy.Core.Attributes;");
-        sb.AppendLine("using Eddy.Core.Validation;");
-        sb.AppendLine($"using {modelNamespace};");
-        sb.AppendLine();
-        sb.AppendLine($"namespace {@namespace};");
-        sb.AppendLine();
-        sb.AppendLine($"public class {prefix}{Name} {{");
-        foreach (var item in Children)
-        {
-            if (item is TransactionSetLoopModel loop)
-            {
-                
-                var newPrefix = "";
-                if (prefix == "")
-                {
-                    newPrefix = Name + "_";
-                }
-                else
-                {
-                    newPrefix = prefix + "_" + Name + "_";
-                }
-                sb.AppendLine($"\t[SectionPosition({Position})] List<{newPrefix}{loop.Name}> {loop.Name} {{get;set;}}");
-                results.AddRange(loop.GenerateFiles(newPrefix, modelNamespace, @namespace));
-            }
-            else if (item is TransactionSetLineModel line)
-            {
-                sb.AppendLine(line.GenerateCode(prefix));
-            }
-        }
-        sb.AppendLine("}");
-
-        // sb.AppendLine($"\t[SectionPosition(??)]");
-        // sb.Append($"\tpublic {Name} ");
-        // sb.AppendLine("{ get; set; }");
-        //
-        results.Add(new KeyValuePair<string, string>(prefix+Name, sb.ToString()));
-        return results;
-    }
-} 
-
-
-
-
-public class ParsedTransactionSet
-{
-    public string SegmentType { get; set; }
-    public string ClassName { get; set; }
-
-    public List<ITransactionSetModel> Header { get; set; } = new();
-    public List<ITransactionSetModel> Detail { get; set; } = new();
-    public List<ITransactionSetModel> Summary { get; set; } = new();
-
-    // public override bool Equals(object obj)
-    // {
-    //     var compareTo = obj as ParsedSegment;
-    //     if (compareTo == null)
-    //         return false;
-    //
-    //     if (this.Items.Count != compareTo.Items.Count)
-    //         return false;
-    //
-    //     for (var index = 0; index < this.Items.Count; index++)
-    //     {
-    //         if (!this.Items[index].DeepEquals(compareTo.Items[index]))
-    //             return false;
-    //     }
-    //     return true;
-    // }
-    //
-    // public override int GetHashCode()
-    // {
-    //     return HashCode.Combine(SegmentType, ClassName, Items);
-    // }
 }

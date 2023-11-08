@@ -301,6 +301,22 @@ public class TransactionSetBatchGenerator
                 //     filesToWrite.Add(testPath, generatedTest);
                 //
                 OnProcessUpdate?.Invoke($"Initial code generated");
+
+
+                foreach (var parsedItem in parsedByVersion.Skip(1))
+                {
+                    generatedCode = codeGenerator.GenerateCode(parsedItem.Value, "Eddy.x12.DomainModels.Transportation", parsedItem.Key);
+                    rootFile = generatedCode.First();
+                    codeBasePath = projectBasePath + "\\Eddy.x12.DomainModels.Transportation\\v" + parsedItem.Key + "\\";
+                    WriteIfNotExists(codeBasePath, rootFile);
+
+                    foreach (var keyValuePair in generatedCode.Skip(1))
+                    {
+                        WriteIfNotExists(codeBasePath + segmentData.Type + "\\", keyValuePair);
+                    }
+                }
+                
+                
                 //
                 // //I think there is a bug with this. It should take after the current version... not all versions
                 // foreach (var parsedSegment in parsedByVersion.Skip(1)) //skip the first record as we just wrote it out above as our base item
