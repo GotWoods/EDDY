@@ -119,8 +119,9 @@ public class TransactionSetParser
                 m.Required = true;
                 m.Name = m.Name.Replace("Mandatory-&gt;", "");
             }
-
+            var textInfo = new CultureInfo("en-US", false).TextInfo;
             m.Name = m.Name.Replace("Optional-&gt;", "");
+            m.Name = textInfo.ToTitleCase(m.Name);
             m.Name = CodeGenerator.RemoveSpecialCharacters(m.Name);
             var maxText = columns[3].InnerText;
             if (!maxText.Contains("Max"))

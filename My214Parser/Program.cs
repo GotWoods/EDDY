@@ -2,7 +2,7 @@
 
 using System.Text;
 using Eddy.x12;
-using Eddy.x12.DomainModels.Transportation.v4010;
+using Eddy.x12.DomainModels.Transportation.v4020;
 using Eddy.x12.Mapping;
 
 var paths = new List<string>();
