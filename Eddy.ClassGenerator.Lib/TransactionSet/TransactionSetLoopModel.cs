@@ -53,7 +53,7 @@ public class TransactionSetLoopModel : ITransactionSetModel
                 {
                     newPrefix = prefix + "_" + Name + "_";
                 }
-                sb.AppendLine($"\t[SectionPosition({Position})] public List<{newPrefix}{loop.Name}> {loop.Name} {{get;set;}} = new();");
+                sb.AppendLine($"\t[SectionPosition({loop.Position})] public List<{newPrefix}{loop.Name}> {loop.Name} {{get;set;}} = new();");
                 results.AddRange(loop.GenerateFiles(newPrefix, modelNamespace, @namespace, version));
 
             }
