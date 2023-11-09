@@ -41,10 +41,10 @@ foreach (var section in document.Sections)
 {
     var mapper = new DomainMapper(section.Segments);
     var edi214 = mapper.Map<Edi214_TransportationCarrierShipmentStatusMessage>();
-    Console.WriteLine("Shipment Identification Number: " + edi214.Detail.ShipmentIdentificationNumber);
-    Console.WriteLine("Carrier SCAC: " + edi214.Detail.StandardCarrierAlphaCode);
+    Console.WriteLine("Shipment Identification Number: " + edi214.BeginningSegmentforTransportationCarrierShipmentStatusMessage.ShipmentIdentificationNumber);
+    Console.WriteLine("Carrier SCAC: " + edi214.BeginningSegmentforTransportationCarrierShipmentStatusMessage.StandardCarrierAlphaCode);
     
-    foreach (var referenceNumber in edi214.BusinessInstructionsAndReferenceNumbers)
+    foreach (var referenceNumber in edi214.BusinessInstructionsandReferenceNumber)
         switch (referenceNumber.ReferenceIdentificationQualifier)
         {
             case "BM":
@@ -88,19 +88,19 @@ foreach (var section in document.Sections)
         }
 
 
-    foreach (var detail in edi214.Details)
+    foreach (var detail in edi214.L0200)
     {
-        foreach (var status in detail.ShipmentStatusDetails)
+        foreach (var status in detail.L0205)
         {
             //missing date and time
-            Console.WriteLine("Event Happened At: " + status.Details.Date + ":" + status.Details.Time);
+            Console.WriteLine("Event Happened At: " + status.ShipmentStatusDetails.Date + ":" + status.ShipmentStatusDetails.Time);
 
             //interesting maps here https://www.stedi.com/edi/x12-008020/segment/AT7
             //status.
-            if (status.Location != null)
+            if (status.EquipmentShipmentorRealPropertyLocation != null)
             {
                 var location = new StringBuilder();
-                location.AppendLine(status.Location.CityName + ", " + status.Location.StateOrProvinceCode + ", " + status.Location.CountryCode);
+                location.AppendLine(status.EquipmentShipmentorRealPropertyLocation.CityName + ", " + status.EquipmentShipmentorRealPropertyLocation.StateOrProvinceCode + ", " + status.EquipmentShipmentorRealPropertyLocation.CountryCode);
                 Console.WriteLine("Location: " + location);
             }
             else
@@ -110,7 +110,7 @@ foreach (var section in document.Sections)
 
 
 
-            switch (status.Details.ShipmentStatusCode)
+            switch (status.ShipmentStatusDetails.ShipmentStatusCode)
             {
                 case "X6":
                     Console.WriteLine("En Route To Destination");
@@ -143,7 +143,7 @@ foreach (var section in document.Sections)
         }
 
 
-        foreach (var status in detail.BusinessInstructionsAndReferenceNumbers)
+        foreach (var status in detail.BusinessInstructionsandReferenceNumber)
             switch (status.ReferenceIdentificationQualifier)
             {
                 case "QN":
@@ -172,7 +172,7 @@ foreach (var section in document.Sections)
                     break;
             }
 
-        foreach (var shipmentWeightPackagingAndQuantityData in detail.ShipmentWeightPackagingAndQuantity)
+        foreach (var shipmentWeightPackagingAndQuantityData in detail.ShipmentWeightPackagingandQuantityData)
         {
             //https://www.stedi.com/edi/x12-008020/segment/AT8
             var weightUnit = "";

@@ -28,6 +28,18 @@ public class TransactionSetLoopModel : ITransactionSetModel
         sb.AppendLine();
         sb.AppendLine($"public class {prefix}{Name} {{");
 
+        foreach (var childItem in Children)
+        {
+            var matchingNames = Children.Where(x => x.Name == childItem.Name).ToList();
+            if (matchingNames.Count() > 1)
+            {
+                for (int i = 1; i < matchingNames.Count(); i++)
+                {
+                    matchingNames[i].Name += (i + 1);
+                }
+            }
+        }
+
         foreach (var item in Children)
         {
             if (item is TransactionSetLoopModel loop)
@@ -41,7 +53,7 @@ public class TransactionSetLoopModel : ITransactionSetModel
                 {
                     newPrefix = prefix + "_" + Name + "_";
                 }
-                sb.AppendLine($"\t[SectionPosition({Position})] public List<{newPrefix}{loop.Name}> {loop.Name} {{get;set;}}");
+                sb.AppendLine($"\t[SectionPosition({Position})] public List<{newPrefix}{loop.Name}> {loop.Name} {{get;set;}} = new();");
                 results.AddRange(loop.GenerateFiles(newPrefix, modelNamespace, @namespace, version));
 
             }

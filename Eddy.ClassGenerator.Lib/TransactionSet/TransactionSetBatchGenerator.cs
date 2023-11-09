@@ -162,6 +162,15 @@ public class TransactionSetBatchGenerator
 
         var ignored = new List<string>()
         {
+            "104",
+            "110",
+            "114",
+            "204",
+            "210",
+            "213",
+            "217",
+            "858",
+            "859",
             "997", //there is an extra div here that explains a 997
         }; //ones that are not generating very well
 

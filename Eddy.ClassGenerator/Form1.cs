@@ -129,7 +129,7 @@ public partial class Form1 : Form
         {
             var x = new TransactionSetBatchGenerator();
             x.OnProcessUpdate += GeneratorOnProcessUpdate;
-            await x.Start(projectBasePath, int.Parse(this.txtBatchCount.Text));
+            await x.Start(projectBasePath, int.Parse(this.txtTransactionSetBatchCount.Text));
         }
         finally
         {

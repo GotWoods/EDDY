@@ -41,7 +41,7 @@
             txtx12Element = new TextBox();
             txtBatchCount = new TextBox();
             txtLog = new TextBox();
-            textBox1 = new TextBox();
+            txtTransactionSetBatchCount = new TextBox();
             button1 = new Button();
             SuspendLayout();
             // 
@@ -164,14 +164,14 @@
             txtLog.Size = new Size(462, 805);
             txtLog.TabIndex = 16;
             // 
-            // textBox1
+            // txtTransactionSetBatchCount
             // 
-            textBox1.Location = new Point(12, 183);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(43, 23);
-            textBox1.TabIndex = 18;
-            textBox1.Text = "1";
-            textBox1.TextChanged += textBox1_TextChanged;
+            txtTransactionSetBatchCount.Location = new Point(12, 183);
+            txtTransactionSetBatchCount.Name = "txtTransactionSetBatchCount";
+            txtTransactionSetBatchCount.Size = new Size(43, 23);
+            txtTransactionSetBatchCount.TabIndex = 18;
+            txtTransactionSetBatchCount.Text = "1";
+            txtTransactionSetBatchCount.TextChanged += textBox1_TextChanged;
             // 
             // button1
             // 
@@ -188,7 +188,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1321, 1030);
-            Controls.Add(textBox1);
+            Controls.Add(txtTransactionSetBatchCount);
             Controls.Add(button1);
             Controls.Add(txtLog);
             Controls.Add(txtBatchCount);
@@ -223,7 +223,7 @@
         private TextBox txtx12Element;
         private TextBox txtBatchCount;
         private TextBox txtLog;
-        private TextBox textBox1;
+        private TextBox txtTransactionSetBatchCount;
         private Button button1;
     }
 }

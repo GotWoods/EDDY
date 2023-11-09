@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using HtmlAgilityPack;
+using PuppeteerSharp;
 
 namespace Eddy.ClassGenerator.Lib;
 
@@ -151,9 +152,13 @@ public class TransactionSetParser
                 /div/span[2] contains the Mandatory/Optional
                 /div/div contains the repeat
              */
+            var textInfo = new CultureInfo("en-US", false).TextInfo;
 
             var spans = nameRow.SelectNodes("span");
-            childModel.Name = CodeGenerator.RemoveSpecialCharacters(spans[0].InnerText);
+            childModel.Name = spans[0].InnerText;
+            childModel.Name = textInfo.ToTitleCase(childModel.Name);
+            childModel.Name = CodeGenerator.RemoveSpecialCharacters(childModel.Name);
+            childModel.Name = "L" + childModel.Name; //numeric names
             childModel.Required = spans[1].InnerText?.IndexOf("Mandatory") > 0;
 
             var maxText = nameRow.SelectSingleNode("div").InnerText;

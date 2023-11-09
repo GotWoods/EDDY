@@ -20,15 +20,15 @@ public class TransactionSetLineModel : ITransactionSetModel
         var segment = EdiSectionParserFactory.GetSegmentFor(version, SegmentType);
         //var segmentWithoutPrefix = segment.Name.Substring(segment.Name.IndexOf("_")+1);
         var sb = new StringBuilder();
-        sb.AppendLine($"\t[SectionPosition({Position})]");
+        sb.Append($"\t[SectionPosition({Position})] ");
         if (Max > 1)
-            sb.Append($"\tpublic List<{segment.Name}> {Name} {{ get; set; }} = new();");
+            sb.Append($"public List<{segment.Name}> {Name} {{ get; set; }} = new();");
         else
         {
             if (Required)
-                sb.Append($"\tpublic {segment.Name} {Name} {{ get; set; }} = new();");
+                sb.Append($"public {segment.Name} {Name} {{ get; set; }} = new();");
             else
-                sb.Append($"\tpublic {segment.Name}? {Name} {{ get; set; }}");
+                sb.Append($"public {segment.Name}? {Name} {{ get; set; }}");
         }
 
         return sb.ToString();
