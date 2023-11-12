@@ -28,9 +28,9 @@ jobs:
 
     - name: Set Package Version
       run: |
-        $VERSION_SUFFIX = "beta$(Get-Date -UFormat "%Y%m%d%H%M%S")"
+        VERSION_SUFFIX="beta$(date +%Y%m%d%H%M%S)"
         echo "VERSION_SUFFIX=$VERSION_SUFFIX" >> $GITHUB_ENV
-    
+
     - name: Pack
       run: dotnet pack Eddy.Core/Eddy.Core.csproj --no-build -c Release -o out /p:VersionSuffix=${{ env.VERSION_SUFFIX }}
 
