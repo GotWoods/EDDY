@@ -1,5 +1,4 @@
 ﻿using Eddy.x12;
-using Eddy.x12.DomainModels.Transportation.Old.v4010;
 using Eddy.x12.DomainModels.Transportation.v4010;
 using Eddy.x12.Mapping;
 using Xunit.Abstractions;
@@ -90,7 +89,7 @@ public class Edi214TransportationCarrierShipmentStatusMessage
                     var mapper = new DomainMapper(section.Segments);
                     var edi = mapper.Map<Edi214_TransportationCarrierShipmentStatusMessage>();
 
-                    documentSections.Add(edi.ToDocumentSection(section.TransactionSetControlNumber));
+                    //documentSections.Add(edi.ToDocumentSection(section.TransactionSetControlNumber));
                 }
 
 

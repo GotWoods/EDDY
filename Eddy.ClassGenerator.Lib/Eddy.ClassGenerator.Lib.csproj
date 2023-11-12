@@ -6,12 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Eddy.Core" Version="0.0.1-beta" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
     <PackageReference Include="PuppeteerSharp" Version="9.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Eddy.Core\Eddy.Core.csproj" />
     <ProjectReference Include="..\Eddy.x12\Eddy.x12.csproj" />
   </ItemGroup>
 
