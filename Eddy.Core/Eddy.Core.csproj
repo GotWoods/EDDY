@@ -3,6 +3,16 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
+    
+    <PackageId>Eddy.Core</PackageId>
+    <Version>0.0.1-beta</Version>
+    <Title>EDDY EDI Parser Core Funcationality</Title>
+    <Authors>GotWoods</Authors>
+    <Description>Core EDI processing of validation and attributes 
+
+Used with Eddy.X12 / Eddy.EdiFact projects</Description>
+    <PackageTags>EDI;x12;EdiFact</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>

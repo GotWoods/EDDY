@@ -1,198 +1,266 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System.Text;
+using System.Diagnostics;
 using Eddy.x12;
-using Eddy.x12.DomainModels.Transportation.v4020;
-using Eddy.x12.Mapping;
+using My214Parser;
+using My214Parser.Converters;
 
-var paths = new List<string>();
+
+//G:\EdiSamples\CHRobinson\214\OUT\2023\02\RBTW_214_202302010000461241.txt
+//is a good example of a record that has one 214 message but two transactions in that 214 (an Arrival and a CompletedUnloading at the same stop)
+
+//G:\EdiSamples\Holland\214\IN\2023\02\USFC214_11001.edi
+//has both. It has 2 214 segments both with 2 transactions each (the transactions happen at different times, this may be a milkrun)
+
+//Questions for UI
+//Upload a simple file (we do maps off that)
+//Upload a file that has more than one transaction update in it (if you have it)
+//Upload a file that has more than one transport update in it (if you have it)
+//Upload a file with sensor readings
+//Upload a file with stops in it
+//Any other custom values?
+
+
+var paths = new List<string>
 {
-//var path = "G:\\EdiSamples\\AAACooper\\214\\IN\\2023\\02";
-
-//var path = "G:\\EdiSamples\\CardinalLogisticsManagement\\214\\IN\\2023\\03";
-//var path = "G:\\EdiSamples\\CHRobinson\\214\\IN\\2023\\03";
-//var path = "G:\\EdiSamples\\CHRobinson\\214\\OUT\\2023\\02";
-//var path = "G:\\EdiSamples\\FedEx\\214\\IN\\2023\\02";
-//NOT WORKING var path = "G:\\EdiSamples\\FreightSOL\\214\\IN";
-//var path = "G:\\EdiSamples\\Holland\\214\\IN\\2023\\02";
-//var path = "G:\\EdiSamples\\KLGExpress\\214\\IN\\2023\\02";
-//var path = "G:\\EdiSamples\\knight\\214\\IN\\2023\\02";
-//var path = "G:\\EdiSamples\\LandstarAgent\\214\\IN\\2023\\02";
-//var path = "G:\\EdiSamples\\LIVEnterprises\\214\\IN\\2023\\02";
-//var path = "G:\\EdiSamples\\Load\\214\\IN\\2023\\02"; //this has one estimated arrival entry
-//var path = "G:\\EdiSamples\\Magellan\\214\\IN";
-//var path = "G:\\EdiSamples\\Magna\\214\\OUT\\2023\\02";
-//var path = "G:\\EdiSamples\\pyle\\214\\2023\\02";
-//var path = "G:\\EdiSamples\\R2Logistics\\214\\IN\\2023\\02";
-}
-
-//var path = "G:\\EdiSamples\\PureTransportation\\214\\IN\\2023\\02";
-var path = "G:\\EdiSamples\\Magellan\\214\\IN";
-foreach (var filePath in Directory.GetFiles(path))
-{
-//var filePath = "C:\\CMAC_BUG_L1851696_1.txt";
-Console.WriteLine("Parsing file " + filePath);
-var data = File.ReadAllText(filePath);
-var document = x12Document.Parse(data);
-
-//if (document.Sections.Count > 1) throw new Exception("More than one in a file!");
-
-foreach (var section in document.Sections)
-{
-    var mapper = new DomainMapper(section.Segments);
-    var edi214 = mapper.Map<Edi214_TransportationCarrierShipmentStatusMessage>();
-    Console.WriteLine("Shipment Identification Number: " + edi214.BeginningSegmentforTransportationCarrierShipmentStatusMessage.ShipmentIdentificationNumber);
-    Console.WriteLine("Carrier SCAC: " + edi214.BeginningSegmentforTransportationCarrierShipmentStatusMessage.StandardCarrierAlphaCode);
+    //"G:\\EdiSamples\\AAACooper\\214\\IN\\2023\\02",
+    "G:\\EdiSamples\\CardinalLogisticsManagement\\214\\IN\\2023\\03",
+    // "G:\\EdiSamples\\CHRobinson\\214\\IN\\2023\\03", //these can have ZZ identifiers
+    // "G:\\EdiSamples\\CHRobinson\\214\\OUT\\2023\\02",
+    // "G:\\EdiSamples\\FedEx\\214\\IN\\2023\\02",
     
-    foreach (var referenceNumber in edi214.BusinessInstructionsandReferenceNumber)
-        switch (referenceNumber.ReferenceIdentificationQualifier)
-        {
-            case "BM":
-                Console.WriteLine("Bill Of Lading: " + referenceNumber.ReferenceIdentification);
-                break;
-            case "SI":
-                Console.WriteLine("Shipper Identifier: " + referenceNumber.ReferenceIdentification);
-                break;
-            case "CN":
-                Console.WriteLine("Carrier Pro: " + referenceNumber.ReferenceIdentification);
-                break;
-            case "CO":
-                Console.WriteLine("Customer Order Number: " + referenceNumber.ReferenceIdentification);
-                break;
-            case "CR":
-                Console.WriteLine("Customer Reference Number: " + referenceNumber.ReferenceIdentification);
-                break;
-            case "11":
-                Console.WriteLine("Account Number: " + referenceNumber.ReferenceIdentification);
-                break;
-            case "PO":
-                Console.WriteLine("Purchase Order: " + referenceNumber.ReferenceIdentification);
-                break;
-            case "BN":
-                Console.WriteLine("Booking Number: " + referenceNumber.ReferenceIdentification);
-                break;
-            case "OQ":
-                Console.WriteLine("Order Number: " + referenceNumber.ReferenceIdentification);
-                break;
-            case "TN":
-                Console.WriteLine("Transaction Reference Number: " + referenceNumber.ReferenceIdentification);
-                break;
-            case "ZZ":
-                Console.WriteLine("Custom Identifier: " + referenceNumber.ReferenceIdentification);
-                //ZZ*75|F
-                //ZZ*TEMP:43:Unit:C
-                break;
-            default:
-                Console.WriteLine("Unknown Reference Identifier: " + referenceNumber.ReferenceIdentificationQualifier);
-                break;
-        }
+    // "G:\\EdiSamples\\Holland\\214\\IN\\2023\\02",
+    // "G:\\EdiSamples\\KLGExpress\\214\\IN\\2023\\02",
+    // "G:\\EdiSamples\\knight\\214\\IN\\2023\\02",
+    // "G:\\EdiSamples\\LandstarAgent\\214\\IN\\2023\\02",
+    // "G:\\EdiSamples\\LIVEnterprises\\214\\IN\\2023\\02",
+   //  "G:\\EdiSamples\\Load\\214\\IN\\2023\\02", //this has one estimated arrivals in it
+    // "G:\\EdiSamples\\Magellan\\214\\IN",
+    // "G:\\EdiSamples\\Magna\\214\\OUT\\2023\\02",
+    // "G:\\EdiSamples\\pyle\\214\\2023\\02",
+    //"G:\\EdiSamples\\R2Logistics\\214\\IN\\2023\\02"
 
+    //"G:\\EdiSamples\\FreightSOL\\214\\IN";
+};
 
-    foreach (var detail in edi214.L0200)
+var sw = new Stopwatch();
+var fileCount = 0;
+sw.Start();
+
+var mapper = new Mapper();
+
+foreach (var folder in paths)
+foreach (var filePath in Directory.GetFiles(folder))
+{
+    fileCount++;
+    //var filePath = "C:\\CMAC_BUG_L1851696_1.txt";
+    //Console.WriteLine("Parsing file " + filePath);
+    var data = File.ReadAllText(filePath);
+    var document = x12Document.Parse(data);
+
+    //Console.WriteLine(filePath);
+    var converter = new v4010Converter();
+    foreach (var section in document.Sections)
     {
-        foreach (var status in detail.L0205)
+        var result = converter.Convert(section.Segments);
+
+        foreach (var item in result.Transactions)
+            // foreach (var customVariables in item.ReferenceNumbers.Where(x => x.Key == "ZZ").Select(x => x.Value))
+            //     Console.WriteLine("Custom: " + customVariables);
+
+            result.From = document.InterchangeControlHeader.InterchangeSenderID.Trim();
+        result.To = document.InterchangeControlHeader.InterchangeReceiverID.Trim();
+
+        var mapped = mapper.Map(result);
+
+
+        foreach (var mapped214 in mapped)
         {
-            //missing date and time
-            Console.WriteLine("Event Happened At: " + status.ShipmentStatusDetails.Date + ":" + status.ShipmentStatusDetails.Time);
+            Console.WriteLine("TransportId: \t" + mapped214.TransportId);
+            if (!string.IsNullOrEmpty(mapped214.BillOfLading)) Console.WriteLine("BOL:\t\t" + mapped214.BillOfLading);
+            if (!string.IsNullOrEmpty(mapped214.CarrierPro)) Console.WriteLine("Carrier Pro:\t" + mapped214.CarrierPro);
+            if (!string.IsNullOrEmpty(mapped214.PurchaseOrderNumber)) Console.WriteLine("PO:\t\t" + mapped214.PurchaseOrderNumber);
 
-            //interesting maps here https://www.stedi.com/edi/x12-008020/segment/AT7
-            //status.
-            if (status.EquipmentShipmentorRealPropertyLocation != null)
+            foreach (var update in mapped214.Updates)
             {
-                var location = new StringBuilder();
-                location.AppendLine(status.EquipmentShipmentorRealPropertyLocation.CityName + ", " + status.EquipmentShipmentorRealPropertyLocation.StateOrProvinceCode + ", " + status.EquipmentShipmentorRealPropertyLocation.CountryCode);
-                Console.WriteLine("Location: " + location);
-            }
-            else
-            {
-                Console.WriteLine("Location not specified");
-            }
+                Console.WriteLine("\tEvent Happened At: " + update.EventOccurredOn);
+                if (!string.IsNullOrEmpty(update.StopNumber)) Console.WriteLine("\tStop: " + update.StopNumber);
+                if (update.Location != null)
+                    Console.WriteLine("\tLocation: " + update.Location.City + ", " + update.Location.StateProvinceCode + ", " + update.Location.CountryCode);
+                else
+                    Console.WriteLine("\tLocation not specified");
 
+                if (!string.IsNullOrEmpty(update.TrailerNumber)) Console.WriteLine("\tTrailer: " + update.TrailerNumber);
+                Console.Write("\tStatus: ");
+                switch (update.StatusCode)
+                {
+                    case "X3":
+                        Console.WriteLine("Arrived at Pick-up Location");
+                        break;
+                    case "AF":
+                        Console.WriteLine("Carrier Departed Pick-up Location with Shipment");
+                        break;
+                    case "X6":
+                        Console.WriteLine("En Route To Destination");
+                        break;
 
+                    case "X1":
+                        Console.WriteLine("Arrived at Delivery Location");
+                        break;
 
-            switch (status.ShipmentStatusDetails.ShipmentStatusCode)
-            {
-                case "X6":
-                    Console.WriteLine("En Route To Destination");
-                    break;
-                case "D1":
-                    Console.WriteLine("Completed Unloading at Delivery Location");
-                    break;
-                case "AF":
-                    Console.WriteLine("Carrier Departed Pick-up Location with Shipment");
-                    break;
-                case "AP":
-                    Console.WriteLine("Delivery Not Completed");
-                    break;
-                case "X1":
-                    Console.WriteLine("Arrived at Delivery Location");
-                    break;
-                case "X3":
-                    Console.WriteLine("Arrived at Pick-up Location");
-                    break;
-                case "AG":
-                    Console.WriteLine("Estimated Delivery");
-                    break;
-                case null:
-                    Console.WriteLine("Unkown");
-                    break;
-                default:
-                    Console.WriteLine("Unkown");
-                    break;
+                    case "D1":
+                        Console.WriteLine("Completed Unloading at Delivery Location");
+                        break;
+
+                    case "AP":
+                        Console.WriteLine("Delivery Not Completed");
+                        break;
+                    case "AG":
+                        Console.WriteLine("Estimated Delivery");
+                        break;
+                    case null:
+                        Console.WriteLine("Unkown");
+                        break;
+                    default:
+                        Console.WriteLine("Unkown");
+                        break;
+                }
             }
         }
 
+        //Console.WriteLine("Shipment Reference Identification Number: " + result.ReferenceIdentification); //Carrier # or CarrierPro
+        //Console.WriteLine("Shipment Identification Number: " + result.ShipmentId); //This will sometimes be the transportId but could be the BOL#/CarrierPro/etc.
 
-        foreach (var status in detail.BusinessInstructionsandReferenceNumber)
-            switch (status.ReferenceIdentificationQualifier)
-            {
-                case "QN":
-                    Console.WriteLine("Stop #: " + status.ReferenceIdentification);
-                    break;
-                case "BM":
-                    Console.WriteLine("Detail Bill of Lading Number: " + status.ReferenceIdentification);
-                    break;
-                case "WH":
-                    Console.WriteLine("Detail Master Reference (Link) Number: " + status.ReferenceIdentification);
-                    break;
-                case "P8":
-                    Console.WriteLine("Detail Pickup Reference Number: " + status.ReferenceIdentification);
-                    break;
-                case "PO":
-                    Console.WriteLine("Detail Purchase Order Number: " + status.ReferenceIdentification);
-                    break;
-                case "SI":
-                    Console.WriteLine("Detail Shipper Identifying Number (SID): " + status.ReferenceIdentification);
-                    break;
-                case "BN":
-                    Console.WriteLine("Detail Booking Number: " + status.ReferenceIdentification);
-                    break;
-                default:
-                    Console.WriteLine("Unknown Detail Reference Identifier: " + status.ReferenceIdentificationQualifier);
-                    break;
-            }
-
-        foreach (var shipmentWeightPackagingAndQuantityData in detail.ShipmentWeightPackagingandQuantityData)
+        //Need a map to determine where to find out TransportationId
+        //
+        foreach (var transaction in result.Transactions)
         {
-            //https://www.stedi.com/edi/x12-008020/segment/AT8
-            var weightUnit = "";
-            switch (shipmentWeightPackagingAndQuantityData.WeightUnitCode)
-            {
-                case "L":
-                    weightUnit = "Lbs";
-                    break;
-                case "K":
-                    weightUnit = "Kg";
-                    break;
-            }
+            //     foreach (var pair in transaction.ReferenceNumbers)
+            //         switch (pair.Key)
+            //         {
+            //             case "QN":
+            //                 Console.WriteLine("Stop #: " + pair.Value);
+            //                 break;
+            //             case "BM":
+            //                 Console.WriteLine("Detail Bill of Lading Number: " + pair.Value);
+            //                 break;
+            //             case "WH":
+            //                 Console.WriteLine("Detail Master Reference (Link) Number: " + pair.Value);
+            //                 break;
+            //             case "P8":
+            //                 Console.WriteLine("Detail Pickup Reference Number: " + pair.Value);
+            //                 break;
+            //             case "PO":
+            //                 Console.WriteLine("Detail Purchase Order Number: " + pair.Value);
+            //                 break;
+            //             case "SI":
+            //                 Console.WriteLine("Detail Shipper Identifying Number (SID): " + pair.Value);
+            //                 break;
+            //             case "BN":
+            //                 Console.WriteLine("Detail Booking Number: " + pair.Value);
+            //                 break;
+            //             case "CN":
+            //                 Console.WriteLine("Carrier Pro: " + pair.Value);
+            //                 break;
+            //             case "CO":
+            //                 Console.WriteLine("Customer Order Number: " + pair.Value);
+            //                 break;
+            //             case "CR":
+            //                 Console.WriteLine("Customer Reference Number: " + pair.Value);
+            //                 break;
+            //             case "11":
+            //                 Console.WriteLine("Account Number: " + pair.Value);
+            //                 break;
+            //             case "OQ":
+            //                 Console.WriteLine("Order Number: " + pair.Value);
+            //                 break;
+            //             case "TN":
+            //                 Console.WriteLine("Transaction Reference Number: " + pair.Value);
+            //                 break;
+            //             case "ZZ":
+            //                 Console.WriteLine("Custom Identifier: " + pair.Value);
+            //                 //ZZ*75|F
+            //                 //ZZ*TEMP:43:Unit:C
+            //                 break;
+            //             default:
+            //                 Console.WriteLine("Unknown Detail Reference Identifier: " + pair.Value);
+            //                 break;
+            //         }
 
-            Console.WriteLine("Weight: " + shipmentWeightPackagingAndQuantityData.Weight + weightUnit);
-            Console.WriteLine("Quantity: " + shipmentWeightPackagingAndQuantityData.LadingQuantity);
+
+            // foreach (var update in transaction.Updates)
+            // {
+            //     //missing date and time
+            //     Console.WriteLine("Event Happened At: " + update.EventDate);
+            //
+            //     //interesting maps here https://www.stedi.com/edi/x12-008020/segment/AT7
+            //     //status.
+            //     if (update.Location != null)
+            //         Console.WriteLine("Location: " + update.Location.City + ", " + update.Location.StateProvinceCode + ", " + update.Location.CountryCode);
+            //     else
+            //         Console.WriteLine("Location not specified");
+            //
+            //
+            //     switch (update.StatusCode)
+            //     {
+            //         case "X3":
+            //             Console.WriteLine("Arrived at Pick-up Location");
+            //             break;
+            //         case "AF":
+            //             Console.WriteLine("Carrier Departed Pick-up Location with Shipment");
+            //             break;
+            //         case "X6":
+            //             Console.WriteLine("En Route To Destination");
+            //             break;
+            //
+            //         case "X1":
+            //             Console.WriteLine("Arrived at Delivery Location");
+            //             break;
+            //
+            //         case "D1":
+            //             Console.WriteLine("Completed Unloading at Delivery Location");
+            //             break;
+            //         
+            //         case "AP":
+            //             Console.WriteLine("Delivery Not Completed");
+            //             break;
+            //         case "AG":
+            //             Console.WriteLine("Estimated Delivery");
+            //             break;
+            //         case null:
+            //             Console.WriteLine("Unkown");
+            //             break;
+            //         default:
+            //             Console.WriteLine("Unkown");
+            //             break;
+            //     }
         }
 
+
+        // foreach (var shipmentWeightPackagingAndQuantityData in transaction.L0250)
+        // {
+        //     //https://www.stedi.com/edi/x12-008020/segment/AT8
+        //     var weightUnit = "";
+        //     switch (shipmentWeightPackagingAndQuantityData.ShipmentPurchaseOrderDetail.WeightUnitCode)
+        //     {
+        //         case "L":
+        //             weightUnit = "Lbs";
+        //             break;
+        //         case "K":
+        //             weightUnit = "Kg";
+        //             break;
+        //     }
+        //     Console.WriteLine("Weight: " + shipmentWeightPackagingAndQuantityData.ShipmentPurchaseOrderDetail.Weight + weightUnit);
+        //     Console.WriteLine("Quantity: " + shipmentWeightPackagingAndQuantityData.ShipmentPurchaseOrderDetail.Quantity);
+        // }
+
+        //MAP Here
 
         Console.WriteLine();
         Console.WriteLine();
     }
 }
-}
+
+
+sw.Stop();
+Console.WriteLine($"Finished processing {fileCount} files in {sw.ElapsedMilliseconds}ms ({Math.Round(sw.ElapsedMilliseconds / (double)fileCount, 2)}ms/file)");
