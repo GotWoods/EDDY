@@ -1,4 +1,4 @@
-name: Publish NuGet Package
+name: Publish Eddy.x12 NuGet Package
 
 on:
   push:
