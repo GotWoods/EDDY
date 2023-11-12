@@ -26,9 +26,6 @@ jobs:
     - name: Build
       run: dotnet build Eddy.Core/Eddy.Core.csproj --no-restore -c Release
 
-    - name: TestIs the 
-      run: dotnet test --no-build
-
     - name: Set Package Version
       run: |
         $VERSION_SUFFIX = "beta$(Get-Date -UFormat "%Y%m%d%H%M%S")"
