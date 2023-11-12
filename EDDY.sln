@@ -7,6 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eddy.Tests", "Eddy.Tests\Ed
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F5935B87-E31F-4429-923B-2224D47DD9AC}"
 	ProjectSection(SolutionItems) = preProject
+		.github\workflows\nuget-publish.yml = .github\workflows\nuget-publish.yml
 		Readme.Md = Readme.Md
 	EndProjectSection
 EndProject
@@ -34,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eddy.x12.DomainModels.Trans
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EdiFact", "EdiFact", "{E5B3DD37-CC52-4DA8-900B-06233F82D45A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "My214Parser", "My214Parser\My214Parser.csproj", "{B9E9434F-9627-4685-9C44-3139F346F2F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "My214Parser", "My214Parser\My214Parser.csproj", "{B9E9434F-9627-4685-9C44-3139F346F2F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
