@@ -6,11 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Eddy.Core\Eddy.Core.csproj" />
+    <Folder Include="Models\Elements\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Elements\" />
+    <PackageReference Include="Eddy.Core" Version="0.0.1-beta" />
   </ItemGroup>
 
 </Project>

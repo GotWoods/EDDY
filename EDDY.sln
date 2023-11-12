@@ -7,6 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eddy.Tests", "Eddy.Tests\Ed
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F5935B87-E31F-4429-923B-2224D47DD9AC}"
 	ProjectSection(SolutionItems) = preProject
+		.github\workflows\nuget-publish-x12.yml = .github\workflows\nuget-publish-x12.yml
 		Readme.Md = Readme.Md
 		.github\workflows\nuget-publish-core.yml = .github\workflows\nuget-publish-core.yml
 	EndProjectSection
