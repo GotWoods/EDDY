@@ -1,0 +1,38 @@
+name: Publish x12.Transportation NuGet Package
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'Eddy.x12.DomainModels.Transportation/**'
+      - '.github/workflows/nuget-publish-core.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x' # Specify the .NET version
+
+    - name: Restore dependencies
+      run: dotnet restore Eddy.x12.DomainModels.Transportation/Eddy.x12.DomainModels.Transportation.csproj
+
+    - name: Build
+      run: dotnet build Eddy.x12.DomainModels.Transportation/Eddy.x12.DomainModels.Transportation.csproj --no-restore -c Release
+
+    - name: Set Package Version
+      run: |
+        VERSION_SUFFIX="beta$(date +%Y%m%d%H%M%S)"
+        echo "VERSION_SUFFIX=$VERSION_SUFFIX" >> $GITHUB_ENV
+
+    - name: Pack
+      run: dotnet pack Eddy.x12.DomainModels.Transportation/Eddy.x12.DomainModels.Transportation.csproj --no-build -c Release -o out /p:VersionSuffix=${{ env.VERSION_SUFFIX }}
+
+    - name: Push to NuGet
+      run: dotnet nuget push out/*.nupkg --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json

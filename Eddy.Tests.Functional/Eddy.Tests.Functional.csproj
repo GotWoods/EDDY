@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Eddy.x12Parser" Version="0.0.1-beta" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
@@ -25,7 +26,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Eddy.x12.DomainModels.Transportation\Eddy.x12.DomainModels.Transportation.csproj" />
-    <ProjectReference Include="..\Eddy.x12\Eddy.x12.csproj" />
   </ItemGroup>
 
 </Project>

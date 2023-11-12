@@ -7,6 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Eddy.Core" Version="0.0.1-beta" />
+    <PackageReference Include="Eddy.x12Parser" Version="0.0.1-beta" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>
