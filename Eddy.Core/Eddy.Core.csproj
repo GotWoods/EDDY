@@ -6,7 +6,7 @@
     
     <PackageId>Eddy.Core</PackageId>
     <Version>0.0.1-beta</Version>
-    <Title>EDDY EDI Parser Core Funcationality</Title>
+    <Title>EDDY EDI Parser Core Functionality</Title>
     <Authors>GotWoods</Authors>
     <Description>Core EDI processing of validation and attributes 
 

@@ -3,6 +3,17 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
 	<LangVersion>latest</LangVersion>
+
+
+    <PackageId>Eddy.x12</PackageId>
+    <Version>0.0.1-beta</Version>
+    <Title>EDDY EDI x12 Parser</Title>
+    <Authors>GotWoods</Authors>
+    <Description>
+      Parser for x12 files into POCO objects
+    </Description>
+    <PackageTags>EDI;x12</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
