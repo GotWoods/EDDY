@@ -1,0 +1,93 @@
+using Eddy.Core.Attributes;
+using Eddy.Core.Validation;
+using Eddy.x12.Models.Elements;
+
+namespace Eddy.x12.Models.v3010;
+
+[Segment("W02")]
+public class W02_ItemSummaryInventory : EdiX12Segment
+{
+	[Position(01)]
+	public decimal? QuantityOnHand { get; set; }
+
+	[Position(02)]
+	public string UnitOfMeasurementCode { get; set; }
+
+	[Position(03)]
+	public string UPCCaseCode { get; set; }
+
+	[Position(04)]
+	public string ProductServiceIDQualifier { get; set; }
+
+	[Position(05)]
+	public string ProductServiceID { get; set; }
+
+	[Position(06)]
+	public string WarehouseLotNumber { get; set; }
+
+	[Position(07)]
+	public decimal? Weight { get; set; }
+
+	[Position(08)]
+	public string WeightQualifier { get; set; }
+
+	[Position(09)]
+	public string WeightUnitQualifier { get; set; }
+
+	[Position(10)]
+	public decimal? Weight2 { get; set; }
+
+	[Position(11)]
+	public string WeightQualifier2 { get; set; }
+
+	[Position(12)]
+	public string WeightUnitQualifier2 { get; set; }
+
+	[Position(13)]
+	public decimal? QuantityCommitted { get; set; }
+
+	[Position(14)]
+	public decimal? QuantityAvailable { get; set; }
+
+	[Position(15)]
+	public decimal? QuantityInTransit { get; set; }
+
+	[Position(16)]
+	public decimal? QuantityDamaged { get; set; }
+
+	[Position(17)]
+	public decimal? QuantityOnHold { get; set; }
+
+	[Position(18)]
+	public decimal? QuantityBackordered { get; set; }
+
+	[Position(19)]
+	public decimal? QuantityDeferred { get; set; }
+
+	public override ValidationResult Validate()
+	{
+		var validator = new BasicValidator<W02_ItemSummaryInventory>(this);
+		validator.Required(x=>x.QuantityOnHand);
+		validator.Required(x=>x.UnitOfMeasurementCode);
+		validator.Length(x => x.QuantityOnHand, 1, 9);
+		validator.Length(x => x.UnitOfMeasurementCode, 2);
+		validator.Length(x => x.UPCCaseCode, 12);
+		validator.Length(x => x.ProductServiceIDQualifier, 2);
+		validator.Length(x => x.ProductServiceID, 1, 30);
+		validator.Length(x => x.WarehouseLotNumber, 1, 12);
+		validator.Length(x => x.Weight, 1, 8);
+		validator.Length(x => x.WeightQualifier, 1, 2);
+		validator.Length(x => x.WeightUnitQualifier, 1);
+		validator.Length(x => x.Weight2, 1, 8);
+		validator.Length(x => x.WeightQualifier2, 1, 2);
+		validator.Length(x => x.WeightUnitQualifier2, 1);
+		validator.Length(x => x.QuantityCommitted, 1, 9);
+		validator.Length(x => x.QuantityAvailable, 1, 9);
+		validator.Length(x => x.QuantityInTransit, 1, 9);
+		validator.Length(x => x.QuantityDamaged, 1, 9);
+		validator.Length(x => x.QuantityOnHold, 1, 9);
+		validator.Length(x => x.QuantityBackordered, 1, 9);
+		validator.Length(x => x.QuantityDeferred, 1, 9);
+		return validator.Results;
+	}
+}

@@ -13,13 +13,13 @@ public class EdiSectionParserFactory
     private static bool _isInitialized = false;
     private static Dictionary<string, Type> _parsers;
 
-    public static EdiX12Segment Parse(string line, MapOptions mapOptions)
+    public static EdiX12Segment Parse(string version, string line, MapOptions mapOptions)
     {
         var identifier = line.Substring(0, line.IndexOf(mapOptions.Separator));
-        return Map.MapObject(GetSegmentFor(identifier), line, mapOptions);
+        return Map.MapObject(GetSegmentFor(version, identifier), line, mapOptions);
     }
 
-    public static Type GetSegmentFor(string identifier)
+    public static Type GetSegmentFor(string version, string identifier)
     {
         if (!_isInitialized)
         {
@@ -30,7 +30,7 @@ public class EdiSectionParserFactory
         // if (!_parsers.ContainsKey(identifier))
         //     return typeof(Unkown_Segment);
 
-        return _parsers[identifier];
+        return _parsers[version + "." + identifier];
     }
 
     public static Dictionary<string, Type> LoadSegmentProviders()
@@ -45,7 +45,9 @@ public class EdiSectionParserFactory
         foreach (var segmentProvider in segmentProviders)
         {
             var name = segmentProvider.GetCustomAttribute<Segment>().Name;
-            matches.Add(name, segmentProvider);
+            var version = segmentProvider.Namespace.Substring(segmentProvider.Namespace.LastIndexOf(".")+2); //+2 to get rid of .v in .v8010
+            if (!matches.ContainsKey(version + "." + name))
+                matches.Add(version + "." + name, segmentProvider);
         }
 
         return matches;

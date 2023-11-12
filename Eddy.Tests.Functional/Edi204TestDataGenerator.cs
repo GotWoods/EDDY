@@ -1,8 +1,8 @@
 ﻿using System.Collections;
-using Eddy.x12.DomainModels;
-using Eddy.x12.DomainModels._8020;
-using Eddy.x12.DomainModels._8020._204;
-using Eddy.x12.Models;
+using Eddy.x12.DomainModels.Transportation.Old.v8020;
+using Eddy.x12.DomainModels.Transportation.v8020;
+using Eddy.x12.DomainModels.Transportation.v8020._204;
+using Eddy.x12.Models.v8020;
 
 namespace Eddy.Tests.Functional;
 
@@ -39,7 +39,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
         expected.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentificationQualifier = "RB", ReferenceIdentification = "USD" });
         expected.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentificationQualifier = "TH", ReferenceIdentification = "TMC APTIV" });
 
-        expected.Notes.Add(new NTE_Note { NoteReferenceCode = "ZZZ", Description = "1387" });
+        expected.Notes.Add(new NTE_NoteSpecialInstruction { NoteReferenceCode = "ZZZ", Description = "1387" });
 
         expected.Entities.Add(new Entity
         {
@@ -66,7 +66,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
                     GeographicLocation = new N4_GeographicLocation() { CityName = "LOVELAND", StateOrProvinceCode = "OH", PostalCode = "45140-7727", CountryCode = "US" }
             },
             ReferenceNumbers = new List<L11_BusinessInstructionsAndReferenceNumber> { new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentificationQualifier = "PU", ReferenceIdentification = "1032301" } },
-            Notes = new List<NTE_Note>
+            Notes = new List<NTE_NoteSpecialInstruction>
             {
                 new() { NoteReferenceCode = "OTH", Description = "No Touch" },
                 new() { NoteReferenceCode = "SPH", Description = "D120550 - 19 CTNS; D120127 - 33 CTNS 1 SKID W/ 17 CTNS 1 SKID W/ 16 CTNS" },
@@ -120,7 +120,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
                     PartyLocation = new List<N3_PartyLocation>() { new N3_PartyLocation() { AddressInformation = "301 Vallecillo Rd" } },
                     GeographicLocation = new N4_GeographicLocation() { CityName = "Laredo", StateOrProvinceCode = "TX", PostalCode = "78045", CountryCode = "US" }
             },
-            Notes = new List<NTE_Note>
+            Notes = new List<NTE_NoteSpecialInstruction>
             {
                 new() { NoteReferenceCode = "OTH", Description = "No Touch" },
                 new() { NoteReferenceCode = "PKG", Description = "Dimensions H(in)40 W(in)42 L(ft)04 L(in)04" }
@@ -166,11 +166,11 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
         expected.Totals = new L3_TotalWeightAndCharges();
         expected.Totals.Weight = 821;
         expected.Totals.WeightQualifier = "G";
-        expected.Totals.FreightRate = "137.2917";
+        expected.Totals.FreightRate = 137.2917m;
         expected.Totals.RateValueQualifier = "FR";
         expected.Totals.AmountCharged = "14759";
         expected.Totals.Advances = "1030";
-        expected.Totals.LadingQuantity = "3";
+        expected.Totals.LadingQuantity = 3;
         return expected;
     }
 
@@ -185,23 +185,23 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
         expected.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentificationQualifier = "BN", ReferenceIdentification = "30722781" });
         expected.ReferenceNumbers.Add(new L11_BusinessInstructionsAndReferenceNumber { ReferenceIdentificationQualifier = "RU", ReferenceIdentification = "MID508v1" });
 
-        expected.Notes.Add(new NTE_Note());
+        expected.Notes.Add(new NTE_NoteSpecialInstruction());
         expected.Notes[0].Description = "Stop Dep; Interval -None;";
         expected.Notes[0].NoteReferenceCode = "OTH";
 
-        expected.Notes.Add(new NTE_Note());
+        expected.Notes.Add(new NTE_NoteSpecialInstruction());
         expected.Notes[1].Description = "Solo";
         expected.Notes[1].NoteReferenceCode = "CAJ";
 
-        expected.Notes.Add(new NTE_Note());
+        expected.Notes.Add(new NTE_NoteSpecialInstruction());
         expected.Notes[2].Description = "NA";
         expected.Notes[2].NoteReferenceCode = "ALT";
 
-        expected.Notes.Add(new NTE_Note());
+        expected.Notes.Add(new NTE_NoteSpecialInstruction());
         expected.Notes[3].Description = "1228.25";
         expected.Notes[3].NoteReferenceCode = "CBH";
 
-        expected.Notes.Add(new NTE_Note());
+        expected.Notes.Add(new NTE_NoteSpecialInstruction());
         expected.Notes[4].Description = "(USD) Base Rate Only";
         expected.Notes[4].NoteReferenceCode = "ECM";
 
@@ -237,7 +237,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
             NumberOfUnitsShipped = 2,
             UnitOrBasisForMeasurementCode = "PL",
         };
-        expected.Stops[0].Notes.Add(new NTE_Note() { NoteReferenceCode = "ALT", Description = "NA" });
+        expected.Stops[0].Notes.Add(new NTE_NoteSpecialInstruction() { NoteReferenceCode = "ALT", Description = "NA" });
         expected.Stops[0].Entity = new Entity()
         {
             PartyIdentification = new N1_PartyIdentification() { Name = "Cabinetworks Middlefield, Plant 2", EntityIdentifierCode = "SF", IdentificationCodeQualifier = "93", IdentificationCode = "103043" },
@@ -280,7 +280,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
                 UnitOrBasisForMeasurementCode = "PL",
             }
         });
-        expected.Stops[1].Notes.Add(new NTE_Note { NoteReferenceCode = "ALT", Description = "NA" });
+        expected.Stops[1].Notes.Add(new NTE_NoteSpecialInstruction { NoteReferenceCode = "ALT", Description = "NA" });
         expected.Stops[1].Entity = new Entity();
 
         expected.Stops[1].Entity = new Entity
@@ -312,7 +312,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
             UnitOrBasisForMeasurementCode = "PL",
         };
 
-        expected.Stops[2].Notes.Add(new NTE_Note() { NoteReferenceCode = "ALT", Description = "NA" });
+        expected.Stops[2].Notes.Add(new NTE_NoteSpecialInstruction() { NoteReferenceCode = "ALT", Description = "NA" });
         expected.Stops[2].Entity = new Entity
         {
             PartyIdentification = new N1_PartyIdentification() { Name = "Cabinetworks Orwell, Plant 3", EntityIdentifierCode = "ST" },
@@ -333,7 +333,7 @@ public class Edi204TestDataGenerator : IEnumerable<object[]>
         expected.Totals = new L3_TotalWeightAndCharges();
         expected.Totals.Weight = 2;
         expected.Totals.WeightQualifier = "G";
-        expected.Totals.LadingQuantity = "2";
+        expected.Totals.LadingQuantity = 2;
         expected.Totals.AmountCharged = "122825";
         expected.Totals.WeightUnitCode = "L";
 

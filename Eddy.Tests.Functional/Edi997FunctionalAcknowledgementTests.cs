@@ -1,6 +1,5 @@
 ﻿using Eddy.x12;
-using Eddy.x12.DomainModels._8020;
-
+using Eddy.x12.DomainModels.Transportation.Old.v8020;
 using Eddy.x12.Mapping;
 using Xunit.Abstractions;
 
@@ -87,7 +86,7 @@ public class Edi997FunctionalAcknowledgementTests
 
 
                 var newDocument = new x12Document();
-                newDocument.IsaInterchangeControlHeader = document.IsaInterchangeControlHeader;
+                newDocument.InterchangeControlHeader = document.InterchangeControlHeader;
                 newDocument.GsHeader = document.GsHeader;
                 foreach (var documentSection in documentSections) newDocument.Sections.Add(documentSection);
 

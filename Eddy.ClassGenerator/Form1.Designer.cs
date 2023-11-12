@@ -40,6 +40,9 @@
             btnx12Element = new Button();
             txtx12Element = new TextBox();
             txtBatchCount = new TextBox();
+            txtLog = new TextBox();
+            txtTransactionSetBatchCount = new TextBox();
+            button1 = new Button();
             SuspendLayout();
             // 
             // txtOutput
@@ -48,7 +51,7 @@
             txtOutput.Multiline = true;
             txtOutput.Name = "txtOutput";
             txtOutput.ScrollBars = ScrollBars.Vertical;
-            txtOutput.Size = new Size(371, 426);
+            txtOutput.Size = new Size(371, 1006);
             txtOutput.TabIndex = 1;
             // 
             // txtEdifactElement
@@ -111,7 +114,7 @@
             txtTest.Multiline = true;
             txtTest.Name = "txtTest";
             txtTest.ScrollBars = ScrollBars.Vertical;
-            txtTest.Size = new Size(371, 426);
+            txtTest.Size = new Size(371, 1006);
             txtTest.TabIndex = 11;
             // 
             // btnx12BatchConvert
@@ -148,13 +151,46 @@
             txtBatchCount.Name = "txtBatchCount";
             txtBatchCount.Size = new Size(43, 23);
             txtBatchCount.TabIndex = 15;
-            txtBatchCount.Text = "20";
+            txtBatchCount.Text = "1";
+            // 
+            // txtLog
+            // 
+            txtLog.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            txtLog.Location = new Point(12, 213);
+            txtLog.Multiline = true;
+            txtLog.Name = "txtLog";
+            txtLog.ReadOnly = true;
+            txtLog.ScrollBars = ScrollBars.Vertical;
+            txtLog.Size = new Size(462, 805);
+            txtLog.TabIndex = 16;
+            // 
+            // txtTransactionSetBatchCount
+            // 
+            txtTransactionSetBatchCount.Location = new Point(12, 183);
+            txtTransactionSetBatchCount.Name = "txtTransactionSetBatchCount";
+            txtTransactionSetBatchCount.Size = new Size(43, 23);
+            txtTransactionSetBatchCount.TabIndex = 18;
+            txtTransactionSetBatchCount.Text = "1";
+            txtTransactionSetBatchCount.TextChanged += textBox1_TextChanged;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(61, 179);
+            button1.Name = "button1";
+            button1.Size = new Size(312, 23);
+            button1.TabIndex = 17;
+            button1.Text = "Generate Next Batch of EDI x12 Transaction Sets";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1321, 463);
+            ClientSize = new Size(1321, 1030);
+            Controls.Add(txtTransactionSetBatchCount);
+            Controls.Add(button1);
+            Controls.Add(txtLog);
             Controls.Add(txtBatchCount);
             Controls.Add(btnx12Element);
             Controls.Add(txtx12Element);
@@ -186,5 +222,8 @@
         private Button btnx12Element;
         private TextBox txtx12Element;
         private TextBox txtBatchCount;
+        private TextBox txtLog;
+        private TextBox txtTransactionSetBatchCount;
+        private Button button1;
     }
 }

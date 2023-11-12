@@ -1,0 +1,20 @@
+using Eddy.Core.Attributes;
+using Eddy.Core.Validation;
+using Eddy.x12.Models.Elements;
+
+namespace Eddy.x12.Models.v3010;
+
+[Segment("K3")]
+public class K3_FileInformation : EdiX12Segment
+{
+	[Position(01)]
+	public string FixedFormatInformation { get; set; }
+
+	public override ValidationResult Validate()
+	{
+		var validator = new BasicValidator<K3_FileInformation>(this);
+		validator.Required(x=>x.FixedFormatInformation);
+		validator.Length(x => x.FixedFormatInformation, 1, 80);
+		return validator.Results;
+	}
+}

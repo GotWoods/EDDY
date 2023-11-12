@@ -1,0 +1,5 @@
+namespace Eddy.x12.Models.v5010;
+
+public class BAX_BeginningSegmentForAdvanceConsistAndTransportationAutomaticEquipmentID : Eddy.x12.Models.v4060.BAX_BeginningSegmentForAdvanceConsistAndTransportationAutomaticEquipmentID
+{
+}

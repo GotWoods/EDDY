@@ -6,6 +6,8 @@
     <Nullable>enable</Nullable>
 
     <IsPackable>false</IsPackable>
+
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Eddy.x12.DomainModels.Transportation\Eddy.x12.DomainModels.Transportation.csproj" />
     <ProjectReference Include="..\Eddy.x12\Eddy.x12.csproj" />
   </ItemGroup>
 

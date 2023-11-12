@@ -1,0 +1,5 @@
+namespace Eddy.x12.Models.v5020;
+
+public class BJF_BeginningSegmentRailroadJunctionsAndInterchangesUpdateActivity : Eddy.x12.Models.v5010.BJF_BeginningSegmentRailroadJunctionsAndInterchangesUpdateActivity
+{
+}

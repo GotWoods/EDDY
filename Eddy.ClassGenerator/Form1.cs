@@ -1,3 +1,5 @@
+using System.CodeDom.Compiler;
+using System.Reflection.Emit;
 using Eddy.ClassGenerator.Lib;
 using HtmlAgilityPack;
 using PuppeteerSharp;
@@ -6,11 +8,15 @@ namespace Eddy.ClassGenerator;
 
 public partial class Form1 : Form
 {
-    private readonly string projectBasePath = @"C:\Source\EdiParser\";
+    private string projectBasePath = @"";
 
     public Form1()
     {
         InitializeComponent();
+        var x = new DirectoryInfo(Directory.GetCurrentDirectory());
+        //x.GetParent();
+        var dir = x.Parent.Parent.Parent.Parent;
+        projectBasePath = dir.FullName + "\\";
     }
 
 
@@ -23,7 +29,7 @@ public partial class Form1 : Form
         {
             Headless = true
         });
-        
+
         var page = await browser.NewPageAsync();
         await page.GoToAsync(url, WaitUntilNavigation.Networkidle0);
 
@@ -40,26 +46,17 @@ public partial class Form1 : Form
         txtOutput.Text = "";
         txtTest.Text = "";
 
-        var generator = new CodeGenerator();
-        var results = generator.ParseData(document, parseType);
-        txtOutput.Text = results.Code;
-        txtTest.Text = results.Test;
+        var parser = new Eddy.ClassGenerator.Lib.CodeParser();
+        var parsed = parser.Parse(document, parseType);
+
+        var generator = new Eddy.ClassGenerator.Lib.CodeGenerator();
+        var testGenerator = new Eddy.ClassGenerator.Lib.TestGenerator();
+        //var results = generator.ParseAndGenerateData(document, parseType, "TODO");
+        txtOutput.Text = generator.GenerateCode(parsed, parseType, "TODO");
+        txtTest.Text = testGenerator.GenerateTests(parsed, parseType, "TODO");
     }
 
-    private List<string> GetExistingFiles()
-    {
-        var path = projectBasePath + @"Eddy.x12\Models";
-        var results = new List<string>();
-        foreach (var file in Directory.GetFiles(path))
-            if (file.IndexOf("_") > -1)
-            {
-                var filename = file.Substring(0, file.IndexOf("_"));
-                filename = filename.Substring(file.LastIndexOf('\\') + 1);
-                results.Add(filename);
-            }
 
-        return results;
-    }
 
 
     private async void button5_Click(object sender, EventArgs e)
@@ -83,39 +80,30 @@ public partial class Form1 : Form
 
     private async void btnx12BatchConvert_Click(object sender, EventArgs e)
     {
-        var page = await GetPage("https://www.stedi.com/edi/x12-008020/segment");
-        var pageText = "<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + page + Environment.NewLine + "</div>";
-        var newNode = HtmlNode.CreateNode(pageText);
-        var items = newNode.SelectNodes("/div/div/ul/li");
-
-        var existingFiles = GetExistingFiles();
-
-        var counter = 0;
-        var modelPath = projectBasePath + @"Eddy.x12\Models";
-        var testPath = projectBasePath + @"Eddy.Tests.x12\Models";
-        foreach (var item in items)
+        this.Cursor = Cursors.WaitCursor;
+        try
         {
-            var link = item.SelectSingleNode("a");
-            var type = link.SelectSingleNode("h2/span").InnerText;
-
-            if (existingFiles.Contains(type))
-                continue;
-
-            var s = await GetPage("https://www.stedi.com" + link.GetAttributeValue("href", ""));
-            var text = "<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + s + Environment.NewLine + "</div>";
-            var newNode2 = HtmlNode.CreateNode(text);
-            //     ParseData(newNode2, ParseType.x12);
-            var generator = new CodeGenerator();
-            var results = generator.ParseData(newNode2, ParseType.x12Segment);
-            counter++;
-
-            File.WriteAllText(modelPath + "\\" + results.codeClassName + ".cs", results.Code);
-            File.WriteAllText(testPath + "\\" + type + "Tests.cs", results.Test);
-
-
-            if (counter >= int.Parse(txtBatchCount.Text))
-                break;
+            var x = new BatchGenerator();
+            x.OnProcessUpdate += GeneratorOnProcessUpdate;
+            await x.Start(projectBasePath, int.Parse(this.txtBatchCount.Text));
         }
+        finally
+        {
+            this.Cursor = Cursors.Default;
+        }
+    }
+
+    private void GeneratorOnProcessUpdate(string message)
+    {
+        if (this.txtLog.InvokeRequired)
+        {
+            // Call this method again using Invoke
+            this.Invoke(new Action(() => GeneratorOnProcessUpdate(message)));
+            return;
+        }
+
+        // Update the TextBox
+        this.txtLog.AppendText(message + Environment.NewLine);
     }
 
     private async void btnEdifactElement_Click(object sender, EventArgs e)
@@ -132,5 +120,24 @@ public partial class Form1 : Form
         var text = "<div xmlns:xlink=\"http://dummy.org/schema\" >" + Environment.NewLine + s + Environment.NewLine + "</div>";
         var newNode = HtmlNode.CreateNode(text);
         ParseData(newNode, ParseType.ediFactSegment);
+    }
+
+    private async void button1_Click(object sender, EventArgs e)
+    {
+        this.Cursor = Cursors.WaitCursor;
+        try
+        {
+            var x = new TransactionSetBatchGenerator();
+            x.OnProcessUpdate += GeneratorOnProcessUpdate;
+            await x.Start(projectBasePath, int.Parse(this.txtTransactionSetBatchCount.Text));
+        }
+        finally
+        {
+            this.Cursor = Cursors.Default;
+        }
+    }
+
+    private void textBox1_TextChanged(object sender, EventArgs e)
+    {
     }
 }

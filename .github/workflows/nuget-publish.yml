@@ -1,0 +1,40 @@
+name: Publish NuGet Package
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'Eddy.Core/**'
+      - '.github/workflows/nuget-publish-core.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x' # Specify the .NET version
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore
+
+    - name: Test
+      run: dotnet test --no-build
+
+    - name: Set Package Version
+      run: |
+        $VERSION_SUFFIX = "beta$(Get-Date -UFormat "%Y%m%d%H%M%S")"
+        echo "VERSION_SUFFIX=$VERSION_SUFFIX" >> $GITHUB_ENV
+    
+    - name: Pack
+      run: dotnet pack --no-build -c Release -o out /p:VersionSuffix=${{ env.VERSION_SUFFIX }}
+
+    - name: Push to NuGet
+      run: dotnet nuget push out/*.nupkg --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json

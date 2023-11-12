@@ -1,0 +1,69 @@
+using Eddy.Core.Validation;
+using Eddy.Tests.x12;
+using Eddy.x12.Mapping;
+using Eddy.x12.Models.Elements;
+using Eddy.x12.Models.v3050;
+
+namespace Eddy.x12.Tests.Models.v3050;
+
+public class VADTests
+{
+	[Fact]
+	public void Parse_ShouldReturnCorrectObject()
+	{
+		string x12Line = "VAD*0*Q*8*5*nD*x*A*R*L*bxS*E4Jrk5";
+
+		var expected = new VAD_VehicleAdviceDetail()
+		{
+			VehicleIdentificationNumber = "0",
+			InvoiceNumber = "Q",
+			MonetaryAmount = 8,
+			Rate = 5,
+			DealerCode = "nD",
+			ReferenceNumber = "x",
+			ApplicationErrorConditionCode = "A",
+			ApplicationErrorConditionCode2 = "R",
+			ApplicationErrorConditionCode3 = "L",
+			DateTimeQualifier = "bxS",
+			Date = "E4Jrk5",
+		};
+
+		var actual = Map.MapObject<VAD_VehicleAdviceDetail>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
+		Assert.Equivalent(expected, actual);
+	}
+
+	[Theory]
+	[InlineData("", false)]
+	[InlineData("0", true)]
+	public void Validation_RequiredVehicleIdentificationNumber(string vehicleIdentificationNumber, bool isValidExpected)
+	{
+		var subject = new VAD_VehicleAdviceDetail();
+		//Required fields
+		//Test Parameters
+		subject.VehicleIdentificationNumber = vehicleIdentificationNumber;
+		//If one filled, all required
+		if(!string.IsNullOrEmpty(subject.DateTimeQualifier) || !string.IsNullOrEmpty(subject.DateTimeQualifier) || !string.IsNullOrEmpty(subject.Date))
+		{
+			subject.DateTimeQualifier = "bxS";
+			subject.Date = "E4Jrk5";
+		}
+		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
+	}
+
+	[Theory]
+	[InlineData("", "", true)]
+	[InlineData("bxS", "E4Jrk5", true)]
+	[InlineData("bxS", "", false)]
+	[InlineData("", "E4Jrk5", false)]
+	public void Validation_AllAreRequiredDateTimeQualifier(string dateTimeQualifier, string date, bool isValidExpected)
+	{
+		var subject = new VAD_VehicleAdviceDetail();
+		//Required fields
+		subject.VehicleIdentificationNumber = "0";
+		//Test Parameters
+		subject.DateTimeQualifier = dateTimeQualifier;
+		subject.Date = date;
+		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.IfOneIsFilledAllAreRequired);
+	}
+
+}

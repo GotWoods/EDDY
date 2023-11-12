@@ -4,7 +4,7 @@ using Eddy.Core.Validation;
 namespace Eddy.x12.Models.Elements;
 
 [Segment("C001")]
-public class C001_CompositeUnitOfMeasure : EdiX12Component
+public class C001_CompositeUnitOfMeasure2 : EdiX12Component
 {
     [Position(00)]
     public string UnitOrBasisForMeasurementCode { get; set; }
@@ -53,7 +53,7 @@ public class C001_CompositeUnitOfMeasure : EdiX12Component
 
     public override ValidationResult Validate()
     {
-        var validator = new BasicValidator<C001_CompositeUnitOfMeasure>(this);
+        var validator = new BasicValidator<C001_CompositeUnitOfMeasure2>(this);
         validator.Required(x => x.UnitOrBasisForMeasurementCode);
         validator.Length(x => x.UnitOrBasisForMeasurementCode, 2);
         validator.Length(x => x.Exponent, 1, 15);

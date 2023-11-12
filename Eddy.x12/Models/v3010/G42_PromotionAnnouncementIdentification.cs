@@ -1,0 +1,24 @@
+using Eddy.Core.Attributes;
+using Eddy.Core.Validation;
+using Eddy.x12.Models.Elements;
+
+namespace Eddy.x12.Models.v3010;
+
+[Segment("G42")]
+public class G42_PromotionAnnouncementIdentification : EdiX12Segment
+{
+	[Position(01)]
+	public string PromotionStatusCode { get; set; }
+
+	[Position(02)]
+	public string AllowanceOrChargeNumber { get; set; }
+
+	public override ValidationResult Validate()
+	{
+		var validator = new BasicValidator<G42_PromotionAnnouncementIdentification>(this);
+		validator.Required(x=>x.PromotionStatusCode);
+		validator.Length(x => x.PromotionStatusCode, 2);
+		validator.Length(x => x.AllowanceOrChargeNumber, 1, 16);
+		return validator.Results;
+	}
+}

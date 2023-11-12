@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -6,6 +6,8 @@
     <Nullable>enable</Nullable>
 
     <IsPackable>false</IsPackable>
+
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,6 +26,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Eddy.Core\Eddy.Core.csproj" />
     <ProjectReference Include="..\Eddy.x12\Eddy.x12.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\v8040\" />
   </ItemGroup>
 
 </Project>

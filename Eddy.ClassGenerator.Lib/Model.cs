@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using HtmlAgilityPack;
 
 namespace Eddy.ClassGenerator.Lib;
 
@@ -44,6 +45,7 @@ public class Model
                 return _testValue;
             }
         }
+        set => _testValue = value;
     }
 
     private char RandomLetter()
@@ -57,17 +59,17 @@ public class Model
     public string Position { get; set; }
     public string Name { get; set; }
     public string DataType { get; set; }
-
     public int Min { get; set; }
     public int Max { get; set; }
+    public bool IsRequired { get; set; }
+    public bool IsDataTypeNumeric => DataType is "int?" or "decimal?";
+    public bool IsDataTypeComposite => DataType.StartsWith("C");
     public List<ValidationData> IfOneIsFilledAllAreRequiredValidations { get; set; } = new();
     public List<ValidationData> AtLeastOneValidations { get; set; } = new();
     public List<ValidationData> ARequiresBValidation { get; set; } = new();
     public List<ValidationData> OnlyOneOfValidations { get; set; } = new();
     public List<ValidationData> IfOneIsFilledThenAtLeastOne { get; set; } = new();
-    public bool IsRequired { get; set; }
-
-    public bool IsDataTypeNumeric => DataType is "int?" or "decimal?";
+   
 
 
     public override string ToString()
@@ -91,6 +93,36 @@ public class Model
         if (ReferenceEquals(this, obj)) return true;
         if (obj.GetType() != this.GetType()) return false;
         return Equals((Model)obj);
+    }
+
+    public bool DeepEquals(Model compareTo)
+    {
+        if (this.Position != compareTo.Position)
+            return false;
+        if (this.Name != compareTo.Name) return false;
+        if (this.DataType != compareTo.DataType) return false;
+        if (this.Min != compareTo.Min) return false;
+        if (this.Max!= compareTo.Max) return false;
+        if (this.IsRequired != compareTo.IsRequired) return false;
+        if (this.IsDataTypeNumeric != compareTo.IsDataTypeNumeric) return false;
+        if (!ListsEqual(IfOneIsFilledAllAreRequiredValidations, compareTo.IfOneIsFilledAllAreRequiredValidations)) return false;
+        if (!ListsEqual(AtLeastOneValidations, compareTo.AtLeastOneValidations)) return false;
+        if (!ListsEqual(ARequiresBValidation, compareTo.ARequiresBValidation)) return false;
+        if (!ListsEqual(OnlyOneOfValidations, compareTo.OnlyOneOfValidations)) return false;
+        if (!ListsEqual(IfOneIsFilledThenAtLeastOne, compareTo.IfOneIsFilledThenAtLeastOne)) return false;
+        return true;
+    }
+
+    private bool ListsEqual(List<ValidationData> list1, List<ValidationData> list2)
+    {
+        if (list1.Count != list2.Count) return false;
+
+        for (int i = 0; i < list1.Count; i++)
+        {
+            if (!list1[i].Equals(list2[i])) return false;
+        }
+
+        return true;
     }
 
     public override int GetHashCode()

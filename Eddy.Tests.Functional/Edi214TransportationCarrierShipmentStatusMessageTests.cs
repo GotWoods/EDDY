@@ -1,5 +1,6 @@
 ﻿using Eddy.x12;
-using Eddy.x12.DomainModels._4010;
+using Eddy.x12.DomainModels.Transportation.Old.v4010;
+using Eddy.x12.DomainModels.Transportation.v4010;
 using Eddy.x12.Mapping;
 using Xunit.Abstractions;
 
@@ -94,7 +95,7 @@ public class Edi214TransportationCarrierShipmentStatusMessage
 
 
                 var newDocument = new x12Document();
-                newDocument.IsaInterchangeControlHeader = document.IsaInterchangeControlHeader;
+                newDocument.InterchangeControlHeader = document.InterchangeControlHeader;
                 newDocument.GsHeader = document.GsHeader;
                 foreach (var documentSection in documentSections) newDocument.Sections.Add(documentSection);
 

@@ -1,7 +1,7 @@
 ﻿using Eddy.x12;
 using Eddy.x12.Mapping;
 using Xunit.Abstractions;
-using Edi210_MotorCarrierFreightDetailsAndInvoice = Eddy.x12.DomainModels._4010.Edi210_MotorCarrierFreightDetailsAndInvoice;
+using Edi210_MotorCarrierFreightDetailsAndInvoice = Eddy.x12.DomainModels.Transportation.Old.v4010.Edi210_MotorCarrierFreightDetailsAndInvoice;
 
 namespace Eddy.Tests.Functional;
 
@@ -44,7 +44,7 @@ public class Edi210InvoiceTests
 
 
                 var newDocument = new x12Document();
-                newDocument.IsaInterchangeControlHeader = document.IsaInterchangeControlHeader;
+                newDocument.InterchangeControlHeader = document.InterchangeControlHeader;
                 newDocument.GsHeader = document.GsHeader;
                 foreach (var documentSection in documentSections) newDocument.Sections.Add(documentSection);
 
