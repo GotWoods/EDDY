@@ -41,23 +41,18 @@ internal class v6010Converter
 
             foreach (var referenceNumber in detail.MarksAndNumbersInformation)
                 transaction.MarksAndNumbers.Add(new Pair(referenceNumber.MarksAndNumbersQualifier, referenceNumber.MarksAndNumbers));
-
-            // foreach (var shipmentWeightPackagingAndQuantityData in detail.L0250)
-            // {
-            //     //https://www.stedi.com/edi/x12-008020/segment/AT8
-            //     var weightUnit = "";
-            //     switch (shipmentWeightPackagingAndQuantityData.ShipmentPurchaseOrderDetail.WeightUnitCode)
-            //     {
-            //         case "L":
-            //             weightUnit = "Lbs";
-            //             break;
-            //         case "K":
-            //             weightUnit = "Kg";
-            //             break;
-            //     }
-            //     Console.WriteLine("Weight: " + shipmentWeightPackagingAndQuantityData.ShipmentPurchaseOrderDetail.Weight + weightUnit);
-            //     Console.WriteLine("Quantity: " + shipmentWeightPackagingAndQuantityData.ShipmentPurchaseOrderDetail.Quantity);
-            // }
+            
+            foreach (var data in detail.ShipmentWeightPackagingAndQuantityData)
+            {
+                var item = new ShipmentWeightPackagingAndQuantityData();
+                if (data.Weight != null)
+                    item.Weight = new ItemWithQualifier<decimal?>(data.Weight, data.WeightQualifier);
+                if (data.Volume != null)
+                    item.Volume = new ItemWithQualifier<decimal?>(data.Volume, data.VolumeUnitQualifier);
+                if (data.LadingQuantity != null)
+                    item.Quantity = new ItemWithQualifier<int?>(data.LadingQuantity, "");
+                transaction.ShipmentWeightPackagingAndQuantityData.Add(item);
+            }
 
             result.Transactions.Add(transaction);
         }

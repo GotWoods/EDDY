@@ -22,7 +22,7 @@ public class MappedUpdate
     public Location Location { get; set; }
     public string TrailerNumber { get; set; }
     public string StopNumber { get; set; }
-
+    public List<ShipmentWeightPackagingAndQuantityData> ShipmentWeightPackagingAndQuantityData { get; set; } = new();
 }
 
 public class Mapper
@@ -58,7 +58,7 @@ public class Mapper
                 mu.EventOccurredOn = update.EventDate;
                 mu.TrailerNumber = update.EquipmentNumber; //Sometimes this is NONE or TBD but would vary by carrier
                 mu.StopNumber = transaction.ReferenceNumbers.FirstOrDefault(x => x.Key == "QN")?.Value;
-                
+                mu.ShipmentWeightPackagingAndQuantityData = transaction.ShipmentWeightPackagingAndQuantityData;
                 result.Updates.Add(mu);
             }
 
@@ -83,7 +83,7 @@ public class Mapper
             //Debug.WriteLine(rawJson.ToString());
             //result.TransportId = asJson.SelectTokens(search).FirstOrDefault().ToString();
 
-            if (maps[generic214.From] != "")
+            if (maps.ContainsKey(generic214.From) && maps[generic214.From] != "")
             {
                 var searchResult = asJson.SelectToken(string.Format(maps[generic214.From], index));
 

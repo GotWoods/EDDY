@@ -19,8 +19,29 @@ public class Transaction
     public List<Pair> ReferenceNumbers { get; set; } = new();
     public List<Pair> MarksAndNumbers { get; set; } = new();
     public List<Update> Updates { get; set; } = new();
+    public List<ShipmentWeightPackagingAndQuantityData> ShipmentWeightPackagingAndQuantityData { get; set; } = new();
 
     //weight/quantity here too
+
+}
+
+public class ShipmentWeightPackagingAndQuantityData
+{
+    public ItemWithQualifier<decimal?>? Weight { get; set; }
+    public ItemWithQualifier<decimal?>? Volume { get; set; }
+    public ItemWithQualifier<int?>? Quantity { get; set; }
+}
+
+public class ItemWithQualifier<T>
+{
+    public T Item { get; set; }
+    public string Qualifier { get; set; }
+
+    public ItemWithQualifier(T item, string qualifier)
+    {
+        Item = item;
+        Qualifier = qualifier;
+    }
 }
 
 public class Update
