@@ -70,6 +70,7 @@ public class x12Document
         var pattern = $"^[{allowedChars}{asciiChars}]*$"; // + asciiChars1 + asciiChars2 + "]*$";
         var regex = new Regex(pattern);
         var match = regex.Match(data);
+
         var lineNumber = 1;
         // if (!match.Success)
         //     throw new InvalidFileFormatException("Non ASCII characters detected in file at position " + (match.Index + match.Length));
@@ -93,11 +94,6 @@ public class x12Document
         var lines = data.Split(options.LineEnding.ToCharArray());
         r2.GsHeader = Map.MapObject<GenericFunctionalGroupHeader>(lines[1], options);
        
-
-        //TODO: parse these lines in raw to get the parameters
-        //result.GsHeader = GsHeaderFactory.FromVersion(version, lines[1], options); // Map.MapObject<GS_FunctionalGroupHeader>(lines[1],options);
-        
-        //var sections = new List<Section>();
         Section currentSection = null;
         foreach (var line in lines)
         {
@@ -116,6 +112,18 @@ public class x12Document
                 currentSection.TransactionSetControlNumber = st.TransactionSetControlNumber;
                 r2.Sections.Add(currentSection);
             }
+            else if (trimmedLine.StartsWith("SE"))
+            {
+                var se = Map.MapObject<SE_TransactionSetTrailer>(trimmedLine, options);
+
+                if (se.NumberOfIncludedSegments != currentSection.Segments.Count)
+                    r2.ValidationErrors.Add(new ValidationResult() { LineNumber = lineNumber, Errors = { new Error(ErrorCodes.TransactionSetSegmentCountMismatch, se.NumberOfIncludedSegments.ToString(), currentSection.Segments.Count.ToString()) } });
+
+                if (se.TransactionSetControlNumber != currentSection.TransactionSetControlNumber)
+                    r2.ValidationErrors.Add(new ValidationResult() { LineNumber = lineNumber, Errors = { new Error(ErrorCodes.TransactionSetControlNumberMismatch, currentSection.TransactionSetControlNumber, se.TransactionSetControlNumber) } });
+
+                r2.Sections.Add(currentSection);
+            }
             else if (currentSection != null)
             {
                 var ediX12Segment = EdiSectionParserFactory.Parse(options.StandardsVersion,trimmedLine, options);
@@ -128,27 +136,10 @@ public class x12Document
 
                 currentSection.Segments.Add(ediX12Segment);
             }
-            else if (trimmedLine.StartsWith("SE"))
-            {
-                var se = Map.MapObject<SE_TransactionSetTrailer>(trimmedLine, options);
-                if (se.NumberOfIncludedSegments != currentSection.Segments.Count - 2)
-                    throw new Exception($"SE said there would be {se.NumberOfIncludedSegments} but there were actually {currentSection.Segments.Count}");
-                if (se.TransactionSetControlNumber != currentSection.TransactionSetControlNumber)
-                    throw new Exception($"The starting control number ({currentSection.TransactionSetControlNumber}) did not match the ending control number ({se.TransactionSetControlNumber})");
-                r2.Sections.Add(currentSection);
-            }
-
             lineNumber++;
         }
-
-
         return r2;
     }
 
     public List<Section> Sections { get; set; } = new();
-
-    //public GS_FunctionalGroupHeader GsHeader { get; set; }
-
-    //public ISA_InterchangeControlHeader IsaInterchangeControlHeader { get; set; }
-   
 }

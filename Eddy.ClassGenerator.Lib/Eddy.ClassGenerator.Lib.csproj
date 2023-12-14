@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Eddy.Core" Version="0.0.2-beta" />
+    <PackageReference Include="Eddy.Core" Version="0.0.3-beta" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.55" />
     <PackageReference Include="PuppeteerSharp" Version="13.0.2" />
   </ItemGroup>

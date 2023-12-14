@@ -1,4 +1,6 @@
-﻿namespace Eddy.x12.Tests;
+﻿using Eddy.Core.Validation;
+
+namespace Eddy.x12.Tests;
 
 public class x12DocumentTests
 {
@@ -31,7 +33,8 @@ public class x12DocumentTests
             "L11*9999001947*DO~",
             "L11*9999670098*CR~",
             "L11*9999001866*DO~",
-            "L11*9999669887*CR~"
+            "L11*9999669887*CR~",
+            "SE*13*0001",
         };
     }
 
@@ -39,7 +42,8 @@ public class x12DocumentTests
     public void ValidDocument()
     {
         var subject = x12Document.Parse(string.Join(Environment.NewLine, data));
-        Assert.True(subject.IsValid);
+        if (!subject.IsValid)
+            Assert.Fail(subject.ValidationErrors[0].ToString());
     }
 
     [Fact]
@@ -50,6 +54,28 @@ public class x12DocumentTests
         Assert.False(subject.IsValid);
         Assert.Single(subject.ValidationErrors);
         Assert.Equal(4, subject.ValidationErrors[0].LineNumber);
+    }
+
+    [Fact]
+    public void InvalidSectionEndCount()
+    {
+        data[16] = "SE*29*0001~";
+        var subject = x12Document.Parse(string.Join(Environment.NewLine, data));
+        Assert.False(subject.IsValid);
+        Assert.Single(subject.ValidationErrors);
+        Assert.Equal(17, subject.ValidationErrors[0].LineNumber);
+        Assert.Equal(ErrorCodes.TransactionSetSegmentCountMismatch, subject.ValidationErrors[0].Errors[0].ErrorCode);
+    }
+
+    [Fact]
+    public void InvalidSectionTransactionNumberCount()
+    {
+        data[16] = "SE*13*9999~";
+        var subject = x12Document.Parse(string.Join(Environment.NewLine, data));
+        Assert.False(subject.IsValid);
+        Assert.Single(subject.ValidationErrors);
+        Assert.Equal(17, subject.ValidationErrors[0].LineNumber);
+        Assert.Equal(ErrorCodes.TransactionSetControlNumberMismatch, subject.ValidationErrors[0].Errors[0].ErrorCode);
     }
 
 
