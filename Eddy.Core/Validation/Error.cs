@@ -31,6 +31,10 @@ public class ErrorCodes
 
     public static ErrorCodes DateIsNotValidFormat = new ErrorCodes(3000, "{0} was not in the format of CCYYMMDD");
     public static ErrorCodes TimeIsNotValidFormat = new ErrorCodes(3001, "{0} was not in the format of HHMM[SS[DD]]");
+
+    public static ErrorCodes TransactionSetSegmentCountMismatch = new ErrorCodes(4000, "Expected SE Number of Included Segments to be {0} but was {1}");
+    public static ErrorCodes TransactionSetControlNumberMismatch = new ErrorCodes(4001, "Expected SE Control Number to be {0} but was {1}");
+
     private ErrorCodes()
     {
     }
