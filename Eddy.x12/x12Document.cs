@@ -122,7 +122,7 @@ public class x12Document
                 var validationResult = ediX12Segment.Validate();
                 if (!validationResult.IsValid)
                 {
-                    //validationResult.LineNumber = lineNumber;
+                    validationResult.LineNumber = lineNumber;
                     r2.ValidationErrors.Add(validationResult);
                 }
 

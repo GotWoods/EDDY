@@ -49,6 +49,7 @@ public class x12DocumentTests
         var subject = x12Document.Parse(string.Join(Environment.NewLine, data));
         Assert.False(subject.IsValid);
         Assert.Single(subject.ValidationErrors);
+        Assert.Equal(4, subject.ValidationErrors[0].LineNumber);
     }
 
 

@@ -23,7 +23,7 @@ public partial class Form1 : Form
     private async Task<string> GetPage(string url)
     {
         var fetcher = new BrowserFetcher();
-        var result = await fetcher.DownloadAsync(BrowserFetcher.DefaultChromiumRevision);
+        var result = await fetcher.DownloadAsync(BrowserTag.Stable);
 
         var browser = await Puppeteer.LaunchAsync(new LaunchOptions
         {

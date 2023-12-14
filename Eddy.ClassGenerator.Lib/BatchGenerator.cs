@@ -30,7 +30,7 @@ public class BatchGenerator
     public BatchGenerator()
     {
         var fetcher = new BrowserFetcher();
-        var result = fetcher.DownloadAsync(BrowserFetcher.DefaultChromiumRevision).Result;
+        var result = fetcher.DownloadAsync(BrowserTag.Stable).Result;
 
         _browser = Puppeteer.LaunchAsync(new LaunchOptions
         {

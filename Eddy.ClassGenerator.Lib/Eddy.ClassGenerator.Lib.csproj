@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Eddy.Core" Version="0.0.1-beta" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
-    <PackageReference Include="PuppeteerSharp" Version="9.0.2" />
+    <PackageReference Include="Eddy.Core" Version="0.0.2-beta" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.55" />
+    <PackageReference Include="PuppeteerSharp" Version="13.0.2" />
   </ItemGroup>
 
   <ItemGroup>

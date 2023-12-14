@@ -7,13 +7,12 @@ using Eddy.Core;
 using Eddy.Core.Attributes;
 using Eddy.x12.Mapping.Cache;
 using Eddy.x12.Models;
-using Microsoft.Extensions.Logging;
 
 namespace Eddy.x12.Mapping;
 
 public class DomainMapper
 {
-    private readonly ILogger<DomainMapper> _logger;
+    //private readonly ILogger<DomainMapper> _logger;
 
     private readonly List<EdiX12Segment> _segments;
     private int _currentSegmetnIndex;
@@ -22,12 +21,12 @@ public class DomainMapper
     public DomainMapper(List<EdiX12Segment> segments)
     {
         _segments = segments;
-        _logger = Logging.Logger<DomainMapper>();
+      //  _logger = Logging.Logger<DomainMapper>();
     }
 
     public DomainMapper()
     {
-        _logger = Logging.Logger<DomainMapper>();
+//        _logger = Logging.Logger<DomainMapper>();
     }
 
     private EdiX12Segment CurrentSegment => _segments[_currentSegmetnIndex];
@@ -46,18 +45,18 @@ public class DomainMapper
         var prefix = "".PadLeft(_logDepth * 2, ' ');
         while (_currentSegmetnIndex < _segments.Count)
         {
-            _logger.LogDebug($"{prefix}Processing [{_currentSegmetnIndex}] {CurrentSegment.GetType()} into {result.GetType()}");
+           // _logger.LogDebug($"{prefix}Processing [{_currentSegmetnIndex}] {CurrentSegment.GetType()} into {result.GetType()}");
 
             var prop = propertyMap.FirstOrDefault(x => x.MatchingSegmentType == CurrentSegment.GetType());
             if (prop == null)
             {
-                _logger.LogDebug($"{prefix}does not match any properties in this object, returning");
+              //  _logger.LogDebug($"{prefix}does not match any properties in this object, returning");
                 return result;
             }
 
             if (CurrentSegment.GetType() == propertyMap.First().MatchingSegmentType && firstInstanceFound) //found the start of a new loop
             {
-                _logger.LogDebug($"{prefix}Item already found. Exiting");
+            //    _logger.LogDebug($"{prefix}Item already found. Exiting");
                 return result!;
             }
 

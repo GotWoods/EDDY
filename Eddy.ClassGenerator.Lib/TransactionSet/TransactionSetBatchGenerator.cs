@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
+//using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using PuppeteerSharp;
 
 namespace Eddy.ClassGenerator.Lib;
@@ -46,7 +46,7 @@ public class TransactionSetBatchGenerator
     public TransactionSetBatchGenerator()
     {
         var fetcher = new BrowserFetcher();
-        var result = fetcher.DownloadAsync(BrowserFetcher.DefaultChromiumRevision).Result;
+        var result = fetcher.DownloadAsync(BrowserTag.Stable).Result;
 
         _browser = Puppeteer.LaunchAsync(new LaunchOptions
         {
