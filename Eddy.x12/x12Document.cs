@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Eddy.Core;
+using Eddy.Core.Validation;
 using Eddy.x12.Mapping;
 using Eddy.x12.Models;
 
@@ -15,6 +17,8 @@ public class x12Document
 {
     public GenericInterchangeControlHeader InterchangeControlHeader { get; set; }
     public GenericFunctionalGroupHeader GsHeader { get; set; }
+    public List<ValidationResult> ValidationErrors { get; set; } = new();
+    public bool IsValid => !ValidationErrors.Any();
 
     public string ToString(MapOptions options)
     {
@@ -66,7 +70,7 @@ public class x12Document
         var pattern = $"^[{allowedChars}{asciiChars}]*$"; // + asciiChars1 + asciiChars2 + "]*$";
         var regex = new Regex(pattern);
         var match = regex.Match(data);
-
+        var lineNumber = 1;
         // if (!match.Success)
         //     throw new InvalidFileFormatException("Non ASCII characters detected in file at position " + (match.Index + match.Length));
         //
@@ -84,10 +88,11 @@ public class x12Document
         options.ComponentElementSeparator = r2.InterchangeControlHeader.ComponentDataElementSeparator;
         options.LineEnding = r2.InterchangeControlHeader.ElementSeparator.ToString();
         options.StandardsVersion = r2.InterchangeControlHeader.InterchangeControlVersionNumberCode + "0";
+        //line 1 validation here
 
         var lines = data.Split(options.LineEnding.ToCharArray());
-
         r2.GsHeader = Map.MapObject<GenericFunctionalGroupHeader>(lines[1], options);
+       
 
         //TODO: parse these lines in raw to get the parameters
         //result.GsHeader = GsHeaderFactory.FromVersion(version, lines[1], options); // Map.MapObject<GS_FunctionalGroupHeader>(lines[1],options);
@@ -113,7 +118,15 @@ public class x12Document
             }
             else if (currentSection != null)
             {
-                currentSection.Segments.Add(EdiSectionParserFactory.Parse(options.StandardsVersion,trimmedLine, options));
+                var ediX12Segment = EdiSectionParserFactory.Parse(options.StandardsVersion,trimmedLine, options);
+                var validationResult = ediX12Segment.Validate();
+                if (!validationResult.IsValid)
+                {
+                    //validationResult.LineNumber = lineNumber;
+                    r2.ValidationErrors.Add(validationResult);
+                }
+
+                currentSection.Segments.Add(ediX12Segment);
             }
             else if (trimmedLine.StartsWith("SE"))
             {
@@ -124,7 +137,11 @@ public class x12Document
                     throw new Exception($"The starting control number ({currentSection.TransactionSetControlNumber}) did not match the ending control number ({se.TransactionSetControlNumber})");
                 r2.Sections.Add(currentSection);
             }
+
+            lineNumber++;
         }
+
+
         return r2;
     }
 
@@ -133,4 +150,5 @@ public class x12Document
     //public GS_FunctionalGroupHeader GsHeader { get; set; }
 
     //public ISA_InterchangeControlHeader IsaInterchangeControlHeader { get; set; }
+   
 }

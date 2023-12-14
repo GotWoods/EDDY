@@ -18,6 +18,7 @@ using My214Parser.Converters;
 //Upload a file that has more than one transport update in it (if you have it)
 //Upload a file with sensor readings
 //Upload a file with stops in it
+//Timezones upload a timezone with daylight time and standard time
 //Any other custom values?
 
 
@@ -52,7 +53,7 @@ var mapper = new Mapper();
 foreach (var folder in paths)
 {
     Console.WriteLine("Parsing folder " + folder);
-    foreach (var filePath in Directory.GetFiles(folder).Take(1))
+    foreach (var filePath in Directory.GetFiles(folder))
     {
         fileCount++;
         //var filePath = "C:\\CMAC_BUG_L1851696_1.txt";
@@ -130,9 +131,6 @@ foreach (var folder in paths)
 
                     foreach (var shipmentWeightPackagingAndQuantityData in update.ShipmentWeightPackagingAndQuantityData)
                     {
-                        //https://www.stedi.com/edi/x12-008020/segment/AT8
-                    
-
                         if (shipmentWeightPackagingAndQuantityData.Weight != null)
                         {
 
@@ -181,135 +179,6 @@ foreach (var folder in paths)
                     }
                 }
             }
-
-            //Console.WriteLine("Shipment Reference Identification Number: " + result.ReferenceIdentification); //Carrier # or CarrierPro
-            //Console.WriteLine("Shipment Identification Number: " + result.ShipmentId); //This will sometimes be the transportId but could be the BOL#/CarrierPro/etc.
-
-            //Need a map to determine where to find out TransportationId
-            //
-            foreach (var transaction in result.Transactions)
-            {
-                //     foreach (var pair in transaction.ReferenceNumbers)
-                //         switch (pair.Key)
-                //         {
-                //             case "QN":
-                //                 Console.WriteLine("Stop #: " + pair.Value);
-                //                 break;
-                //             case "BM":
-                //                 Console.WriteLine("Detail Bill of Lading Number: " + pair.Value);
-                //                 break;
-                //             case "WH":
-                //                 Console.WriteLine("Detail Master Reference (Link) Number: " + pair.Value);
-                //                 break;
-                //             case "P8":
-                //                 Console.WriteLine("Detail Pickup Reference Number: " + pair.Value);
-                //                 break;
-                //             case "PO":
-                //                 Console.WriteLine("Detail Purchase Order Number: " + pair.Value);
-                //                 break;
-                //             case "SI":
-                //                 Console.WriteLine("Detail Shipper Identifying Number (SID): " + pair.Value);
-                //                 break;
-                //             case "BN":
-                //                 Console.WriteLine("Detail Booking Number: " + pair.Value);
-                //                 break;
-                //             case "CN":
-                //                 Console.WriteLine("Carrier Pro: " + pair.Value);
-                //                 break;
-                //             case "CO":
-                //                 Console.WriteLine("Customer Order Number: " + pair.Value);
-                //                 break;
-                //             case "CR":
-                //                 Console.WriteLine("Customer Reference Number: " + pair.Value);
-                //                 break;
-                //             case "11":
-                //                 Console.WriteLine("Account Number: " + pair.Value);
-                //                 break;
-                //             case "OQ":
-                //                 Console.WriteLine("Order Number: " + pair.Value);
-                //                 break;
-                //             case "TN":
-                //                 Console.WriteLine("Transaction Reference Number: " + pair.Value);
-                //                 break;
-                //             case "ZZ":
-                //                 Console.WriteLine("Custom Identifier: " + pair.Value);
-                //                 //ZZ*75|F
-                //                 //ZZ*TEMP:43:Unit:C
-                //                 break;
-                //             default:
-                //                 Console.WriteLine("Unknown Detail Reference Identifier: " + pair.Value);
-                //                 break;
-                //         }
-
-
-                // foreach (var update in transaction.Updates)
-                // {
-                //     //missing date and time
-                //     Console.WriteLine("Event Happened At: " + update.EventDate);
-                //
-                //     //interesting maps here https://www.stedi.com/edi/x12-008020/segment/AT7
-                //     //status.
-                //     if (update.Location != null)
-                //         Console.WriteLine("Location: " + update.Location.City + ", " + update.Location.StateProvinceCode + ", " + update.Location.CountryCode);
-                //     else
-                //         Console.WriteLine("Location not specified");
-                //
-                //
-                //     switch (update.StatusCode)
-                //     {
-                //         case "X3":
-                //             Console.WriteLine("Arrived at Pick-up Location");
-                //             break;
-                //         case "AF":
-                //             Console.WriteLine("Carrier Departed Pick-up Location with Shipment");
-                //             break;
-                //         case "X6":
-                //             Console.WriteLine("En Route To Destination");
-                //             break;
-                //
-                //         case "X1":
-                //             Console.WriteLine("Arrived at Delivery Location");
-                //             break;
-                //
-                //         case "D1":
-                //             Console.WriteLine("Completed Unloading at Delivery Location");
-                //             break;
-                //         
-                //         case "AP":
-                //             Console.WriteLine("Delivery Not Completed");
-                //             break;
-                //         case "AG":
-                //             Console.WriteLine("Estimated Delivery");
-                //             break;
-                //         case null:
-                //             Console.WriteLine("Unkown");
-                //             break;
-                //         default:
-                //             Console.WriteLine("Unkown");
-                //             break;
-                //     }
-            }
-
-
-            // foreach (var shipmentWeightPackagingAndQuantityData in transaction.L0250)
-            // {
-            //     //https://www.stedi.com/edi/x12-008020/segment/AT8
-            //     var weightUnit = "";
-            //     switch (shipmentWeightPackagingAndQuantityData.ShipmentPurchaseOrderDetail.WeightUnitCode)
-            //     {
-            //         case "L":
-            //             weightUnit = "Lbs";
-            //             break;
-            //         case "K":
-            //             weightUnit = "Kg";
-            //             break;
-            //     }
-            //     Console.WriteLine("Weight: " + shipmentWeightPackagingAndQuantityData.ShipmentPurchaseOrderDetail.Weight + weightUnit);
-            //     Console.WriteLine("Quantity: " + shipmentWeightPackagingAndQuantityData.ShipmentPurchaseOrderDetail.Quantity);
-            // }
-
-            //MAP Here
-
             Console.WriteLine();
             Console.WriteLine();
         }

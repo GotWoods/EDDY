@@ -10,7 +10,7 @@ namespace Eddy.Core.Validation
         }
 
         public bool IsValid => Errors.Count == 0;
-
+        public int LineNumber { get; set; }
         public List<Error> Errors { get; } = new();
 
         public void Add(Error error)

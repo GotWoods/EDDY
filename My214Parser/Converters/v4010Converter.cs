@@ -1,4 +1,5 @@
-﻿using Eddy.x12.DomainModels.Transportation.v4010;
+﻿using System.Diagnostics;
+using Eddy.x12.DomainModels.Transportation.v4010;
 using Eddy.x12.Mapping;
 using Eddy.x12.Models;
 
@@ -22,6 +23,11 @@ internal class v4010Converter
 
             foreach (var status in detail.L0205)
             {
+                var tzs = new List<string>() { "ET", "CT", "MT", "PT", ""};
+                if (!tzs.Contains(status.ShipmentStatusDetails.TimeCode))
+                {
+                    Debug.WriteLine(status.ShipmentStatusDetails.TimeCode);
+                }
                 var update = new Update();
                 //update.EventDate = status.ShipmentStatusDetails.Date + ":" + status.ShipmentStatusDetails.Time;
                 if (status.EquipmentShipmentOrRealPropertyLocation != null)
