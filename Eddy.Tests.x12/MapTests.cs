@@ -1,7 +1,8 @@
-﻿using Eddy.x12.Mapping;
+﻿using Eddy.Tests.x12;
+using Eddy.x12.Mapping;
 using Eddy.x12.Models;
 
-namespace Eddy.Tests.x12;
+namespace Eddy.x12.Tests;
 
 public class MapTests
 {

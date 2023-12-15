@@ -116,14 +116,29 @@ public class x12Document
             {
                 var se = Map.MapObject<SE_TransactionSetTrailer>(trimmedLine, options);
 
-                if (se.NumberOfIncludedSegments != currentSection.Segments.Count)
-                    r2.ValidationErrors.Add(new ValidationResult() { LineNumber = lineNumber, Errors = { new Error(ErrorCodes.TransactionSetSegmentCountMismatch, se.NumberOfIncludedSegments.ToString(), currentSection.Segments.Count.ToString()) } });
+                if (se.NumberOfIncludedSegments != currentSection.Segments.Count+2)
+                    r2.ValidationErrors.Add(new ValidationResult() { LineNumber = lineNumber, Errors = { new Error(ErrorCodes.TransactionSetSegmentCountMismatch, se.NumberOfIncludedSegments.ToString(), (currentSection.Segments.Count+2).ToString()) } });
 
                 if (se.TransactionSetControlNumber != currentSection.TransactionSetControlNumber)
                     r2.ValidationErrors.Add(new ValidationResult() { LineNumber = lineNumber, Errors = { new Error(ErrorCodes.TransactionSetControlNumberMismatch, currentSection.TransactionSetControlNumber, se.TransactionSetControlNumber) } });
 
-                r2.Sections.Add(currentSection);
+
             }
+            else if (trimmedLine.StartsWith("GE"))
+            {
+                var ge = Map.MapObject<GenericFunctionalGroupTrailer>(trimmedLine, options);
+                if (ge.NumberOfTransactionSetsIncluded != r2.Sections.Count)
+                    r2.ValidationErrors.Add(new ValidationResult() { LineNumber = lineNumber, Errors = { new Error(ErrorCodes.FunctionalGroupSectionCountMismatch, ge.NumberOfTransactionSetsIncluded.ToString(), r2.Sections.Count.ToString()) } });
+
+                if (ge.GroupControlNumber != int.Parse(r2.GsHeader.GroupControlNumber))
+                    r2.ValidationErrors.Add(new ValidationResult() { LineNumber = lineNumber, Errors = { new Error(ErrorCodes.FunctionalGroupControlNumberMismatch, r2.GsHeader.GroupControlNumber, ge.GroupControlNumber.ToString()) } });
+            }
+            // else if (trimmedLine.EndsWith("IEA"))
+            // {
+            //     var iea = Map.MapObject<GenericInterchangeControlTrailer>(trimmedLine, options);
+            //     if (iea.InterchangeControlNumber != r2.InterchangeControlHeader.InterchangeControlNumber.ToString().PadLeft(9, '0'))
+            //         r2.ValidationErrors.Add(new ValidationResult() { LineNumber = lineNumber, Errors = { new Error(ErrorCodes.InterchangeControlNumberMismatch, r2.InterchangeControlHeader.InterchangeControlNumber.ToString().PadLeft(9, '0'), iea.InterchangeControlNumber) } });
+            // }
             else if (currentSection != null)
             {
                 var ediX12Segment = EdiSectionParserFactory.Parse(options.StandardsVersion,trimmedLine, options);

@@ -2,19 +2,19 @@
 
 namespace Eddy.x12.Tests;
 
-public class x12DocumentTests
+public class x12DocumentValidationTests
 {
     private readonly string[] data;
 
     // Static constructor to ensure EdiSectionParserFactory.LoadSegmentProviders() 
     // is called once for the entire test run
-    static x12DocumentTests()
+    static x12DocumentValidationTests()
     {
         EdiSectionParserFactory.LoadSegmentProviders();
     }
 
     // Constructor to initialize data
-    public x12DocumentTests()
+    public x12DocumentValidationTests()
     {
         data = new[]
         {
@@ -34,7 +34,8 @@ public class x12DocumentTests
             "L11*9999670098*CR~",
             "L11*9999001866*DO~",
             "L11*9999669887*CR~",
-            "SE*13*0001",
+            "SE*15*0001~",
+            "GE*1*2100~"
         };
     }
 
@@ -70,13 +71,15 @@ public class x12DocumentTests
     [Fact]
     public void InvalidSectionTransactionNumberCount()
     {
-        data[16] = "SE*13*9999~";
+        data[16] = "SE*15*9999~";
         var subject = x12Document.Parse(string.Join(Environment.NewLine, data));
         Assert.False(subject.IsValid);
         Assert.Single(subject.ValidationErrors);
         Assert.Equal(17, subject.ValidationErrors[0].LineNumber);
         Assert.Equal(ErrorCodes.TransactionSetControlNumberMismatch, subject.ValidationErrors[0].Errors[0].ErrorCode);
     }
+
+   
 
 
 }
