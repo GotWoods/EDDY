@@ -26,10 +26,10 @@ var paths = new List<string>
 {
     "G:\\EdiSamples\\AAACooper\\214\\IN\\2023\\02",
     "G:\\EdiSamples\\CardinalLogisticsManagement\\214\\IN\\2023\\03",
-     "G:\\EdiSamples\\CHRobinson\\214\\IN\\2023\\03", //these can have ZZ identifiers
+    "G:\\EdiSamples\\CHRobinson\\214\\IN\\2023\\03", //these can have ZZ identifiers
     //"G:\\EdiSamples\\CHRobinson\\214\\OUT\\2023\\02",
     "G:\\EdiSamples\\FedEx\\214\\IN\\2023\\02",
-    
+
     "G:\\EdiSamples\\Holland\\214\\IN\\2023\\02",
     "G:\\EdiSamples\\KLGExpress\\214\\IN\\2023\\02",
     "G:\\EdiSamples\\knight\\214\\IN\\2023\\02",
@@ -39,8 +39,8 @@ var paths = new List<string>
     "G:\\EdiSamples\\Magellan\\214\\IN",
     "G:\\EdiSamples\\Magna\\214\\OUT\\2023\\02",
     "G:\\EdiSamples\\pyle\\214\\2023\\02",
-    "G:\\EdiSamples\\R2Logistics\\214\\IN\\2023\\02",
-    
+    "G:\\EdiSamples\\R2Logistics\\214\\IN\\2023\\02"
+
     //"G:\\EdiSamples\\FreightSOL\\214\\IN";
 };
 
@@ -61,17 +61,21 @@ foreach (var folder in paths)
         var data = File.ReadAllText(filePath);
         var document = x12Document.Parse(data);
 
+        if (!document.IsValid)
+            throw new Exception("Invalid document: " + document.ValidationErrors[0]);
+
+
         //Console.WriteLine(filePath);
         var converter = new v4010Converter();
         foreach (var section in document.Sections)
         {
             var result = converter.Convert(section.Segments);
 
-            foreach (var item in result.Transactions)
-                // foreach (var customVariables in item.ReferenceNumbers.Where(x => x.Key == "ZZ").Select(x => x.Value))
-                //     Console.WriteLine("Custom: " + customVariables);
+            //foreach (var item in result.Transactions)
+            // foreach (var customVariables in item.ReferenceNumbers.Where(x => x.Key == "ZZ").Select(x => x.Value))
+            //     Console.WriteLine("Custom: " + customVariables);
 
-                result.From = document.InterchangeControlHeader.InterchangeSenderID.Trim();
+            result.From = document.InterchangeControlHeader.InterchangeSenderID.Trim();
             result.To = document.InterchangeControlHeader.InterchangeReceiverID.Trim();
 
             var mapped = mapper.Map(result);
@@ -133,7 +137,6 @@ foreach (var folder in paths)
                     {
                         if (shipmentWeightPackagingAndQuantityData.Weight != null)
                         {
-
                             var weightUnit = "";
                             switch (shipmentWeightPackagingAndQuantityData.Weight.Qualifier)
                             {
@@ -150,6 +153,7 @@ foreach (var folder in paths)
                                     weightUnit = shipmentWeightPackagingAndQuantityData.Weight.Qualifier;
                                     break;
                             }
+
                             Console.WriteLine("\tWeight: " + shipmentWeightPackagingAndQuantityData.Weight.Item + weightUnit);
                         }
 
@@ -173,18 +177,19 @@ foreach (var folder in paths)
                                     volumeUnit = shipmentWeightPackagingAndQuantityData.Weight.Qualifier;
                                     break;
                             }
+
                             if (shipmentWeightPackagingAndQuantityData.Volume.Item > 0)
                                 Console.WriteLine("\tVolume: " + shipmentWeightPackagingAndQuantityData.Volume.Item + volumeUnit);
                         }
                     }
                 }
             }
+
             Console.WriteLine();
             Console.WriteLine();
         }
     }
 }
-
 
 sw.Stop();
 Console.WriteLine($"Finished processing {fileCount} files in {sw.ElapsedMilliseconds}ms ({Math.Round(sw.ElapsedMilliseconds / (double)fileCount, 2)}ms/file)");
