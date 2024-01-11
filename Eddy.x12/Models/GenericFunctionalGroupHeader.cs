@@ -1,4 +1,6 @@
-﻿using Eddy.Core.Attributes;
+﻿using System;
+using System.Globalization;
+using Eddy.Core.Attributes;
 using Eddy.Core.Validation;
 
 namespace Eddy.x12.Models;
@@ -33,5 +35,10 @@ public class GenericFunctionalGroupHeader : EdiX12Segment
     public override ValidationResult Validate()
     {
         return new ValidationResult();
+    }
+
+    public DateTime GetDateTime()
+    {
+        return x12DateTimeParser.Parse(Date, Time, SupportedDateFormats.EightDigit, SupportedTimeFormats.All);
     }
 }

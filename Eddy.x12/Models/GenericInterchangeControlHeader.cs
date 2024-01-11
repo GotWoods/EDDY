@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Text;
 using Eddy.x12.Mapping;
 
@@ -37,6 +38,12 @@ public class GenericInterchangeControlHeader
     public string InterchangeUsageIndicatorCode { get; set; }
 
     public string ComponentDataElementSeparator { get; set; }
+
+
+    public DateTime GetDateTime()
+    {
+        return x12DateTimeParser.Parse(InterchangeDate, InterchangeTime, SupportedDateFormats.All, SupportedTimeFormats.FourDigit);
+    }
 
     public static GenericInterchangeControlHeader FromString(string line)
     {

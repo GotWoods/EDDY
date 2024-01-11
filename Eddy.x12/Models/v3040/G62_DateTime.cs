@@ -1,3 +1,4 @@
+using System;
 using Eddy.Core.Attributes;
 using Eddy.Core.Validation;
 using Eddy.x12.Models.Elements;
@@ -25,7 +26,20 @@ public class G62_DateTime : EdiX12Segment
 	[Position(06)]
 	public int? Century { get; set; }
 
-	public override ValidationResult Validate()
+    public DateTime GetDateTime()
+    {
+        var centuryAsString = "";
+        if (Century.HasValue)
+        {
+            if (Century.Value < 10 || Century.Value >= 100)
+                throw new InvalidOperationException("Invalid century. Expected a 2 digit century but got " + Century.Value);
+			centuryAsString = Century.ToString();
+        }
+
+        return x12DateTimeParser.Parse(centuryAsString + Date, Time, SupportedDateFormats.All, SupportedTimeFormats.FourDigit | SupportedTimeFormats.SixDigit);
+    }
+
+    public override ValidationResult Validate()
 	{
 		var validator = new BasicValidator<G62_DateTime>(this);
 		validator.AtLeastOneIsRequired(x=>x.DateQualifier, x=>x.TimeQualifier);

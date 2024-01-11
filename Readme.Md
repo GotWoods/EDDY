@@ -61,4 +61,24 @@ OnlyOneOf:
 Caching and Startup
 The first time a map operation is called. All the maps will be determined and cached
 
+x12Dates and Times
+
+Dates and times follow different formats depending on the version of the spec and which line type you are parsing. Some line types support 
+calling GetDateTime() which will return a DateTime object (ISA / GS / G62).
+
+For other places you can specify if you expect a 4 or 6 digit (or use All for both) format for the date. For the time it can be a 4,6,7, or 8 digit format. 
+
+```
+x12DateTimeParser.Parse("210101", "0730", SupportedDateFormats.SixDigit, SupportedTimeFormats.FourDigit | SupportedTimeFormats.SixDigit)
+```
+
+Time zones can roughly be determined as well using the ConvertToTimeZon method which will create a DateTimeOffset object with the correct offset:
+
+```
+var result = x12DateTimeParser.ConvertToTimeZone(testDate, "ET");
+```
+
+This will take into account Daylight Savings Time if the date falls into the DST date range. This is not perfect as some regions switch time zones on certain dates (e.g. Britan changes from GMT to BST in the summer) and other locations can have some complex rules as well.
+
+The use of the LT time code will cause an exception in the ConvertToTimeZone as we don't know if that is the local timezone of the sender, the recipient, or the timezone of the data the line is refering to (e.g. a location update from a company based in LA, reporting to a company based in New York, with the location update happening in Colorado)
 
