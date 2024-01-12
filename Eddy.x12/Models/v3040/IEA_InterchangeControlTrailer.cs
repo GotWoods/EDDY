@@ -11,7 +11,7 @@ public class IEA_InterchangeControlTrailer : EdiX12Segment
 	public int? NumberOfIncludedFunctionalGroups { get; set; }
 
 	[Position(02)]
-	public int? InterchangeControlNumber { get; set; }
+	public string InterchangeControlNumber { get; set; }
 
 	public override ValidationResult Validate()
 	{
@@ -20,6 +20,7 @@ public class IEA_InterchangeControlTrailer : EdiX12Segment
 		validator.Required(x=>x.InterchangeControlNumber);
 		validator.Length(x => x.NumberOfIncludedFunctionalGroups, 1, 5);
 		validator.Length(x => x.InterchangeControlNumber, 9);
+		validator.ConvertibleToInteger(x=>x.InterchangeControlNumber);
 		return validator.Results;
 	}
 }

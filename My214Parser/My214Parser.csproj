@@ -6,9 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Eddy.Core" Version="0.0.4-beta" />
+    <PackageReference Include="Eddy.Core" Version="0.0.5-beta" />
     <PackageReference Include="Eddy.x12.DomainModels.Transportation" Version="0.0.1-beta" />
-    <PackageReference Include="Eddy.x12Parser" Version="0.0.2-beta" />
+    <PackageReference Include="Eddy.x12Parser" Version="0.0.3-beta" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 </Project>

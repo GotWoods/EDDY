@@ -3524,7 +3524,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Eddy.x12Parser" Version="0.0.1-beta" />
+    <PackageReference Include="Eddy.x12Parser" Version="0.0.3-beta" />
   </ItemGroup>
 
 </Project>

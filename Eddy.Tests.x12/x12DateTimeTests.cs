@@ -92,7 +92,7 @@ namespace Eddy.x12.Tests
         public void ConvertToTimeZone_ShouldReturnCorrectOffset(string dateString, string timeZoneCode, int expectedHours, int expectedMinutes = 0)
         {
             var testDate = DateTime.Parse(dateString);
-            ;x12DateTimeParser.Parse("210101", "0730", SupportedDateFormats.SixDigit, SupportedTimeFormats.FourDigit | SupportedTimeFormats.SixDigit)
+            x12DateTimeParser.Parse("210101", "0730", SupportedDateFormats.SixDigit, SupportedTimeFormats.FourDigit | SupportedTimeFormats.SixDigit);
             var result = x12DateTimeParser.ConvertToTimeZone(testDate, timeZoneCode);
             var expectedDateTime = new DateTime(testDate.Year, testDate.Month, testDate.Day, expectedHours, expectedMinutes, 00, DateTimeKind.Utc);
             Assert.Equal(expectedDateTime.ToUniversalTime(), result.ToUniversalTime());

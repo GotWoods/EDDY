@@ -16,7 +16,7 @@ public class IEATests
 		var expected = new IEA_InterchangeControlTrailer()
 		{
 			NumberOfIncludedFunctionalGroups = 8,
-			InterchangeControlNumber = 925711177,
+			InterchangeControlNumber = "925711177",
 		};
 
 		var actual = Map.MapObject<IEA_InterchangeControlTrailer>(x12Line, MapOptionsForTesting.x12DefaultEndsWithNewline);
@@ -30,7 +30,7 @@ public class IEATests
 	{
 		var subject = new IEA_InterchangeControlTrailer();
 		//Required fields
-		subject.InterchangeControlNumber = 925711177;
+		subject.InterchangeControlNumber = "925711177";
 		//Test Parameters
 		if (numberOfIncludedFunctionalGroups > 0) 
 			subject.NumberOfIncludedFunctionalGroups = numberOfIncludedFunctionalGroups;
@@ -38,17 +38,31 @@ public class IEATests
 	}
 
 	[Theory]
-	[InlineData(0, false)]
-	[InlineData(925711177, true)]
-	public void Validation_RequiredInterchangeControlNumber(int interchangeControlNumber, bool isValidExpected)
+	[InlineData("", false)]
+	[InlineData("925711177", true)]
+	public void Validation_RequiredInterchangeControlNumber(string interchangeControlNumber, bool isValidExpected)
 	{
 		var subject = new IEA_InterchangeControlTrailer();
 		//Required fields
 		subject.NumberOfIncludedFunctionalGroups = 8;
 		//Test Parameters
-		if (interchangeControlNumber > 0) 
+		if (interchangeControlNumber != "") 
 			subject.InterchangeControlNumber = interchangeControlNumber;
 		TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.Required);
 	}
+
+    [Theory]
+    [InlineData("A23456789", false)]
+    [InlineData("925711177", true)]
+    public void Validation_RequiredInterchangeControlNumberToBeNumeric(string interchangeControlNumber, bool isValidExpected)
+    {
+        var subject = new IEA_InterchangeControlTrailer();
+        //Required fields
+        subject.NumberOfIncludedFunctionalGroups = 8;
+        //Test Parameters
+        if (interchangeControlNumber != "")
+            subject.InterchangeControlNumber = interchangeControlNumber;
+        TestHelper.CheckValidationResults(subject, isValidExpected, ErrorCodes.ConvertibleToInteger);
+    }
 
 }

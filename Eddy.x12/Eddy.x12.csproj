@@ -6,7 +6,7 @@
 
 
     <PackageId>Eddy.x12Parser</PackageId>
-    <Version>0.0.3-beta</Version>
+    <Version>0.0.4-beta</Version>
     <Title>EDDY EDI x12 Parser</Title>
     <Authors>GotWoods</Authors>
     <Description>
@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Eddy.Core" Version="0.0.4-beta" />
+    <PackageReference Include="Eddy.Core" Version="0.0.5-beta" />
   </ItemGroup>
 
 </Project>
