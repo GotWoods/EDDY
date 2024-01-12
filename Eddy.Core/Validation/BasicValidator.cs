@@ -128,6 +128,13 @@ public class BasicValidator<T>
 
     }
 
+    public void ConvertibleToInteger(Expression<Func<T, object>> expression)
+    {
+        var wrap = expression.Wrap(_instance, _segmentName);
+        if (!int.TryParse(wrap.GetPropertyValue(), NumberStyles.None, CultureInfo.InvariantCulture, out _))
+            Results.Errors.Add(new Error(ErrorCodes.ConvertibleToInteger, wrap.GetFormattedPropertyName()));
+    }
+
     public void Required(Expression<Func<T, object>> expression)
     {
         var wrap = expression.Wrap(_instance, _segmentName);
@@ -286,5 +293,7 @@ public class BasicValidator<T>
             Results.Errors.Add(new Error(ErrorCodes.OnlyOneOf, a.GetFormattedPropertyName(), b.GetFormattedPropertyName()));
         }
     }
+
+  
   
 }

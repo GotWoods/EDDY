@@ -19,6 +19,7 @@ public class ErrorCodes
     
     public static ErrorCodes OutOfRange = new ErrorCodes(1000, "Expected {0} to be between {1} and {2} characters long but was {3}");
     public static ErrorCodes ExactLength = new ErrorCodes(1001, "Expected {0} to be exactly {1} characters long but was {2}");
+    public static ErrorCodes ConvertibleToInteger = new ErrorCodes(1002, "Expected {0} to be convertible to an integer but it could not be parsed");
 
     public static ErrorCodes Required = new ErrorCodes(2000, "{0} is required");
     public static ErrorCodes IfOneIsFilledAllAreRequired = new ErrorCodes(2001, "Specifying one of {0} means all are required");
