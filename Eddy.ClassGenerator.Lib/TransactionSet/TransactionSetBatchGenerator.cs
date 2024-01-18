@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
@@ -46,11 +47,21 @@ public class TransactionSetBatchGenerator
     public TransactionSetBatchGenerator()
     {
         var fetcher = new BrowserFetcher();
-        var result = fetcher.DownloadAsync(BrowserTag.Stable).Result;
+        fetcher.DownloadProgressChanged += (e,args) =>
+        {
+            OnProcessUpdate?.Invoke("Downloading: " + args.ProgressPercentage);
+        };
+        foreach (var x in fetcher.GetInstalledBrowsers())
+        {
+            Console.WriteLine(x.BuildId);
+        }
+        //using latest was not working for some reason as the Launch kept wanting this specific version
+            var result = fetcher.DownloadAsync("119.0.6045.105").Result;
 
         _browser = Puppeteer.LaunchAsync(new LaunchOptions
         {
-            Headless = true
+            Headless = true,
+//            SupportedBrowser = BrowserFetcher.DefaultRevision,
         }).Result;
     }
 
@@ -165,7 +176,7 @@ public class TransactionSetBatchGenerator
             "104",
             "110",
             "114",
-            "204",
+           // "204",
             "210",
             "213",
             "217",

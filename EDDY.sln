@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eddy.Tests", "Eddy.Tests\Ed
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F5935B87-E31F-4429-923B-2224D47DD9AC}"
 	ProjectSection(SolutionItems) = preProject
+		.github\workflows\nuget-publish-core.yml = .github\workflows\nuget-publish-core.yml
 		.github\workflows\nuget-publish-x12.yml = .github\workflows\nuget-publish-x12.yml
 		Readme.Md = Readme.Md
-		.github\workflows\nuget-publish-core.yml = .github\workflows\nuget-publish-core.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eddy.ClassGenerator", "Eddy.ClassGenerator\Eddy.ClassGenerator.csproj", "{ACB06F72-B5CA-4124-9CF4-CE58DAE6EF14}"
@@ -35,8 +35,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eddy.x12.DomainModels.Transportation", "Eddy.x12.DomainModels.Transportation\Eddy.x12.DomainModels.Transportation.csproj", "{F515A3DD-E6EC-45C5-9D41-FC2E05784136}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EdiFact", "EdiFact", "{E5B3DD37-CC52-4DA8-900B-06233F82D45A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "My214Parser", "My214Parser\My214Parser.csproj", "{B9E9434F-9627-4685-9C44-3139F346F2F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -88,10 +86,6 @@ Global
 		{F515A3DD-E6EC-45C5-9D41-FC2E05784136}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F515A3DD-E6EC-45C5-9D41-FC2E05784136}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F515A3DD-E6EC-45C5-9D41-FC2E05784136}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B9E9434F-9627-4685-9C44-3139F346F2F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B9E9434F-9627-4685-9C44-3139F346F2F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B9E9434F-9627-4685-9C44-3139F346F2F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B9E9434F-9627-4685-9C44-3139F346F2F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
