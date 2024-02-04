@@ -19,6 +19,11 @@ namespace Eddy.Core.Validation
                 this.Errors.Add(error);
         }
 
+        public void AddRange(List<Error> errors)
+        {
+            this.Errors.AddRange(errors);
+        }
+
         public override string ToString()
         {
             var sb = new StringBuilder();
