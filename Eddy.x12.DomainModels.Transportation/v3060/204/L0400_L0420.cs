@@ -13,4 +13,16 @@ public class L0400_L0420 {
 	[SectionPosition(5)] public List<N9_ReferenceIdentification> ReferenceIdentification { get; set; } = new();
 	[SectionPosition(6)] public List<L0400__L0420_L0421> L0421 {get;set;} = new();
 	[SectionPosition(7)] public List<L0400__L0420_L0425> L0425 {get;set;} = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<L0400_L0420>(this);
+		validator.Required(x => x.Name);
+		validator.CollectionSize(x => x.AddressInformation, 0, 2);
+		validator.CollectionSize(x => x.ReferenceIdentification, 0, 10);
+		validator.CollectionSize(x => x.L0421, 0, 999999);
+		validator.CollectionSize(x => x.L0425, 0, 999999);
+		foreach (var item in L0421) validator.Results.AddRange(item.Validate().Errors);
+		foreach (var item in L0425) validator.Results.AddRange(item.Validate().Errors);
+		return validator.Results;
+	}
 }

@@ -15,4 +15,16 @@ public class L0400_L0410 {
 	[SectionPosition(7)] public TSD_TrailerShipmentDetails? TrailerShipmentDetails { get; set; }
 	[SectionPosition(8)] public List<L0400__L0410_L0412> L0412 {get;set;} = new();
 	[SectionPosition(9)] public List<L0400__L0410_L0414> L0414 {get;set;} = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<L0400_L0410>(this);
+		validator.Required(x => x.AssignedNumber);
+		validator.CollectionSize(x => x.ReferenceIdentification, 0, 10);
+		validator.CollectionSize(x => x.MarksAndNumbers, 0, 300);
+		validator.CollectionSize(x => x.DateTime, 0, 5);
+		validator.CollectionSize(x => x.L0412, 0, 999999);
+		foreach (var item in L0412) validator.Results.AddRange(item.Validate().Errors);
+		foreach (var item in L0414) validator.Results.AddRange(item.Validate().Errors);
+		return validator.Results;
+	}
 }

@@ -9,4 +9,10 @@ public class L0200_L0205 {
 	[SectionPosition(1)] public AT7_ShipmentStatusDetails ShipmentStatusDetails { get; set; } = new();
 	[SectionPosition(2)] public MS1_EquipmentShipmentOrRealPropertyLocation? EquipmentShipmentOrRealPropertyLocation { get; set; }
 	[SectionPosition(3)] public MS2_EquipmentOrContainerOwnerAndType? EquipmentOrContainerOwnerAndType { get; set; }
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<L0200_L0205>(this);
+		validator.Required(x => x.ShipmentStatusDetails);
+		return validator.Results;
+	}
 }

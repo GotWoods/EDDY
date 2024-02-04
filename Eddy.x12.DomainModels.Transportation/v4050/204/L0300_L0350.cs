@@ -10,4 +10,14 @@ public class L0300_L0350 {
 	[SectionPosition(2)] public List<G62_DateTime> DateTime { get; set; } = new();
 	[SectionPosition(3)] public List<LAD_LadingDetail> LadingDetail { get; set; } = new();
 	[SectionPosition(4)] public List<L0300__L0350_L0360> L0360 {get;set;} = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<L0300_L0350>(this);
+		validator.Required(x => x.OrderInformationDetail);
+		validator.CollectionSize(x => x.DateTime, 0, 2);
+		validator.CollectionSize(x => x.LadingDetail, 0, 999);
+		validator.CollectionSize(x => x.L0360, 0, 99);
+		foreach (var item in L0360) validator.Results.AddRange(item.Validate().Errors);
+		return validator.Results;
+	}
 }

@@ -32,4 +32,34 @@ public class Edi204_MotorCarrierShipmentInformation {
 	[SectionPosition(19)] public L3_TotalWeightAndCharges TotalWeightAndCharges { get; set; } = new();
 	[SectionPosition(20)] public SE_TransactionSetTrailer TransactionSetTrailer { get; set; } = new();
 
+
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<Edi204_MotorCarrierShipmentInformation>(this);
+		validator.Required(x => x.TransactionSetHeader);
+		validator.Required(x => x.BeginningSegmentForShipmentInformationTransaction);
+		validator.CollectionSize(x => x.Authentication, 0, 4);
+		validator.CollectionSize(x => x.ReferenceNumber, 0, 10);
+		validator.CollectionSize(x => x.DateTime, 0, 6);
+		validator.CollectionSize(x => x.RouteInformationMotor, 0, 12);
+		validator.CollectionSize(x => x.SpecialHandlingInstructions, 0, 6);
+		validator.CollectionSize(x => x.SpecialServices, 0, 6);
+		validator.CollectionSize(x => x.HazardousCertification, 0, 6);
+		validator.CollectionSize(x => x.Remarks, 0, 10);
+		
+
+		validator.CollectionSize(x => x.LN1, 0, 10);
+		validator.CollectionSize(x => x.LN7, 0, 10);
+		foreach (var item in LN1) validator.Results.AddRange(item.Validate().Errors);
+		foreach (var item in LN7) validator.Results.AddRange(item.Validate().Errors);
+		
+
+		validator.CollectionSize(x => x.LS5, 0, 999);
+		validator.CollectionSize(x => x.LLX, 0, 999);
+		foreach (var item in LS5) validator.Results.AddRange(item.Validate().Errors);
+		foreach (var item in LLX) validator.Results.AddRange(item.Validate().Errors);
+		validator.Required(x => x.TotalWeightAndCharges);
+		validator.Required(x => x.TransactionSetTrailer);
+		return validator.Results;
+	}
 }

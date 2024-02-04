@@ -18,4 +18,22 @@ public class LLX {
 	[SectionPosition(10)] public List<L7_TariffReference> TariffReference { get; set; } = new();
 	[SectionPosition(11)] public List<K1_Remarks> Remarks { get; set; } = new();
 	[SectionPosition(12)] public List<LLX_LG61> LG61 {get;set;} = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<LLX>(this);
+		validator.Required(x => x.AssignedNumber);
+		validator.CollectionSize(x => x.ReferenceNumber, 0, 5);
+		validator.CollectionSize(x => x.DescriptionMarksAndNumbers, 0, 30);
+		validator.CollectionSize(x => x.LadingDetail, 0, 999);
+		validator.CollectionSize(x => x.HazardousMaterial, 0, 3);
+		validator.CollectionSize(x => x.AdditionalHazardousMaterialDescription, 0, 2);
+		validator.CollectionSize(x => x.LineItemQuantityAndWeight, 0, 10);
+		validator.CollectionSize(x => x.RateAndCharges, 0, 10);
+		validator.CollectionSize(x => x.Measurement, 0, 10);
+		validator.CollectionSize(x => x.TariffReference, 0, 10);
+		validator.CollectionSize(x => x.Remarks, 0, 10);
+		validator.CollectionSize(x => x.LG61, 0, 99);
+		foreach (var item in LG61) validator.Results.AddRange(item.Validate().Errors);
+		return validator.Results;
+	}
 }

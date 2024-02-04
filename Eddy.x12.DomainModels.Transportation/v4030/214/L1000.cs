@@ -16,4 +16,22 @@ public class L1000 {
 	[SectionPosition(8)] public List<L1000_L1100> L1100 {get;set;} = new();
 	[SectionPosition(9)] public List<L1000_L1200> L1200 {get;set;} = new();
 	[SectionPosition(10)] public List<L1000_L1300> L1300 {get;set;} = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<L1000>(this);
+		validator.Required(x => x.AssignedNumber);
+		validator.CollectionSize(x => x.BusinessInstructionsAndReferenceNumber, 0, 10);
+		validator.CollectionSize(x => x.MarksAndNumbers, 0, 9999);
+		validator.CollectionSize(x => x.LadingExceptionCode, 0, 10);
+		validator.CollectionSize(x => x.Remarks, 0, 10);
+		validator.CollectionSize(x => x.BillOfLadingHandlingRequirements, 0, 10);
+		validator.CollectionSize(x => x.ShipmentWeightPackagingAndQuantityData, 0, 10);
+		validator.CollectionSize(x => x.L1100, 1, 10);
+		validator.CollectionSize(x => x.L1200, 0, 5);
+		validator.CollectionSize(x => x.L1300, 0, 999999);
+		foreach (var item in L1100) validator.Results.AddRange(item.Validate().Errors);
+		foreach (var item in L1200) validator.Results.AddRange(item.Validate().Errors);
+		foreach (var item in L1300) validator.Results.AddRange(item.Validate().Errors);
+		return validator.Results;
+	}
 }

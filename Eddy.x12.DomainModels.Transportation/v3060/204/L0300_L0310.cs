@@ -13,4 +13,15 @@ public class L0300_L0310 {
 	[SectionPosition(5)] public List<N9_ReferenceIdentification> ReferenceIdentification { get; set; } = new();
 	[SectionPosition(6)] public List<G61_Contact> Contact { get; set; } = new();
 	[SectionPosition(7)] public List<L0300__L0310_L0320> L0320 {get;set;} = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<L0300_L0310>(this);
+		validator.Required(x => x.Name);
+		validator.CollectionSize(x => x.AddressInformation, 0, 2);
+		validator.CollectionSize(x => x.ReferenceIdentification, 0, 5);
+		validator.CollectionSize(x => x.Contact, 0, 3);
+		validator.CollectionSize(x => x.L0320, 0, 10);
+		foreach (var item in L0320) validator.Results.AddRange(item.Validate().Errors);
+		return validator.Results;
+	}
 }

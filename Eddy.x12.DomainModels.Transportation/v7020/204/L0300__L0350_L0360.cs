@@ -10,4 +10,12 @@ public class L0300__L0350_L0360 {
 	[SectionPosition(2)] public AT8_ShipmentWeightPackagingAndQuantityData? ShipmentWeightPackagingAndQuantityData { get; set; }
 	[SectionPosition(3)] public L4_Measurement? Measurement { get; set; }
 	[SectionPosition(4)] public List<L0300__L0350__L0360_L0365> L0365 {get;set;} = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<L0300__L0350_L0360>(this);
+		validator.Required(x => x.DescriptionMarksAndNumbers);
+		validator.CollectionSize(x => x.L0365, 0, 99);
+		foreach (var item in L0365) validator.Results.AddRange(item.Validate().Errors);
+		return validator.Results;
+	}
 }

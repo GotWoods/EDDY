@@ -8,4 +8,11 @@ namespace Eddy.x12.DomainModels.Transportation.v3070._214;
 public class L0200_L0250 {
 	[SectionPosition(1)] public SPO_ShipmentPurchaseOrderDetail ShipmentPurchaseOrderDetail { get; set; } = new();
 	[SectionPosition(2)] public List<SDQ_DestinationQuantity> DestinationQuantity { get; set; } = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<L0200_L0250>(this);
+		validator.Required(x => x.ShipmentPurchaseOrderDetail);
+		validator.CollectionSize(x => x.DestinationQuantity, 0, 10);
+		return validator.Results;
+	}
 }

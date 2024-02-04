@@ -14,4 +14,17 @@ public class L0200_L0210 {
 	[SectionPosition(6)] public AT8_ShipmentWeightPackagingAndQuantityData? ShipmentWeightPackagingAndQuantityData { get; set; }
 	[SectionPosition(7)] public List<MAN_MarksAndNumbers> MarksAndNumbers { get; set; } = new();
 	[SectionPosition(8)] public List<L0200__L0210_L0220> L0220 {get;set;} = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<L0200_L0210>(this);
+		validator.Required(x => x.CartonPackageDetail);
+		validator.CollectionSize(x => x.BusinessInstructionsAndReferenceNumber, 0, 20);
+		validator.CollectionSize(x => x.LadingExceptionCode, 0, 10);
+		validator.CollectionSize(x => x.MarksAndNumbers, 0, 9999);
+		validator.CollectionSize(x => x.L0215, 0, 10);
+		validator.CollectionSize(x => x.L0220, 0, 999999);
+		foreach (var item in L0215) validator.Results.AddRange(item.Validate().Errors);
+		foreach (var item in L0220) validator.Results.AddRange(item.Validate().Errors);
+		return validator.Results;
+	}
 }

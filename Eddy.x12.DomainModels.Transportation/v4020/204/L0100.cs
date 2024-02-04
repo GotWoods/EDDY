@@ -12,4 +12,12 @@ public class L0100 {
 	[SectionPosition(4)] public N4_GeographicLocation? GeographicLocation { get; set; }
 	[SectionPosition(5)] public L11_BusinessInstructionsAndReferenceNumber? BusinessInstructionsAndReferenceNumber { get; set; }
 	[SectionPosition(6)] public List<G61_Contact> Contact { get; set; } = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<L0100>(this);
+		validator.Required(x => x.Name);
+		validator.CollectionSize(x => x.AddressInformation, 0, 2);
+		validator.CollectionSize(x => x.Contact, 0, 3);
+		return validator.Results;
+	}
 }

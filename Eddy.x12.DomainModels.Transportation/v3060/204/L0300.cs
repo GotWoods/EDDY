@@ -16,4 +16,21 @@ public class L0300 {
 	[SectionPosition(8)] public List<K1_Remarks> Remarks { get; set; } = new();
 	[SectionPosition(9)] public List<L0300_L0305> L0305 {get;set;} = new();
 	[SectionPosition(10)] public List<L0300_L0310> L0310 {get;set;} = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<L0300>(this);
+		validator.Required(x => x.StopOffDetails);
+		validator.CollectionSize(x => x.LadingDetail, 0, 999);
+		validator.CollectionSize(x => x.ReferenceIdentification, 0, 10);
+		validator.CollectionSize(x => x.MarksAndNumbers, 0, 9999);
+		validator.CollectionSize(x => x.DateTime, 0, 10);
+		validator.CollectionSize(x => x.SpecialHandlingInstructions, 0, 6);
+		validator.CollectionSize(x => x.SpecialServices, 0, 6);
+		validator.CollectionSize(x => x.Remarks, 0, 10);
+		validator.CollectionSize(x => x.L0305, 0, 999999);
+		validator.CollectionSize(x => x.L0310, 0, 2);
+		foreach (var item in L0305) validator.Results.AddRange(item.Validate().Errors);
+		foreach (var item in L0310) validator.Results.AddRange(item.Validate().Errors);
+		return validator.Results;
+	}
 }

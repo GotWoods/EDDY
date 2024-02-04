@@ -17,4 +17,18 @@ public class Edi214_TransportationCarrierShipmentStatusMessage {
 
 	//Summary
 
+
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<Edi214_TransportationCarrierShipmentStatusMessage>(this);
+		validator.Required(x => x.TransactionSetHeader);
+		validator.Required(x => x.BeginningSegmentForTransportationCarrierShipmentStatusMessage);
+		validator.CollectionSize(x => x.InterlineInformation, 0, 12);
+		validator.Required(x => x.TransactionSetTrailer);
+		
+
+		validator.CollectionSize(x => x.L1000, 1, 999999);
+		foreach (var item in L1000) validator.Results.AddRange(item.Validate().Errors);
+		return validator.Results;
+	}
 }

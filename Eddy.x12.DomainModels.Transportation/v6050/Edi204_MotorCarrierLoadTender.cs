@@ -29,4 +29,30 @@ public class Edi204_MotorCarrierLoadTender {
 	[SectionPosition(16)] public List<L1000> L1000 {get;set;} = new();
 	[SectionPosition(17)] public SE_TransactionSetTrailer TransactionSetTrailer { get; set; } = new();
 
+
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<Edi204_MotorCarrierLoadTender>(this);
+		validator.Required(x => x.TransactionSetHeader);
+		validator.Required(x => x.BeginningSegmentForShipmentInformationTransaction);
+		validator.Required(x => x.SetPurpose);
+		validator.CollectionSize(x => x.BusinessInstructionsAndReferenceNumber, 0, 99999);
+		validator.CollectionSize(x => x.HazardousCertification, 0, 6);
+		validator.CollectionSize(x => x.NoteSpecialInstruction, 0, 10);
+		
+
+		validator.CollectionSize(x => x.L0050, 0, 99);
+		validator.CollectionSize(x => x.L0100, 0, 5);
+		validator.CollectionSize(x => x.L0200, 0, 10);
+		foreach (var item in L0050) validator.Results.AddRange(item.Validate().Errors);
+		foreach (var item in L0100) validator.Results.AddRange(item.Validate().Errors);
+		foreach (var item in L0200) validator.Results.AddRange(item.Validate().Errors);
+		
+
+		validator.CollectionSize(x => x.L0300, 1, 999);
+		foreach (var item in L0300) validator.Results.AddRange(item.Validate().Errors);
+		validator.Required(x => x.TransactionSetTrailer);
+		foreach (var item in L1000) validator.Results.AddRange(item.Validate().Errors);
+		return validator.Results;
+	}
 }

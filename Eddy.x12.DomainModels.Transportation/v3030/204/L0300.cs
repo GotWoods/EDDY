@@ -13,4 +13,17 @@ public class L0300 {
 	[SectionPosition(5)] public List<H3_SpecialHandlingInstructions> SpecialHandlingInstructions { get; set; } = new();
 	[SectionPosition(6)] public List<H6_SpecialServices> SpecialServices { get; set; } = new();
 	[SectionPosition(7)] public List<L0300_L0310> L0310 {get;set;} = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<L0300>(this);
+		validator.Required(x => x.StopOffDetails);
+		validator.CollectionSize(x => x.LadingDetail, 0, 999);
+		validator.CollectionSize(x => x.ReferenceNumber, 0, 10);
+		validator.CollectionSize(x => x.DateTime, 0, 10);
+		validator.CollectionSize(x => x.SpecialHandlingInstructions, 0, 6);
+		validator.CollectionSize(x => x.SpecialServices, 0, 6);
+		validator.CollectionSize(x => x.L0310, 0, 2);
+		foreach (var item in L0310) validator.Results.AddRange(item.Validate().Errors);
+		return validator.Results;
+	}
 }

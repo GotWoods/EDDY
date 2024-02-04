@@ -13,4 +13,17 @@ public class LS5 {
 	[SectionPosition(5)] public List<H3_SpecialHandlingInstructions> SpecialHandlingInstructions { get; set; } = new();
 	[SectionPosition(6)] public List<H6_SpecialServices> SpecialServices { get; set; } = new();
 	[SectionPosition(7)] public List<LS5_LN1> LN1 {get;set;} = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<LS5>(this);
+		validator.Required(x => x.StopOffDetails);
+		validator.CollectionSize(x => x.LadingDetail, 0, 999);
+		validator.CollectionSize(x => x.ReferenceNumber, 0, 10);
+		validator.CollectionSize(x => x.DateTime, 0, 10);
+		validator.CollectionSize(x => x.SpecialHandlingInstructions, 0, 6);
+		validator.CollectionSize(x => x.SpecialServices, 0, 6);
+		validator.CollectionSize(x => x.LN1, 0, 2);
+		foreach (var item in LN1) validator.Results.AddRange(item.Validate().Errors);
+		return validator.Results;
+	}
 }

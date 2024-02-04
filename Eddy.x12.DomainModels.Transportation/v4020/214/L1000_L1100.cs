@@ -11,4 +11,10 @@ public class L1000_L1100 {
 	[SectionPosition(3)] public MS2_EquipmentOrContainerOwnerAndType? EquipmentOrContainerOwnerAndType { get; set; }
 	[SectionPosition(4)] public K1_Remarks? Remarks { get; set; }
 	[SectionPosition(5)] public M7_SealNumbers? SealNumbers { get; set; }
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<L1000_L1100>(this);
+		validator.Required(x => x.ShipmentStatusDetails);
+		return validator.Results;
+	}
 }

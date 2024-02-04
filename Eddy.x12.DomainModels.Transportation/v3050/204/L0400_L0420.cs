@@ -12,4 +12,14 @@ public class L0400_L0420 {
 	[SectionPosition(4)] public N4_GeographicLocation? GeographicLocation { get; set; }
 	[SectionPosition(5)] public List<N9_ReferenceNumber> ReferenceNumber { get; set; } = new();
 	[SectionPosition(6)] public List<L0400__L0420_L0421> L0421 {get;set;} = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<L0400_L0420>(this);
+		validator.Required(x => x.Name);
+		validator.CollectionSize(x => x.AddressInformation, 0, 2);
+		validator.CollectionSize(x => x.ReferenceNumber, 0, 10);
+		validator.CollectionSize(x => x.L0421, 0, 999999);
+		foreach (var item in L0421) validator.Results.AddRange(item.Validate().Errors);
+		return validator.Results;
+	}
 }

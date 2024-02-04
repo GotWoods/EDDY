@@ -19,4 +19,25 @@ public class L0200 {
 	[SectionPosition(11)] public List<L0200_L0230> L0230 {get;set;} = new();
 	[SectionPosition(12)] public List<L0200_L0250> L0250 {get;set;} = new();
 	[SectionPosition(13)] public List<L0200_L0260> L0260 {get;set;} = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<L0200>(this);
+		validator.Required(x => x.AssignedNumber);
+		validator.CollectionSize(x => x.StatusDetails, 0, 10);
+		validator.CollectionSize(x => x.BusinessInstructionsAndReferenceNumber, 0, 10);
+		validator.CollectionSize(x => x.MarksAndNumbers, 0, 9999);
+		validator.CollectionSize(x => x.LadingExceptionCode, 0, 10);
+		validator.CollectionSize(x => x.Remarks, 0, 10);
+		validator.CollectionSize(x => x.BillOfLadingHandlingRequirements, 0, 10);
+		validator.CollectionSize(x => x.ShipmentWeightPackagingAndQuantityData, 0, 10);
+		validator.CollectionSize(x => x.L0210, 0, 999999);
+		validator.CollectionSize(x => x.L0230, 0, 999999);
+		validator.CollectionSize(x => x.L0250, 0, 999999);
+		validator.CollectionSize(x => x.L0260, 1, 2147483647);
+		foreach (var item in L0210) validator.Results.AddRange(item.Validate().Errors);
+		foreach (var item in L0230) validator.Results.AddRange(item.Validate().Errors);
+		foreach (var item in L0250) validator.Results.AddRange(item.Validate().Errors);
+		foreach (var item in L0260) validator.Results.AddRange(item.Validate().Errors);
+		return validator.Results;
+	}
 }

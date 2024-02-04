@@ -27,4 +27,28 @@ public class Edi204_MotorCarrierLoadTender {
 	[SectionPosition(14)] public L3_TotalWeightAndCharges? TotalWeightAndCharges { get; set; }
 	[SectionPosition(15)] public SE_TransactionSetTrailer TransactionSetTrailer { get; set; } = new();
 
+
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<Edi204_MotorCarrierLoadTender>(this);
+		validator.Required(x => x.TransactionSetHeader);
+		validator.Required(x => x.BeginningSegmentForShipmentInformationTransaction);
+		validator.Required(x => x.SetPurpose);
+		validator.CollectionSize(x => x.BusinessInstructionsAndReferenceNumber, 0, 99999);
+		validator.CollectionSize(x => x.BillOfLadingHandlingRequirements, 0, 6);
+		validator.CollectionSize(x => x.HazardousCertification, 0, 6);
+		validator.CollectionSize(x => x.NoteSpecialInstruction, 0, 10);
+		
+
+		validator.CollectionSize(x => x.L0100, 0, 5);
+		validator.CollectionSize(x => x.L0200, 0, 10);
+		foreach (var item in L0100) validator.Results.AddRange(item.Validate().Errors);
+		foreach (var item in L0200) validator.Results.AddRange(item.Validate().Errors);
+		
+
+		validator.CollectionSize(x => x.L0300, 1, 999);
+		foreach (var item in L0300) validator.Results.AddRange(item.Validate().Errors);
+		validator.Required(x => x.TransactionSetTrailer);
+		return validator.Results;
+	}
 }

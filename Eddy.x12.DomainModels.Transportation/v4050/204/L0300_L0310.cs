@@ -11,4 +11,12 @@ public class L0300_L0310 {
 	[SectionPosition(3)] public List<N3_AddressInformation> PartyLocation { get; set; } = new();
 	[SectionPosition(4)] public N4_GeographicLocation? GeographicLocation { get; set; }
 	[SectionPosition(5)] public List<G61_Contact> Contact { get; set; } = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<L0300_L0310>(this);
+		validator.Required(x => x.PartyIdentification);
+		validator.CollectionSize(x => x.PartyLocation, 0, 2);
+		validator.CollectionSize(x => x.Contact, 0, 3);
+		return validator.Results;
+	}
 }

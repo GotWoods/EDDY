@@ -11,4 +11,12 @@ public class L0200__L0210_L0211 {
 	[SectionPosition(3)] public List<N3_AddressInformation> AddressInformation { get; set; } = new();
 	[SectionPosition(4)] public N4_GeographicLocation? GeographicLocation { get; set; }
 	[SectionPosition(5)] public List<N9_ReferenceNumber> ReferenceNumber { get; set; } = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<L0200__L0210_L0211>(this);
+		validator.Required(x => x.Name);
+		validator.CollectionSize(x => x.AddressInformation, 0, 3);
+		validator.CollectionSize(x => x.ReferenceNumber, 0, 10);
+		return validator.Results;
+	}
 }

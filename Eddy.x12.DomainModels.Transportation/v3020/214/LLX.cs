@@ -14,4 +14,15 @@ public class LLX {
 	[SectionPosition(6)] public List<H3_SpecialHandlingInstructions> SpecialHandlingInstructions { get; set; } = new();
 	[SectionPosition(7)] public G86_Signature? Signature { get; set; }
 	[SectionPosition(8)] public Q6_ShipmentDetails? ShipmentDetails { get; set; }
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<LLX>(this);
+		validator.Required(x => x.AssignedNumber);
+		validator.CollectionSize(x => x.StatusDetails, 0, 10);
+		validator.CollectionSize(x => x.ReferenceNumber, 0, 10);
+		validator.CollectionSize(x => x.LadingExceptionCode, 0, 10);
+		validator.CollectionSize(x => x.Remarks, 0, 10);
+		validator.CollectionSize(x => x.SpecialHandlingInstructions, 0, 10);
+		return validator.Results;
+	}
 }

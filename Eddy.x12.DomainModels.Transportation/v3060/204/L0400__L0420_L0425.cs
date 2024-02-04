@@ -12,4 +12,16 @@ public class L0400__L0420_L0425 {
 	[SectionPosition(4)] public List<L9_ChargeDetail> ChargeDetail { get; set; } = new();
 	[SectionPosition(5)] public List<MAN_MarksAndNumbers> MarksAndNumbers { get; set; } = new();
 	[SectionPosition(6)] public List<L0400__L0420__L0425_L0430> L0430 {get;set;} = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<L0400__L0420_L0425>(this);
+		validator.Required(x => x.CartonPackageDetail);
+		validator.CollectionSize(x => x.ReferenceIdentification, 0, 20);
+		validator.CollectionSize(x => x.SpecialServices, 0, 10);
+		validator.CollectionSize(x => x.ChargeDetail, 0, 10);
+		validator.CollectionSize(x => x.MarksAndNumbers, 0, 9999);
+		validator.CollectionSize(x => x.L0430, 0, 999999);
+		foreach (var item in L0430) validator.Results.AddRange(item.Validate().Errors);
+		return validator.Results;
+	}
 }

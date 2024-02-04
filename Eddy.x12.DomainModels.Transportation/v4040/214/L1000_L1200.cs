@@ -12,4 +12,12 @@ public class L1000_L1200 {
 	[SectionPosition(4)] public N4_GeographicLocation? GeographicLocation { get; set; }
 	[SectionPosition(5)] public G62_DateTime? DateTime { get; set; }
 	[SectionPosition(6)] public List<L11_BusinessInstructionsAndReferenceNumber> BusinessInstructionsAndReferenceNumber { get; set; } = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<L1000_L1200>(this);
+		validator.Required(x => x.Name);
+		validator.CollectionSize(x => x.AddressInformation, 0, 2);
+		validator.CollectionSize(x => x.BusinessInstructionsAndReferenceNumber, 0, 10);
+		return validator.Results;
+	}
 }

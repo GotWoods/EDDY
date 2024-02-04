@@ -13,4 +13,15 @@ public class L0300__L0350__L0360__L0365_L0370 {
 	[SectionPosition(5)] public List<LEP_EPARequiredData> EPARequiredData { get; set; } = new();
 	[SectionPosition(6)] public LH4_CanadianDangerousRequirements? CanadianDangerousRequirements { get; set; }
 	[SectionPosition(7)] public List<LHT_TransborderHazardousRequirements> TransborderHazardousRequirements { get; set; } = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<L0300__L0350__L0360__L0365_L0370>(this);
+		validator.Required(x => x.HazardousIdentificationInformation);
+		validator.CollectionSize(x => x.HazardousClassificationInformation, 0, 4);
+		validator.CollectionSize(x => x.HazardousMaterialShippingName, 0, 10);
+		validator.CollectionSize(x => x.FreeformHazardousMaterialInformation, 0, 20);
+		validator.CollectionSize(x => x.EPARequiredData, 0, 3);
+		validator.CollectionSize(x => x.TransborderHazardousRequirements, 0, 3);
+		return validator.Results;
+	}
 }

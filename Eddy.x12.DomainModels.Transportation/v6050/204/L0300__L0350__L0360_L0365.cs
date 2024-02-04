@@ -10,4 +10,14 @@ public class L0300__L0350__L0360_L0365 {
 	[SectionPosition(2)] public List<L11_BusinessInstructionsAndReferenceNumber> BusinessInstructionsAndReferenceNumber { get; set; } = new();
 	[SectionPosition(3)] public List<LH6_HazardousCertification> HazardousCertification { get; set; } = new();
 	[SectionPosition(4)] public List<L0300__L0350__L0360__L0365_L0370> L0370 {get;set;} = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<L0300__L0350__L0360_L0365>(this);
+		validator.Required(x => x.Contact);
+		validator.CollectionSize(x => x.BusinessInstructionsAndReferenceNumber, 0, 5);
+		validator.CollectionSize(x => x.HazardousCertification, 0, 6);
+		validator.CollectionSize(x => x.L0370, 0, 25);
+		foreach (var item in L0370) validator.Results.AddRange(item.Validate().Errors);
+		return validator.Results;
+	}
 }

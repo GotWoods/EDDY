@@ -9,4 +9,12 @@ public class L0200__L0230_L0233 {
 	[SectionPosition(1)] public CD3_CartonPackageDetail CartonPackageDetail { get; set; } = new();
 	[SectionPosition(2)] public List<N9_ReferenceNumber> ReferenceNumber { get; set; } = new();
 	[SectionPosition(3)] public List<Q5_StatusDetails> StatusDetails { get; set; } = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<L0200__L0230_L0233>(this);
+		validator.Required(x => x.CartonPackageDetail);
+		validator.CollectionSize(x => x.ReferenceNumber, 0, 20);
+		validator.CollectionSize(x => x.StatusDetails, 0, 10);
+		return validator.Results;
+	}
 }
