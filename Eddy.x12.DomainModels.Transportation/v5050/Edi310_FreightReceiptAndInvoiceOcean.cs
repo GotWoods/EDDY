@@ -56,7 +56,7 @@ public class Edi310_FreightReceiptAndInvoiceOcean {
 		validator.CollectionSize(x => x.Contact, 0, 3);
 		validator.CollectionSize(x => x.RouteInformationWithPreference, 0, 25);
 		validator.CollectionSize(x => x.RouteInformation, 0, 13);
-		validator.CollectionSize(x => x.Remarks, 0, 12);
+		validator.CollectionSize(x => x.HeaderRemarks, 0, 12);
 		validator.CollectionSize(x => x.SpecialHandlingInstructions, 0, 6);
 		
 
@@ -74,7 +74,7 @@ public class Edi310_FreightReceiptAndInvoiceOcean {
 		validator.CollectionSize(x => x.Paperwork, 0, 25);
 		validator.CollectionSize(x => x.EventDetail, 0, 10);
 		validator.CollectionSize(x => x.CertificationsAndClauses, 0, 20);
-		validator.CollectionSize(x => x.Remarks, 0, 999);
+		validator.CollectionSize(x => x.SummaryRemarks, 0, 999);
 		validator.Required(x => x.TransactionSetTrailer);
 		
 
