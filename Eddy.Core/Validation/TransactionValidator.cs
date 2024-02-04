@@ -25,8 +25,7 @@ public class TransactionValidator<T>
         {
             // Check if the expression body is a MemberExpression or UnaryExpression
             // and then get the member from it (to handle both field and property access)
-            var member = expression.Body as MemberExpression ??
-                         (expression.Body as UnaryExpression)?.Operand as MemberExpression;
+            var member = expression.Body as MemberExpression ?? (expression.Body as UnaryExpression)?.Operand as MemberExpression;
 
             if (member == null)
                 throw new ArgumentException("Expression is not a member access", nameof(expression));
@@ -53,6 +52,21 @@ public class TransactionValidator<T>
                 // The count is not within the specified range
                 Results.Errors.Add(new Error(ErrorCodes.OutOfRange, "TODO"));
             }
+        }
+    }
+
+    public void Required(Expression<Func<T, object>> expression)
+    {
+        // Compile the expression into a function
+        var func = expression.Compile();
+        T instanceOfT = default; 
+        // Execute the function with the instance to get the property value
+        var value = func(instanceOfT);
+        // Check if the value is not null
+
+        if (value == null)
+        {
+         Results.Errors.Add(new Error(ErrorCodes.Required, "TODO"));
         }
     }
 }
