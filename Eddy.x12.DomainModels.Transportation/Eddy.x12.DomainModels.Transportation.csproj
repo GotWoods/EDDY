@@ -3527,4 +3527,8 @@
     <PackageReference Include="Eddy.x12Parser" Version="0.0.4-beta" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Eddy.Core\Eddy.Core.csproj" />
+  </ItemGroup>
+
 </Project>
