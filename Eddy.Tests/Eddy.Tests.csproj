@@ -25,9 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Eddy.ClassGenerator.Lib\Eddy.ClassGenerator.Lib.csproj" />
     <ProjectReference Include="..\Eddy.x12\Eddy.x12.csproj" />
-    <ProjectReference Include="..\Eddy.ClassGenerator.Lib\Eddy.ClassGenerator.Lib.csproj" />
   </ItemGroup>
 
 </Project>
