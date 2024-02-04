@@ -9,7 +9,7 @@ public class LLX {
 	[SectionPosition(1)] public LX_AssignedNumber AssignedNumber { get; set; } = new();
 	[SectionPosition(2)] public List<LLX_LN1> LN1 {get;set;} = new();
 	[SectionPosition(3)] public LS_LoopHeader LoopHeader { get; set; } = new();
-	[SectionPosition(4)] public List<LLX_LLX> LLX {get;set;} = new();
+	[SectionPosition(4)] public List<LLX_LLX> LLX_LLX {get;set;} = new();
 	[SectionPosition(5)] public LE_LoopTrailer LoopTrailer { get; set; } = new();
 	[SectionPosition(6)] public SL1_TariffReference? TariffReference { get; set; }
 	[SectionPosition(7)] public R1_RouteInformationAir? RouteInformationAir { get; set; }
@@ -39,7 +39,7 @@ public class LLX {
 		validator.CollectionSize(x => x.LN1, 1, 2147483647);
 		validator.CollectionSize(x => x.LH1, 0, 3);
 		foreach (var item in LN1) validator.Results.AddRange(item.Validate().Errors);
-		foreach (var item in LLX) validator.Results.AddRange(item.Validate().Errors);
+		foreach (var item in LLX_LLX) validator.Results.AddRange(item.Validate().Errors);
 		foreach (var item in LH1) validator.Results.AddRange(item.Validate().Errors);
 		return validator.Results;
 	}
