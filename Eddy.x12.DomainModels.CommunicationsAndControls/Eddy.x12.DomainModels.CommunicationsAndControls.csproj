@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="Eddy.Core" Version="0.0.8-beta" />
-    <PackageReference Include="Eddy.x12Parser" Version="0.0.5-beta" />
+    <PackageReference Include="Eddy.x12Parser" Version="0.0.6-beta" />
   </ItemGroup>
 
 </Project>
