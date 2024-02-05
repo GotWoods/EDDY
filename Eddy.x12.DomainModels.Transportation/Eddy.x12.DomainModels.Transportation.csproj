@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Eddy.x12Parser" Version="0.0.4-beta" />
+    <PackageReference Include="Eddy.x12Parser" Version="0.0.5-beta" />
   </ItemGroup>
 
   <ItemGroup>

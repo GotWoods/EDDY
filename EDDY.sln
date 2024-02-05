@@ -32,6 +32,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eddy.x12.DomainModels.Trans
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EdiFact", "EdiFact", "{E5B3DD37-CC52-4DA8-900B-06233F82D45A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eddy.x12.DomainModels.Communications", "Eddy.x12.DomainModels.Communications\Eddy.x12.DomainModels.Communications.csproj", "{0684B898-C35A-4FEE-8E5B-1F3F8DF841AE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,10 @@ Global
 		{F515A3DD-E6EC-45C5-9D41-FC2E05784136}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F515A3DD-E6EC-45C5-9D41-FC2E05784136}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F515A3DD-E6EC-45C5-9D41-FC2E05784136}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0684B898-C35A-4FEE-8E5B-1F3F8DF841AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0684B898-C35A-4FEE-8E5B-1F3F8DF841AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0684B898-C35A-4FEE-8E5B-1F3F8DF841AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0684B898-C35A-4FEE-8E5B-1F3F8DF841AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +92,7 @@ Global
 		{15E5C22A-130D-4FBE-91B9-3EB0B3B24C04} = {E5B3DD37-CC52-4DA8-900B-06233F82D45A}
 		{A85389FC-D37A-40EC-B544-296D31276958} = {7097943A-5EE3-4101-93A9-E09C527B5B9C}
 		{F515A3DD-E6EC-45C5-9D41-FC2E05784136} = {7097943A-5EE3-4101-93A9-E09C527B5B9C}
+		{0684B898-C35A-4FEE-8E5B-1F3F8DF841AE} = {7097943A-5EE3-4101-93A9-E09C527B5B9C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D58D1717-CF45-42BE-B5EE-1349EE67A48C}

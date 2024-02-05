@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Eddy.Core" Version="0.0.6-beta" />
+    <PackageReference Include="Eddy.Core" Version="0.0.8-beta" />
   </ItemGroup>
 
 </Project>
