@@ -2,10 +2,24 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <PackageId>Eddy.x12.DomainModels.CommunicationsAndControls</PackageId>
+    <Version>0.0.1-beta</Version>
+    <Title>EDDY EDI x12 Communications And Controls Models</Title>
+    <Authors>GotWoods</Authors>
+    <Description>
+      Read and Generate X12 Communications And Controls models (e.g. 864, 997, etc.)
+    </Description>
+    <PackageTags>EDI;x12</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Eddy.x12Parser" Version="0.0.4-beta" />
+    <PackageReference Include="Eddy.Core" Version="0.0.8-beta" />
+    <PackageReference Include="Eddy.x12Parser" Version="0.0.5-beta" />
   </ItemGroup>
 
 </Project>
+
+
+
