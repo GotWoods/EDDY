@@ -32,7 +32,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eddy.x12.DomainModels.Trans
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EdiFact", "EdiFact", "{E5B3DD37-CC52-4DA8-900B-06233F82D45A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eddy.x12.DomainModels.Communications", "Eddy.x12.DomainModels.Communications\Eddy.x12.DomainModels.Communications.csproj", "{0684B898-C35A-4FEE-8E5B-1F3F8DF841AE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eddy.x12.DomainModels.CommunicationsAndControls", "Eddy.x12.DomainModels.CommunicationsAndControls\Eddy.x12.DomainModels.CommunicationsAndControls.csproj", "{0684B898-C35A-4FEE-8E5B-1F3F8DF841AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
