@@ -5,7 +5,7 @@ on:
     branches: [ main ]
     paths:
       - 'Eddy.x12.DomainModels.CommunicationsAndControls/**'
-      - '.github/workflows/nuget-publish-CommunicationsAndControls.yml'
+      - '.github/workflows/nuget-publish-x12-CommunicationsAndControls.yml'
   workflow_dispatch:
 
 jobs:
