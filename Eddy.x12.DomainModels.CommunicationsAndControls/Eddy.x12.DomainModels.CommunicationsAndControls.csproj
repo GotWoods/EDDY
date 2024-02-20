@@ -12,6 +12,7 @@
     </Description>
     <PackageTags>EDI;x12</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Configurations>Debug;Release;local</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

@@ -32,7 +32,7 @@ public class L0200 {
 		validator.CollectionSize(x => x.L0210, 0, 999999);
 		validator.CollectionSize(x => x.L0230, 0, 999999);
 		validator.CollectionSize(x => x.L0250, 0, 999999);
-		validator.CollectionSize(x => x.L0260, 1, 2147483647);
+		//validator.CollectionSize(x => x.L0260, 1, 2147483647);
 		foreach (var item in L0205) validator.Results.AddRange(item.Validate().Errors);
 		foreach (var item in L0210) validator.Results.AddRange(item.Validate().Errors);
 		foreach (var item in L0230) validator.Results.AddRange(item.Validate().Errors);

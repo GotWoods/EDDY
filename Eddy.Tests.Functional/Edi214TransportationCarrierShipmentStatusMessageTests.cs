@@ -88,7 +88,16 @@ public class Edi214TransportationCarrierShipmentStatusMessage
                     // edi204.LoadFrom(section);
                     var mapper = new DomainMapper(section.Segments);
                     var edi = mapper.Map<Edi214_TransportationCarrierShipmentStatusMessage>();
-
+                    var results = edi.Validate();
+                    if (!results.IsValid)
+                    {
+                        foreach (var error in results.Errors)
+                        {
+                            _output.WriteLine(error.ToString());
+                        }
+                        
+                        Assert.Fail();
+                    }
                     //documentSections.Add(edi.ToDocumentSection(section.TransactionSetControlNumber));
                 }
 

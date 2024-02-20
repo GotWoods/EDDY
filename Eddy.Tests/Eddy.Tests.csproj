@@ -8,10 +8,11 @@
     <IsPackable>false</IsPackable>
 
     <LangVersion>latest</LangVersion>
+
+    <Configurations>Debug;Release;local</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Eddy.Core" Version="0.0.8-beta" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="xunit" Version="2.6.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.5.5">
@@ -27,5 +28,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Eddy.x12\Eddy.x12.csproj" />
   </ItemGroup>
+  
+  
 
 </Project>

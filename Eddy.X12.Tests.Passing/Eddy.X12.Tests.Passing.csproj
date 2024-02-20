@@ -8,6 +8,7 @@
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
     <LangVersion>latest</LangVersion>
+    <Configurations>Debug;Release;local</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

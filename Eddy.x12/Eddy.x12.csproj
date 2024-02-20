@@ -14,14 +14,21 @@
     </Description>
     <PackageTags>EDI;x12</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Configurations>Debug;Release;local</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="Models\Elements\" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'Local'">
+    <ProjectReference Include="..\Eddy.Core\Eddy.Core.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup Condition="'$(Configuration)' != 'Local'">
     <PackageReference Include="Eddy.Core" Version="0.0.8-beta" />
   </ItemGroup>
+
+  
 
 </Project>

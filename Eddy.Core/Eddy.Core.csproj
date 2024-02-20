@@ -13,6 +13,7 @@
 Used with Eddy.X12 / Eddy.EdiFact projects</Description>
     <PackageTags>EDI;x12;EdiFact</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Configurations>Debug;Release;local</Configurations>
   </PropertyGroup>
 
 </Project>
