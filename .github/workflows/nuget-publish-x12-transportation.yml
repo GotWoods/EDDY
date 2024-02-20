@@ -20,8 +20,13 @@ jobs:
       with:
         dotnet-version: '6.0.x' # Specify the .NET version
 
+    - name: Update Eddy.core package to the latest version
+      run: dotnet add Eddy.x12.DomainModels.Transportation/Eddy.x12.DomainModels.Transportation.csproj package Eddy.core --version=${{vars.GLOBAL_VERSION}}-${{vars.GLOBAL_VERSION_SUFFIX}}
+
     - name: Update Eddy.x12Parser package to the latest version
       run: dotnet add Eddy.x12.DomainModels.Transportation/Eddy.x12.DomainModels.Transportation.csproj package Eddy.x12Parser --version=${{vars.GLOBAL_VERSION}}-${{vars.GLOBAL_VERSION_SUFFIX}}
+
+
 
     - name: Restore dependencies
       run: dotnet restore Eddy.x12.DomainModels.Transportation/Eddy.x12.DomainModels.Transportation.csproj
