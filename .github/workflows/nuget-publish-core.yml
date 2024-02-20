@@ -18,8 +18,11 @@ jobs:
     - name: Print GLOBAL_VERSION (Secrets)
       run: echo "GLOBAL_VERSION=${{ secrets.GLOBAL_VERSION }}"
 
-    - name: Print GLOBAL_VERSION
-      run: echo "${{env.GLOBAL_VERSION}}"
+    - name: Print GLOBAL_VERSION (env)
+      run: echo "${{ env.GLOBAL_VERSION }}"
+
+    - name: Print GLOBAL_VERSION (vars)
+      run: echo "${{ vars.GLOBAL_VERSION }}"
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
