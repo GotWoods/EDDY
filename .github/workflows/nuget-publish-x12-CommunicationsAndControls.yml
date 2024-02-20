@@ -5,7 +5,7 @@ on:
     branches: [ main ]
     paths:
       - 'Eddy.x12.DomainModels.CommunicationsAndControls/**'
-      - '.github/workflows/nuget-publish-core.yml'
+      - '.github/workflows/nuget-publish-CommunicationsAndControls.yml'
   workflow_dispatch:
 
 jobs:
@@ -24,7 +24,7 @@ jobs:
       run: dotnet restore Eddy.x12.DomainModels.CommunicationsAndControls/Eddy.x12.DomainModels.CommunicationsAndControls.csproj
 
     - name: Build
-      run: dotnet build Eddy.x12.DomainModels.CommunicationsAndControls/Eddy.x12.DomainModels.CommunicationsAndControls.csproj --no-restore -c Release
+      run: dotnet build Eddy.x12.DomainModels.CommunicationsAndControls/Eddy.x12.DomainModels.CommunicationsAndControls.csproj --no-restore -c Release 
 
     - name: Set Package Version
       run: |

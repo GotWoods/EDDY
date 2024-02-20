@@ -24,7 +24,7 @@ jobs:
       run: dotnet restore Eddy.Core/Eddy.Core.csproj
 
     - name: Build
-      run: dotnet build Eddy.Core/Eddy.Core.csproj --no-restore -c Release /p:Version=${{ secrets.GLOBAL_VERSION }}
+      run: dotnet build Eddy.Core/Eddy.Core.csproj --no-restore -c Release /p:Version=${{ secrets.GLOBAL_VERSION }} /p:PackageVersion=${{ secrets.GLOBAL_VERSION }}
 
     - name: Set Package Version
       run: |

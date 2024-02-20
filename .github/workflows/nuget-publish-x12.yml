@@ -5,7 +5,7 @@ on:
     branches: [ main ]
     paths:
       - 'Eddy.x12/**'
-      - '.github/workflows/nuget-publish-core.yml'
+      - '.github/workflows/nuget-publish-x12.yml'
   workflow_dispatch:
 
 jobs:
