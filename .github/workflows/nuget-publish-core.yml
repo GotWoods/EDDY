@@ -15,6 +15,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
+    - name: Print GLOBAL_VERSION (Secrets)
+      run: echo "GLOBAL_VERSION=${{ secrets.GLOBAL_VERSION }}"
+
+    - name: Print GLOBAL_VERSION
+      run: echo "$GLOBAL_VERSION"
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
@@ -24,7 +30,7 @@ jobs:
       run: dotnet restore Eddy.Core/Eddy.Core.csproj
 
     - name: Build
-      run: dotnet build Eddy.Core/Eddy.Core.csproj --no-restore -c Release /p:Version=${{ secrets.GLOBAL_VERSION }} /p:PackageVersion=${{ secrets.GLOBAL_VERSION }}
+      run: dotnet build Eddy.Core/Eddy.Core.csproj --no-restore -c Release /p:Version=$GLOBAL_VERSION
 
     - name: Set Package Version
       run: |
@@ -32,7 +38,7 @@ jobs:
         echo "VERSION_SUFFIX=$VERSION_SUFFIX" >> $GITHUB_ENV
 
     - name: Pack
-      run: dotnet pack Eddy.Core/Eddy.Core.csproj --no-build -c Release -o out /p:PackageVersion=${{ secrets.GLOBAL_VERSION }} /p:VersionSuffix=${{ env.GLOBAL_VERSION_SUFFIX }}
+      run: dotnet pack Eddy.Core/Eddy.Core.csproj --no-build -c Release -o out /p:PackageVersion=${{ env.GLOBAL_VERSION }} /p:VersionSuffix=${{ env.GLOBAL_VERSION_SUFFIX }}
 
     - name: Push to NuGet
       run: dotnet nuget push out/*.nupkg --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
