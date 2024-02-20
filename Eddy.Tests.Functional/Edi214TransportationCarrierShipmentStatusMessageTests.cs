@@ -91,12 +91,7 @@ public class Edi214TransportationCarrierShipmentStatusMessage
                     var results = edi.Validate();
                     if (!results.IsValid)
                     {
-                        foreach (var error in results.Errors)
-                        {
-                            _output.WriteLine(error.ToString());
-                        }
-                        
-                        Assert.Fail();
+                        Assert.Fail(results.ToString());
                     }
                     //documentSections.Add(edi.ToDocumentSection(section.TransactionSetControlNumber));
                 }
