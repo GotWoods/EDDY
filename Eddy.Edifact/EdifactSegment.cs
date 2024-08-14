@@ -9,4 +9,9 @@ namespace Eddy.Edifact
     {
         public abstract ValidationResult Validate();
     }
+
+    public abstract class EdifactComponent : EdifactSegment
+    {
+
+    }
 }
