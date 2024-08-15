@@ -19,8 +19,9 @@ public class UNBTests
 
         var options = new MapOptions();
         options.Separator = "+";
+        options.ComponentElementSeparator = ":";
 
-        var actual = Map.MapObject<UNB_InterchangeHeader>("UNB+UNOC:3+LY78+16390913+230127:0814+614720311", options);
+        var actual = Map.MapObject<Models.D96A.UNB_InterchangeHeader>("UNB+UNOC:3+LY78+16390913+230127:0814+614720311", options);
 
         Assert.Equivalent(expected, actual);
     }
