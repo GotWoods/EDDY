@@ -1,0 +1,23 @@
+using Eddy.Core.Attributes;
+using Eddy.Core.Validation;
+using Eddy.Edifact.Models.D96A.Composites;
+
+namespace Eddy.Edifact.Models.D96A;
+
+[Segment("PGI")]
+public class PGI_ProductGroupInformation : EdifactSegment
+{
+	[Position(1)]
+	public string ProductGroupTypeCoded { get; set; }
+
+	[Position(2)]
+	public C288_ProductGroup ProductGroup { get; set; }
+
+	public override ValidationResult Validate()
+	{
+		var validator = new BasicValidator<PGI_ProductGroupInformation>(this);
+		validator.Required(x=>x.ProductGroupTypeCoded);
+		validator.Length(x => x.ProductGroupTypeCoded, 1, 3);
+		return validator.Results;
+	}
+}
