@@ -1,0 +1,5 @@
+namespace Eddy.Edifact.Models.D05B;
+
+public class UIZ_InteractiveInterchangeTrailer : Eddy.Edifact.Models.D05A.UIZ_InteractiveInterchangeTrailer
+{
+}
