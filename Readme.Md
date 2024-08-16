@@ -2,25 +2,25 @@ EDDY
 
 Eddy is a strongly typed representation of EDI document formats consisting of the following components
 
--Eddy.Core: Contains the basic logic for parsing/attributes/validation
--Eddy.x12: This is used to part the data elements (e.g. ISA, GS, B2, N1, etc.) across all versions of the spec
--Eddy.x12.DomainModels.[domain]: This contains transaction sets for various formats (e.g. 204_MotorCarrierLoadTender)
-
+- Eddy.Core: Contains the basic logic for parsing/attributes/validation
+- Eddy.x12: Parsing and data elements (e.g. ISA, GS, B2, N1, etc.) across all versions of the x12 spec
+- Eddy.x12.DomainModels.[domain]: This contains transaction sets for various formats (e.g. 204_MotorCarrierLoadTender)
+- Eddy.Edifact: Parsing and data elements (e.g. UNH, BGM, DTM, NAD, etc.) across all versions of the Edifact spec
+- Eddy.Edifact.DomainModels.[domain]: This contains transaction sets for various formats (e.g. APERAK)
 
 Formats
-x12 - All element/composite types supported. Transaction types are limited 
-EDIFACT - started
-TradaCOMS - Not Supported (mostly used in the UK)
-UBL - Not Supported (XML format)
-VDA - Not Supported (fixed length format)
-Odette - not supported
-EANCOM - not supported
-VICS - not supported
-VDA - not supported
-HIPAA - not supported
-RosettaNet - not supported
-SWIFT - not supported
-
+- x12: All element/composite types supported. Transportation and Communications And Control document types are implemented
+- EDIFACT: started
+- TradaCOMS: Not Supported (mostly used in the UK)
+- UBL: Not Supported (XML format)
+- VDA: Not Supported (fixed length format)
+- Odette: not supported
+- EANCOM: not supported
+- VICS: not supported
+- VDA: not supported
+- HIPAA: not supported
+- RosettaNet: not supported
+- SWIFT: not supported
 
 Parsing an x12Document
 ```
