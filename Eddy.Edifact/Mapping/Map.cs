@@ -57,4 +57,10 @@ public class Map
         var segment = MapObject(typeof(T), line, options);
         return (T)Convert.ChangeType(segment, typeof(T)); ;
     }
+
+    public static T MapComposite<T>(string line, MapOptions options) where T : new()
+    {
+        var segment = MapObject(typeof(T), line, options.ComponentElementSeparator, -1, options);
+        return (T)Convert.ChangeType(segment, typeof(T)); ;
+    }
 }
