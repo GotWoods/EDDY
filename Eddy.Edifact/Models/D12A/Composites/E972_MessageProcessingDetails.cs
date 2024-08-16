@@ -1,0 +1,5 @@
+namespace Eddy.Edifact.Models.D12A.Composites;
+
+public class E972_MessageProcessingDetails : Eddy.Edifact.Models.D11B.Composites.E972_MessageProcessingDetails
+{
+}

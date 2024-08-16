@@ -1,0 +1,5 @@
+namespace Eddy.Edifact.Models.D14B.Composites;
+
+public class E034_TimeZone : Eddy.Edifact.Models.D14A.Composites.E034_TimeZone
+{
+}
