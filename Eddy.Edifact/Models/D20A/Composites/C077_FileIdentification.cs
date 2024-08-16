@@ -1,0 +1,5 @@
+namespace Eddy.Edifact.Models.D20A.Composites;
+
+public class C077_FileIdentification : Eddy.Edifact.Models.D19B.Composites.C077_FileIdentification
+{
+}
