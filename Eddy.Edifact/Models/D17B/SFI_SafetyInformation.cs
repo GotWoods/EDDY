@@ -1,0 +1,5 @@
+namespace Eddy.Edifact.Models.D17B;
+
+public class SFI_SafetyInformation : Eddy.Edifact.Models.D17A.SFI_SafetyInformation
+{
+}
