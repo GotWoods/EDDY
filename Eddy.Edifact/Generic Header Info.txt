@@ -1,0 +1,38 @@
+﻿UNOA = UN/ECE level A; complies with ISO 646 – also called International Alphabet No. 5 – except lowercase letters.
+UNOB = UN/ECE level B; like UNOA but also lowercase letters.
+UNOC = UN/ECE level C; complies with ISO8859-1
+UNOD = UN/ECE level D; complies with ISO8859-2
+UNOE = UN/ECE level E (Cyrillic)
+UNOF = UN/ECE level F (Greek)
+
+UNB
+	Originated in D96A
+	Changed in D00A
+	Changes are the names of fields but the order remains the same
+
+S001_SyntaxIdentifier 
+	Originated in D96A
+	Changed in D00A 
+	ServiceCodeListDirectoryVersionNumber and CharacterEncodingCoded was added
+
+S002_SyntaxVersionNumber
+	Originated in D96A
+	Changed in D00A
+	Some names were changed 
+	InterchangeSenderInternalSubIdentification was added
+
+S003_SyntaxVersionNumber
+	Originated in D96A
+	Changed in D00A
+	Some names were changed 
+	InterchangeRecipientInternalSubIdentification was added
+
+S004
+	Originated in D96A
+	Changed in D00A
+	Date/TimeOfPreperation was simplified to Date/Time
+
+S005
+	Originated in D96A
+	Changed in D00A
+	Recipients changed to singular of Recipient
