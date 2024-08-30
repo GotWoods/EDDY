@@ -36,7 +36,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EdiFact", "EdiFact", "{E5B3
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eddy.x12.DomainModels.CommunicationsAndControls", "Eddy.x12.DomainModels.CommunicationsAndControls\Eddy.x12.DomainModels.CommunicationsAndControls.csproj", "{0684B898-C35A-4FEE-8E5B-1F3F8DF841AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eddy.Edifact.Tests.Functional", "Eddy.Edifact.Tests.Functional\Eddy.Edifact.Tests.Functional.csproj", "{AD1FB30D-DB89-4A50-AC00-D247D900B5D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eddy.Edifact.Tests.Functional", "Eddy.Edifact.Tests.Functional\Eddy.Edifact.Tests.Functional.csproj", "{AD1FB30D-DB89-4A50-AC00-D247D900B5D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eddy.Edifact.DomainModels.Transportation", "Eddy.Edifact.DomainModels.Transportation\Eddy.Edifact.DomainModels.Transportation.csproj", "{F2351B26-FB28-4EB4-A8A2-38F724125769}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,6 +113,12 @@ Global
 		{AD1FB30D-DB89-4A50-AC00-D247D900B5D8}.local|Any CPU.Build.0 = Debug|Any CPU
 		{AD1FB30D-DB89-4A50-AC00-D247D900B5D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD1FB30D-DB89-4A50-AC00-D247D900B5D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2351B26-FB28-4EB4-A8A2-38F724125769}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2351B26-FB28-4EB4-A8A2-38F724125769}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2351B26-FB28-4EB4-A8A2-38F724125769}.local|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2351B26-FB28-4EB4-A8A2-38F724125769}.local|Any CPU.Build.0 = Debug|Any CPU
+		{F2351B26-FB28-4EB4-A8A2-38F724125769}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2351B26-FB28-4EB4-A8A2-38F724125769}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -125,6 +133,7 @@ Global
 		{F515A3DD-E6EC-45C5-9D41-FC2E05784136} = {7097943A-5EE3-4101-93A9-E09C527B5B9C}
 		{0684B898-C35A-4FEE-8E5B-1F3F8DF841AE} = {7097943A-5EE3-4101-93A9-E09C527B5B9C}
 		{AD1FB30D-DB89-4A50-AC00-D247D900B5D8} = {E5B3DD37-CC52-4DA8-900B-06233F82D45A}
+		{F2351B26-FB28-4EB4-A8A2-38F724125769} = {E5B3DD37-CC52-4DA8-900B-06233F82D45A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D58D1717-CF45-42BE-B5EE-1349EE67A48C}
