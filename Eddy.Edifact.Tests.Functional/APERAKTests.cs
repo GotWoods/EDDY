@@ -1,7 +1,38 @@
-﻿using Xunit.Abstractions;
+﻿using Eddy.Edifact.Mapping;
+using Xunit.Abstractions;
 
 namespace Eddy.Edifact.Tests.Functional;
 
+
+
+public class AperakTests
+{
+    [Fact]
+    public void GetOne()
+    {
+        var file = "G:\\EdiSamples\\BMW\\APERAK\\2023\\02\\APERAK_0a358e44-9295-48fa-a7bd-9256074805cb.txt";
+        var data = File.ReadAllText(file);
+        var document = EdiFactDocument.Parse(data);
+        foreach (var group in document.FunctionalGroups)
+        {
+            foreach (var message in group.Messages)
+            {
+                var mapper = new DomainMapper(message.Segments);
+                var aperakDoc = mapper.Map<APERAK>();
+                var results = aperakDoc.Validate();
+                if (!results.IsValid)
+                {
+                    Assert.Fail(results.ToString());
+                }
+
+                Assert.Equal(0, aperakDoc.Group1.Count);
+                Assert.Equal(2, aperakDoc.Group2.Count);
+            }
+            
+            //documentSections.Add(edi204.ToDocumentSection(section.TransactionSetControlNumber));
+        }
+    }
+}
 public class IFTSTATests
 {
     private readonly ITestOutputHelper _output;

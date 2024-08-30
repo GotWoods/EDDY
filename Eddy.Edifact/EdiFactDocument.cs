@@ -77,7 +77,7 @@ public class EdiFactDocument
             {
                 document.InterchangeControlHeader = Map.MapObject<GenericInterchangeControlHeader>(line, options);
             }
-            else if (trimmedLine.StartsWith("UNG"))
+            else if (trimmedLine.StartsWith("UNG")) //optional group
             {
                 currentGroup = new FunctionalGroup();
                 document.FunctionalGroups.Add(currentGroup);
@@ -87,8 +87,14 @@ public class EdiFactDocument
                 // currentSection.TransactionSetControlNumber = st.TransactionSetControlNumber;
                 // r2.Sections.Add(currentSection);
             }
-            else if (trimmedLine.StartsWith("UNE"))
+            else if (trimmedLine.StartsWith("UNE")) //group end
             {
+                // if (currentGroup == null)
+                //     document.ValidationErrors.Add(new ValidationResult() 
+                //         { LineNumber = lineNumber, 
+                //             Errors = { new Error(ErrorCodes.EdiFactFunctionalGroupSectionCountMismatch, ge.NumberOfTransactionSetsIncluded.ToString(), document.FunctionalGroups.Count.ToString()) }
+                //         });
+                // throw new System.Exception("UNE found without UNG"
                 currentGroup = null;
                 // var se = Map.MapObject<SE_TransactionSetTrailer>(trimmedLine, options);
                 //
@@ -110,7 +116,7 @@ public class EdiFactDocument
                 currentGroup.Messages.Add(currentMessage);
 
                 //TODO: current standards version loaded here
-                currentStandardsVersion = "D96A";
+                currentStandardsVersion = "D08A";
 
                 //var ge = Map.MapObject<GenericFunctionalGroupTrailer>(trimmedLine, options);
                 // if (ge.NumberOfTransactionSetsIncluded != r2.Sections.Count)

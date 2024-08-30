@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using Eddy.Core.Attributes;
 using Eddy.Edifact.Mapping.Cache;
-using Eddy.Edifact.Models.Elements;
 
 namespace Eddy.Edifact.Mapping;
 
@@ -29,7 +26,7 @@ public class Map
         var rep = MapCache.GetMap(t);
         foreach (var item in rep.Representations)
         {
-            var position = item.Position+positionOffset;
+            var position = item.Position + positionOffset;
             if (values.Count > position)
             {
                 var propertyValue = values[position];
@@ -37,7 +34,7 @@ public class Map
                 {
                     var underlyingType = Nullable.GetUnderlyingType(item.PropertyInfo.PropertyType) ?? item.PropertyInfo.PropertyType;
                     //composite here
-                    if (underlyingType.BaseType == typeof(EdifactComponent))
+                    if (underlyingType.IsSubclassOf(typeof(EdifactComponent)))
                     {
                         var safeValue = MapObject(underlyingType, propertyValue.Trim(), options.ComponentElementSeparator, -1, options);
                         item.PropertyInfo.SetValue(result, safeValue, null);
@@ -50,17 +47,21 @@ public class Map
                 }
             }
         }
+
         return result;
     }
+
     public static T MapObject<T>(string line, MapOptions options) where T : new()
     {
         var segment = MapObject(typeof(T), line, options);
-        return (T)Convert.ChangeType(segment, typeof(T)); ;
+        return (T)Convert.ChangeType(segment, typeof(T));
+        ;
     }
 
     public static T MapComposite<T>(string line, MapOptions options) where T : new()
     {
         var segment = MapObject(typeof(T), line, options.ComponentElementSeparator, -1, options);
-        return (T)Convert.ChangeType(segment, typeof(T)); ;
+        return (T)Convert.ChangeType(segment, typeof(T));
+        ;
     }
 }
