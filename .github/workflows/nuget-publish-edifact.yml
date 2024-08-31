@@ -20,11 +20,16 @@ jobs:
       with:
         dotnet-version: '8.0.x' # Specify the .NET version
 
+    - name: Clear NuGet cache
+      run: dotnet nuget locals all --clear
+      
     - name: List files in the Eddy.Edifact directory
       run: ls -al Eddy.Edifact/
 
-    - name: Update Eddy.Core package to the latest version
+    - name: Print working directory
+      run: pwd
 
+    - name: Update Eddy.Core package to the latest version
       run: dotnet add Eddy.Edifact/Eddy.Edifact.csproj package Eddy.Core --prerelease
 
     - name: Restore dependencies
