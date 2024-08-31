@@ -18,20 +18,20 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '8.0.x' # Specify the .NET version
+        dotnet-version: '8.0.x'
 
-    - name: Clear NuGet cache
-      run: dotnet nuget locals all --clear
+    #- name: Clear NuGet cache
+    #  run: dotnet nuget locals all --clear
       
-    - name: List files in the Eddy.Edifact directory
-      run: ls -al Eddy.Edifact/
+    #- name: List files in the Eddy.Edifact directory
+    #  run: ls -al Eddy.Edifact/
 
-    - name: Print working directory
-      run: pwd
+    #- name: Print working directory
+    #  run: pwd
 
-    - name: Update Eddy.Core package to the latest version
-      run: dotnet add package Eddy.Core --prerelease --verbosity detailed
-      working-directory: ${{ github.workspace }}/Eddy.Edifact
+    #- name: Update Eddy.Core package to the latest version
+    #  run: dotnet add package Eddy.Core --prerelease 
+    #  working-directory: ${{ github.workspace }}/Eddy.Edifact
 
     - name: Restore dependencies
       run: dotnet restore Eddy.Edifact/Eddy.Edifact.csproj
