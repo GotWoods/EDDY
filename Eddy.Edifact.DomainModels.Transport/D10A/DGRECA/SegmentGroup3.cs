@@ -1,0 +1,18 @@
+using System.Collections.Generic;
+using Eddy.Core.Attributes;
+using Eddy.Core.Validation;
+using Eddy.Edifact.Models.D10A;
+
+namespace Eddy.Edifact.DomainModels.Transport.D10A.DGRECA;
+
+public class SegmentGroup3 {
+	[SectionPosition(1)] public NAD_NameAndAddress NameAndAddress { get; set; } = new();
+	[SectionPosition(2)] public List<SegmentGroup3_SegmentGroup4> SegmentGroup4 {get;set;} = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<SegmentGroup3>(this);
+		validator.Required(x => x.NameAndAddress);
+		foreach (var item in SegmentGroup4) validator.Results.AddRange(item.Validate().Errors);
+		return validator.Results;
+	}
+}
