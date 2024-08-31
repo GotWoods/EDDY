@@ -1,0 +1,18 @@
+using System.Collections.Generic;
+using Eddy.Core.Attributes;
+using Eddy.Core.Validation;
+using Eddy.Edifact.Models.D20B;
+
+namespace Eddy.Edifact.DomainModels.Transport.D20B.IFCSUM;
+
+public class SegmentGroup28__SegmentGroup55__SegmentGroup70_SegmentGroup72 {
+	[SectionPosition(1)] public MEA_Measurements Measurements { get; set; } = new();
+	[SectionPosition(2)] public EQN_NumberOfUnits NumberOfUnits { get; set; } = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<SegmentGroup28__SegmentGroup55__SegmentGroup70_SegmentGroup72>(this);
+		validator.Required(x => x.Measurements);
+		validator.Required(x => x.NumberOfUnits);
+		return validator.Results;
+	}
+}
