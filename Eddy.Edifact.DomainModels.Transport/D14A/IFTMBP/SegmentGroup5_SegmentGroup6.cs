@@ -1,0 +1,18 @@
+using System.Collections.Generic;
+using Eddy.Core.Attributes;
+using Eddy.Core.Validation;
+using Eddy.Edifact.Models.D14A;
+
+namespace Eddy.Edifact.DomainModels.Transport.D14A.IFTMBP;
+
+public class SegmentGroup5_SegmentGroup6 {
+	[SectionPosition(1)] public TSR_TransportServiceRequirements TransportServiceRequirements { get; set; } = new();
+	[SectionPosition(2)] public List<SCC_SchedulingConditions> SchedulingConditions { get; set; } = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<SegmentGroup5_SegmentGroup6>(this);
+		validator.Required(x => x.TransportServiceRequirements);
+		validator.CollectionSize(x => x.SchedulingConditions, 1, 9);
+		return validator.Results;
+	}
+}

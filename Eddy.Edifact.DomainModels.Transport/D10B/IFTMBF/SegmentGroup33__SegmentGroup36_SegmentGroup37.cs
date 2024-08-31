@@ -1,0 +1,18 @@
+using System.Collections.Generic;
+using Eddy.Core.Attributes;
+using Eddy.Core.Validation;
+using Eddy.Edifact.Models.D10B;
+
+namespace Eddy.Edifact.DomainModels.Transport.D10B.IFTMBF;
+
+public class SegmentGroup33__SegmentGroup36_SegmentGroup37 {
+	[SectionPosition(1)] public CTA_ContactInformation ContactInformation { get; set; } = new();
+	[SectionPosition(2)] public List<COM_CommunicationContact> CommunicationContact { get; set; } = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<SegmentGroup33__SegmentGroup36_SegmentGroup37>(this);
+		validator.Required(x => x.ContactInformation);
+		validator.CollectionSize(x => x.CommunicationContact, 1, 9);
+		return validator.Results;
+	}
+}
