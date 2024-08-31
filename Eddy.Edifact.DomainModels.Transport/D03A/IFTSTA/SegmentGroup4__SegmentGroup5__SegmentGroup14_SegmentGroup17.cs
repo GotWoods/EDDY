@@ -1,0 +1,18 @@
+using System.Collections.Generic;
+using Eddy.Core.Attributes;
+using Eddy.Core.Validation;
+using Eddy.Edifact.Models.D03A;
+
+namespace Eddy.Edifact.DomainModels.Transport.D03A.IFTSTA;
+
+public class SegmentGroup4__SegmentGroup5__SegmentGroup14_SegmentGroup17 {
+	[SectionPosition(1)] public PCI_PackageIdentification PackageIdentification { get; set; } = new();
+	[SectionPosition(2)] public List<GIN_GoodsIdentityNumber> GoodsIdentityNumber { get; set; } = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<SegmentGroup4__SegmentGroup5__SegmentGroup14_SegmentGroup17>(this);
+		validator.Required(x => x.PackageIdentification);
+		validator.CollectionSize(x => x.GoodsIdentityNumber, 1, 9999);
+		return validator.Results;
+	}
+}
