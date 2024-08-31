@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Eddy.Core\Eddy.Core.csproj" />
+    <ProjectReference Include="..\Eddy.Edifact\Eddy.Edifact.csproj" />
   </ItemGroup>
 
 </Project>
