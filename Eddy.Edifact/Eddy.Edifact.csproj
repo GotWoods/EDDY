@@ -16,4 +16,8 @@
     </AssemblyAttribute>
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Eddy.Core" Version="0.0.9" />
+  </ItemGroup>
+
 </Project>
