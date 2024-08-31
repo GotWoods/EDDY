@@ -1,0 +1,19 @@
+using System.Collections.Generic;
+using Eddy.Core.Attributes;
+using Eddy.Core.Validation;
+using Eddy.Edifact.Models.D21A;
+
+namespace Eddy.Edifact.DomainModels.Transport.D21A.TPFREP;
+
+public class SegmentGroup4_SegmentGroup5 {
+	[SectionPosition(1)] public EQD_EquipmentDetails EquipmentDetails { get; set; } = new();
+	[SectionPosition(2)] public List<SegmentGroup4__SegmentGroup5_SegmentGroup6> SegmentGroup6 {get;set;} = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<SegmentGroup4_SegmentGroup5>(this);
+		validator.Required(x => x.EquipmentDetails);
+		validator.CollectionSize(x => x.SegmentGroup6, 0, 99);
+		foreach (var item in SegmentGroup6) validator.Results.AddRange(item.Validate().Errors);
+		return validator.Results;
+	}
+}
