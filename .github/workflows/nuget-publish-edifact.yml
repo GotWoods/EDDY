@@ -1,4 +1,4 @@
-name: Publish Eddy.x12 NuGet Package
+name: Publish Eddy.Edifact NuGet Package
 
 on:
   push:
