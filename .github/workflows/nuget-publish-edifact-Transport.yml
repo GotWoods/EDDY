@@ -23,11 +23,6 @@ jobs:
     - name: Update Eddy.core package to the latest version
       run: dotnet add Eddy.Edifact.DomainModels.Transport/Eddy.Edifact.DomainModels.Transport.csproj package Eddy.core --version=${{vars.GLOBAL_VERSION}}-${{vars.GLOBAL_VERSION_SUFFIX}}
 
-    - name: Update Eddy.EdifactParser package to the latest version
-      run: dotnet add Eddy.Edifact.DomainModels.Transport/Eddy.Edifact.DomainModels.Transport.csproj package Eddy.EdifactParser --version=${{vars.GLOBAL_VERSION}}-${{vars.GLOBAL_VERSION_SUFFIX}}
-
-
-
     - name: Restore dependencies
       run: dotnet restore Eddy.Edifact.DomainModels.Transport/Eddy.Edifact.DomainModels.Transport.csproj
 
