@@ -1,0 +1,36 @@
+name: Publish Eddy.x12 NuGet Package
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'Eddy.Edifact/**'
+      - '.github/workflows/nuget-publish-edifact.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x' # Specify the .NET version
+
+    - name: Update Eddy.Core package to the latest version
+      run: dotnet add Eddy.Edifact/Eddy.Edifact.csproj package Eddy.Core --version=${{vars.GLOBAL_VERSION}}-${{vars.GLOBAL_VERSION_SUFFIX}}
+
+    - name: Restore dependencies
+      run: dotnet restore Eddy.Edifact/Eddy.Edifact.csproj
+    
+    - name: Build
+      run: dotnet build Eddy.Edifact/Eddy.Edifact.csproj --no-restore -c Release /p:Version=${{vars.GLOBAL_VERSION}}
+
+    - name: Pack
+      run: dotnet pack Eddy.Edifact/Eddy.Edifact.csproj --no-build -c Release -o out /p:PackageVersion=${{ vars.GLOBAL_VERSION }}-${{ vars.GLOBAL_VERSION_SUFFIX }}
+
+    - name: Push to NuGet
+      run: dotnet nuget push out/*.nupkg --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
