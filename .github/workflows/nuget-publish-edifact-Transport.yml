@@ -1,0 +1,41 @@
+name: Publish Edifact.Transport NuGet Package
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'Eddy.Edifact.DomainModels.Transport/**'
+      - '.github/workflows/nuget-publish-Edifact-Transport.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x' # Specify the .NET version
+
+    - name: Update Eddy.core package to the latest version
+      run: dotnet add Eddy.Edifact.DomainModels.Transport/Eddy.Edifact.DomainModels.Transport.csproj package Eddy.core --version=${{vars.GLOBAL_VERSION}}-${{vars.GLOBAL_VERSION_SUFFIX}}
+
+    - name: Update Eddy.EdifactParser package to the latest version
+      run: dotnet add Eddy.Edifact.DomainModels.Transport/Eddy.Edifact.DomainModels.Transport.csproj package Eddy.EdifactParser --version=${{vars.GLOBAL_VERSION}}-${{vars.GLOBAL_VERSION_SUFFIX}}
+
+
+
+    - name: Restore dependencies
+      run: dotnet restore Eddy.Edifact.DomainModels.Transport/Eddy.Edifact.DomainModels.Transport.csproj
+
+    - name: Build
+      run: dotnet build Eddy.Edifact.DomainModels.Transport/Eddy.Edifact.DomainModels.Transport.csproj --no-restore -c Release /p:Version=${{vars.GLOBAL_VERSION}}
+
+    - name: Pack
+      run: dotnet pack Eddy.Edifact.DomainModels.Transport/Eddy.Edifact.DomainModels.Transport.csproj --no-build -c Release -o out /p:VersionSuffix=${{ env.VERSION_SUFFIX }} /p:PackageVersion=${{ vars.GLOBAL_VERSION }}-${{ vars.GLOBAL_VERSION_SUFFIX }}
+
+    - name: Push to NuGet
+      run: dotnet nuget push out/*.nupkg --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
