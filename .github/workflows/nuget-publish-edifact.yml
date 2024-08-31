@@ -30,7 +30,8 @@ jobs:
       run: pwd
 
     - name: Update Eddy.Core package to the latest version
-      run: dotnet add Eddy.Edifact/Eddy.Edifact.csproj package Eddy.Core --prerelease
+      run: dotnet add package Eddy.Core --prerelease
+      working-directory: ${{ github.workspace }}/Eddy.Edifact
 
     - name: Restore dependencies
       run: dotnet restore Eddy.Edifact/Eddy.Edifact.csproj
