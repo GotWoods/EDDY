@@ -21,7 +21,7 @@ jobs:
         dotnet-version: '6.0.x' # Specify the .NET version
 
     - name: Update Eddy.Core package to the latest version
-      run: dotnet add Eddy.Edifact/Eddy.Edifact.csproj package Eddy.Core --version=${{vars.GLOBAL_VERSION}}-${{vars.GLOBAL_VERSION_SUFFIX}}
+      run: dotnet add Eddy.Edifact/Eddy.Edifact.csproj package Eddy.Core 
 
     - name: Restore dependencies
       run: dotnet restore Eddy.Edifact/Eddy.Edifact.csproj
