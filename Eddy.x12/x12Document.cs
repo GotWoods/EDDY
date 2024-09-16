@@ -44,7 +44,7 @@ public class x12Document
                 lines++;
             }
             var footer = new SE_TransactionSetTrailer();
-            footer.NumberOfIncludedSegments = lines +2; //ST/SE counts
+            footer.NumberOfIncludedSegments = lines; //ST/SE counts
             footer.TransactionSetControlNumber = section.TransactionSetControlNumber;
             sb.Append(Map.SegmentToString(footer, options));
         }
