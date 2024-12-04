@@ -1,4 +1,5 @@
-﻿using Eddy.Core.Validation;
+﻿using Eddy.Core;
+using Eddy.Core.Validation;
 
 namespace Eddy.x12.Tests;
 
@@ -45,6 +46,14 @@ public class x12DocumentValidationTests
         var subject = x12Document.Parse(string.Join(Environment.NewLine, data));
         if (!subject.IsValid)
             Assert.Fail(subject.ValidationErrors[0].ToString());
+    }
+
+    [Fact]
+    public void MissingGSRecord()
+    {
+        var modifiedData = data.Where((_, index) => index != 1).ToArray();
+        var ex = Assert.Throws<InvalidFileFormatException>(() => x12Document.Parse(string.Join(Environment.NewLine, modifiedData)));
+        Assert.Equal("A GS record was expected after the ISA record but it was not found", ex.Message);
     }
 
     [Fact]

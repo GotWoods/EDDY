@@ -92,6 +92,9 @@ public class x12Document
         //line 1 validation here
 
         var lines = data.Split(options.LineEnding.ToCharArray());
+        if (!lines[1].StartsWith("GS"))
+            throw new InvalidFileFormatException("A GS record was expected after the ISA record but it was not found");
+
         r2.GsHeader = Map.MapObject<GenericFunctionalGroupHeader>(lines[1], options);
        
         Section currentSection = null;
