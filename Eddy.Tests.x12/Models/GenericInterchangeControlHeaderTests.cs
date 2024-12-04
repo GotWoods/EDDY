@@ -1,4 +1,5 @@
-﻿using Eddy.x12.Models;
+﻿using Eddy.Core;
+using Eddy.x12.Models;
 
 namespace Eddy.x12.Tests.Models
 {
@@ -30,6 +31,121 @@ namespace Eddy.x12.Tests.Models
             Assert.Equal(":", header.ComponentDataElementSeparator);
             Assert.Equal('~', header.ElementSeparator);
         }
+
+        [Fact]
+        
+        public void Parse_Invalid_Length_Second_Position()
+        {
+            var data = "ISA*001*1234567890*02*1234567890*03*ABCDEFGHIJKLMNO*04*ABCDEFGHIJKLMNO*211019*1011*U*00401*000000021*7*P*:~";
+            var exception = Assert.Throws<InvalidFileFormatException>(() => GenericInterchangeControlHeader.FromString(data));
+            Assert.Equal("ISA AuthorizationInformationQualifier must be 2 characters long", exception.Message);
+        }
+
+        [Fact]
+        public void Parse_Invalid_Length_Third_Position()
+        {
+            var data = "ISA*01*123456789*02*1234567890*03*ABCDEFGHIJKLMNO*04*ABCDEFGHIJKLMNO*211019*1011*U*00401*000000021*7*P*:~";
+            var exception = Assert.Throws<InvalidFileFormatException>(() => GenericInterchangeControlHeader.FromString(data));
+            Assert.Equal("ISA AuthorizationInformation must be 10 characters long", exception.Message);
+        }
+
+        [Fact]
+        public void Parse_Invalid_Length_Fourth_Position()
+        {
+            var data = "ISA*01*1234567890*023*1234567890*03*ABCDEFGHIJKLMNO*04*ABCDEFGHIJKLMNO*211019*1011*U*00401*000000021*7*P*:~";
+            var exception = Assert.Throws<InvalidFileFormatException>(() => GenericInterchangeControlHeader.FromString(data));
+            Assert.Equal("ISA SecurityInformationQualifier must be 2 characters long", exception.Message);
+        }
+
+        [Fact]
+        public void Parse_Invalid_Length_Fifth_Position()
+        {
+            var data = "ISA*01*1234567890*02*123456789*03*ABCDEFGHIJKLMNO*04*ABCDEFGHIJKLMNO*211019*1011*U*00401*000000021*7*P*:~";
+            var exception = Assert.Throws<InvalidFileFormatException>(() => GenericInterchangeControlHeader.FromString(data));
+            Assert.Equal("ISA AuthorizationInformation must be 10 characters long", exception.Message);
+        }
+
+        [Fact]
+        public void Parse_Invalid_Length_Sixth_Position()
+        {
+            var data = "ISA*01*1234567890*02*1234567890*03*ABCDEFGHIJKLMN*04*ABCDEFGHIJKLMNO*211019*1011*U*00401*000000021*7*P*:~";
+            var exception = Assert.Throws<InvalidFileFormatException>(() => GenericInterchangeControlHeader.FromString(data));
+            Assert.Equal("ISA AuthorizationInformation must be 15 characters long", exception.Message);
+        }
+
+        [Fact]
+        public void Parse_Invalid_Length_Seventh_Position()
+        {
+            var data = "ISA*01*1234567890*02*1234567890*03*ABCDEFGHIJKLMNO*04*ABCDEFGHIJKLMN*211019*1011*U*00401*000000021*7*P*:~";
+            var exception = Assert.Throws<InvalidFileFormatException>(() => GenericInterchangeControlHeader.FromString(data));
+            Assert.Equal("ISA InterchangeReceiverID must be 15 characters long", exception.Message);
+        }
+
+        [Fact]
+        public void Parse_Invalid_Length_Eighth_Position()
+        {
+            var data = "ISA*01*1234567890*02*1234567890*03*ABCDEFGHIJKLMNO*04*ABCDEFGHIJKLMNO*21101*1011*U*00401*000000021*7*P*:~";
+            var exception = Assert.Throws<InvalidFileFormatException>(() => GenericInterchangeControlHeader.FromString(data));
+            Assert.Equal("ISA InterchangeDate must be 6 characters long", exception.Message);
+        }
+
+        [Fact]
+        public void Parse_Invalid_Length_Ninth_Position()
+        {
+            var data = "ISA*01*1234567890*02*1234567890*03*ABCDEFGHIJKLMNO*04*ABCDEFGHIJKLMNO*211019*101*U*00401*000000021*7*P*:~";
+            var exception = Assert.Throws<InvalidFileFormatException>(() => GenericInterchangeControlHeader.FromString(data));
+            Assert.Equal("ISA InterchangeTime must be 10 characters long", exception.Message);
+        }
+
+        [Fact]
+        public void Parse_Invalid_Length_Tenth_Position()
+        {
+            var data = "ISA*01*1234567890*02*1234567890*03*ABCDEFGHIJKLMNO*04*ABCDEFGHIJKLMNO*211019*1011*UU*00401*000000021*7*P*:~";
+            var exception = Assert.Throws<InvalidFileFormatException>(() => GenericInterchangeControlHeader.FromString(data));
+            Assert.Equal("ISA Interchange Control Standards Identifier must be 10 characters long", exception.Message);
+        }
+
+        [Fact]
+        public void Parse_Invalid_Length_Eleventh_Position()
+        {
+            var data = "ISA*01*1234567890*02*1234567890*03*ABCDEFGHIJKLMNO*04*ABCDEFGHIJKLMNO*211019*1011*U*0040*000000021*7*P*:~";
+            var exception = Assert.Throws<InvalidFileFormatException>(() => GenericInterchangeControlHeader.FromString(data));
+            Assert.Equal("ISA InterchangeControlVersionNumberCode must be 5 characters long", exception.Message);
+        }
+
+        [Fact]
+        public void Parse_Invalid_Length_Twelfth_Position()
+        {
+            var data = "ISA*01*1234567890*02*1234567890*03*ABCDEFGHIJKLMNO*04*ABCDEFGHIJKLMNO*211019*1011*U*00401*00000002*7*P*:~";
+            var exception = Assert.Throws<InvalidFileFormatException>(() => GenericInterchangeControlHeader.FromString(data));
+            Assert.Equal("ISA InterchangeControlNumber must be 9 characters long", exception.Message);
+        }
+
+        [Fact]
+        public void Parse_Invalid_Length_Thirteenth_Position()
+        {
+            var data = "ISA*01*1234567890*02*1234567890*03*ABCDEFGHIJKLMNO*04*ABCDEFGHIJKLMNO*211019*1011*U*00401*000000021*77*P*:~";
+            var exception = Assert.Throws<InvalidFileFormatException>(() => GenericInterchangeControlHeader.FromString(data));
+            Assert.Equal("ISA AcknowledgmentRequestedCode must be 1 characters long", exception.Message);
+        }
+
+        [Fact]
+        public void Parse_Invalid_Length_Fourteenth_Position()
+        {
+            var data = "ISA*01*1234567890*02*1234567890*03*ABCDEFGHIJKLMNO*04*ABCDEFGHIJKLMNO*211019*1011*U*00401*000000021*7*PP*:~";
+            var exception = Assert.Throws<InvalidFileFormatException>(() => GenericInterchangeControlHeader.FromString(data));
+            Assert.Equal("ISA InterchangeUsageIndicatorCode must be 1 characters long", exception.Message);
+        }
+
+        [Fact]
+        public void Parse_Invalid_Length_Fifteenth_Position()
+        {
+            var data = "ISA*01*1234567890*02*1234567890*03*ABCDEFGHIJKLMNO*04*ABCDEFGHIJKLMNO*211019*1011*U*00401*000000021*7*P*::~";
+            var exception = Assert.Throws<InvalidFileFormatException>(() => GenericInterchangeControlHeader.FromString(data));
+            Assert.Equal("ISA ComponentDataElementSeparator must be 1 characters long", exception.Message);
+        }
+
+
 
         [Fact]
         public void ToStringCheck()
