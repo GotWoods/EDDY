@@ -23,6 +23,10 @@
   
   <ItemGroup Condition="'$(Configuration)' != 'Local'">
      <PackageReference Include="Eddy.x12Parser" Version="0.0.6-beta" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Eddy.Core\Eddy.Core.csproj" />
   </ItemGroup>  
 
 </Project>
