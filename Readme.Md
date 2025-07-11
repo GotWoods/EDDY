@@ -82,3 +82,16 @@ This will take into account Daylight Savings Time if the date falls into the DST
 
 The use of the LT time code will cause an exception in the ConvertToTimeZone as we don't know if that is the local timezone of the sender, the recipient, or the timezone of the data the line is refering to (e.g. a location update from a company based in LA, reporting to a company based in New York, with the location update happening in Colorado)
 
+Getting a document structure
+If you want to get a programatic representation of the document structure you can use the following code:
+```
+var structure= Structure.Of<Edi214_TransportationCarrierShipmentStatusMessage>();
+```
+
+This will return a list of objects that represent the document. Each item can be a:
+Segment - This is a single line in the EDI document, e.g. AT7_AppointmentInformation
+RepeatingSegment - This is a segment that can repeat multiple times, e.g. L11_BusinessInstructionsAndReferenceNumber_
+RepeatingComplexType - This is a grouping of lines that can repeat (e.g. N1 + N2 + N3 is a group with the next N1 starting the next group)
+
+If it is a segment then the Segments array will be filled in
+If it is a repeating segment / complex type then the Sections array will be filled in
