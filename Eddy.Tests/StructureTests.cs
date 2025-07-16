@@ -55,34 +55,34 @@ public class StructureTests
 
         var map = Structure.Of<Edi214_TransportationCarrierShipmentStatusMessage>();
 
-        VerifySection("ST", "TransactionSetHeader", map[0]);
-        VerifySection("B10", "BeginningSegmentForTransportationCarrierShipmentStatusMessage", map[1]);
-        VerifySection("L11", "BusinessInstructionsAndReferenceNumber", map[2]);
-        VerifySection("MAN", "MarksAndNumbers", map[3]);
-        VerifySection("K1", "Remarks", map[4]);
+        VerifySection("ST", "TransactionSetHeader", SectionType.Segment, map[0]);
+        VerifySection("B10", "BeginningSegmentForTransportationCarrierShipmentStatusMessage", SectionType.Segment,map[1]);
+        VerifySection("L11", "BusinessInstructionsAndReferenceNumber", SectionType.RepeatingSegment,map[2]);
+        VerifySection("MAN", "MarksAndNumbers", SectionType.RepeatingSegment, map[3]);
+        VerifySection("K1", "Remarks", SectionType.RepeatingSegment, map[4]);
         #region L0100
         var l0100 = map[5];
-        VerifySection("L0100", "L0100", l0100);
-        VerifySection("N1", "Name", l0100.Sections[0]);
-        VerifySection("N2", "AdditionalNameInformation", l0100.Sections[1]);
-        VerifySection("N3", "AddressInformation", l0100.Sections[2]);
-        VerifySection("N4", "GeographicLocation", l0100.Sections[3]);
-        VerifySection("G61", "Contact", l0100.Sections[4]);
-        VerifySection("G62", "DateTime", l0100.Sections[5]);
-        VerifySection("L11", "BusinessInstructionsAndReferenceNumber", l0100.Sections[6]);
+        VerifySection("L0100", "L0100", SectionType.RepeatingComplexType, l0100);
+        VerifySection("N1", "Name", SectionType.Segment,l0100.Sections[0]);
+        VerifySection("N2", "AdditionalNameInformation", SectionType.Segment, l0100.Sections[1]);
+        VerifySection("N3", "AddressInformation", SectionType.RepeatingSegment, l0100.Sections[2]);
+        VerifySection("N4", "GeographicLocation", SectionType.Segment,l0100.Sections[3]);
+        VerifySection("G61", "Contact", SectionType.Segment, l0100.Sections[4]);
+        VerifySection("G62", "DateTime", SectionType.Segment, l0100.Sections[5]);
+        VerifySection("L11", "BusinessInstructionsAndReferenceNumber", SectionType.RepeatingSegment, l0100.Sections[6]);
         #endregion L0100
         
-        VerifySection("MS3", "InterlineInformation", map[6]);
+        VerifySection("MS3", "InterlineInformation", SectionType.RepeatingSegment, map[6]);
 
         #region L0200
         var l0200 = map[7];
-        VerifySection("L0200", "L0200", l0200);
-        VerifySection("LX", "AssignedNumber", l0200.Sections[0]);
-        VerifySection("L0200_L0205", "L0200_L0205", l0200.Sections[1]);
+        VerifySection("L0200", "L0200", SectionType.RepeatingComplexType, l0200);
+        VerifySection("LX", "AssignedNumber", SectionType.Segment,l0200.Sections[0]);
+        VerifySection("L0200_L0205", "L0200_L0205", SectionType.RepeatingComplexType, l0200.Sections[1]);
 
         #region l0200_L0205
         var l0200_L0205 = l0200.Sections[1];
-        VerifySection("AT7", "ShipmentStatusDetails", l0200_L0205.Sections[0]);
+        VerifySection("AT7", "ShipmentStatusDetails", SectionType.Segment,l0200_L0205.Sections[0]);
 
         var segment = l0200_L0205.Sections[0].Segments; //get the parts from the AT7 line
         VerifySegment("ShipmentStatusCode", 1, segment[0]);
@@ -93,42 +93,43 @@ public class StructureTests
         VerifySegment("Time", 6, segment[5]);
         VerifySegment("TimeCode", 7, segment[6]);
 
-        VerifySection("MS1", "EquipmentShipmentOrRealPropertyLocation", l0200_L0205.Sections[1]);
-        VerifySection("MS2", "EquipmentOrContainerOwnerAndType", l0200_L0205.Sections[2]);
+        VerifySection("MS1", "EquipmentShipmentOrRealPropertyLocation", SectionType.Segment, l0200_L0205.Sections[1]);
+        VerifySection("MS2", "EquipmentOrContainerOwnerAndType", SectionType.Segment, l0200_L0205.Sections[2]);
         #endregion l0200_L0205
 
-        VerifySection("L11", "BusinessInstructionsAndReferenceNumber", l0200.Sections[2]);
-        VerifySection("MAN", "MarksAndNumbers", l0200.Sections[3]);
-        VerifySection("Q7", "LadingExceptionCode", l0200.Sections[4]);
-        VerifySection("K1", "Remarks", l0200.Sections[5]);
-        VerifySection("AT5", "BillOfLadingHandlingRequirements", l0200.Sections[6]);
-        VerifySection("AT8", "ShipmentWeightPackagingAndQuantityData", l0200.Sections[7]);
-        VerifySection("L0200_L0210", "L0200_L0210", l0200.Sections[8]);
+        VerifySection("L11", "BusinessInstructionsAndReferenceNumber", SectionType.RepeatingSegment, l0200.Sections[2]);
+        VerifySection("MAN", "MarksAndNumbers", SectionType.RepeatingSegment, l0200.Sections[3]);
+        VerifySection("Q7", "LadingExceptionCode", SectionType.RepeatingSegment, l0200.Sections[4]);
+        VerifySection("K1", "Remarks", SectionType.RepeatingSegment, l0200.Sections[5]);
+        VerifySection("AT5", "BillOfLadingHandlingRequirements", SectionType.RepeatingSegment, l0200.Sections[6]);
+        VerifySection("AT8", "ShipmentWeightPackagingAndQuantityData", SectionType.RepeatingSegment, l0200.Sections[7]);
+        VerifySection("L0200_L0210", "L0200_L0210", SectionType.RepeatingComplexType, l0200.Sections[8]);
 
         #region l0200_L0210
         var l0200_L0210 = l0200.Sections[8];
-        VerifySection("CD3", "CartonPackageDetail", l0200_L0210.Sections[0]);
-        VerifySection("L11", "BusinessInstructionsAndReferenceNumber", l0200_L0210.Sections[1]);
-        VerifySection("L0200__L0210_L0215", "L0200__L0210_L0215", l0200_L0210.Sections[2]);
-        VerifySection("NM1", "IndividualOrOrganizationalName", l0200_L0210.Sections[3]);
-        VerifySection("Q7", "LadingExceptionCode", l0200_L0210.Sections[4]);
-        VerifySection("AT8", "ShipmentWeightPackagingAndQuantityData", l0200_L0210.Sections[5]);
-        VerifySection("MAN", "MarksAndNumbers", l0200_L0210.Sections[6]);
-        VerifySection("L0200__L0210_L0220", "L0200__L0210_L0220", l0200_L0210.Sections[7]);
+        VerifySection("CD3", "CartonPackageDetail", SectionType.Segment, l0200_L0210.Sections[0]);
+        VerifySection("L11", "BusinessInstructionsAndReferenceNumber", SectionType.RepeatingSegment, l0200_L0210.Sections[1]);
+        VerifySection("L0200__L0210_L0215", "L0200__L0210_L0215", SectionType.RepeatingComplexType, l0200_L0210.Sections[2]);
+        VerifySection("NM1", "IndividualOrOrganizationalName", SectionType.Segment, l0200_L0210.Sections[3]);
+        VerifySection("Q7", "LadingExceptionCode", SectionType.RepeatingSegment, l0200_L0210.Sections[4]);
+        VerifySection("AT8", "ShipmentWeightPackagingAndQuantityData", SectionType.Segment, l0200_L0210.Sections[5]);
+        VerifySection("MAN", "MarksAndNumbers", SectionType.RepeatingSegment, l0200_L0210.Sections[6]);
+        VerifySection("L0200__L0210_L0220", "L0200__L0210_L0220", SectionType.RepeatingComplexType, l0200_L0210.Sections[7]);
         #endregion l0200_L0210
 
-        VerifySection("L0200_L0230", "L0200_L0230", l0200.Sections[9]);
-        VerifySection("L0200_L0250", "L0200_L0250", l0200.Sections[10]);
-        VerifySection("L0200_L0260", "L0200_L0260", l0200.Sections[11]);
+        VerifySection("L0200_L0230", "L0200_L0230", SectionType.RepeatingComplexType, l0200.Sections[9]);
+        VerifySection("L0200_L0250", "L0200_L0250", SectionType.RepeatingComplexType, l0200.Sections[10]);
+        VerifySection("L0200_L0260", "L0200_L0260", SectionType.RepeatingComplexType, l0200.Sections[11]);
         #endregion L0200
 
-        VerifySection("SE", "TransactionSetTrailer", map[8]);
+        VerifySection("SE", "TransactionSetTrailer", SectionType.Segment, map[8]);
     }
 
-    private void VerifySection(string code, string name, Eddy.Core.DocumentStructure.Section item)
+    private void VerifySection(string code, string name, SectionType sectionType, Eddy.Core.DocumentStructure.Section item)
     {
         Assert.Equal(code, item.Code);
         Assert.Equal(name, item.Name);
+        Assert.Equal(sectionType, item.SectionType);
     }
 
     [Fact]
