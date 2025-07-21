@@ -30,6 +30,15 @@ jobs:
         version=$(cat version.txt)
         echo "version=$version" >> "$GITHUB_OUTPUT"
 
+    - name: Add GitHub NuGet source
+      run: |
+        dotnet nuget add source \
+        --username "${{ github.actor }}" \
+        --password "${{ secrets.GITHUB_TOKEN }}" \
+        --store-password-in-clear-text \
+        --name github \
+        "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+        
     - name: Update Eddy.Core package
       run: |
         dotnet add Eddy.x12.DomainModels.Transportation/Eddy.x12.DomainModels.Transportation.csproj \
