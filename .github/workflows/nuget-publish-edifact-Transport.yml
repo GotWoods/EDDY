@@ -1,11 +1,10 @@
 name: Publish Edifact.Transport NuGet Package
 
 on:
-  push:
-    branches: [ main ]
-    paths:
-      - 'Eddy.Edifact.DomainModels.Transport/**'
-      - '.github/workflows/nuget-publish-Edifact-Transport.yml'
+  workflow_run:
+    workflows: ["Publish Eddy.Edifact NuGet Package"]
+    types:
+      - completed
   workflow_dispatch:
 
 permissions:
@@ -14,6 +13,7 @@ permissions:
 
 jobs:
   build:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -54,7 +54,7 @@ jobs:
       run: |
         dotnet pack Eddy.Edifact.DomainModels.Transport/Eddy.Edifact.DomainModels.Transport.csproj \
         --no-build -c Release -o out \
-        /p:PackageVersion=${{ steps.version.outputs.version }}
+        /p:PackageVersion=${{ steps.version.outputs.version }}-${{vars.GLOBAL_VERSION_SUFFIX}}
 
     - name: Push to NuGet.org
       run: |

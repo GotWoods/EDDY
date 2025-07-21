@@ -1,11 +1,10 @@
 name: Publish Eddy.x12 NuGet Package
 
 on:
-  push:
-    branches: [ main ]
-    paths:
-      - 'Eddy.x12/**'
-      - '.github/workflows/nuget-publish-x12.yml'
+  workflow_run:
+    workflows: ["Publish Eddy.Core NuGet Package"]
+    types:
+      - completed
   workflow_dispatch:
 
 permissions:
@@ -14,6 +13,7 @@ permissions:
 
 jobs:
   build:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:

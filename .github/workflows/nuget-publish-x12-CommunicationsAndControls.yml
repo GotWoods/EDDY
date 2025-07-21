@@ -1,11 +1,10 @@
 name: Publish x12.CommunicationsAndControls NuGet Package
 
 on:
-  push:
-    branches: [ main ]
-    paths:
-      - 'Eddy.x12.DomainModels.CommunicationsAndControls/**'
-      - '.github/workflows/nuget-publish-x12-CommunicationsAndControls.yml'
+  workflow_run:
+    workflows: ["Publish Eddy.x12 NuGet Package"]
+    types:
+      - completed
   workflow_dispatch:
 
 permissions:
@@ -14,6 +13,7 @@ permissions:
 
 jobs:
   build:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:

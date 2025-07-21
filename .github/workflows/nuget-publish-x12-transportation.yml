@@ -1,11 +1,10 @@
 name: Publish x12.Transportation NuGet Package
 
 on:
-  push:
-    branches: [ main ]
-    paths:
-      - 'Eddy.x12.DomainModels.Transportation/**'
-      - '.github/workflows/nuget-publish-x12-Transportation.yml'
+  workflow_run:
+    workflows: ["Publish Eddy.x12 NuGet Package"]
+    types:
+      - completed
   workflow_dispatch:
 
 permissions:
@@ -14,6 +13,7 @@ permissions:
 
 jobs:
   build:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -51,7 +51,7 @@ jobs:
       run: |
         dotnet pack Eddy.x12.DomainModels.Transportation/Eddy.x12.DomainModels.Transportation.csproj \
         --no-build -c Release -o out \
-        /p:PackageVersion=${{ steps.version.outputs.version }}
+        /p:PackageVersion=${{ steps.version.outputs.version }}-${{vars.GLOBAL_VERSION_SUFFIX}}
 
     
     - name: Push to GitHub Packages
