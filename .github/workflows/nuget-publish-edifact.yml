@@ -48,21 +48,22 @@ jobs:
       run: dotnet restore Eddy.Edifact/Eddy.Edifact.csproj
 
     - name: Build
-      run: dotnet build Eddy.Edifact/Eddy.Edifact.csproj \
-        --no-restore -c Release \
-        /p:Version=${{ steps.version.outputs.version }}
+      run: dotnet build Eddy.Edifact/Eddy.Edifact.csproj --no-restore -c Release /p:Version=${{ steps.version.outputs.version }}
 
     - name: Pack
-      run: dotnet pack Eddy.Edifact/Eddy.Edifact.csproj \
+      run: |
+        dotnet pack Eddy.Edifact/Eddy.Edifact.csproj \
         --no-build -c Release -o out \
         /p:PackageVersion=${{ steps.version.outputs.version }}
 
     - name: Push to NuGet.org
-      run: dotnet nuget push out/*.nupkg \
+      run: |
+        dotnet nuget push out/*.nupkg \
         --api-key ${{ secrets.NUGET_API_KEY }} \
         --source https://api.nuget.org/v3/index.json
 
     - name: Push to GitHub Packages
-      run: dotnet nuget push out/*.nupkg \
+      run: |
+        dotnet nuget push out/*.nupkg \
         --api-key ${{ secrets.GITHUB_TOKEN }} \
         --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
