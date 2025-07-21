@@ -58,6 +58,11 @@ public class StructureTests
         VerifySection("ST", "TransactionSetHeader", SectionType.Segment, map[0]);
         VerifySection("B10", "BeginningSegmentForTransportationCarrierShipmentStatusMessage", SectionType.Segment,map[1]);
         VerifySection("L11", "BusinessInstructionsAndReferenceNumber", SectionType.RepeatingSegment,map[2]);
+        
+        VerifySegment("ReferenceIdentification", 1, map[2].Segments[0]);
+        VerifySegment("ReferenceIdentificationQualifier", 2, map[2].Segments[1]);
+        VerifySegment("Description", 3, map[2].Segments[2]);
+        
         VerifySection("MAN", "MarksAndNumbers", SectionType.RepeatingSegment, map[3]);
         VerifySection("K1", "Remarks", SectionType.RepeatingSegment, map[4]);
         #region L0100

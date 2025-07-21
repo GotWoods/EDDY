@@ -49,7 +49,8 @@ namespace Eddy.Core.DocumentStructure
                         {
                             Name = propertyName[1],
                             Code = propertyName[0],
-                            SectionType = SectionType.RepeatingSegment
+                            SectionType = SectionType.RepeatingSegment,
+                            Segments = GetSegments(property.PropertyType.GetGenericArguments().First())
                         };
                         structureItems.Add(structureItem);
                     }
@@ -61,7 +62,8 @@ namespace Eddy.Core.DocumentStructure
                             Name = propertyName,
                             Code = propertyName,
                             SectionType = SectionType.RepeatingComplexType,
-                            Sections = Of(listItemType)
+                            Sections = Of(listItemType),
+                           
                         };
                         structureItems.Add(structureItem);
                     }
