@@ -8,6 +8,10 @@ on:
       - '.github/workflows/nuget-publish-x12-CommunicationsAndControls.yml'
   workflow_dispatch:
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,21 +24,29 @@ jobs:
       with:
         dotnet-version: '6.0.x' # Specify the .NET version
 
+    - name: Read version
+      id: version
+      run: |
+        version=$(cat version.txt)
+        echo "version=$version" >> "$GITHUB_OUTPUT"
+
     - name: Update Eddy.core package to the latest version
-      run: dotnet add Eddy.x12.DomainModels.CommunicationsAndControls/Eddy.x12.DomainModels.CommunicationsAndControls.csproj package Eddy.core --version=${{vars.GLOBAL_VERSION}}-${{vars.GLOBAL_VERSION_SUFFIX}}
+      run: dotnet add Eddy.x12.DomainModels.CommunicationsAndControls/Eddy.x12.DomainModels.CommunicationsAndControls.csproj package Eddy.core --version=${{ steps.version.outputs.version }}-${{vars.GLOBAL_VERSION_SUFFIX}}
 
     - name: Update Eddy.x12Parser package to the latest version
-      run: dotnet add Eddy.x12.DomainModels.CommunicationsAndControls/Eddy.x12.DomainModels.CommunicationsAndControls.csproj package Eddy.x12Parser --version=${{vars.GLOBAL_VERSION}}-${{vars.GLOBAL_VERSION_SUFFIX}}
-
+      run: dotnet add Eddy.x12.DomainModels.CommunicationsAndControls/Eddy.x12.DomainModels.CommunicationsAndControls.csproj package Eddy.x12Parser --version=${{ steps.version.outputs.version }}-${{vars.GLOBAL_VERSION_SUFFIX}}
 
     - name: Restore dependencies
       run: dotnet restore Eddy.x12.DomainModels.CommunicationsAndControls/Eddy.x12.DomainModels.CommunicationsAndControls.csproj
 
     - name: Build
-      run: dotnet build Eddy.x12.DomainModels.CommunicationsAndControls/Eddy.x12.DomainModels.CommunicationsAndControls.csproj --no-restore -c Release /p:Version=${{vars.GLOBAL_VERSION}}
+      run: dotnet build Eddy.x12.DomainModels.CommunicationsAndControls/Eddy.x12.DomainModels.CommunicationsAndControls.csproj --no-restore -c Release /p:Version=${{ steps.version.outputs.version }}
 
     - name: Pack
-      run: dotnet pack Eddy.x12.DomainModels.CommunicationsAndControls/Eddy.x12.DomainModels.CommunicationsAndControls.csproj --no-build -c Release -o out /p:VersionSuffix=${{ env.VERSION_SUFFIX }} /p:PackageVersion=${{ vars.GLOBAL_VERSION }}-${{ vars.GLOBAL_VERSION_SUFFIX }}
+      run: dotnet pack Eddy.x12.DomainModels.CommunicationsAndControls/Eddy.x12.DomainModels.CommunicationsAndControls.csproj --no-build -c Release -o out /p:VersionSuffix=${{ env.VERSION_SUFFIX }} /p:PackageVersion=${{ steps.version.outputs.version }}-${{ vars.GLOBAL_VERSION_SUFFIX }}
 
+    - name: Push to GitHub Packages
+      run: dotnet nuget push out/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+    
     - name: Push to NuGet
       run: dotnet nuget push out/*.nupkg --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
