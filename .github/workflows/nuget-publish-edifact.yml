@@ -8,30 +8,61 @@ on:
       - '.github/workflows/nuget-publish-edifact.yml'
   workflow_dispatch:
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    
+    - uses: actions/checkout@v4
+
     - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.0.x'
 
-    - name: Update Eddy.core package to the latest version
-      run: dotnet add Eddy.Edifact/Eddy.Edifact.csproj package Eddy.core --version=${{vars.GLOBAL_VERSION}}-${{vars.GLOBAL_VERSION_SUFFIX}}
+    - name: Read version
+      id: version
+      run: |
+        version=$(cat version.txt)
+        echo "version=$version" >> "$GITHUB_OUTPUT"
 
+    - name: Add GitHub NuGet source
+      run: |
+        dotnet nuget add source \
+        --username "${{ github.actor }}" \
+        --password "${{ secrets.GITHUB_TOKEN }}" \
+        --store-password-in-clear-text \
+        --name github \
+        "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+
+    - name: Update Eddy.Core package
+      run: |
+        dotnet add Eddy.Edifact/Eddy.Edifact.csproj \
+          package Eddy.Core --version ${{ steps.version.outputs.version }}
 
     - name: Restore dependencies
       run: dotnet restore Eddy.Edifact/Eddy.Edifact.csproj
-    
+
     - name: Build
-      run: dotnet build Eddy.Edifact/Eddy.Edifact.csproj --no-restore -c Release /p:Version=${{vars.GLOBAL_VERSION}}
+      run: dotnet build Eddy.Edifact/Eddy.Edifact.csproj \
+        --no-restore -c Release \
+        /p:Version=${{ steps.version.outputs.version }}
 
     - name: Pack
-      run: dotnet pack Eddy.Edifact/Eddy.Edifact.csproj --no-build -c Release -o out /p:PackageVersion=${{ vars.GLOBAL_VERSION }}-${{ vars.GLOBAL_VERSION_SUFFIX }}
+      run: dotnet pack Eddy.Edifact/Eddy.Edifact.csproj \
+        --no-build -c Release -o out \
+        /p:PackageVersion=${{ steps.version.outputs.version }}
 
-    - name: Push to NuGet
-      run: dotnet nuget push out/*.nupkg --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
+    - name: Push to NuGet.org
+      run: dotnet nuget push out/*.nupkg \
+        --api-key ${{ secrets.NUGET_API_KEY }} \
+        --source https://api.nuget.org/v3/index.json
+
+    - name: Push to GitHub Packages
+      run: dotnet nuget push out/*.nupkg \
+        --api-key ${{ secrets.GITHUB_TOKEN }} \
+        --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
