@@ -33,12 +33,12 @@ jobs:
     - name: Update Eddy.Core package
       run: |
         dotnet add Eddy.x12.DomainModels.Transportation/Eddy.x12.DomainModels.Transportation.csproj \
-          package Eddy.Core --version ${{ steps.version.outputs.version }}
+          package Eddy.Core --version ${{ steps.version.outputs.version }}-${{vars.GLOBAL_VERSION_SUFFIX}}
 
     - name: Update Eddy.x12Parser package
       run: |
         dotnet add Eddy.x12.DomainModels.Transportation/Eddy.x12.DomainModels.Transportation.csproj \
-          package Eddy.x12Parser --version ${{ steps.version.outputs.version }}
+          package Eddy.x12Parser --version ${{ steps.version.outputs.version }}-${{vars.GLOBAL_VERSION_SUFFIX}}
 
     - name: Restore dependencies
       run: dotnet restore Eddy.x12.DomainModels.Transportation/Eddy.x12.DomainModels.Transportation.csproj

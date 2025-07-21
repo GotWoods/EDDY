@@ -42,7 +42,7 @@ jobs:
     - name: Update Eddy.Core package
       run: |
         dotnet add Eddy.Edifact.DomainModels.Transport/Eddy.Edifact.DomainModels.Transport.csproj \
-          package Eddy.Core --version ${{ steps.version.outputs.version }}
+          package Eddy.Core --version ${{ steps.version.outputs.version }}-${{vars.GLOBAL_VERSION_SUFFIX}}
 
     - name: Restore dependencies
       run: dotnet restore Eddy.Edifact.DomainModels.Transport/Eddy.Edifact.DomainModels.Transport.csproj
