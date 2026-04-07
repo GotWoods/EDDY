@@ -1,0 +1,34 @@
+using System.Collections.Generic;
+using Eddy.Core.Attributes;
+using Eddy.Core.Validation;
+using Eddy.x12.Models.v3040;
+
+namespace Eddy.x12.DomainModels.Finance.v3040;
+
+public class Edi831_ApplicationControlTotals {
+	[SectionPosition(1)] public ST_TransactionSetHeader TransactionSetHeader { get; set; } = new();
+	[SectionPosition(2)] public BGN_BeginningSegment BeginningSegment { get; set; } = new();
+	[SectionPosition(3)] public List<DTM_DateTimeReference> DateTimeReference { get; set; } = new();
+	[SectionPosition(4)] public List<N9_ReferenceNumber> ReferenceNumber { get; set; } = new();
+	[SectionPosition(5)] public List<TRN_Trace> Trace { get; set; } = new();
+	[SectionPosition(6)] public List<AMT_MonetaryAmount> MonetaryAmount { get; set; } = new();
+	[SectionPosition(7)] public List<QTY_Quantity> Quantity { get; set; } = new();
+	[SectionPosition(8)] public SE_TransactionSetTrailer TransactionSetTrailer { get; set; } = new();
+
+
+
+
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<Edi831_ApplicationControlTotals>(this);
+		validator.Required(x => x.TransactionSetHeader);
+		validator.Required(x => x.BeginningSegment);
+		validator.CollectionSize(x => x.DateTimeReference, 0, 2);
+		validator.CollectionSize(x => x.ReferenceNumber, 1, 2147483647);
+		validator.CollectionSize(x => x.Trace, 1, 2147483647);
+		validator.CollectionSize(x => x.MonetaryAmount, 0, 10);
+		validator.CollectionSize(x => x.Quantity, 0, 10);
+		validator.Required(x => x.TransactionSetTrailer);
+		return validator.Results;
+	}
+}

@@ -1,0 +1,73 @@
+name: Publish x12.Finance NuGet Package
+
+on:
+  workflow_run:
+    workflows: ["Publish Eddy.x12 NuGet Package"]
+    types:
+      - completed
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '6.0.x'
+
+    - name: Read version
+      id: version
+      run: |
+        version=$(cat version.txt)
+        echo "version=$version" >> "$GITHUB_OUTPUT"
+
+    - name: Add GitHub NuGet source
+      run: |
+        dotnet nuget add source \
+        --username "${{ github.actor }}" \
+        --password "${{ secrets.GITHUB_TOKEN }}" \
+        --store-password-in-clear-text \
+        --name github \
+        "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+
+    - name: Update Eddy.Core package
+      run: |
+        dotnet add Eddy.x12.DomainModels.Finance/Eddy.x12.DomainModels.Finance.csproj \
+          package Eddy.Core --version ${{ steps.version.outputs.version }}-${{vars.GLOBAL_VERSION_SUFFIX}}
+
+    - name: Update Eddy.x12Parser package
+      run: |
+        dotnet add Eddy.x12.DomainModels.Finance/Eddy.x12.DomainModels.Finance.csproj \
+          package Eddy.x12Parser --version ${{ steps.version.outputs.version }}-${{vars.GLOBAL_VERSION_SUFFIX}}
+
+    - name: Restore dependencies
+      run: dotnet restore Eddy.x12.DomainModels.Finance/Eddy.x12.DomainModels.Finance.csproj
+
+    - name: Build
+      run: dotnet build Eddy.x12.DomainModels.Finance/Eddy.x12.DomainModels.Finance.csproj --no-restore -c Release /p:Version=${{ steps.version.outputs.version }}
+
+
+    - name: Pack
+      run: |
+        dotnet pack Eddy.x12.DomainModels.Finance/Eddy.x12.DomainModels.Finance.csproj \
+        --no-build -c Release -o out \
+        /p:PackageVersion=${{ steps.version.outputs.version }}-${{vars.GLOBAL_VERSION_SUFFIX}}
+
+
+    - name: Push to GitHub Packages
+      run: |
+        dotnet nuget push out/*.nupkg \
+        --api-key ${{ secrets.GITHUB_TOKEN }} \
+        --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+
+    - name: Push to NuGet.org
+      run: dotnet nuget push out/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json

@@ -1,0 +1,30 @@
+using System.Collections.Generic;
+using Eddy.Core.Attributes;
+using Eddy.Core.Validation;
+using Eddy.x12.Models.v3050;
+
+namespace Eddy.x12.DomainModels.Finance.v3050._264;
+
+public class L0200__L0210_L0212 {
+	[SectionPosition(1)] public REC_RealEstateCondition RealEstateCondition { get; set; } = new();
+	[SectionPosition(2)] public N3_AddressInformation? AddressInformation { get; set; }
+	[SectionPosition(3)] public N4_GeographicLocation? GeographicLocation { get; set; }
+	[SectionPosition(4)] public DFI_DefaultInformation? DefaultInformation { get; set; }
+	[SectionPosition(5)] public QTY_Quantity? Quantity { get; set; }
+	[SectionPosition(6)] public List<AMT_MonetaryAmount> MonetaryAmount { get; set; } = new();
+	[SectionPosition(7)] public INT_Interest? Interest { get; set; }
+	[SectionPosition(8)] public SOM_StatusOfMortgage? StatusOfMortgage { get; set; }
+	[SectionPosition(9)] public List<DTP_DateOrTimeOrPeriod> DateOrTimeOrPeriod { get; set; } = new();
+	[SectionPosition(10)] public List<MRC_MortgagorResponseCharacteristics> MortgagorResponseCharacteristics { get; set; } = new();
+	[SectionPosition(11)] public List<MSG_MessageText> MessageText { get; set; } = new();
+	public ValidationResult Validate()
+	{
+		var validator = new TransactionValidator<L0200__L0210_L0212>(this);
+		validator.Required(x => x.RealEstateCondition);
+		validator.CollectionSize(x => x.MonetaryAmount, 0, 10);
+		validator.CollectionSize(x => x.DateOrTimeOrPeriod, 0, 14);
+		validator.CollectionSize(x => x.MortgagorResponseCharacteristics, 0, 2);
+		validator.CollectionSize(x => x.MessageText, 0, 11);
+		return validator.Results;
+	}
+}
