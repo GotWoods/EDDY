@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
+    <Nullable>annotations</Nullable>
 
     <PackageId>Eddy.x12.DomainModels.Finance</PackageId>
     <Version>0.0.6-beta</Version>
