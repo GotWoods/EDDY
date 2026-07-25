@@ -1,5 +1,6 @@
 ﻿using Eddy.Core.Attributes;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -9,16 +10,14 @@ namespace Eddy.x12.Mapping.Cache
 {
     internal static class DomainMapCache
     {
-        private static readonly Dictionary<Type, List<DomainTypeMap>> _segmentMapCache = new();
-        public static List<DomainTypeMap> GetMap(Type t)
-        {
-            if (_segmentMapCache.TryGetValue(t, out var map))
-                return map;
+        private static readonly ConcurrentDictionary<Type, List<DomainTypeMap>> _segmentMapCache = new();
 
-            var rep = CreatePropertyMap(t);
-            _segmentMapCache.Add(t, rep);
-            return rep;
-        }
+        // Concurrent callers used to race here: both would miss on TryGetValue and both
+        // would Add, throwing "An item with the same key has already been added".
+        // GetOrAdd can still run CreatePropertyMap more than once for a type under
+        // contention, but it only ever publishes one map, and CreatePropertyMap is pure
+        // reflection over t, so the duplicated work is harmless.
+        public static List<DomainTypeMap> GetMap(Type t) => _segmentMapCache.GetOrAdd(t, CreatePropertyMap);
 
 
         private static List<DomainTypeMap> CreatePropertyMap(Type t)

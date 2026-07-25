@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using Eddy.Core.Attributes;
 using Eddy.x12.Mapping;
 using Eddy.x12.Models;
@@ -10,8 +11,14 @@ namespace Eddy.x12;
 
 public class EdiSectionParserFactory
 {
-    private static bool _isInitialized = false;
-    private static Dictionary<string, Type> _parsers;
+    // This used to be a bool flag plus a field, assigned in that order with no barrier
+    // between them. Concurrent callers could each run LoadSegmentProviders (which reflects
+    // over every type in the assembly), and on a weak memory model a caller could observe
+    // the flag set while the field was still null. Lazy builds the dictionary once and
+    // publishes it only when it is complete; nothing mutates it afterwards, so the reads
+    // below need no further synchronization.
+    private static readonly Lazy<Dictionary<string, Type>> _parsers =
+        new Lazy<Dictionary<string, Type>>(LoadSegmentProviders, LazyThreadSafetyMode.ExecutionAndPublication);
 
     public static EdiX12Segment Parse(string version, string line, MapOptions mapOptions)
     {
@@ -21,16 +28,10 @@ public class EdiSectionParserFactory
 
     public static Type GetSegmentFor(string version, string identifier)
     {
-        if (!_isInitialized)
-        {
-            _parsers = LoadSegmentProviders();
-            _isInitialized = true;
-        }
-
-        // if (!_parsers.ContainsKey(identifier))
+        // if (!_parsers.Value.ContainsKey(identifier))
         //     return typeof(Unkown_Segment);
 
-        return _parsers[version + "." + identifier];
+        return _parsers.Value[version + "." + identifier];
     }
 
     public static Dictionary<string, Type> LoadSegmentProviders()
