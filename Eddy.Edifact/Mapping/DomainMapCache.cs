@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -8,16 +9,10 @@ namespace Eddy.Edifact.Mapping
 {
     internal static class DomainMapCache
     {
-        private static readonly Dictionary<Type, List<DomainTypeMap>> _segmentMapCache = new();
-        public static List<DomainTypeMap> GetMap(Type t)
-        {
-            if (_segmentMapCache.TryGetValue(t, out var map))
-                return map;
+        private static readonly ConcurrentDictionary<Type, List<DomainTypeMap>> _segmentMapCache = new();
 
-            var rep = CreatePropertyMap(t);
-            _segmentMapCache.Add(t, rep);
-            return rep;
-        }
+        // Thread-safe for the same reason as MapCache: concurrent first use of a type must not race.
+        public static List<DomainTypeMap> GetMap(Type t) => _segmentMapCache.GetOrAdd(t, CreatePropertyMap);
 
 
         internal static List<DomainTypeMap> CreatePropertyMap(Type t)
