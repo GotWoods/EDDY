@@ -43,6 +43,30 @@ public class ElementDefinition
     /// <summary>Where the values came from: "derived", or the name of the pack that last overlaid them.</summary>
     public string Origin { get; set; }
 
+    /// <summary>Deep copy, including <see cref="Components"/>.</summary>
+    public ElementDefinition Clone()
+    {
+        var copy = new ElementDefinition
+        {
+            Position = Position,
+            Reference = Reference,
+            Name = Name,
+            PropertyName = PropertyName,
+            DataElementNumber = DataElementNumber,
+            DataType = DataType,
+            Decimals = Decimals,
+            MinLength = MinLength,
+            MaxLength = MaxLength,
+            Requirement = Requirement,
+            CodeListId = CodeListId,
+            CompositeId = CompositeId,
+            Origin = Origin,
+        };
+        foreach (var component in Components)
+            copy.Components.Add(component.Clone());
+        return copy;
+    }
+
     public override string ToString() => $"{Reference} {Name}";
 }
 
@@ -63,6 +87,22 @@ public class SegmentDefinition
     public List<ElementDefinition> Elements { get; set; } = new List<ElementDefinition>();
 
     public string Origin { get; set; }
+
+    /// <summary>Deep copy, including every element and its components.</summary>
+    public SegmentDefinition Clone()
+    {
+        var copy = new SegmentDefinition
+        {
+            Standard = Standard,
+            Version = Version,
+            Id = Id,
+            Name = Name,
+            Origin = Origin,
+        };
+        foreach (var element in Elements)
+            copy.Elements.Add(element.Clone());
+        return copy;
+    }
 
     public override string ToString() => $"{Id} {Name}";
 }
