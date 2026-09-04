@@ -17,7 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Eddy.Core" Version="0.0.9-beta" />
+    <!-- The published Eddy.Core nuget package (0.0.9-beta, restored in this environment) predates
+         SegmentSource/ISourceTracked and the new Error/ValidationResult fields this project needs.
+         Reference the sibling project directly so we build against current Eddy.Core sources. -->
+    <ProjectReference Include="..\Eddy.Core\Eddy.Core.csproj" />
   </ItemGroup>
 
 </Project>
