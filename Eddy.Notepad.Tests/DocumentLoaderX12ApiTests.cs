@@ -106,20 +106,23 @@ public class DocumentLoaderX12ApiTests
     }
 
     [Fact]
-    public void HasError_matches_an_element_by_ElementPosition_even_when_PropertyName_differs()
+    public void HasError_matches_by_position_only_when_the_error_names_no_property()
     {
-        // A planted error tagged only with ElementPosition (as some structural checks do) must still mark
-        // the right element, independently of the PropertyName match rule.
+        // Structural checks may tag only ElementPosition; those match by position. An error that names a
+        // property applies to that property alone, so a position-only match must not tint another element
+        // (in particular not the first component of every composite, whose positions restart at 1).
         var n1 = new N1_Name { EntityIdentifierCode = "PF", Name = "XYZ CORP" };
-        var errors = new List<Error> { new(ErrorCodes.Required, "unrelated text") { PropertyName = "SomethingElse", ElementPosition = 1 } };
+        var reader = new SegmentElementReader(Eddy.Core.Metadata.MetadataCatalog.Default);
 
-        var elements = new SegmentElementReader(Eddy.Core.Metadata.MetadataCatalog.Default).Read(n1, "N1", errors);
+        var positionOnly = new List<Error> { new(ErrorCodes.Required, "structural") { PropertyName = null, ElementPosition = 1 } };
+        var elements = reader.Read(n1, "N1", positionOnly);
+        Assert.True(elements.Single(e => e.Reference == "N101").HasError);
+        Assert.False(elements.Single(e => e.Reference == "N102").HasError);
 
-        var n101 = elements.Single(e => e.Reference == "N101");
-        Assert.True(n101.HasError);
-
-        var n102 = elements.Single(e => e.Reference == "N102");
-        Assert.False(n102.HasError);
+        var namedElsewhere = new List<Error> { new(ErrorCodes.Required, "named") { PropertyName = "Name", ElementPosition = 1 } };
+        elements = reader.Read(n1, "N1", namedElsewhere);
+        Assert.False(elements.Single(e => e.Reference == "N101").HasError);
+        Assert.True(elements.Single(e => e.Reference == "N102").HasError);
     }
 
     [Fact]
