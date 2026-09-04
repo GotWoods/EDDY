@@ -37,5 +37,10 @@
     <ProjectReference Include="..\Eddy.Edifact\Eddy.Edifact.csproj" />
     <!-- 997/999 acknowledgment generation (Tools menu; see Services/DocumentEditor.cs and README.md). -->
     <ProjectReference Include="..\Eddy.x12.DomainModels.CommunicationsAndControls\Eddy.x12.DomainModels.CommunicationsAndControls.csproj" />
+    <!-- Loop view for X12 transaction sets (View > Show Loops; see Services/LoopViewBuilder.cs and
+         README.md). Finance is deliberately not referenced here: the registry only knows about loaded
+         assemblies, and the loop view degrades gracefully (flat list, "no loop model" note) when no
+         domain model is loaded for a transaction set's code and version. -->
+    <ProjectReference Include="..\Eddy.x12.DomainModels.Transportation\Eddy.x12.DomainModels.Transportation.csproj" />
   </ItemGroup>
 </Project>

@@ -20,8 +20,16 @@
         <KeyBinding Gesture="Ctrl+Shift+S" Command="{Binding SaveAsCommand}" />
         <KeyBinding Gesture="Ctrl+Z" Command="{Binding UndoCommand}" />
         <KeyBinding Gesture="Ctrl+Y" Command="{Binding RedoCommand}" />
-        <!-- Ctrl+W is handled in code-behind (OnKeyDown) instead of a direct command binding, so it can
-             confirm before closing a dirty tab; see MainWindow.axaml.cs. -->
+        <KeyBinding Gesture="Ctrl+L" Command="{Binding ToggleShowLoopsCommand}" />
+        <KeyBinding Gesture="F3" Command="{Binding FindNextCommand}" />
+        <KeyBinding Gesture="Shift+F3" Command="{Binding FindPreviousCommand}" />
+        <!-- Escape closes the search bar when it has focus. When an element's in-place editor has focus
+             instead, its own KeyDown handler (Views/MainWindow.axaml.cs) marks Escape handled first (to
+             cancel the edit), so this never fires in that case. -->
+        <KeyBinding Gesture="Escape" Command="{Binding CloseSearchCommand}" />
+        <!-- Ctrl+W and Ctrl+F are handled in code-behind (OnKeyDown) instead of a direct command binding:
+             Ctrl+W so it can confirm before closing a dirty tab, Ctrl+F so it can focus the search box once
+             shown; see MainWindow.axaml.cs. -->
     </Window.KeyBindings>
 
     <Window.Styles>
@@ -68,6 +76,12 @@
                 <Separator />
                 <MenuItem Header="Load _Metadata Pack…" Command="{Binding LoadMetadataPackCommand}" />
                 <Separator />
+                <MenuItem Header="_Export">
+                    <MenuItem Header="_Text…" Command="{Binding ExportTextCommand}" />
+                    <MenuItem Header="_JSON…" Command="{Binding ExportJsonCommand}" />
+                    <MenuItem Header="_CSV…" Command="{Binding ExportCsvCommand}" />
+                </MenuItem>
+                <Separator />
                 <MenuItem Header="_Close" InputGesture="Ctrl+W" Click="CloseActiveTab_Click" />
                 <Separator />
                 <MenuItem Header="E_xit" Click="Exit_Click" />
@@ -75,6 +89,10 @@
             <MenuItem Header="_Edit">
                 <MenuItem Header="_Undo" InputGesture="Ctrl+Z" Command="{Binding UndoCommand}" />
                 <MenuItem Header="_Redo" InputGesture="Ctrl+Y" Command="{Binding RedoCommand}" />
+                <Separator />
+                <MenuItem Header="_Find…" InputGesture="Ctrl+F" Click="Find_Click" />
+                <MenuItem Header="Find _Next" InputGesture="F3" Command="{Binding FindNextCommand}" />
+                <MenuItem Header="Find _Previous" InputGesture="Shift+F3" Command="{Binding FindPreviousCommand}" />
                 <Separator />
                 <MenuItem Header="_Delete Segment" InputGesture="Delete" Command="{Binding DeleteSegmentCommand}" />
                 <MenuItem Header="Insert Segment _After…" Click="InsertSegmentAfter_Click" />
@@ -85,6 +103,9 @@
             <MenuItem Header="_View">
                 <MenuItem Header="_Expand All" Click="ExpandAll_Click" />
                 <MenuItem Header="_Collapse All" Click="CollapseAll_Click" />
+                <Separator />
+                <MenuItem Header="Show _Loops" InputGesture="Ctrl+L" ToggleType="CheckBox"
+                          IsChecked="{Binding ActiveDocument.ShowLoops, Mode=TwoWay}" />
                 <Separator />
                 <MenuItem Header="_Fix Control Counts Automatically" ToggleType="CheckBox"
                           IsChecked="{Binding FixControlCountsAutomatically, Mode=TwoWay}" />
@@ -140,6 +161,24 @@
                     <Border DockPanel.Dock="Top" Classes="paneHeader">
                         <TextBlock Text="Tree" FontWeight="SemiBold" FontSize="12" />
                     </Border>
+
+                    <!-- Search bar: Edit > Find / Ctrl+F (see MainWindow.axaml.cs, Find_Click). -->
+                    <Border DockPanel.Dock="Top" Padding="6" IsVisible="{Binding IsSearchVisible}"
+                            BorderThickness="0,0,0,1" BorderBrush="{DynamicResource PaneBorderBrush}">
+                        <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto">
+                            <TextBox Grid.Column="0" x:Name="SearchTextBox" Watermark="Find…"
+                                     Text="{Binding SearchQuery, Mode=TwoWay}" />
+                            <TextBlock Grid.Column="1" Classes="subtitle" Text="{Binding SearchStatusText}"
+                                       VerticalAlignment="Center" Margin="8,0" MinWidth="52" />
+                            <Button Grid.Column="2" Content="▲" Command="{Binding FindPreviousCommand}"
+                                    ToolTip.Tip="Previous match (Shift+F3)" />
+                            <Button Grid.Column="3" Content="▼" Command="{Binding FindNextCommand}"
+                                    ToolTip.Tip="Next match (F3)" />
+                            <Button Grid.Column="4" Content="✕" Classes="tabClose" Command="{Binding CloseSearchCommand}"
+                                    ToolTip.Tip="Close (Esc)" />
+                        </Grid>
+                    </Border>
+
                     <TreeView x:Name="DocumentTree"
                               ItemsSource="{Binding ActiveDocument.Nodes}"
                               SelectedItem="{Binding ActiveDocument.SelectedNode, Mode=TwoWay}"
@@ -152,7 +191,7 @@
                             </ContextMenu>
                         </TreeView.ContextMenu>
                         <TreeView.DataTemplates>
-                            <TreeDataTemplate DataType="vm:DocumentNodeViewModel" ItemsSource="{Binding Children}">
+                            <TreeDataTemplate DataType="vm:DocumentNodeViewModel" ItemsSource="{Binding VisibleChildren}">
                                 <Grid Margin="0,3">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />

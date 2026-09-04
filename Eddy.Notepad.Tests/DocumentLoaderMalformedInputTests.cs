@@ -97,11 +97,19 @@ public class DocumentLoaderMalformedInputTests
         Assert.Equal("ZZZ Unknown segment", unknown.Title);
         Assert.Equal(4, unknown.LineNumber);
 
-        var diagnostic = Assert.Single(document.Diagnostics);
-        Assert.Equal(DiagnosticSeverity.Error, diagnostic.Severity);
+        // The parser's own diagnostic, unrelated to the loop view.
+        var diagnostic = Assert.Single(document.Diagnostics, d => d.Severity == DiagnosticSeverity.Error);
         Assert.Equal(4, diagnostic.LineNumber);
         Assert.Contains("ZZZ", diagnostic.Message);
         Assert.Same(unknown, diagnostic.Node);
+
+        // 204 has a loop model (Eddy.x12.DomainModels.Transportation): ZZZ is not a segment the 204
+        // structure expects anywhere, so it also lands under "Unmapped segments" with a Warning -- see
+        // Services/LoopViewBuilder.cs.
+        var warning = Assert.Single(document.Diagnostics, d => d.Severity == DiagnosticSeverity.Warning);
+        Assert.Equal(4, warning.LineNumber);
+        Assert.Contains("ZZZ", warning.Message);
+        Assert.Same(unknown, warning.Node);
     }
 
     [Fact]

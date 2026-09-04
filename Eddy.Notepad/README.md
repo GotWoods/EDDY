@@ -3,7 +3,8 @@
 A cross-platform EDI viewer and editor built on the Eddy parsing libraries. Open an X12 or EDIFACT
 file, see it as an envelope tree, inspect any segment element by element, read the validation
 problems Eddy finds -- and now edit element values in place, delete or insert segments, fix control
-counts, save back to disk, and generate a 997 or 999 acknowledgment for an X12 document.
+counts, save back to disk, generate a 997 or 999 acknowledgment for an X12 document, switch an X12
+transaction set to a loop-structured view, search the document, and export it as text, JSON or CSV.
 
     dotnet run --project Eddy.Notepad            # opens the window
     dotnet run --project Eddy.Notepad -- file.edi
@@ -19,8 +20,11 @@ counts, save back to disk, and generate a 997 or 999 acknowledgment for an X12 d
       Services/                     DocumentLoader (parse -> view models), SegmentElementReader (segment/header
                                      model -> element grid rows, via MetadataCatalog.Describe), DocumentEditor
                                      (element/segment edits and control-count recalculation as text
-                                     transformations -- see "Editing" below), MetadataPacks (loads the embedded +
-                                     EDDY_METADATA_PACKS packs), IFilePicker, SampleDocuments.
+                                     transformations -- see "Editing" below), LoopViewBuilder (the loop view for
+                                     X12 transaction sets -- see "Loop view" below), DocumentSearch (Edit > Find --
+                                     see "Search" below), DocumentExporter (File > Export -- see "Export" below),
+                                     MetadataPacks (loads the embedded + EDDY_METADATA_PACKS packs), IFilePicker,
+                                     SampleDocuments.
                                      DocumentLoader is split across three files: DocumentLoader.cs holds
                                      the entry point and the pieces shared by both formats, and
                                      DocumentLoader.X12.cs / DocumentLoader.Edifact.cs hold the
@@ -31,11 +35,14 @@ counts, save back to disk, and generate a 997 or 999 acknowledgment for an X12 d
 
 Dependencies: Avalonia 11.3 with the Fluent theme, CommunityToolkit.Mvvm 8.4 (use `[ObservableProperty]`
 and `[RelayCommand]`), Eddy.Core, Eddy.x12 and Eddy.Edifact. Do not add Eddy.x12.DomainModels.* or
-Eddy.Edifact.DomainModels.* references beyond the one exception below; they slow the build a lot and
-most of them add nothing Notepad needs. The one exception is
-Eddy.x12.DomainModels.CommunicationsAndControls, referenced solely for
-`Acknowledgments.FunctionalAcknowledgmentBuilder`/`ImplementationAcknowledgmentBuilder` (Tools > Generate
-997/999; see "Acknowledgments" below).
+Eddy.Edifact.DomainModels.* references beyond the two exceptions below; they slow the build a lot and
+most of them add nothing Notepad needs. The exceptions are Eddy.x12.DomainModels.CommunicationsAndControls,
+referenced solely for `Acknowledgments.FunctionalAcknowledgmentBuilder`/`ImplementationAcknowledgmentBuilder`
+(Tools > Generate 997/999; see "Acknowledgments" below), and Eddy.x12.DomainModels.Transportation, referenced
+for the loop view (see "Loop view" below) -- together these are the two domain model assemblies
+`TransactionSetRegistry` has anything registered from; Eddy.x12.DomainModels.Finance is deliberately not
+referenced, so the loop view (and the transaction set title) can be seen degrading gracefully for a
+transaction set neither of the two covers.
 
 ## Metadata
 
@@ -101,7 +108,8 @@ Behaviour:
 - The raw view is monospace, read-only, with a line number gutter.
 - File > Load Metadata Pack… adds one metadata pack file to the catalog and reparses every open
   document. Help > Loaded Metadata lists every pack currently loaded (name, standard, version, source).
-- Editing, saving and acknowledgment generation: see the three sections below.
+- Editing, saving and acknowledgment generation: see the three sections below. Loop view, search and
+  export: see the three after those.
 
 ## Keyboard shortcuts
 
@@ -111,6 +119,10 @@ Behaviour:
     Ctrl+W            File > Close (confirms first if the tab is dirty)
     Ctrl+Z            Edit > Undo
     Ctrl+Y            Edit > Redo
+    Ctrl+F            Edit > Find… (shows the search bar and focuses it)
+    F3 / Shift+F3     Edit > Find Next / Find Previous
+    Escape            Close the search bar, when it has focus
+    Ctrl+L            View > Show Loops
     Delete            Edit > Delete Segment, when the tree has keyboard focus
     F2                Open the in-place editor for the focused element's value
     Double-click      Open the in-place editor for an element's value (Value column)
@@ -194,9 +206,97 @@ default `AcknowledgmentOptions`, opening the resulting 997 Functional Acknowledg
 `ImplementationAcknowledgmentBuilder`, and is enabled only when the active document's first functional
 group is version 005010 or higher (a 999 Implementation Acknowledgment has no meaning for older
 versions). Both commands are disabled for EDIFACT and Unknown-format documents. A builder error is
-reported in the status bar rather than crashing. This is the one place Eddy.Notepad references a
-Eddy.x12.DomainModels.* assembly (see "Dependencies" above); it costs one extra project reference, not
-the whole domain model surface.
+reported in the status bar rather than crashing. This is one of the two places Eddy.Notepad references
+a Eddy.x12.DomainModels.* assembly (see "Dependencies" above); the loop view, next, is the other.
+
+## Loop view
+
+View > Show Loops (Ctrl+L) is a per-document toggle: `DocumentViewModel.ShowLoops`, default false. It
+switches the tree between the flat segment list (`DocumentNodeViewModel.Children`, always there) and, for
+whichever X12 TransactionSet nodes have one, a loop-structured alternative
+(`DocumentNodeViewModel.LoopChildren`) built by `Services/LoopViewBuilder.cs`.
+
+- **Whether a transaction set has one.** `Eddy.x12.TransactionSetRegistry.Resolve(code, version)` looks up
+  a generated domain model type (e.g. `Edi204_MotorCarrierLoadTender`) by transaction set code and
+  version, among whatever `Eddy.x12.DomainModels.*` assemblies are loaded. Eddy.Notepad references
+  `Eddy.x12.DomainModels.Transportation` and `.CommunicationsAndControls` for this (see "Dependencies"
+  above) -- `.Finance` is deliberately not referenced, so a transaction set neither of the two covers (204
+  and 210 both resolve; 850, say, does not) shows the loop view degrading gracefully: `HasLoopView` false,
+  `LoopChildren` empty, the flat list in both view modes, and a subtitle note, "no loop model for 850
+  004010". `LoopViewBuilder`'s static constructor registers both assemblies with `TransactionSetRegistry`
+  explicitly (rather than relying on its one-shot AppDomain scan, which could otherwise run before a
+  project-referenced-but-untouched assembly has actually loaded) -- `DocumentLoader.X12.cs` calls the
+  no-op `LoopViewBuilder.EnsureAssembliesLoaded()` before its own first call to `TransactionSetRegistry`,
+  purely to force that constructor to run first. This is also what makes the transaction set node's own
+  title resolve a domain model name when there is one -- "ST 204 Motor Carrier Load Tender" instead of
+  plain "ST 204".
+- **Building the tree.** For a transaction set that does resolve, `Eddy.x12.Mapping.DomainMapper
+  .MapWithDiagnostics(domainType)` walks the transaction set's segments (`Section.Segments`, the same list
+  the flat view was already built from) into the domain object graph. `LoopViewBuilder` then walks that
+  graph's own `[SectionPosition]` properties, in position order: a property holding a segment becomes that
+  segment's existing `DocumentNodeViewModel` (looked up by reference in a segment-to-node map built
+  alongside the flat children, so selection, diagnostics and the raw-line link keep working -- this is
+  also how the ST/SE header/trailer, which `DomainMapper` leaves as a default rather than a real segment
+  instance, silently drop out with no special-casing needed), a `List<TSegment>` becomes those segments'
+  nodes, and a `List<TLoop>` (or single complex property) of repeating loop objects becomes one new
+  `NodeKind.Loop` node per item -- Code the loop class name ("L0100"), Title that plus its first segment's
+  own title ("L0100 N1 Name"), Subtitle its first segment's own subtitle -- recursing into that item's own
+  `[SectionPosition]` properties for its children.
+- **Unmapped segments.** `DomainMapResult.UnmappedSegments` -- everything `DomainMapper` could not place --
+  becomes a trailing loop node titled "Unmapped segments", each segment's existing node under it with a
+  Warning `DiagnosticViewModel` ("Segment N9 at line 12 was not expected by the 204 structure") added both
+  to that node and to `DocumentViewModel.Diagnostics`, so it shows in the diagnostics pane like any other
+  problem.
+- **The toggle itself.** `DocumentNodeViewModel.VisibleChildren` is `LoopChildren` when its own `ShowLoops`
+  is true and `HasLoopView` is true, else `Children` -- the TreeView's `HierarchicalDataTemplate` binds to
+  `VisibleChildren` instead of `Children` directly, everywhere in the tree. Setting
+  `DocumentViewModel.ShowLoops` walks every node of the document (both `Children` and `LoopChildren`) and
+  sets its own `ShowLoops` to match; since only a resolved TransactionSet node ever has `HasLoopView` true,
+  toggling the mode only actually changes what is displayed at that one level of the tree -- interchange
+  and group nodes, and segments themselves, look identical either way.
+
+## Search
+
+Edit > Find (Ctrl+F) shows a search bar above the tree: a text box, a "3 of 12" match counter, Previous
+(▲)/Next (▼) buttons and a ✕ to close it; F3/Shift+F3 work as Find Next/Previous whether or not the bar
+has focus, and Escape closes it when it does.
+
+Matching itself is `Services/DocumentSearch.Find(document, query)`: case-insensitive, over each node's own
+raw line text (`DocumentViewModel.RawLines`, matched by `DocumentNodeViewModel.LineNumber`) and over every
+element's `Name` and `Value`, recursively through composite `Components`. It is a pure, stateless function
+-- a fresh depth-first walk of the flat tree (`Children`, not whichever `LoopChildren` happen to be
+showing, so results do not depend on View > Show Loops) every call -- returning matches in document order.
+Everything stateful (the query, which match is selected, whether the bar is shown) lives on
+`MainWindowViewModel`, since there is only ever one search bar: `IsSearchVisible`, `SearchQuery`,
+`SearchCurrentIndex` (1-based, 0 for no matches) and `SearchStatusText` ("3 of 12", "No matches", or "" for
+an empty query). Setting `SearchQuery` re-runs the search and selects the first match; `FindNextCommand`/
+`FindPreviousCommand` cycle `SearchCurrentIndex` through the results (wrapping both ways) and select
+whichever node that lands on -- selecting a node already syncs the raw line and element grid (see
+`DocumentViewModel.Selection.cs`), so Search does not need to touch either directly. Switching tabs keeps
+the same query and re-runs it against the newly active document.
+
+## Export
+
+File > Export offers Text, JSON and CSV, each asking `IFilePicker.PickSaveFileAsync` for a path (a
+suggested name derived from the document, that format's extension swapped in) and writing whatever
+`Services/DocumentExporter` produced, UTF-8 without a BOM -- the same file-writing path Save/Save As
+already use. All three are pure, file-I/O-free functions on a `DocumentViewModel`, so they are
+unit-tested directly rather than through the commands.
+
+- **Text** (`ExportText`) is the document's raw text, one segment per line: a newline is inserted after
+  every segment terminator that is not already followed by one (most samples already are; this only
+  changes anything for a terminator like `~` written with no newline convention at all). A no-op when the
+  terminator is itself a newline.
+- **JSON** (`ExportJson`, `System.Text.Json`, indented, camelCase property names) is one object: `format`,
+  `diagnostics` (`line`/`severity`/`message`, document order) and `interchanges` -- a tree that mirrors
+  `Nodes`/`Children` exactly (so "interchanges" hold functional groups, which hold transaction sets or
+  EDIFACT messages, which hold segments), each node carrying `kind`/`code`/`title`/`line`, its own
+  `elements` (`ref`/`name`/`value`/`de`/`type` -- a composite's sub-elements are not broken out
+  separately, matching the element grid, whose Value column for a composite is already the joined
+  component text) and its nested `children`.
+- **CSV** (`ExportCsv`) is one row per element (`line,segment,ref,name,value,de,type,req,meaning`) across
+  every node in the document, envelope headers' own elements (ISA/GS/ST, UNB/UNG/UNH) included; a value
+  containing a comma, quote or newline is quoted RFC4180-style.
 
 ## View model contract
 
@@ -206,11 +306,14 @@ task and the core task were written against this list.
     MainWindowViewModel
       Documents, ActiveDocument, StatusText, SampleNames, HasDocuments, LoadedPacks,
       FixControlCountsAutomatically
+      IsSearchVisible, SearchQuery, SearchCurrentIndex, SearchStatusText
       OpenFileCommand, OpenSampleCommand(string), CloseDocumentCommand(DocumentViewModel),
       LoadMetadataPackCommand, SaveCommand, SaveAsCommand, UndoCommand, RedoCommand,
-      DeleteSegmentCommand, RecalculateControlCountsCommand,
+      DeleteSegmentCommand, RecalculateControlCountsCommand, ToggleShowLoopsCommand,
       GenerateFunctionalAcknowledgmentCommand (+ CanGenerateFunctionalAcknowledgment),
-      GenerateImplementationAcknowledgmentCommand (+ CanGenerateImplementationAcknowledgment)
+      GenerateImplementationAcknowledgmentCommand (+ CanGenerateImplementationAcknowledgment),
+      OpenSearchCommand, CloseSearchCommand, FindNextCommand, FindPreviousCommand,
+      ExportTextCommand, ExportJsonCommand, ExportCsvCommand
       OpenPathAsync(path), OpenText(text, displayName, filePath), RegisterLoadedPack(PackInfoViewModel),
       ApplyTextEdit(document, newText, description), SetElementValue(document, node, element, newValue),
       InsertSegment(before, rawSegmentText)
@@ -220,9 +323,11 @@ task and the core task were written against this list.
       ErrorCount, WarningCount, IsValid, Summary
       SelectedNode, SelectedRawLine, SelectedElements
       IsDirty, CanUndo, CanRedo, UndoStack, RedoStack, SavedText, TabTitle
+      ShowLoops
 
     DocumentNodeViewModel   Kind, Code, Title, Subtitle, LineNumber, Model, Children, Elements,
-                            Diagnostics, ErrorCount, HasErrors, IsExpanded, IsSelected
+                            Diagnostics, ErrorCount, HasErrors, IsExpanded, IsSelected,
+                            LoopChildren, HasLoopView, ShowLoops, VisibleChildren
     ElementViewModel        Reference, Position, Name, PropertyName, Value, HasValue, IsComposite,
                             Components, HasError, DataElementNumber, HasDataElementNumber,
                             DataTypeLabel, Requirement, CodeDescription, Origin, Meaning,
@@ -230,6 +335,9 @@ task and the core task were written against this list.
     RawLineViewModel        LineNumber, Text, Node, HasError
     DiagnosticViewModel     Severity, LineNumber, SegmentCode, Message, Node, Location
     PackInfoViewModel       Name, Standard, Version, Source
+
+`NodeKind` gained `Loop`: a repeating domain-model loop (or the trailing "Unmapped segments" container),
+only ever found in `LoopChildren`, never in `Children` -- see "Loop view" above.
 
 ## Loader contract
 
@@ -274,8 +382,11 @@ Eddy.Edifact model types in place of Eddy.x12 ones.
      "ISA", Model = its Header), one FunctionalGroup node per `x12FunctionalGroup` (Code "GS"; a group
      whose Header is null -- a missing GS, recorded only in lenient mode -- gets the title
      "GS (missing)" and a subtitle saying so), one TransactionSet node per `Section` (Model = the
-     Section, Elements from the ST header, title "ST 204", subtitle control number and segment count),
-     and one Segment node per segment in `Section.Segments`. `Interchange.OrphanSegments` and
+     Section, Elements from the ST header, title "ST 204" or, when `TransactionSetRegistry` resolves a
+     domain model for this code and version, "ST 204 Motor Carrier Load Tender"; subtitle control number
+     and segment count, plus "no loop model for 204 004010" when no domain model resolved -- see "Loop
+     view" above, which is also where `HasLoopView`/`LoopChildren` on this node get filled in), and one
+     Segment node per segment in `Section.Segments`. `Interchange.OrphanSegments` and
      `FunctionalGroup.OrphanSegments` (segments the parser found outside any transaction set, or
      outside any group) become Segment nodes under their container, placed by line number among their
      siblings, with their subtitle prefixed "(outside any transaction set) ". SE/GE/IEA trailers never
