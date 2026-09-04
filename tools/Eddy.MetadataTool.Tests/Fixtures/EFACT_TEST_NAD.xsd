@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:b="http://schemas.microsoft.com/BizTalk/2003" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="EFACT_TEST_NAD">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="UNH">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo notes="Message Header" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="UNH1">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Message Reference Number_0062" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="EDIFACT_AN">
+                    <xs:minLength value="1" />
+                    <xs:maxLength value="14" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element ref="NAD">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo tag_name="NAD" notes="NAME AND ADDRESS" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="NAD">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo tag_name="NAD" notes="NAME AND ADDRESS" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="NAD01" type="EDIFACT_ID_3035">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Party qualifier_3035" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" ref="C082">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo notes="PARTY IDENTIFICATION DETAILS" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C082">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo notes="PARTY IDENTIFICATION DETAILS" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="C08201">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Party id. identification_3039" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C08202" type="EDIFACT_ID_1131">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Code list qualifier_1131" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="EDIFACT_ID_3035">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="BY" />
+      <xs:enumeration value="SU" />
+      <xs:enumeration value="DP" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_1131">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="1" />
+      <xs:enumeration value="2" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
