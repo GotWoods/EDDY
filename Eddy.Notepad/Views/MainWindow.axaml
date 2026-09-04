@@ -1,0 +1,10 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Eddy.Notepad.ViewModels"
+        x:Class="Eddy.Notepad.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Eddy Notepad"
+        Width="1280" Height="820">
+    <!-- Placeholder. The real layout is built in the views task. -->
+    <TextBlock Margin="24" Text="{Binding StatusText}" />
+</Window>
