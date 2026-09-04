@@ -12,6 +12,10 @@ public sealed partial class DocumentLoader
 {
     private DocumentViewModel LoadX12(string normalized, string displayName, string? filePath)
     {
+        // Must run before anything below consults TransactionSetRegistry (the title-building code just a
+        // few lines down included) -- see LoopViewBuilder's class remarks.
+        LoopViewBuilder.EnsureAssembliesLoaded();
+
         var parsed = x12Document.Parse(normalized, new x12ParseOptions { Lenient = true });
 
         var format = FormatOf(parsed);
@@ -93,7 +97,7 @@ public sealed partial class DocumentLoader
             }
 
             foreach (var group in interchange.FunctionalGroups)
-                interchangeChildren.Add(BuildGroup(group, errorsByLine, lineToNode, Track));
+                interchangeChildren.Add(BuildGroup(document, group, errorsByLine, lineToNode, Track));
 
             foreach (var child in interchangeChildren.OrderBy(c => c.LineNumber))
                 interchangeNode.Children.Add(child.Node);
@@ -103,6 +107,7 @@ public sealed partial class DocumentLoader
     }
 
     private (int LineNumber, DocumentNodeViewModel Node) BuildGroup(
+        DocumentViewModel document,
         x12FunctionalGroup group,
         IReadOnlyDictionary<int, List<Error>> errorsByLine,
         Dictionary<int, DocumentNodeViewModel> lineToNode,
@@ -155,10 +160,13 @@ public sealed partial class DocumentLoader
         {
             track(section.TransactionSetHeader);
             var stLine = section.TransactionSetHeader?.Source?.LineNumber;
-            var title = TransactionSetTitle(section, group.Header?.VersionReleaseIndustryIdentifierCode);
-            var subtitle = $"{section.TransactionSetControlNumber} · {section.Segments.Count} segments";
+            var code = section.SectionType ?? "";
+            var version = group.Header?.VersionReleaseIndustryIdentifierCode;
+            var domainType = TransactionSetRegistry.Resolve(code, version ?? "");
+            var title = TransactionSetTitle(code, domainType);
+            var subtitle = TransactionSetSubtitle(section, code, version, domainType);
             var transactionSetNode = new DocumentNodeViewModel(
-                NodeKind.TransactionSet, section.SectionType ?? "", title, subtitle, stLine, section)
+                NodeKind.TransactionSet, code, title, subtitle, stLine, section)
             {
                 Elements = section.TransactionSetHeader is not null
                     ? _reader.Read(section.TransactionSetHeader, "ST", ErrorsFor(errorsByLine, stLine))
@@ -174,6 +182,7 @@ public sealed partial class DocumentLoader
                     lineToNode[seLine] = transactionSetNode;
             }
 
+            var segmentNodes = new Dictionary<EdiX12Segment, DocumentNodeViewModel>();
             foreach (var segment in section.Segments)
             {
                 track(segment);
@@ -182,6 +191,15 @@ public sealed partial class DocumentLoader
                 if (segLine is int sgl)
                     lineToNode[sgl] = segmentNode;
                 transactionSetNode.Children.Add(segmentNode);
+                segmentNodes[segment] = segmentNode;
+            }
+
+            transactionSetNode.HasLoopView = domainType is not null;
+            if (domainType is not null)
+            {
+                var loopChildren = LoopViewBuilder.Build(domainType, code, section.Segments, segmentNodes, document.Diagnostics);
+                foreach (var child in loopChildren)
+                    transactionSetNode.LoopChildren.Add(child);
             }
 
             groupChildren.Add((stLine ?? int.MaxValue, transactionSetNode));
@@ -231,23 +249,28 @@ public sealed partial class DocumentLoader
     }
 
     /// <summary>
-    /// "ST 204" by default; "ST 204 Motor Carrier Load Tender" when a domain model assembly for this
-    /// transaction set and version is loaded (Eddy.Notepad does not reference one itself, so this only
-    /// takes effect if the host process loaded one).
+    /// "ST 204" by default; "ST 204 Motor Carrier Load Tender" when <paramref name="domainType"/> resolved
+    /// (Eddy.x12.DomainModels.Transportation and .CommunicationsAndControls are the only domain model
+    /// assemblies Eddy.Notepad references; see README.md, "Dependencies").
     /// </summary>
-    private static string TransactionSetTitle(Section section, string? version)
+    private static string TransactionSetTitle(string code, Type? domainType)
     {
-        var code = section.SectionType ?? "";
         var baseTitle = $"ST {code}";
-        if (string.IsNullOrEmpty(code))
+        if (string.IsNullOrEmpty(code) || domainType is null)
             return baseTitle;
 
-        var type = TransactionSetRegistry.Resolve(code, version);
-        if (type is null)
-            return baseTitle;
-
-        var namePart = NamePartOf(type.Name);
+        var namePart = NamePartOf(domainType.Name);
         return namePart.Length == 0 ? baseTitle : $"{baseTitle} {DisplayNames.SplitPascalCase(namePart)}";
+    }
+
+    /// <summary>"0001 · 14 segments" by default, plus " · no loop model for 204 004010" when no domain
+    /// model resolved for this transaction set's code and version -- see Services/LoopViewBuilder.cs.</summary>
+    private static string TransactionSetSubtitle(Section section, string code, string? version, Type? domainType)
+    {
+        var subtitle = $"{section.TransactionSetControlNumber} · {section.Segments.Count} segments";
+        if (domainType is null && !string.IsNullOrEmpty(code))
+            subtitle += $" · no loop model for {code} {version}";
+        return subtitle;
     }
 
     private static string InterchangeSubtitle(GenericInterchangeControlHeader header)

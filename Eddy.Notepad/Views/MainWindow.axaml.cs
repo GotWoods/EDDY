@@ -113,6 +113,11 @@ public partial class MainWindow : Window
         node.IsExpanded = expanded;
         foreach (var child in node.Children)
             SetExpandedRecursive(child, expanded);
+        // Loop nodes (and the segment nodes reachable through them) are a separate tree shape from
+        // Children -- see DocumentNodeViewModel.LoopChildren -- so Expand/Collapse All has to walk both to
+        // reach everything the tree could be showing, in either view mode.
+        foreach (var child in node.LoopChildren)
+            SetExpandedRecursive(child, expanded);
     }
 
     private void Exit_Click(object? sender, RoutedEventArgs e) => Close();
@@ -125,6 +130,13 @@ public partial class MainWindow : Window
         {
             e.Handled = true;
             _ = CloseDocumentWithConfirmationAsync(viewModel, document);
+            return;
+        }
+
+        if (e.Key == Key.F && e.KeyModifiers == KeyModifiers.Control && ViewModel is { } vm)
+        {
+            e.Handled = true;
+            OpenSearch(vm);
             return;
         }
 
@@ -165,6 +177,30 @@ public partial class MainWindow : Window
 
         viewModel.DeleteSegmentCommand.Execute(null);
         e.Handled = true;
+    }
+
+    /// <summary>Edit &gt; Find… (Ctrl+F goes through OnKeyDown above instead, so both paths share this).</summary>
+    private void Find_Click(object? sender, RoutedEventArgs e)
+    {
+        if (ViewModel is { } viewModel)
+            OpenSearch(viewModel);
+    }
+
+    private void OpenSearch(MainWindowViewModel viewModel)
+    {
+        viewModel.OpenSearchCommand.Execute(null);
+
+        var textBox = this.FindControl<TextBox>("SearchTextBox");
+        if (textBox is null)
+            return;
+
+        // Post rather than focus synchronously: the search bar's Border only just became visible in this
+        // same binding pass (IsSearchVisible just flipped true), same reasoning as BeginEditingElement below.
+        Dispatcher.UIThread.Post(() =>
+        {
+            textBox.Focus();
+            textBox.SelectAll();
+        }, DispatcherPriority.Loaded);
     }
 
     private async void InsertSegmentAfter_Click(object? sender, RoutedEventArgs e) => await InsertSegmentAsync(before: false);

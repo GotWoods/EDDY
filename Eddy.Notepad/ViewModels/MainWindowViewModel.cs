@@ -60,6 +60,97 @@ public sealed partial class MainWindowViewModel : ObservableObject
     {
         GenerateFunctionalAcknowledgmentCommand.NotifyCanExecuteChanged();
         GenerateImplementationAcknowledgmentCommand.NotifyCanExecuteChanged();
+        RunSearch();
+    }
+
+    /// <summary>View &gt; Show Loops (Ctrl+L): toggles <see cref="DocumentViewModel.ShowLoops"/> on the
+    /// active document. The View menu's checkbox binds straight to that property (like Fix Control Counts
+    /// Automatically does to its own); this command exists only so the keyboard shortcut has something to
+    /// invoke.</summary>
+    [RelayCommand]
+    private void ToggleShowLoops()
+    {
+        if (ActiveDocument is { } document)
+            document.ShowLoops = !document.ShowLoops;
+    }
+
+    // ==== search: Edit > Find (Ctrl+F), F3 / Shift+F3 ====================================================
+    //
+    // Matching itself (Services/DocumentSearch.cs) is stateless; everything here is just the search bar's
+    // state -- visible or not, the query, which of the current matches is selected -- kept on this view
+    // model (rather than per-document) since there is only ever one search bar. Results are recomputed
+    // whenever the query changes or the active tab does; switching tabs keeps the same query.
+
+    [ObservableProperty]
+    private bool _isSearchVisible;
+
+    [ObservableProperty]
+    private string _searchQuery = "";
+
+    /// <summary>1-based index into <see cref="_searchResults"/> of the currently selected match, or 0 when
+    /// there are none.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(SearchStatusText))]
+    private int _searchCurrentIndex;
+
+    private List<DocumentNodeViewModel> _searchResults = new();
+
+    /// <summary>"3 of 12", "No matches", or "" when the search bar has nothing typed into it yet.</summary>
+    public string SearchStatusText =>
+        _searchResults.Count > 0 ? $"{SearchCurrentIndex} of {_searchResults.Count}"
+        : string.IsNullOrEmpty(SearchQuery) ? ""
+        : "No matches";
+
+    partial void OnSearchQueryChanged(string value) => RunSearch();
+
+    /// <summary>Edit &gt; Find (Ctrl+F): shows the search bar (see Views/MainWindow.axaml.cs, which also
+    /// focuses it).</summary>
+    [RelayCommand]
+    private void OpenSearch() => IsSearchVisible = true;
+
+    /// <summary>The search bar's ✕ button, and Escape while it has focus.</summary>
+    [RelayCommand]
+    private void CloseSearch()
+    {
+        IsSearchVisible = false;
+        SearchQuery = "";
+    }
+
+    [RelayCommand]
+    private void FindNext()
+    {
+        if (_searchResults.Count == 0)
+            return;
+        SearchCurrentIndex = SearchCurrentIndex % _searchResults.Count + 1;
+        SelectCurrentSearchResult();
+    }
+
+    [RelayCommand]
+    private void FindPrevious()
+    {
+        if (_searchResults.Count == 0)
+            return;
+        SearchCurrentIndex = (SearchCurrentIndex - 2 + _searchResults.Count) % _searchResults.Count + 1;
+        SelectCurrentSearchResult();
+    }
+
+    private void RunSearch()
+    {
+        _searchResults = ActiveDocument is { } document && !string.IsNullOrEmpty(SearchQuery)
+            ? DocumentSearch.Find(document, SearchQuery)
+            : new List<DocumentNodeViewModel>();
+
+        SearchCurrentIndex = _searchResults.Count > 0 ? 1 : 0;
+        SelectCurrentSearchResult();
+        OnPropertyChanged(nameof(SearchStatusText));
+    }
+
+    /// <summary>Selecting the node syncs the raw line and element grid too -- see DocumentViewModel.Selection.cs.</summary>
+    private void SelectCurrentSearchResult()
+    {
+        if (ActiveDocument is not { } document || SearchCurrentIndex < 1 || SearchCurrentIndex > _searchResults.Count)
+            return;
+        document.SelectedNode = _searchResults[SearchCurrentIndex - 1];
     }
 
     /// <summary>Shows the file picker and opens the chosen file.</summary>
@@ -523,6 +614,50 @@ public sealed partial class MainWindowViewModel : ObservableObject
 
     private static Task WriteFileAsync(string path, string text) =>
         File.WriteAllTextAsync(path, text, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+
+    // ==== export ==========================================================================================
+    //
+    // Each asks IFilePicker.PickSaveFileAsync for a path (a suggested name derived from the document, its
+    // own extension swapped in) and writes whatever Services/DocumentExporter produced, UTF-8 without a
+    // BOM -- the same file-writing path Save/Save As already use.
+
+    [RelayCommand]
+    private Task ExportTextAsync() => ExportAsync("Export as Text", "txt", DocumentExporter.ExportText);
+
+    [RelayCommand]
+    private Task ExportJsonAsync() => ExportAsync("Export as JSON", "json", DocumentExporter.ExportJson);
+
+    [RelayCommand]
+    private Task ExportCsvAsync() => ExportAsync("Export Elements as CSV", "csv", DocumentExporter.ExportCsv);
+
+    private async Task ExportAsync(string title, string extension, Func<DocumentViewModel, string> export)
+    {
+        if (ActiveDocument is not { } document)
+            return;
+
+        var suggestedName = SuggestedExportFileName(document, extension);
+        var path = await _filePicker.PickSaveFileAsync(title, suggestedName);
+        if (path is null)
+            return;
+
+        try
+        {
+            await WriteFileAsync(path, export(document));
+        }
+        catch (Exception ex)
+        {
+            StatusText = $"Could not export '{Path.GetFileName(path)}': {ex.Message}";
+            return;
+        }
+
+        StatusText = WithPackSuffix($"Exported {Path.GetFileName(path)}");
+    }
+
+    private static string SuggestedExportFileName(DocumentViewModel document, string extension)
+    {
+        var baseName = document.FilePath is not null ? Path.GetFileNameWithoutExtension(document.FilePath) : document.DisplayName;
+        return $"{baseName}.{extension}";
+    }
 
     // ==== acknowledgments =================================================================================
 

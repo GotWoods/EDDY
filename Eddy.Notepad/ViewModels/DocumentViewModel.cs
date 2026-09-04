@@ -82,4 +82,28 @@ public sealed partial class DocumentViewModel : ObservableObject
 
     /// <summary>Elements of the selected node, for the detail grid.</summary>
     public IReadOnlyList<ElementViewModel> SelectedElements => SelectedNode?.Elements ?? Array.Empty<ElementViewModel>();
+
+    /// <summary>View &gt; Show Loops (Ctrl+L). When true, the tree shows each TransactionSet node's
+    /// <see cref="DocumentNodeViewModel.LoopChildren"/> instead of its flat <see cref="DocumentNodeViewModel.Children"/>,
+    /// for whichever transaction sets have one (see Services/LoopViewBuilder.cs); everything else in the
+    /// tree is unaffected. Per document, default false. Setting this walks every node in <see cref="Nodes"/>
+    /// and sets its own <see cref="DocumentNodeViewModel.ShowLoops"/> to match, since the TreeView binds
+    /// each node's ItemsSource to its own <see cref="DocumentNodeViewModel.VisibleChildren"/>.</summary>
+    [ObservableProperty]
+    private bool _showLoops;
+
+    partial void OnShowLoopsChanged(bool value)
+    {
+        foreach (var node in Nodes)
+            SetShowLoopsRecursive(node, value);
+    }
+
+    private static void SetShowLoopsRecursive(DocumentNodeViewModel node, bool value)
+    {
+        node.ShowLoops = value;
+        foreach (var child in node.Children)
+            SetShowLoopsRecursive(child, value);
+        foreach (var child in node.LoopChildren)
+            SetShowLoopsRecursive(child, value);
+    }
 }
