@@ -105,7 +105,20 @@ public sealed partial class MainWindowViewModel : ObservableObject
         Documents.Add(document);
         OnPropertyChanged(nameof(HasDocuments));
         ActiveDocument = document;
+        document.SelectedNode = InitialSelection(document);
         StatusText = BuildStatusText(document);
+    }
+
+    /// <summary>The first node with a problem, else the first transaction set, else the root: something useful is always shown.</summary>
+    private static DocumentNodeViewModel? InitialSelection(DocumentViewModel document)
+    {
+        var firstError = document.Diagnostics.FirstOrDefault(d => d.Node is not null)?.Node;
+        if (firstError is not null)
+            return firstError;
+
+        var interchange = document.Nodes.FirstOrDefault();
+        var group = interchange?.Children.FirstOrDefault();
+        return group?.Children.FirstOrDefault() ?? group ?? interchange;
     }
 
     private static string BuildStatusText(DocumentViewModel document)

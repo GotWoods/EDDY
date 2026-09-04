@@ -412,6 +412,7 @@ public sealed class DocumentLoader : IDocumentLoader
                     Node = rawLine?.Node,
                 };
                 document.Diagnostics.Add(diagnostic);
+                rawLine?.Node?.Diagnostics.Add(diagnostic);
 
                 if (rawLine is not null)
                     rawLine.HasError = true;

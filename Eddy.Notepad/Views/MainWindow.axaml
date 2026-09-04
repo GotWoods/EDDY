@@ -223,6 +223,12 @@
                     </Border>
                     <ListBox ItemsSource="{Binding ActiveDocument.RawLines}"
                              SelectedItem="{Binding ActiveDocument.SelectedRawLine, Mode=TwoWay}">
+                        <ListBox.Styles>
+                            <Style Selector="ListBoxItem">
+                                <Setter Property="MinHeight" Value="0" />
+                                <Setter Property="Padding" Value="8,3" />
+                            </Style>
+                        </ListBox.Styles>
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="vm:RawLineViewModel">
                                 <Grid Classes.errorRow="{Binding HasError}" Margin="0,1">

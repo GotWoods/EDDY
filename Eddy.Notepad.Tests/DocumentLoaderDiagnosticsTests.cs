@@ -33,6 +33,11 @@ public class DocumentLoaderDiagnosticsTests
         Assert.Equal("N1", diagnostic.Node.Code);
         Assert.Equal(9, diagnostic.Node.LineNumber);
 
+        // The tree badges count diagnostics attached to the node and its ancestors.
+        Assert.True(diagnostic.Node.HasErrors);
+        Assert.Equal(1, diagnostic.Node.ErrorCount);
+        Assert.Equal(1, document.Nodes[0].ErrorCount);
+
         var rawLine = document.RawLines.Single(r => r.LineNumber == 9);
         Assert.True(rawLine.HasError);
         Assert.Same(diagnostic.Node, rawLine.Node);
