@@ -276,8 +276,15 @@ public sealed partial class MainWindowViewModel : ObservableObject
             ? FindNodeByLine(reloaded.Nodes, line) ?? InitialSelection(reloaded)
             : InitialSelection(reloaded);
 
-        Documents[index] = reloaded;
-        if (ReferenceEquals(ActiveDocument, oldDocument))
+        // Never replace the item in place: a Replace notification makes the tab control drop its
+        // selection and push null back into ActiveDocument, which empties every pane. Insert the new
+        // document beside the old one, activate it, then remove the old one, so selection stays valid.
+        var wasActive = ReferenceEquals(ActiveDocument, oldDocument);
+        Documents.Insert(index, reloaded);
+        if (wasActive)
+            ActiveDocument = reloaded;
+        Documents.Remove(oldDocument);
+        if (wasActive && !ReferenceEquals(ActiveDocument, reloaded))
             ActiveDocument = reloaded;
 
         StatusText = WithPackSuffix(statusMessage);
