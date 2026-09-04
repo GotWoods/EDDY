@@ -168,11 +168,39 @@ public class Map
 
     public static string SegmentToString<T>(T segment, MapOptions options) where T : EdifactSegment
     {
+        return SegmentToString(segment, options, true);
+    }
+
+    /// <summary>Renders one segment back to text. Handles <see cref="Unknown_Segment"/> (SegmentId followed
+    /// by its raw Elements, joined by the separator, with trailing empty elements trimmed) as well as every
+    /// segment known to <see cref="MapCache"/>.</summary>
+    public static string SegmentToString<T>(T segment, MapOptions options, bool includeTerminator) where T : EdifactSegment
+    {
+        if (segment is Unknown_Segment unknown)
+            return UnknownSegmentToString(unknown, options, includeTerminator);
+
         var segmentType = segment.GetType().GetCustomAttribute<Segment>();
         var components = ItemToString(segment, options.Separator, options);
         if (string.IsNullOrEmpty(components))
             return "";
-        return segmentType.Name + options.Separator + components + options.LineEnding;
+        var text = segmentType.Name + options.Separator + components;
+        return includeTerminator ? text + options.LineEnding : text;
+    }
+
+    private static string UnknownSegmentToString(Unknown_Segment segment, MapOptions options, bool includeTerminator)
+    {
+        var elements = new List<string>(segment.Elements ?? new List<string>());
+        while (elements.Count > 0 && string.IsNullOrEmpty(elements[elements.Count - 1]))
+            elements.RemoveAt(elements.Count - 1);
+
+        var text = segment.SegmentId;
+        foreach (var element in elements)
+        {
+            text += options.Separator;
+            text += EscapeValue(element, options);
+        }
+
+        return includeTerminator ? text + options.LineEnding : text;
     }
 
     private static string ItemToString(EdifactSegment element, string separator, MapOptions options)

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Eddy.x12.Mapping;
 using Eddy.x12.Models;
 
 namespace Eddy.x12;
@@ -10,6 +11,10 @@ public class x12Interchange
 
     /// <summary>The IEA segment that closed this interchange, or null if it was never found (missing trailer).</summary>
     public GenericInterchangeControlTrailer Trailer { get; set; }
+
+    /// <summary>The separators, terminator and standards version this interchange was parsed with (derived
+    /// from its ISA header). Null when this interchange was not produced by the parser.</summary>
+    public MapOptions MapOptions { get; set; }
 
     public List<x12FunctionalGroup> FunctionalGroups { get; set; } = new();
 

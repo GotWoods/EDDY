@@ -175,6 +175,15 @@ public class GenericInterchangeControlHeader : ISourceTracked
 
     }
 
+    /// <summary>Same fixed-width rendering as <see cref="ToString()"/> - the ISA header carries its own
+    /// separators/terminator (DataElementSeparator, ComponentDataElementSeparator, ElementSeparator) so
+    /// <paramref name="options"/> does not change the output. Provided so a viewer editing a document can
+    /// re-emit every segment, header included, through one uniform ToString(MapOptions) shape.</summary>
+    public string ToString(MapOptions options)
+    {
+        return ToString();
+    }
+
     private string ToFixedLengthString(string input, int length, char paddingCharacter)
     {
         if (string.IsNullOrEmpty(input))

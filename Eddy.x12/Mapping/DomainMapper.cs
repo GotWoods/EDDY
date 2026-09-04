@@ -115,6 +115,73 @@ public class DomainMapper
         return (T)Map(typeof(T));
     }
 
+    /// <summary>
+    /// Same walk as <see cref="Map(Type)"/>, but also reports which segments were consumed, which were
+    /// left over, and - for the first segment that stopped the walk - why. The stop is always "this
+    /// segment did not match any property still expected on the object being built at that point"; every
+    /// segment after it is reported separately as simply not mapped, since the walk never got far enough
+    /// to consider them at all.
+    /// </summary>
+    public DomainMapResult<object> MapWithDiagnostics(Type t)
+    {
+        var value = Map(t);
+        return BuildResult(value, t.Name);
+    }
+
+    public DomainMapResult<T> MapWithDiagnostics<T>()
+    {
+        var untyped = MapWithDiagnostics(typeof(T));
+        return new DomainMapResult<T>
+        {
+            Value = (T)untyped.Value,
+            UnmappedSegments = untyped.UnmappedSegments,
+            Diagnostics = untyped.Diagnostics,
+            ConsumedSegments = untyped.ConsumedSegments
+        };
+    }
+
+    private DomainMapResult<object> BuildResult(object value, string typeName)
+    {
+        var result = new DomainMapResult<object> { Value = value };
+
+        for (var i = 0; i < _currentSegmetnIndex && i < _segments.Count; i++)
+            result.ConsumedSegments.Add(_segments[i]);
+
+        for (var i = _currentSegmetnIndex; i < _segments.Count; i++)
+        {
+            var segment = _segments[i];
+            result.UnmappedSegments.Add(segment);
+
+            var message = i == _currentSegmetnIndex
+                ? $"Segment {DescribeSegment(segment)} is not expected here; mapping of {typeName} stopped"
+                : $"Segment {DescribeSegment(segment)} was not mapped";
+
+            result.Diagnostics.Add(new DomainMapDiagnostic
+            {
+                Segment = segment,
+                Source = segment.Source,
+                Message = message
+            });
+        }
+
+        return result;
+    }
+
+    private static string DescribeSegment(EdiX12Segment segment)
+    {
+        var id = SegmentId(segment);
+        return segment.Source != null ? $"{id} at line {segment.Source.LineNumber}" : id;
+    }
+
+    private static string SegmentId(EdiX12Segment segment)
+    {
+        if (segment is Unknown_Segment unknown)
+            return unknown.SegmentId;
+
+        var attr = segment.GetType().GetCustomAttribute<Segment>();
+        return attr?.Name ?? segment.GetType().Name;
+    }
+
 
     public List<EdiX12Segment> MapToSegments<T>(T input)
     {
