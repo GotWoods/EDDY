@@ -73,7 +73,11 @@ public class EdiFactDocument
 
     public List<ValidationResult> ValidationErrors { get; set; } = new List<ValidationResult>();
 
-    public bool IsValid => !ValidationErrors.Any();
+    /// <summary>True when no recorded result carries an Error-severity entry; warnings (e.g. unknown code values) do not make a document invalid.</summary>
+    public bool IsValid => ValidationErrors.All(r => r.IsValid);
+
+    /// <summary>True when any recorded result carries a Warning-severity entry.</summary>
+    public bool HasWarnings => ValidationErrors.Any(r => r.HasWarnings);
 
     private static readonly Regex VersionPattern = new Regex(@"^D(\d{2})([A-Za-z])$", RegexOptions.Compiled);
 

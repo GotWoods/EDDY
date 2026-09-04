@@ -23,7 +23,11 @@ public class x12Document
     public List<Section> Sections { get; set; } = new();
 
     public List<ValidationResult> ValidationErrors { get; set; } = new();
-    public bool IsValid => !ValidationErrors.Any();
+    /// <summary>True when no recorded result carries an Error-severity entry; warnings (e.g. unknown code values) do not make a document invalid.</summary>
+    public bool IsValid => ValidationErrors.All(r => r.IsValid);
+
+    /// <summary>True when any recorded result carries a Warning-severity entry.</summary>
+    public bool HasWarnings => ValidationErrors.Any(r => r.HasWarnings);
 
     /// <summary>Every ISA...IEA interchange found in the document, in file order. A file can contain several.</summary>
     public List<x12Interchange> Interchanges { get; set; } = new();
