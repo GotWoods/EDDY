@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Eddy.Core.Attributes;
+using Eddy.Core.Codes;
 using Eddy.Core.Validation;
 
 namespace Eddy.Core.Metadata;
@@ -237,7 +238,13 @@ public static class DerivedSegmentMetadata
     {
         var under = Nullable.GetUnderlyingType(propType) ?? propType;
 
-        if (under == typeof(string))
+        string codeListId;
+        if (TryGetCodeListId(under, out codeListId))
+        {
+            elem.DataType = ElementDataType.Identifier;
+            elem.CodeListId = codeListId;
+        }
+        else if (under == typeof(string))
         {
             elem.DataType = ElementDataType.AlphaNumeric;
         }
@@ -279,7 +286,26 @@ public static class DerivedSegmentMetadata
         if (under == typeof(float))
             return 1234567890.5f;
 
+        string codeListId;
+        if (TryGetCodeListId(under, out codeListId))
+            return Activator.CreateInstance(under, new string('X', 1000));
+
         return null;
+    }
+
+    /// <summary>True when <paramref name="type"/> is a closed <see cref="Code{TList}"/>; when so, the
+    /// backing list's data element number is returned.</summary>
+    private static bool TryGetCodeListId(Type type, out string dataElementNumber)
+    {
+        dataElementNumber = null;
+
+        if (!type.IsGenericType || type.GetGenericTypeDefinition() != typeof(Code<>))
+            return false;
+
+        var listProperty = type.GetProperty("List", BindingFlags.Public | BindingFlags.Static);
+        var list = listProperty == null ? null : listProperty.GetValue(null) as CodeList;
+        dataElementNumber = list == null ? null : list.DataElementNumber;
+        return true;
     }
 
     private static object TryCreateInstance(Type type)

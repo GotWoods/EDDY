@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Eddy.Core.Attributes;
+using Eddy.Core.Codes;
 using Eddy.x12.Mapping.Cache;
 using Eddy.x12.Models;
 
@@ -46,6 +47,11 @@ public class Map
                     if (typeof(EdiX12Component).IsAssignableFrom(underlyingType))
                     {
                         var safeValue = MapObject(underlyingType, propertyValue.Trim(), options.ComponentElementSeparator, options);
+                        item.PropertyInfo.SetValue(result, safeValue, null);
+                    }
+                    else if (IsCodeType(underlyingType))
+                    {
+                        var safeValue = Activator.CreateInstance(underlyingType, propertyValue);
                         item.PropertyInfo.SetValue(result, safeValue, null);
                     }
                     else
@@ -125,6 +131,12 @@ public class Map
         while (components.EndsWith(separator))
             components = components.Substring(0, components.Length - separator.Length);
         return components;
+    }
+
+    /// <summary>True for a closed <see cref="Code{TList}"/> type.</summary>
+    private static bool IsCodeType(Type type)
+    {
+        return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Code<>);
     }
 
 }

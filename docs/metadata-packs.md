@@ -96,9 +96,29 @@ Field rules:
     dotnet run --project tools/Eddy.MetadataTool -- import-biztalk --dir <folder of EFACT_D96A_*.xsd> --out metadata/packs/edifact-D96A.json
     dotnet run --project tools/Eddy.MetadataTool -- import-codes --standard X12 --version 004010 --csv codes.csv --out my-codes.json
     dotnet run --project tools/Eddy.MetadataTool -- merge a.json b.json --out merged.json
+    dotnet run --project tools/Eddy.MetadataTool -- gen-codes --pack a.json [--pack b.json ...] --namespace <ns> --out <dir> [--enums]
 
 `import-codes` reads a CSV with the header `dataElement,code,description`. `derive` writes what the
-library computes from the models so it can be inspected or hand-edited into a pack.
+library computes from the models so it can be inspected or hand-edited into a pack. `gen-codes` is
+covered below.
+
+## Generated code lists
+
+A pack's `codes` sections can also be turned into C# source: `gen-codes` writes one
+`Eddy.Core.Codes.CodeList` subclass per data element that has codes, across as many packs as you give
+it (later packs fill in a description an earlier one left blank, but never overwrite one that's
+already there). The class is named from the data element's `dataElements.<number>.name`
+(`PartyQualifierCodes` for EDIFACT 3035's "Party qualifier"; `EntityIdentifierCodes`, not
+`EntityIdentifierCodeCodes`, for X12 98's "Entity Identifier Code" - a trailing "Code" folds into the
+"Codes" suffix instead of doubling) and holds a `public const string` per code, plus - with `--enums`,
+and only for a data element that has at least one non-empty description - a nested enum whose members
+carry `[CodeValue("...")]` so `Code<TList>` can convert to and from them:
+
+    dotnet run --project tools/Eddy.MetadataTool -- gen-codes --pack metadata/packs/edifact-D96A.json --namespace Eddy.Edifact.Codes.D96A --out Eddy.Edifact.Codes/D96A --enums
+
+Every generated file carries the source pack(s)' `provenance` and `license` in its header comment.
+`Eddy.Core.Codes.Code<TList>` (`TList` being one of these generated classes) is the value type a
+generated model property uses to carry such an element around; see Readme.Md, "Code lists".
 
 ## Loading packs
 

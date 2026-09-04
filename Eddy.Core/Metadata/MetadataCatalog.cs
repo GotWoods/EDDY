@@ -138,6 +138,46 @@ public class MetadataCatalog
         return null;
     }
 
+    /// <summary>Every distinct version any loaded source has data for, for one standard.</summary>
+    public IReadOnlyList<string> GetVersions(string standard)
+    {
+        var seen = new HashSet<string>(StringComparer.Ordinal);
+        var result = new List<string>();
+        foreach (var source in _sources)
+        {
+            foreach (var kv in source.Versions)
+            {
+                if (string.Equals(kv.Key, standard, StringComparison.Ordinal) && seen.Add(kv.Value))
+                    result.Add(kv.Value);
+            }
+        }
+        return result;
+    }
+
+    /// <summary>Union of the code list for a data element across every loaded version of a standard, or
+    /// null when no loaded version has anything for it. Used when a caller does not know (or care about)
+    /// which version applies: a code is "known" if any version's list has it.</summary>
+    public IReadOnlyDictionary<string, string> GetCodesAnyVersion(string standard, string dataElementNumber)
+    {
+        Dictionary<string, string> merged = null;
+        foreach (var version in GetVersions(standard))
+        {
+            var codes = GetCodes(standard, version, dataElementNumber);
+            if (codes == null)
+                continue;
+
+            if (merged == null)
+                merged = new Dictionary<string, string>(StringComparer.Ordinal);
+
+            foreach (var kv in codes)
+            {
+                if (!merged.ContainsKey(kv.Key))
+                    merged[kv.Key] = kv.Value;
+            }
+        }
+        return merged;
+    }
+
     /// <summary>"4010", "00401" and "004010" all become "004010"; EDIFACT versions are upper-cased ("d96a" to "D96A").</summary>
     public static string NormalizeVersion(string standard, string version)
     {

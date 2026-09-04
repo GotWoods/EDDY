@@ -5,6 +5,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Eddy.Core.Attributes;
+using Eddy.Core.Codes;
+using Eddy.Core.Metadata;
 using static System.String;
 
 namespace Eddy.Core.Validation;
@@ -288,6 +290,45 @@ public class BasicValidator<T>
         Results.Errors.Add(new Error(ErrorCodes.AtLeastOneIsRequired, finalString));
     }
 
+
+    /// <summary>Flags a value that is not one of the known codes for <paramref name="dataElementNumber"/>,
+    /// as a <see cref="ValidationSettings.CodeListSeverity"/>-severity error. The standard is inferred from
+    /// T's namespace (see <see cref="DerivedSegmentMetadata.InferStandardAndVersion"/>); pass it explicitly
+    /// with the other overload when T is not a generated model type. Silent when the value is empty, when
+    /// the standard cannot be determined, or when <see cref="CodeList.Catalog"/> has no code list loaded
+    /// for this data element (in any version, when <paramref name="version"/> is null).</summary>
+    public void KnownCode(Expression<Func<T, object>> expression, string dataElementNumber, string version = null)
+    {
+        string standard, inferredVersion;
+        DerivedSegmentMetadata.InferStandardAndVersion(typeof(T), out standard, out inferredVersion);
+        KnownCode(expression, standard, dataElementNumber, version ?? inferredVersion);
+    }
+
+    /// <summary>Overload for callers that know the standard explicitly rather than relying on it being
+    /// inferable from T's namespace (e.g. a hand-written segment used only in tests).</summary>
+    public void KnownCode(Expression<Func<T, object>> expression, string standard, string dataElementNumber, string version)
+    {
+        var wrap = expression.Wrap(_instance, _segmentName);
+        var value = wrap.GetPropertyValue();
+        if (IsNullOrEmpty(value) || standard == null || dataElementNumber == null)
+            return;
+
+        var catalog = CodeList.Catalog ?? MetadataCatalog.Default;
+        var codes = version != null
+            ? catalog.GetCodes(standard, version, dataElementNumber)
+            : catalog.GetCodesAnyVersion(standard, dataElementNumber);
+
+        if (codes == null) // no code list loaded for this element - silent
+            return;
+
+        if (codes.ContainsKey(value))
+            return;
+
+        Results.Errors.Add(Tag(new Error(ErrorCodes.UnknownCodeValue, wrap.GetFormattedPropertyName(), value, dataElementNumber)
+        {
+            Severity = ValidationSettings.CodeListSeverity,
+        }, wrap));
+    }
 
     public void OnlyOneOf(Expression<Func<T, object>> expressionA, Expression<Func<T, object>> expressionB)
     {

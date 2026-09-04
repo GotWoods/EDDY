@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Eddy.Core.Attributes;
+using Eddy.Core.Codes;
 using Eddy.Edifact.Mapping.Cache;
 
 namespace Eddy.Edifact.Mapping;
@@ -38,6 +39,11 @@ public class Map
                     if (underlyingType.IsSubclassOf(typeof(EdifactComponent)))
                     {
                         var safeValue = MapObject(underlyingType, propertyValue.Trim(), options.ComponentElementSeparator, -1, options);
+                        item.PropertyInfo.SetValue(result, safeValue, null);
+                    }
+                    else if (IsCodeType(underlyingType))
+                    {
+                        var safeValue = Activator.CreateInstance(underlyingType, propertyValue);
                         item.PropertyInfo.SetValue(result, safeValue, null);
                     }
                     else
@@ -239,5 +245,11 @@ public class Map
         while (joined.EndsWith(separator))
             joined = joined.Substring(0, joined.Length - separator.Length);
         return joined;
+    }
+
+    /// <summary>True for a closed <see cref="Code{TList}"/> type.</summary>
+    private static bool IsCodeType(Type type)
+    {
+        return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Code<>);
     }
 }

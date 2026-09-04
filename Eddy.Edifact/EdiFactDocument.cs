@@ -327,7 +327,9 @@ public class EdiFactDocument
                     currentMessage.Segments.Add(segment);
 
                     var validationResult = segment.Validate();
-                    if (!validationResult.IsValid)
+                    if (parseOptions.CodeListChecking != CodeListChecking.Off)
+                        CodeListValidation.CheckSegment(validationResult, segment, "EDIFACT", currentMessageVersion, parseOptions.CodeListChecking);
+                    if (!validationResult.IsValid || validationResult.HasWarnings)
                     {
                         validationResult.LineNumber = source.LineNumber;
                         validationResult.Source = source;

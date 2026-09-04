@@ -1,3 +1,5 @@
+using Eddy.Core.Validation;
+
 namespace Eddy.Edifact;
 
 /// <summary>Controls how <see cref="EdiFactDocument.Parse(string, EdifactParseOptions)"/> reacts to
@@ -11,4 +13,12 @@ public class EdifactParseOptions
     /// problem is instead recorded as a <see cref="Eddy.Core.Validation.ValidationResult"/> and parsing
     /// continues. Defaults to false.</summary>
     public bool Lenient { get; set; }
+
+    /// <summary>
+    /// When not Off, every content segment's element values (including composite components) are checked
+    /// against any code list loaded into <see cref="Eddy.Core.Metadata.MetadataCatalog.Default"/> for that
+    /// element's data element number, after the segment's own Validate() runs. Elements with no
+    /// CodeListId, or whose CodeListId has no code list loaded, are unaffected. Defaults to Off.
+    /// </summary>
+    public CodeListChecking CodeListChecking { get; set; } = CodeListChecking.Off;
 }

@@ -598,7 +598,9 @@ internal class x12DocumentParser
 
             _currentSection.Segments.Add(segment);
             var validationResult = segment.Validate();
-            if (!validationResult.IsValid)
+            if (_parseOptions.CodeListChecking != CodeListChecking.Off)
+                CodeListValidation.CheckSegment(validationResult, segment, "X12", _mapOptions.StandardsVersion, _parseOptions.CodeListChecking);
+            if (!validationResult.IsValid || validationResult.HasWarnings)
             {
                 validationResult.LineNumber = _lineNumber;
                 validationResult.SegmentCode = identifier;
