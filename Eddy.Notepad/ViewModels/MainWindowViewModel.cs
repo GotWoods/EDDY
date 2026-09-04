@@ -130,12 +130,17 @@ public sealed partial class MainWindowViewModel : ObservableObject
                 : document.Format;
         }
 
-        var interchange = document.Nodes[0];
-        var groupCount = interchange.Children.Count;
-        var transactionSetCount = interchange.Children.Sum(g => g.Children.Count);
+        // A document can have several interchanges, each with several groups (and an orphan segment can
+        // sit alongside a group as a sibling Segment node), so count by Kind rather than by position.
+        var interchanges = document.Nodes.Where(n => n.Kind == NodeKind.Interchange).ToList();
+        var groups = interchanges.SelectMany(i => i.Children.Where(c => c.Kind == NodeKind.FunctionalGroup)).ToList();
+        var transactionSetCount = groups.Sum(g => g.Children.Count(c => c.Kind == NodeKind.TransactionSet));
+        var interchangeCount = interchanges.Count;
+        var groupCount = groups.Count;
         var errorCount = document.ErrorCount;
 
-        return $"{document.Format} · 1 interchange · {groupCount} group{(groupCount == 1 ? "" : "s")} · " +
+        return $"{document.Format} · {interchangeCount} interchange{(interchangeCount == 1 ? "" : "s")} · " +
+               $"{groupCount} group{(groupCount == 1 ? "" : "s")} · " +
                $"{transactionSetCount} transaction set{(transactionSetCount == 1 ? "" : "s")} · " +
                $"{errorCount} error{(errorCount == 1 ? "" : "s")}";
     }

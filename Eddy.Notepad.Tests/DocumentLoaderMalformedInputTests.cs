@@ -62,8 +62,12 @@ public class DocumentLoaderMalformedInputTests
     }
 
     [Fact]
-    public void Unknown_segment_code_yields_an_error_diagnostic_with_the_correct_line_number()
+    public void Unknown_segment_code_becomes_a_segment_node_and_the_rest_of_the_document_still_parses()
     {
+        // The old x12Document.Parse() threw on an unrecognised segment code, so the loader could only
+        // report a bare diagnostic with no tree. The hardened parser's lenient mode instead turns it into
+        // an Unknown_Segment and keeps going: the loader now shows a tree with a node for it, and the rest
+        // of the document (the following SE/GE/IEA trailers included) parses normally.
         const string isa = "ISA*01*0000000000*01*0000000000*ZZ*ABCDEFGHIJKLMNO*ZZ*123456789012345*101127*1719*U*00401*000000001*0*P*>";
         var text = string.Join(
             "\n",
@@ -77,11 +81,18 @@ public class DocumentLoaderMalformedInputTests
 
         var document = _loader.Load(text, "unknown-segment", null);
 
-        Assert.Empty(document.Nodes);
+        Assert.Single(document.Nodes);
+        var transactionSet = document.Nodes[0].Children[0].Children[0];
+        var unknown = Assert.Single(transactionSet.Children);
+        Assert.Equal(NodeKind.Segment, unknown.Kind);
+        Assert.Equal("ZZZ Unknown segment", unknown.Title);
+        Assert.Equal(4, unknown.LineNumber);
+
         var diagnostic = Assert.Single(document.Diagnostics);
         Assert.Equal(DiagnosticSeverity.Error, diagnostic.Severity);
         Assert.Equal(4, diagnostic.LineNumber);
         Assert.Contains("ZZZ", diagnostic.Message);
+        Assert.Same(unknown, diagnostic.Node);
     }
 
     [Fact]

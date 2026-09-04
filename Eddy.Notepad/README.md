@@ -81,47 +81,63 @@ task and the core task were written against this list.
 ## Loader contract
 
 `DocumentLoader.Load(text, displayName, filePath)` must never throw. Everything Eddy cannot handle
-becomes a diagnostic.
+becomes a diagnostic. It parses with `x12Document.Parse(text, new x12ParseOptions { Lenient = true })`,
+which itself never throws for content problems (a bad file still produces a `ValidationResult`, not an
+exception) -- the loader keeps only one outer catch-all, as a last resort for something unanticipated.
 
-1. Normalise: strip a UTF-8 BOM, normalise CRLF to LF, trim leading and trailing whitespace.
-   Eddy's `x12Document.Parse` reads the ISA from the first 106 characters, so leading whitespace
-   breaks it.
+1. Normalise: strip a UTF-8 BOM, normalise CRLF to LF, trim leading and trailing whitespace. (The
+   parser tolerates leading whitespace itself now, but the loader still needs clean text to detect
+   the format from the first three characters and, if parsing fails outright, to fall back to a plain
+   split.)
 2. Detect the format from the first three characters: `ISA` is X12, `UNA` or `UNB` is EDIFACT,
    anything else is Unknown. Phase 0 parses X12 only. EDIFACT and Unknown produce a document with
    raw lines, no tree, and one Info diagnostic saying the format is not supported yet.
-3. Raw lines. The segment terminator is the character at index 105 of the ISA (the one after the
-   component separator). Split the text on it, trim each piece, drop blanks, and number the rest
-   from 1. This matches how `x12Document.Parse` numbers `ValidationResult.LineNumber`: it counts
-   non-blank segments from 1 starting at ISA. Verify this with a test that plants a known error on a
-   known line.
-4. Parse with `x12Document.Parse`. Catch `InvalidFileFormatException`, `KeyNotFoundException`
-   (unknown segment code for that version) and any other exception. Each becomes an Error
-   diagnostic with the best line number you can determine, and the document keeps its raw lines.
-5. Tree. One Interchange node (ISA, subtitle: control number, sender -> receiver, date), one
-   FunctionalGroup node (GS, subtitle: functional id, sender -> receiver, version), one
-   TransactionSet node per `Section` (title: "ST 204", subtitle: control number and segment count),
-   and one Segment node per segment in `Section.Segments`. Node.Model is the Eddy object. Segment
-   titles are "N1 Name" derived from the model type name `N1_Name`; subtitles are the first two or
-   three element values joined with a space.
-6. Line numbers. Walk the raw lines in order alongside the parsed structure: line 1 is ISA, 2 is
-   GS, then for each section the ST line, its segments, and the SE line, then GE and IEA. Set
-   Node.LineNumber and RawLine.Node for each pair. Do not assume the ST/SE lines are in
-   `Section.Segments`; they are not.
-7. Elements. Reflect over public properties with `[Position]` (Eddy.Core.Attributes.PositionAttribute),
+3. Raw lines come from the parser's `Source` spans (`Eddy.Core.SegmentSource`, via `ISourceTracked`),
+   not from re-splitting the text: collect every parsed object that carries a `Source` -- the ISA
+   header, every GS header, every ST header, every segment (including `Unknown_Segment` instances),
+   every SE/GE/IEA trailer, every orphan segment -- across all of `document.Interchanges`, order them
+   by `Source.LineNumber`, and build one `RawLineViewModel` per span with `Text = Source.RawText`.
+   This is exactly the convention `ValidationResult.LineNumber` uses (non-blank segments, numbered
+   from 1 starting at ISA), so `RawLineViewModel.LineNumber` still matches it. When the parser stopped
+   early -- an invalid ISA in lenient mode leaves `Interchanges` empty or, in a multi-interchange file,
+   partial -- there are no spans for the rest of the file, so fall back to the old newline/terminator
+   split so the raw view still shows the whole file.
+4. Tree, built directly from `document.Interchanges`: one Interchange node per `x12Interchange`
+   (Model = its Header), one FunctionalGroup node per `x12FunctionalGroup` (a group whose Header is
+   null -- a missing GS, recorded only in lenient mode -- gets the title "GS (missing)" and a subtitle
+   saying so), one TransactionSet node per `Section` (Model = the Section, Elements from the ST
+   header, title "ST 204", subtitle control number and segment count), and one Segment node per
+   segment in `Section.Segments`. `Interchange.OrphanSegments` and `FunctionalGroup.OrphanSegments`
+   (segments the parser found outside any transaction set, or outside any group) become Segment nodes
+   under their container, placed by line number among their siblings, with their subtitle prefixed
+   "(outside any transaction set) ". `Unknown_Segment` instances (an unrecognised segment code, lenient
+   mode only) become Segment nodes titled "{SegmentId} Unknown segment" with elements built from their
+   `Elements` list. SE/GE/IEA trailers never get their own node: instead their line number is mapped to
+   the node they close (transaction set, group, or interchange), so a diagnostic on a trailer line lands
+   on that node, not nowhere.
+5. Elements. Reflect over public properties with `[Position]` (Eddy.Core.Attributes.PositionAttribute),
    ordered by position. Reference is code + two-digit position ("N101"). Name is the property name
    split on capitals ("EntityIdentifierCode" -> "Entity Identifier Code"), with trailing digits kept
    ("EntityIdentifierCode2" -> "Entity Identifier Code 2"). Value is the property value as string.
    A property whose type derives from `EdiX12Component` is a composite: recurse into it for
    Components and set Value to the composite's raw text if available, else the joined component
    values. Include absent elements so the grid shows the whole segment definition.
-   ISA and GS headers have no `[Position]` attributes; list all their public string/int properties
-   in declaration order instead.
-8. Diagnostics. Each `ValidationResult` in `document.ValidationErrors` becomes one
-   DiagnosticViewModel per `Error`, severity Error, with the result's LineNumber, the segment code
-   from the raw line at that number, and `error.ToString()` as the message. Attach it to the node at
-   that line and mark the raw line. Element HasError: mark an element when the message contains its
-   PropertyName.
-9. Summary and Format: "X12 004010" style, and the Summary string described in DocumentViewModel.
+   The ISA header has no `[Position]` attributes; list all its public string/int properties in
+   declaration order instead. (GS headers gained `[Position]` attributes with the hardened parser, so
+   they go through the normal positioned path now.)
+6. Diagnostics. Each `ValidationResult` in `document.ValidationErrors` becomes one DiagnosticViewModel
+   per `Error`, with the result's LineNumber, `result.SegmentCode` (falling back to the raw line's
+   leading identifier only when that's null), and `error.ToString()` as the message. The node is the
+   one whose line number matches (via the raw line -- see rule 4 for how trailer lines resolve to a
+   container node). Severity is Warning for `ErrorCodes.MissingTrailer` and
+   `ErrorCodes.SegmentOutsideTransactionSet`, Error for everything else (compare `ErrorCodes` by
+   reference or by their `ErrorCode` number). Element HasError uses `Error.PropertyName` and
+   `Error.ElementPosition` (set by `Eddy.Core.Validation.BasicValidator`) instead of a message-contains
+   check: an element is in error when a diagnostic on its segment has PropertyName equal to the
+   element's PropertyName, or ElementPosition equal to its Position.
+7. Summary and Format handle several interchanges and groups: "X12 004010 · 2 interchanges · 3 groups
+   · 5 transaction sets · 1 error". Format uses the first group's version when there is one, else
+   plain "X12".
 
 Selection sync lives in `ViewModels/DocumentViewModel.Selection.cs` (a partial class): implement
 `OnSelectedNodeChanged` and `OnSelectedRawLineChanged` so each updates the other without
