@@ -40,6 +40,77 @@ foreach (var segment in segments)
 }
 ```
 
+The Interchanges structure
+A file can contain more than one ISA...IEA interchange, and an interchange can contain more than one GS...GE
+functional group. document.Interchanges holds all of them, in file order:
+
+```
+foreach (var interchange in document.Interchanges)
+{
+    foreach (var group in interchange.FunctionalGroups)
+    {
+        foreach (var section in group.Sections)
+        {
+            // section.Segments, same as before
+        }
+    }
+}
+```
+
+document.InterchangeControlHeader, document.GsHeader and document.Sections still work exactly as before -
+after Parse() they point at the first interchange's header, the first group's header, and every Section in
+the document (flattened, in file order), so existing code that only ever expected one interchange and one
+group does not need to change.
+
+Lenient parsing
+By default, Parse throws InvalidFileFormatException as soon as it hits something it cannot make sense of
+(a malformed ISA, a missing GS, a segment code it doesn't recognize, and so on) - the same as it always has.
+Pass an x12ParseOptions with Lenient set to true to keep going instead: problems are recorded on
+document.ValidationErrors and parsing continues as far as it can.
+
+```
+var document = x12Document.Parse(data, new x12ParseOptions { Lenient = true });
+if (!document.IsValid)
+{
+    foreach (var error in document.ValidationErrors)
+        Console.WriteLine($"line {error.LineNumber} [{error.SegmentCode}]: {error}");
+}
+```
+
+In lenient mode: a segment code that isn't registered for the document's version becomes an Unknown_Segment
+(SegmentId, Elements) instead of failing the parse; a missing GS record leaves a functional group with a
+null Header; a segment appearing outside of an ST/SE pair is filed under the nearest open group or
+interchange's OrphanSegments; and a missing SE, GE or IEA at the end of the input is recorded rather than
+silently losing data. GE/GS and IEA/ISA counts and control numbers are always validated (in both modes) the
+same way they always were - they are recorded as validation errors, never thrown.
+
+Source spans
+Every parsed segment - including the ISA header, and the ST/SE/GS/GE/IEA records - implements
+Eddy.Core.ISourceTracked, so it carries a Source property (SegmentSource) pointing back at the exact spot
+in the original text it came from: LineNumber (matching ValidationResult.LineNumber), StartOffset and
+Length (character positions into the string you passed to Parse, not counting the terminator or
+surrounding whitespace), and RawText. ValidationResult also carries SegmentCode and Source for the segment
+it concerns, so a viewer can jump straight from an error to the offending text:
+
+```
+var raw = data.Substring(segment.Source.StartOffset, segment.Source.Length); // == segment.Source.RawText
+```
+
+Transaction set registry
+TransactionSetRegistry resolves the generated model type for a transaction set code and version, so you
+don't have to know which Eddy.x12.DomainModels.* assembly or namespace it lives in:
+
+```
+var type = TransactionSetRegistry.Resolve("997", "004010"); // Edi997_FunctionalAcknowledgment
+```
+
+Version can be given as "004010", "4010" or the raw ISA-style "00401" - all normalise to the four-digit
+form the v#### namespaces use. If the exact version isn't registered, it falls back to the highest
+registered version below the one you asked for. Domain model assemblies already loaded into the process
+are picked up automatically the first time you call Resolve or All; call TransactionSetRegistry.Register
+for an assembly that hasn't been loaded yet (or that doesn't follow the standard Eddy.x12.DomainModels.*
+naming).
+
 Pasing an x12 Document into a Transaction Set
 
 ```

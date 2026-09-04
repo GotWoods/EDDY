@@ -34,6 +34,12 @@ public class EdiSectionParserFactory
         return _parsers.Value[version + "." + identifier];
     }
 
+    /// <summary>Like GetSegmentFor, but returns false instead of throwing when the segment is not registered for the version.</summary>
+    public static bool TryGetSegmentFor(string version, string identifier, out Type type)
+    {
+        return _parsers.Value.TryGetValue(version + "." + identifier, out type);
+    }
+
     public static Dictionary<string, Type> LoadSegmentProviders()
     {
         var currentNamespace = typeof(x12Document).Namespace;

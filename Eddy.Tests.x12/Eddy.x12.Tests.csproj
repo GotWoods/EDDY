@@ -27,6 +27,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Eddy.x12\Eddy.x12.csproj" />
+    <!-- Smallest domain model assembly; used to exercise TransactionSetRegistry against real Edi997 models. -->
+    <ProjectReference Include="..\Eddy.x12.DomainModels.CommunicationsAndControls\Eddy.x12.DomainModels.CommunicationsAndControls.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -6,8 +6,11 @@ using Eddy.x12.Mapping;
 
 namespace Eddy.x12.Models;
 
-public class GenericInterchangeControlHeader
+public class GenericInterchangeControlHeader : ISourceTracked
 {
+    /// <summary>Where this segment came from in the source text, when the parser tracked it.</summary>
+    public SegmentSource Source { get; set; }
+
     public string AuthorizationInformationQualifier { get; set; }
 
     public string AuthorizationInformation { get; set; }
