@@ -12,7 +12,10 @@ public sealed partial class DocumentViewModel : ObservableObject
         FilePath = filePath;
         Format = format;
         RawText = rawText;
+        SavedText = rawText;
     }
+
+    partial void OnIsDirtyChanged(bool value) => OnPropertyChanged(nameof(TabTitle));
 
     /// <summary>Tab title: the file name, or a sample name.</summary>
     public string DisplayName { get; }
@@ -41,6 +44,31 @@ public sealed partial class DocumentViewModel : ObservableObject
 
     /// <summary>One line describing the envelope, e.g. "ISA 000003438 · GS SM 4405197800 → 999999999 · 1 transaction set".</summary>
     public string Summary { get; set; } = "";
+
+    /// <summary>The text this document would revert to if every pending edit were undone back past its
+    /// last save (or, for a document never saved, back to what was first opened). Compared against
+    /// <see cref="RawText"/> to derive <see cref="IsDirty"/> whenever a document is reloaded after an
+    /// edit, undo, redo or save; see MainWindowViewModel.ApplyTextEdit/Undo/Redo/SaveAsync.</summary>
+    public string SavedText { get; set; } = "";
+
+    /// <summary>True when <see cref="RawText"/> differs from <see cref="SavedText"/>. Drives the "•" tab
+    /// title suffix (<see cref="TabTitle"/>) and the close/exit confirmation prompts.</summary>
+    [ObservableProperty]
+    private bool _isDirty;
+
+    /// <summary>Text snapshots to go back to on Undo, oldest first (the last entry is what Undo would
+    /// restore next). Empty for a freshly opened document.</summary>
+    public List<string> UndoStack { get; } = new();
+
+    /// <summary>Text snapshots to go forward to on Redo, oldest first. Cleared by any new edit.</summary>
+    public List<string> RedoStack { get; } = new();
+
+    public bool CanUndo => UndoStack.Count > 0;
+
+    public bool CanRedo => RedoStack.Count > 0;
+
+    /// <summary><see cref="DisplayName"/> with a "•" suffix while <see cref="IsDirty"/>, for the tab strip.</summary>
+    public string TabTitle => IsDirty ? DisplayName + " •" : DisplayName;
 
     /// <summary>
     /// Selected tree node. Setting it also selects the matching raw line, and vice versa.

@@ -154,5 +154,7 @@ public class MainWindowViewModelTests : IDisposable
         public Task<string?> PickFileAsync() => Task.FromResult(NextPath);
 
         public Task<string?> PickFileAsync(string title, string[] patterns) => Task.FromResult(NextPath);
+
+        public Task<string?> PickSaveFileAsync(string title, string suggestedFileName) => Task.FromResult(NextPath);
     }
 }

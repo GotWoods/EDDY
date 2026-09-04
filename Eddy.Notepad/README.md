@@ -1,8 +1,9 @@
 # Eddy Notepad
 
-A cross-platform EDI viewer built on the Eddy parsing libraries. It is the Phase 0 app from the
-Eddy Notepad roadmap: open an X12 or EDIFACT file, see it as an envelope tree, inspect any segment
-element by element, and read the validation problems Eddy finds.
+A cross-platform EDI viewer and editor built on the Eddy parsing libraries. Open an X12 or EDIFACT
+file, see it as an envelope tree, inspect any segment element by element, read the validation
+problems Eddy finds -- and now edit element values in place, delete or insert segments, fix control
+counts, save back to disk, and generate a 997 or 999 acknowledgment for an X12 document.
 
     dotnet run --project Eddy.Notepad            # opens the window
     dotnet run --project Eddy.Notepad -- file.edi
@@ -16,8 +17,10 @@ element by element, and read the validation problems Eddy finds.
       Views/                        XAML and code-behind only. No parsing logic here.
       ViewModels/                   Plain observable state. No Avalonia types here.
       Services/                     DocumentLoader (parse -> view models), SegmentElementReader (segment/header
-                                     model -> element grid rows, via MetadataCatalog.Describe), MetadataPacks
-                                     (loads the embedded + EDDY_METADATA_PACKS packs), IFilePicker, SampleDocuments.
+                                     model -> element grid rows, via MetadataCatalog.Describe), DocumentEditor
+                                     (element/segment edits and control-count recalculation as text
+                                     transformations -- see "Editing" below), MetadataPacks (loads the embedded +
+                                     EDDY_METADATA_PACKS packs), IFilePicker, SampleDocuments.
                                      DocumentLoader is split across three files: DocumentLoader.cs holds
                                      the entry point and the pieces shared by both formats, and
                                      DocumentLoader.X12.cs / DocumentLoader.Edifact.cs hold the
@@ -28,8 +31,11 @@ element by element, and read the validation problems Eddy finds.
 
 Dependencies: Avalonia 11.3 with the Fluent theme, CommunityToolkit.Mvvm 8.4 (use `[ObservableProperty]`
 and `[RelayCommand]`), Eddy.Core, Eddy.x12 and Eddy.Edifact. Do not add Eddy.x12.DomainModels.* or
-Eddy.Edifact.DomainModels.* references in this phase; they slow the build a lot and Phase 0 does not
-need loop mapping.
+Eddy.Edifact.DomainModels.* references beyond the one exception below; they slow the build a lot and
+most of them add nothing Notepad needs. The one exception is
+Eddy.x12.DomainModels.CommunicationsAndControls, referenced solely for
+`Acknowledgments.FunctionalAcknowledgmentBuilder`/`ImplementationAcknowledgmentBuilder` (Tools > Generate
+997/999; see "Acknowledgments" below).
 
 ## Metadata
 
@@ -90,10 +96,107 @@ Behaviour:
 - In the element grid, an Identifier-typed element whose value is not in a loaded code list shows
   "not in code list" in the Meaning column, in the warning colour -- this is informational, not a
   diagnostic (see "Metadata" above); a valid code with no description text shows "valid code", dimmed.
-- Drag and drop a file onto the window to open it. Ctrl+O opens the picker. Ctrl+W closes the tab.
+- Drag and drop a file onto the window to open it. Ctrl+O opens the picker. Ctrl+W closes the tab
+  (asking to confirm first if it has unsaved changes).
 - The raw view is monospace, read-only, with a line number gutter.
 - File > Load Metadata Pack… adds one metadata pack file to the catalog and reparses every open
   document. Help > Loaded Metadata lists every pack currently loaded (name, standard, version, source).
+- Editing, saving and acknowledgment generation: see the three sections below.
+
+## Keyboard shortcuts
+
+    Ctrl+O            File > Open…
+    Ctrl+S            File > Save
+    Ctrl+Shift+S      File > Save As…
+    Ctrl+W            File > Close (confirms first if the tab is dirty)
+    Ctrl+Z            Edit > Undo
+    Ctrl+Y            Edit > Redo
+    Delete            Edit > Delete Segment, when the tree has keyboard focus
+    F2                Open the in-place editor for the focused element's value
+    Double-click      Open the in-place editor for an element's value (Value column)
+    Enter / Escape    Commit / cancel the in-place editor
+
+## Editing
+
+Every edit -- element value, segment delete, segment insert, control-count recalculation -- is a text
+transformation, not a model mutation: the document keeps its text as the single source of truth. An
+edit produces new document text (via `Eddy.Core.SourceEdit` or `x12Document`/`EdiFactDocument`
+.RecalculateControlCounts), and that text is reloaded through the same `DocumentLoader` used to open
+files, then swapped into `MainWindowViewModel.Documents` at the edited document's index -- same tab
+position, active if it was, selection restored by matching `DocumentNodeViewModel.LineNumber`. Nothing
+here regenerates a whole file from the in-memory model; a segment nobody touched keeps its exact bytes.
+
+`Services/DocumentEditor.cs` holds the format-aware (X12 vs EDIFACT, keyed off
+`DocumentViewModel.Format`), UI-free logic, so it is unit-testable on its own (see
+Eddy.Notepad.Tests/DocumentEditorTests.cs):
+
+    DocumentEditor
+      ReplaceElementValue(document, node, element, newValue)         -> new document text
+      RemoveSegment(document, node)                                  -> new document text
+      InsertSegmentAfter(document, node, rawSegmentText)              -> new document text
+      InsertSegmentBefore(document, node, rawSegmentText)             -> new document text
+      RecalculateCounts(document)                                    -> ControlCountResult
+      RecalculateCounts(text, format)  [static]                       -> ControlCountResult
+
+`MainWindowViewModel.ApplyTextEdit(document, newText, description)` is the one place that reloads and
+swaps a document; every command below ends by calling it (directly, or via Undo/Redo, which do the
+mirror-image operation on their own stacks). `DocumentViewModel` carries the editing state:
+`IsDirty`, `CanUndo`, `CanRedo`, `UndoStack`/`RedoStack` (plain text snapshots -- files are small, so a
+snapshot-per-edit history is simplest), `SavedText` (the baseline `IsDirty` compares `RawText`
+against: what was last opened or saved), and `TabTitle` (`DisplayName` with a trailing "•" while dirty,
+what the tab strip actually binds to).
+
+- **Element values.** In the element grid, double-click a Value cell (or focus it and press F2) to
+  edit it in place; Enter commits, Escape cancels. On commit, `MainWindowViewModel.SetElementValue`
+  calls `DocumentEditor.ReplaceElementValue`, which: sets the property on the underlying model
+  (`DocumentNodeViewModel.Model` for a segment; for a component, the composite instance reached through
+  the parent segment's property, creating it if absent; `Convert.ChangeType` to the property's
+  underlying type, with an empty string meaning null/absent; for `Unknown_Segment`, its raw `Elements`
+  list, growing it if needed; for the X12 ISA header, its properties directly, since ISA has no
+  `[Position]` metadata to walk) -- then renders just that segment back to text with the right mapper
+  (`Eddy.x12.Mapping.Map.SegmentToString`/`Eddy.Edifact.Mapping.Map.SegmentToString`,
+  `includeTerminator: false`; the ISA header via its own `ToString(MapOptions)`, trimmed of its
+  terminator) and splices it in with `SourceEdit.Replace`. Envelope nodes (ISA/GS/ST, UNB/UNG/UNH) edit
+  the same way -- a transaction set node's element grid is its ST/UNH header. A value that cannot be
+  converted (letters into a numeric element, say) reports a clear message in the status bar and leaves
+  the document untouched.
+- **Segment delete/insert.** Edit menu, the tree's context menu, and the Delete key (tree focused)
+  reach `MainWindowViewModel.DeleteSegmentCommand`/`InsertSegment`. Only a Segment node (not an
+  envelope node) can be deleted or used as an insertion point. Insert asks for one line of raw segment
+  text without a terminator (e.g. `N9*ZZ*VALUE`) via a small modal; `DocumentEditor` rejects empty text
+  or text containing the terminator character. Deleting uses `SourceEdit.Remove` with the document's
+  terminator; inserting uses `SourceEdit.InsertAfter`/`InsertBefore`.
+- **Automatic control-count fixing.** After a delete or insert on an X12 or EDIFACT document,
+  `RecalculateCounts` runs automatically and is folded into the same edit (one undo step, not two),
+  unless View > Fix Control Counts Automatically (on by default) is switched off.
+- **Explicit recalculation.** Edit > Recalculate Control Counts applies `RecalculateCounts` on demand
+  and reports "Updated N trailer values" or "Counts already correct" in the status bar; when a trailer
+  is missing entirely (nothing to splice a corrected value into), its name is listed too.
+
+## Save
+
+File > Save (Ctrl+S) writes `DocumentViewModel.RawText` to `FilePath` as UTF-8 without a BOM, with no
+newline changes beyond what the loader already normalised on open, and clears `IsDirty`. File > Save
+As… (Ctrl+Shift+S) asks `IFilePicker.PickSaveFileAsync(title, suggestedFileName)` for a path (see
+`Views/StorageProviderFilePicker.cs`) and adopts it, so a later Ctrl+S writes straight there. A
+document with no `FilePath` yet -- a sample, or a generated acknowledgment tab -- has Save fall back to
+Save As automatically. Closing a dirty tab, or exiting with any dirty tab open, asks to confirm first
+(a plain Yes/No window in `Views/MainWindow.axaml.cs`; `DocumentViewModel.IsDirty` is all the view
+model exposes for this, the confirmation itself is a view concern).
+
+## Acknowledgments
+
+Tools > Generate 997 parses the active X12 document leniently (`x12Document.Parse`, same as the
+loader) and runs it through
+`Eddy.x12.DomainModels.CommunicationsAndControls.Acknowledgments.FunctionalAcknowledgmentBuilder` with
+default `AcknowledgmentOptions`, opening the resulting 997 Functional Acknowledgment as a new tab named
+"997 for `<DisplayName>`" with no `FilePath` (so Save As applies). Generate 999 does the same with
+`ImplementationAcknowledgmentBuilder`, and is enabled only when the active document's first functional
+group is version 005010 or higher (a 999 Implementation Acknowledgment has no meaning for older
+versions). Both commands are disabled for EDIFACT and Unknown-format documents. A builder error is
+reported in the status bar rather than crashing. This is the one place Eddy.Notepad references a
+Eddy.x12.DomainModels.* assembly (see "Dependencies" above); it costs one extra project reference, not
+the whole domain model surface.
 
 ## View model contract
 
@@ -101,22 +204,29 @@ Views bind only to these types. The loader fills them. Keep property names stabl
 task and the core task were written against this list.
 
     MainWindowViewModel
-      Documents, ActiveDocument, StatusText, SampleNames, HasDocuments, LoadedPacks
+      Documents, ActiveDocument, StatusText, SampleNames, HasDocuments, LoadedPacks,
+      FixControlCountsAutomatically
       OpenFileCommand, OpenSampleCommand(string), CloseDocumentCommand(DocumentViewModel),
-      LoadMetadataPackCommand
-      OpenPathAsync(path), OpenText(text, displayName, filePath), RegisterLoadedPack(PackInfoViewModel)
+      LoadMetadataPackCommand, SaveCommand, SaveAsCommand, UndoCommand, RedoCommand,
+      DeleteSegmentCommand, RecalculateControlCountsCommand,
+      GenerateFunctionalAcknowledgmentCommand (+ CanGenerateFunctionalAcknowledgment),
+      GenerateImplementationAcknowledgmentCommand (+ CanGenerateImplementationAcknowledgment)
+      OpenPathAsync(path), OpenText(text, displayName, filePath), RegisterLoadedPack(PackInfoViewModel),
+      ApplyTextEdit(document, newText, description), SetElementValue(document, node, element, newValue),
+      InsertSegment(before, rawSegmentText)
 
     DocumentViewModel
       DisplayName, FilePath, Format, RawText, RawLines, Nodes, Diagnostics
       ErrorCount, WarningCount, IsValid, Summary
       SelectedNode, SelectedRawLine, SelectedElements
+      IsDirty, CanUndo, CanRedo, UndoStack, RedoStack, SavedText, TabTitle
 
     DocumentNodeViewModel   Kind, Code, Title, Subtitle, LineNumber, Model, Children, Elements,
                             Diagnostics, ErrorCount, HasErrors, IsExpanded, IsSelected
     ElementViewModel        Reference, Position, Name, PropertyName, Value, HasValue, IsComposite,
                             Components, HasError, DataElementNumber, HasDataElementNumber,
                             DataTypeLabel, Requirement, CodeDescription, Origin, Meaning,
-                            IsUnrecognizedCode, MeaningIsDimmed
+                            IsUnrecognizedCode, MeaningIsDimmed, IsEditing, EditText
     RawLineViewModel        LineNumber, Text, Node, HasError
     DiagnosticViewModel     Severity, LineNumber, SegmentCode, Message, Node, Location
     PackInfoViewModel       Name, Standard, Version, Source

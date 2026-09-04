@@ -48,4 +48,21 @@ public sealed class StorageProviderFilePicker : IFilePicker
         var files = await _owner.StorageProvider.OpenFilePickerAsync(options);
         return files.Count > 0 ? files[0].Path.LocalPath : null;
     }
+
+    public async Task<string?> PickSaveFileAsync(string title, string suggestedFileName)
+    {
+        var options = new FilePickerSaveOptions
+        {
+            Title = title,
+            SuggestedFileName = suggestedFileName,
+            FileTypeChoices = new FilePickerFileType[]
+            {
+                new("EDI files") { Patterns = new[] { "*.edi", "*.x12" } },
+                FilePickerFileTypes.All,
+            },
+        };
+
+        var file = await _owner.StorageProvider.SaveFilePickerAsync(options);
+        return file?.Path.LocalPath;
+    }
 }

@@ -1,3 +1,5 @@
+using CommunityToolkit.Mvvm.ComponentModel;
+
 namespace Eddy.Notepad.ViewModels;
 
 /// <summary>
@@ -5,7 +7,7 @@ namespace Eddy.Notepad.ViewModels;
 /// For a composite element, <see cref="Components"/> holds the sub-elements
 /// and <see cref="Value"/> holds the raw composite text.
 /// </summary>
-public sealed class ElementViewModel
+public sealed partial class ElementViewModel : ObservableObject
 {
     public ElementViewModel(string reference, int position, string name, string propertyName, string? value)
     {
@@ -81,4 +83,16 @@ public sealed class ElementViewModel
     /// <summary>True when <see cref="Meaning"/> should render dimmed: everything except real description
     /// text and the "not in code list" warning.</summary>
     public bool MeaningIsDimmed => CodeDescription is not { Length: > 0 } && !IsUnrecognizedCode;
+
+    /// <summary>True while the Value cell is showing an in-place editor (double-click or F2; see
+    /// Views/MainWindow.axaml.cs). Not part of the loader contract: reset to false every time the element
+    /// grid is rebuilt, since editing always ends by reloading the document.</summary>
+    [ObservableProperty]
+    private bool _isEditing;
+
+    /// <summary>Two-way bound to the in-place editor's TextBox while <see cref="IsEditing"/>. Seeded from
+    /// <see cref="Value"/> when editing starts; committed back through
+    /// MainWindowViewModel.SetElementValue on Enter.</summary>
+    [ObservableProperty]
+    private string _editText = "";
 }

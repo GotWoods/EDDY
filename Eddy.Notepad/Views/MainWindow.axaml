@@ -16,7 +16,12 @@
 
     <Window.KeyBindings>
         <KeyBinding Gesture="Ctrl+O" Command="{Binding OpenFileCommand}" />
-        <KeyBinding Gesture="Ctrl+W" Command="{Binding CloseDocumentCommand}" CommandParameter="{Binding ActiveDocument}" />
+        <KeyBinding Gesture="Ctrl+S" Command="{Binding SaveCommand}" />
+        <KeyBinding Gesture="Ctrl+Shift+S" Command="{Binding SaveAsCommand}" />
+        <KeyBinding Gesture="Ctrl+Z" Command="{Binding UndoCommand}" />
+        <KeyBinding Gesture="Ctrl+Y" Command="{Binding RedoCommand}" />
+        <!-- Ctrl+W is handled in code-behind (OnKeyDown) instead of a direct command binding, so it can
+             confirm before closing a dirty tab; see MainWindow.axaml.cs. -->
     </Window.KeyBindings>
 
     <Window.Styles>
@@ -58,15 +63,35 @@
                 <MenuItem Header="_Open…" InputGesture="Ctrl+O" Command="{Binding OpenFileCommand}" />
                 <MenuItem x:Name="OpenSampleMenuItem" Header="Open _Sample" />
                 <Separator />
+                <MenuItem Header="_Save" InputGesture="Ctrl+S" Command="{Binding SaveCommand}" />
+                <MenuItem Header="Save _As…" InputGesture="Ctrl+Shift+S" Command="{Binding SaveAsCommand}" />
+                <Separator />
                 <MenuItem Header="Load _Metadata Pack…" Command="{Binding LoadMetadataPackCommand}" />
                 <Separator />
-                <MenuItem Header="_Close" InputGesture="Ctrl+W" Command="{Binding CloseDocumentCommand}" CommandParameter="{Binding ActiveDocument}" />
+                <MenuItem Header="_Close" InputGesture="Ctrl+W" Click="CloseActiveTab_Click" />
                 <Separator />
                 <MenuItem Header="E_xit" Click="Exit_Click" />
+            </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Undo" InputGesture="Ctrl+Z" Command="{Binding UndoCommand}" />
+                <MenuItem Header="_Redo" InputGesture="Ctrl+Y" Command="{Binding RedoCommand}" />
+                <Separator />
+                <MenuItem Header="_Delete Segment" InputGesture="Delete" Command="{Binding DeleteSegmentCommand}" />
+                <MenuItem Header="Insert Segment _After…" Click="InsertSegmentAfter_Click" />
+                <MenuItem Header="Insert Segment _Before…" Click="InsertSegmentBefore_Click" />
+                <Separator />
+                <MenuItem Header="_Recalculate Control Counts" Command="{Binding RecalculateControlCountsCommand}" />
             </MenuItem>
             <MenuItem Header="_View">
                 <MenuItem Header="_Expand All" Click="ExpandAll_Click" />
                 <MenuItem Header="_Collapse All" Click="CollapseAll_Click" />
+                <Separator />
+                <MenuItem Header="_Fix Control Counts Automatically" ToggleType="CheckBox"
+                          IsChecked="{Binding FixControlCountsAutomatically, Mode=TwoWay}" />
+            </MenuItem>
+            <MenuItem Header="_Tools">
+                <MenuItem Header="Generate _997" Command="{Binding GenerateFunctionalAcknowledgmentCommand}" />
+                <MenuItem Header="Generate _999" Command="{Binding GenerateImplementationAcknowledgmentCommand}" />
             </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_Loaded Metadata" Click="LoadedMetadata_Click" />
@@ -90,7 +115,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="vm:DocumentViewModel">
                     <StackPanel Orientation="Horizontal" Spacing="6" Margin="10,6">
-                        <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding TabTitle}" VerticalAlignment="Center" />
                         <Border Classes="errorCountBadge" VerticalAlignment="Center" IsVisible="{Binding !IsValid}">
                             <TextBlock Text="{Binding ErrorCount}" />
                         </Border>
@@ -119,6 +144,13 @@
                               ItemsSource="{Binding ActiveDocument.Nodes}"
                               SelectedItem="{Binding ActiveDocument.SelectedNode, Mode=TwoWay}"
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <TreeView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Delete Segment" Command="{Binding DeleteSegmentCommand}" />
+                                <MenuItem Header="Insert Segment After…" Click="InsertSegmentAfter_Click" />
+                                <MenuItem Header="Insert Segment Before…" Click="InsertSegmentBefore_Click" />
+                            </ContextMenu>
+                        </TreeView.ContextMenu>
                         <TreeView.DataTemplates>
                             <TreeDataTemplate DataType="vm:DocumentNodeViewModel" ItemsSource="{Binding Children}">
                                 <Grid Margin="0,3">
@@ -201,8 +233,17 @@
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Grid.Column="0" Classes="mono" Text="{Binding Reference}" MinWidth="60" />
                                             <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="10,0,0,0" TextTrimming="CharacterEllipsis" />
-                                            <TextBlock Grid.Column="2" Classes="mono" Classes.absent="{Binding !HasValue}"
-                                                       Text="{Binding Value}" Margin="10,0,8,0" TextTrimming="CharacterEllipsis" />
+                                            <Grid Grid.Column="2" Margin="10,0,8,0">
+                                                <TextBlock Classes="mono" Classes.absent="{Binding !HasValue}"
+                                                           Text="{Binding Value}" TextTrimming="CharacterEllipsis"
+                                                           IsVisible="{Binding !IsEditing}" Focusable="True"
+                                                           DoubleTapped="ElementValueText_DoubleTapped"
+                                                           KeyDown="ElementValueText_KeyDown" />
+                                                <TextBox Classes="mono" Text="{Binding EditText, Mode=TwoWay}"
+                                                         IsVisible="{Binding IsEditing}"
+                                                         KeyDown="ElementValueEditor_KeyDown"
+                                                         LostFocus="ElementValueEditor_LostFocus" />
+                                            </Grid>
                                             <TextBlock Grid.Column="3" Classes="mono" Classes.absent="{Binding !HasDataElementNumber}" Text="{Binding DataElementNumber}" Margin="10,0,0,0" />
                                             <TextBlock Grid.Column="4" Classes="mono subtitle" Text="{Binding DataTypeLabel}" Margin="10,0,0,0" TextTrimming="CharacterEllipsis" />
                                             <TextBlock Grid.Column="5" Classes="mono subtitle" Text="{Binding Requirement}" Margin="10,0,0,0" />
@@ -225,8 +266,17 @@
                                                         </Grid.ColumnDefinitions>
                                                         <TextBlock Grid.Column="0" Classes="mono" Text="{Binding Reference}" Opacity="0.8" MinWidth="60" />
                                                         <TextBlock Grid.Column="1" Text="{Binding Name}" Opacity="0.8" Margin="10,0,0,0" TextTrimming="CharacterEllipsis" />
-                                                        <TextBlock Grid.Column="2" Classes="mono" Classes.absent="{Binding !HasValue}"
-                                                                   Text="{Binding Value}" Margin="10,0,8,0" TextTrimming="CharacterEllipsis" />
+                                                        <Grid Grid.Column="2" Margin="10,0,8,0">
+                                                            <TextBlock Classes="mono" Classes.absent="{Binding !HasValue}"
+                                                                       Text="{Binding Value}" TextTrimming="CharacterEllipsis"
+                                                                       IsVisible="{Binding !IsEditing}" Focusable="True"
+                                                                       DoubleTapped="ElementValueText_DoubleTapped"
+                                                                       KeyDown="ElementValueText_KeyDown" />
+                                                            <TextBox Classes="mono" Text="{Binding EditText, Mode=TwoWay}"
+                                                                     IsVisible="{Binding IsEditing}"
+                                                                     KeyDown="ElementValueEditor_KeyDown"
+                                                                     LostFocus="ElementValueEditor_LostFocus" />
+                                                        </Grid>
                                                         <TextBlock Grid.Column="3" Classes="mono" Classes.absent="{Binding !HasDataElementNumber}" Text="{Binding DataElementNumber}" Margin="10,0,0,0" />
                                                         <TextBlock Grid.Column="4" Classes="mono subtitle" Text="{Binding DataTypeLabel}" Margin="10,0,0,0" TextTrimming="CharacterEllipsis" />
                                                         <TextBlock Grid.Column="5" Classes="mono subtitle" Text="{Binding Requirement}" Margin="10,0,0,0" />
