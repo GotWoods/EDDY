@@ -51,22 +51,79 @@ public sealed partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private void CloseDocument(DocumentViewModel? document)
     {
-        // TODO(core): remove the document, activate a neighbour, update status.
-        throw new NotImplementedException();
+        if (document is null)
+            return;
+
+        var index = Documents.IndexOf(document);
+        if (index < 0)
+            return;
+
+        Documents.RemoveAt(index);
+        OnPropertyChanged(nameof(HasDocuments));
+
+        if (ReferenceEquals(ActiveDocument, document))
+        {
+            ActiveDocument = Documents.Count == 0
+                ? null
+                : Documents[Math.Min(index, Documents.Count - 1)];
+        }
+
+        StatusText = ActiveDocument is null
+            ? "Open an EDI file, or pick a sample from the File menu."
+            : BuildStatusText(ActiveDocument);
     }
 
     /// <summary>Reads a file from disk and opens it as a new tab.</summary>
     public async Task OpenPathAsync(string path)
     {
-        // TODO(core): read the file (async), then OpenText. Report IO failures in StatusText, never throw.
-        await Task.CompletedTask;
-        throw new NotImplementedException();
+        var existing = Documents.FirstOrDefault(d => d.FilePath == path);
+        if (existing is not null)
+        {
+            ActiveDocument = existing;
+            StatusText = BuildStatusText(existing);
+            return;
+        }
+
+        string text;
+        try
+        {
+            text = await File.ReadAllTextAsync(path).ConfigureAwait(true);
+        }
+        catch (Exception ex)
+        {
+            StatusText = $"Could not open '{Path.GetFileName(path)}': {ex.Message}";
+            return;
+        }
+
+        OpenText(text, Path.GetFileName(path), path);
     }
 
     /// <summary>Parses text into a document, adds it to the tabs and activates it.</summary>
     public void OpenText(string text, string displayName, string? filePath)
     {
-        // TODO(core): loader.Load, add to Documents, set ActiveDocument, set StatusText, raise HasDocuments.
-        throw new NotImplementedException();
+        var document = _loader.Load(text, displayName, filePath);
+        Documents.Add(document);
+        OnPropertyChanged(nameof(HasDocuments));
+        ActiveDocument = document;
+        StatusText = BuildStatusText(document);
+    }
+
+    private static string BuildStatusText(DocumentViewModel document)
+    {
+        if (document.Nodes.Count == 0)
+        {
+            return document.ErrorCount > 0
+                ? $"{document.Format} · {document.ErrorCount} error{(document.ErrorCount == 1 ? "" : "s")}"
+                : document.Format;
+        }
+
+        var interchange = document.Nodes[0];
+        var groupCount = interchange.Children.Count;
+        var transactionSetCount = interchange.Children.Sum(g => g.Children.Count);
+        var errorCount = document.ErrorCount;
+
+        return $"{document.Format} · 1 interchange · {groupCount} group{(groupCount == 1 ? "" : "s")} · " +
+               $"{transactionSetCount} transaction set{(transactionSetCount == 1 ? "" : "s")} · " +
+               $"{errorCount} error{(errorCount == 1 ? "" : "s")}";
     }
 }

@@ -19,7 +19,7 @@ public sealed partial class DocumentViewModel : ObservableObject
 
     public string? FilePath { get; }
 
-    /// <summary>"X12", "EDIFACT" or "Unknown".</summary>
+    /// <summary>"X12 004010" style when parsed successfully, else "X12", "EDIFACT" or "Unknown".</summary>
     public string Format { get; }
 
     /// <summary>The file text after BOM and surrounding whitespace were removed.</summary>
