@@ -65,6 +65,12 @@ public class EdiFactDocument
     /// <summary>Every UNB...UNZ interchange found in the input, in file order.</summary>
     public List<EdifactInterchange> Interchanges { get; set; } = new List<EdifactInterchange>();
 
+    /// <summary>The separators, terminator, release/decimal/repetition characters and standards version
+    /// this document was parsed with - from its UNA when it had one, or the ISO 9735 defaults otherwise.
+    /// Applies to the whole file: unlike x12's ISA, EDIFACT's UNA (when present) precedes every
+    /// interchange the file contains.</summary>
+    public MapOptions MapOptions { get; set; }
+
     public List<ValidationResult> ValidationErrors { get; set; } = new List<ValidationResult>();
 
     public bool IsValid => !ValidationErrors.Any();
@@ -126,6 +132,8 @@ public class EdiFactDocument
             scanStart += 9;
             startLineNumber = 2;
         }
+
+        document.MapOptions = options;
 
         var releaseChar = options.ReleaseCharacter[0];
         var terminatorChar = options.LineEnding[0];
@@ -363,6 +371,160 @@ public class EdiFactDocument
         }
 
         return document;
+    }
+
+    /// <summary>
+    /// Recomputes every UNT/UNE/UNZ segment count and control reference in <paramref name="text"/> and
+    /// splices any that are wrong (or reports any trailer that is missing) without disturbing anything
+    /// else in the text. <paramref name="text"/> is always parsed leniently internally so a document with
+    /// wrong counts - which would otherwise fail structural validation - can still be walked and fixed;
+    /// <paramref name="options"/> is accepted for forward compatibility but its Lenient flag is not
+    /// consulted. Returns the original text unchanged (and an empty Changes list) when every trailer
+    /// already agrees with what its container actually contains.
+    /// </summary>
+    public static ControlCountResult RecalculateControlCounts(string text, EdifactParseOptions options = null)
+    {
+        if (text == null)
+            throw new ArgumentNullException(nameof(text));
+
+        var doc = Parse(text, new EdifactParseOptions { Lenient = true });
+        var mapOptions = doc.MapOptions ?? new MapOptions();
+
+        var changes = new List<ControlCountChange>();
+        var splices = new List<PendingSplice>();
+
+        foreach (var interchange in doc.Interchanges)
+        {
+            var explicitGroupCount = interchange.FunctionalGroups.Count(g => g.Header != null);
+
+            foreach (var group in interchange.FunctionalGroups)
+            {
+                foreach (var message in group.Messages)
+                    ReconcileUnt(message, changes, splices, mapOptions);
+
+                if (group.Header != null)
+                    ReconcileUne(group, changes, splices, mapOptions);
+            }
+
+            ReconcileUnz(interchange, explicitGroupCount, changes, splices, mapOptions);
+        }
+
+        var resultText = text;
+        foreach (var splice in splices.OrderByDescending(s => s.Source.StartOffset))
+            resultText = SourceEdit.Replace(resultText, splice.Source, splice.NewText);
+
+        return new ControlCountResult { Text = resultText, Changes = changes };
+    }
+
+    private static void ReconcileUnt(Message message, List<ControlCountChange> changes, List<PendingSplice> splices, MapOptions mapOptions)
+    {
+        var expectedCount = (message.Segments.Count + 2).ToString(); // UNH + segments + UNT
+        var expectedRef = message.Header?.MessageReferenceNumber;
+        var trailer = message.Trailer;
+
+        if (trailer == null)
+        {
+            var lineNumber = message.Header?.Source?.LineNumber ?? 0;
+            changes.Add(new ControlCountChange { Trailer = "UNT", LineNumber = lineNumber, Field = "NumberOfSegmentsInMessage", OldValue = null, NewValue = expectedCount });
+            changes.Add(new ControlCountChange { Trailer = "UNT", LineNumber = lineNumber, Field = "MessageReferenceNumber", OldValue = null, NewValue = expectedRef });
+            return;
+        }
+
+        var changed = false;
+        var lineNo = trailer.Source?.LineNumber ?? 0;
+
+        if (trailer.NumberOfSegmentsInMessage != expectedCount)
+        {
+            changes.Add(new ControlCountChange { Trailer = "UNT", LineNumber = lineNo, Field = "NumberOfSegmentsInMessage", OldValue = trailer.NumberOfSegmentsInMessage, NewValue = expectedCount });
+            trailer.NumberOfSegmentsInMessage = expectedCount;
+            changed = true;
+        }
+
+        if (trailer.MessageReferenceNumber != expectedRef)
+        {
+            changes.Add(new ControlCountChange { Trailer = "UNT", LineNumber = lineNo, Field = "MessageReferenceNumber", OldValue = trailer.MessageReferenceNumber, NewValue = expectedRef });
+            trailer.MessageReferenceNumber = expectedRef;
+            changed = true;
+        }
+
+        if (changed && trailer.Source != null)
+            splices.Add(new PendingSplice { Source = trailer.Source, NewText = Map.SegmentToString(trailer, mapOptions, false) });
+    }
+
+    private static void ReconcileUne(FunctionalGroup group, List<ControlCountChange> changes, List<PendingSplice> splices, MapOptions mapOptions)
+    {
+        var expectedCount = group.Messages.Count.ToString();
+        var expectedRef = group.Header?.FunctionalGroupReferenceNumber;
+        var trailer = group.Trailer;
+
+        if (trailer == null)
+        {
+            var lineNumber = group.Header?.Source?.LineNumber ?? 0;
+            changes.Add(new ControlCountChange { Trailer = "UNE", LineNumber = lineNumber, Field = "NumberOfMessages", OldValue = null, NewValue = expectedCount });
+            changes.Add(new ControlCountChange { Trailer = "UNE", LineNumber = lineNumber, Field = "FunctionalGroupReferenceNumber", OldValue = null, NewValue = expectedRef });
+            return;
+        }
+
+        var changed = false;
+        var lineNo = trailer.Source?.LineNumber ?? 0;
+
+        if (trailer.NumberOfMessages != expectedCount)
+        {
+            changes.Add(new ControlCountChange { Trailer = "UNE", LineNumber = lineNo, Field = "NumberOfMessages", OldValue = trailer.NumberOfMessages, NewValue = expectedCount });
+            trailer.NumberOfMessages = expectedCount;
+            changed = true;
+        }
+
+        if (trailer.FunctionalGroupReferenceNumber != expectedRef)
+        {
+            changes.Add(new ControlCountChange { Trailer = "UNE", LineNumber = lineNo, Field = "FunctionalGroupReferenceNumber", OldValue = trailer.FunctionalGroupReferenceNumber, NewValue = expectedRef });
+            trailer.FunctionalGroupReferenceNumber = expectedRef;
+            changed = true;
+        }
+
+        if (changed && trailer.Source != null)
+            splices.Add(new PendingSplice { Source = trailer.Source, NewText = Map.SegmentToString(trailer, mapOptions, false) });
+    }
+
+    private static void ReconcileUnz(EdifactInterchange interchange, int explicitGroupCount, List<ControlCountChange> changes, List<PendingSplice> splices, MapOptions mapOptions)
+    {
+        var expectedCount = (explicitGroupCount > 0 ? explicitGroupCount : interchange.FunctionalGroups.Sum(g => g.Messages.Count)).ToString();
+        var expectedRef = interchange.Header?.InterchangeControlReference;
+        var trailer = interchange.Trailer;
+
+        if (trailer == null)
+        {
+            var lineNumber = interchange.Header?.Source?.LineNumber ?? 0;
+            changes.Add(new ControlCountChange { Trailer = "UNZ", LineNumber = lineNumber, Field = "InterchangeControlCount", OldValue = null, NewValue = expectedCount });
+            changes.Add(new ControlCountChange { Trailer = "UNZ", LineNumber = lineNumber, Field = "InterchangeControlReference", OldValue = null, NewValue = expectedRef });
+            return;
+        }
+
+        var changed = false;
+        var lineNo = trailer.Source?.LineNumber ?? 0;
+
+        if (trailer.InterchangeControlCount != expectedCount)
+        {
+            changes.Add(new ControlCountChange { Trailer = "UNZ", LineNumber = lineNo, Field = "InterchangeControlCount", OldValue = trailer.InterchangeControlCount, NewValue = expectedCount });
+            trailer.InterchangeControlCount = expectedCount;
+            changed = true;
+        }
+
+        if (trailer.InterchangeControlReference != expectedRef)
+        {
+            changes.Add(new ControlCountChange { Trailer = "UNZ", LineNumber = lineNo, Field = "InterchangeControlReference", OldValue = trailer.InterchangeControlReference, NewValue = expectedRef });
+            trailer.InterchangeControlReference = expectedRef;
+            changed = true;
+        }
+
+        if (changed && trailer.Source != null)
+            splices.Add(new PendingSplice { Source = trailer.Source, NewText = Map.SegmentToString(trailer, mapOptions, false) });
+    }
+
+    private struct PendingSplice
+    {
+        public SegmentSource Source;
+        public string NewText;
     }
 
     public string ToString(MapOptions options)

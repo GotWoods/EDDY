@@ -28,6 +28,9 @@ public class x12Document
     /// <summary>Every ISA...IEA interchange found in the document, in file order. A file can contain several.</summary>
     public List<x12Interchange> Interchanges { get; set; } = new();
 
+    /// <summary>The MapOptions the first interchange was parsed with (see <see cref="x12Interchange.MapOptions"/>).</summary>
+    public MapOptions MapOptions { get; set; }
+
     public string ToString(MapOptions options)
     {
         var sb = new StringBuilder();
@@ -130,6 +133,160 @@ public class x12Document
     {
         parseOptions = parseOptions ?? new x12ParseOptions();
         return new x12DocumentParser(parseOptions).Parse(data ?? string.Empty);
+    }
+
+    /// <summary>
+    /// Recomputes every SE/GE/IEA control count and control number in <paramref name="text"/> and splices
+    /// any that are wrong (or reports any trailer that is missing) without disturbing anything else in the
+    /// text. <paramref name="text"/> is always parsed leniently internally so a document with wrong counts
+    /// - which would otherwise fail structural validation - can still be walked and fixed; <paramref
+    /// name="options"/> is accepted for forward compatibility but its Lenient flag is not consulted.
+    /// Returns the original text unchanged (and an empty Changes list) when every trailer already agrees
+    /// with what its container actually contains.
+    /// </summary>
+    public static ControlCountResult RecalculateControlCounts(string text, x12ParseOptions options = null)
+    {
+        if (text == null)
+            throw new ArgumentNullException(nameof(text));
+
+        var doc = Parse(text, new x12ParseOptions { Lenient = true });
+
+        var changes = new List<ControlCountChange>();
+        var splices = new List<PendingSplice>();
+
+        foreach (var interchange in doc.Interchanges)
+        {
+            var mapOptions = interchange.MapOptions ?? (interchange.Header != null ? MapOptions.FromInterchangeHeader(interchange.Header) : null);
+
+            foreach (var group in interchange.FunctionalGroups)
+            {
+                foreach (var section in group.Sections)
+                    ReconcileSe(section, changes, splices, mapOptions);
+
+                ReconcileGe(group, changes, splices, mapOptions);
+            }
+
+            ReconcileIea(interchange, changes, splices, mapOptions);
+        }
+
+        var resultText = text;
+        foreach (var splice in splices.OrderByDescending(s => s.Source.StartOffset))
+            resultText = SourceEdit.Replace(resultText, splice.Source, splice.NewText);
+
+        return new ControlCountResult { Text = resultText, Changes = changes };
+    }
+
+    private static void ReconcileSe(Section section, List<ControlCountChange> changes, List<PendingSplice> splices, MapOptions mapOptions)
+    {
+        var expectedCount = section.Segments.Count + 2; // ST + segments + SE
+        var expectedControl = section.TransactionSetControlNumber;
+        var trailer = section.TransactionSetTrailer;
+
+        if (trailer == null)
+        {
+            var lineNumber = section.TransactionSetHeader?.Source?.LineNumber ?? 0;
+            changes.Add(new ControlCountChange { Trailer = "SE", LineNumber = lineNumber, Field = "NumberOfIncludedSegments", OldValue = null, NewValue = expectedCount.ToString() });
+            changes.Add(new ControlCountChange { Trailer = "SE", LineNumber = lineNumber, Field = "TransactionSetControlNumber", OldValue = null, NewValue = expectedControl });
+            return;
+        }
+
+        var changed = false;
+        var lineNo = trailer.Source?.LineNumber ?? 0;
+
+        if (trailer.NumberOfIncludedSegments != expectedCount)
+        {
+            changes.Add(new ControlCountChange { Trailer = "SE", LineNumber = lineNo, Field = "NumberOfIncludedSegments", OldValue = trailer.NumberOfIncludedSegments?.ToString(), NewValue = expectedCount.ToString() });
+            trailer.NumberOfIncludedSegments = expectedCount;
+            changed = true;
+        }
+
+        if (trailer.TransactionSetControlNumber != expectedControl)
+        {
+            changes.Add(new ControlCountChange { Trailer = "SE", LineNumber = lineNo, Field = "TransactionSetControlNumber", OldValue = trailer.TransactionSetControlNumber, NewValue = expectedControl });
+            trailer.TransactionSetControlNumber = expectedControl;
+            changed = true;
+        }
+
+        if (changed && trailer.Source != null && mapOptions != null)
+            splices.Add(new PendingSplice { Source = trailer.Source, NewText = Map.SegmentToString(trailer, mapOptions, false) });
+    }
+
+    private static void ReconcileGe(x12FunctionalGroup group, List<ControlCountChange> changes, List<PendingSplice> splices, MapOptions mapOptions)
+    {
+        var expectedCount = group.Sections.Count;
+        int? expectedControl = null;
+        if (group.Header != null && int.TryParse(group.Header.GroupControlNumber, out var parsedControl))
+            expectedControl = parsedControl;
+
+        var trailer = group.Trailer;
+        if (trailer == null)
+        {
+            var lineNumber = group.Header?.Source?.LineNumber ?? 0;
+            changes.Add(new ControlCountChange { Trailer = "GE", LineNumber = lineNumber, Field = "NumberOfTransactionSetsIncluded", OldValue = null, NewValue = expectedCount.ToString() });
+            changes.Add(new ControlCountChange { Trailer = "GE", LineNumber = lineNumber, Field = "GroupControlNumber", OldValue = null, NewValue = expectedControl?.ToString() });
+            return;
+        }
+
+        var changed = false;
+        var lineNo = trailer.Source?.LineNumber ?? 0;
+
+        if (trailer.NumberOfTransactionSetsIncluded != expectedCount)
+        {
+            changes.Add(new ControlCountChange { Trailer = "GE", LineNumber = lineNo, Field = "NumberOfTransactionSetsIncluded", OldValue = trailer.NumberOfTransactionSetsIncluded?.ToString(), NewValue = expectedCount.ToString() });
+            trailer.NumberOfTransactionSetsIncluded = expectedCount;
+            changed = true;
+        }
+
+        if (expectedControl.HasValue && trailer.GroupControlNumber != expectedControl)
+        {
+            changes.Add(new ControlCountChange { Trailer = "GE", LineNumber = lineNo, Field = "GroupControlNumber", OldValue = trailer.GroupControlNumber?.ToString(), NewValue = expectedControl.ToString() });
+            trailer.GroupControlNumber = expectedControl;
+            changed = true;
+        }
+
+        if (changed && trailer.Source != null && mapOptions != null)
+            splices.Add(new PendingSplice { Source = trailer.Source, NewText = Map.SegmentToString(trailer, mapOptions, false) });
+    }
+
+    private static void ReconcileIea(x12Interchange interchange, List<ControlCountChange> changes, List<PendingSplice> splices, MapOptions mapOptions)
+    {
+        var expectedCount = interchange.FunctionalGroups.Count;
+        var expectedControl = interchange.Header?.InterchangeControlNumber?.ToString().PadLeft(9, '0');
+        var trailer = interchange.Trailer;
+
+        if (trailer == null)
+        {
+            var lineNumber = interchange.Header?.Source?.LineNumber ?? 0;
+            changes.Add(new ControlCountChange { Trailer = "IEA", LineNumber = lineNumber, Field = "NumberOfIncludedFunctionalGroups", OldValue = null, NewValue = expectedCount.ToString() });
+            changes.Add(new ControlCountChange { Trailer = "IEA", LineNumber = lineNumber, Field = "InterchangeControlNumber", OldValue = null, NewValue = expectedControl });
+            return;
+        }
+
+        var changed = false;
+        var lineNo = trailer.Source?.LineNumber ?? 0;
+
+        if (trailer.NumberOfIncludedFunctionalGroups != expectedCount)
+        {
+            changes.Add(new ControlCountChange { Trailer = "IEA", LineNumber = lineNo, Field = "NumberOfIncludedFunctionalGroups", OldValue = trailer.NumberOfIncludedFunctionalGroups?.ToString(), NewValue = expectedCount.ToString() });
+            trailer.NumberOfIncludedFunctionalGroups = expectedCount;
+            changed = true;
+        }
+
+        if (expectedControl != null && trailer.InterchangeControlNumber != expectedControl)
+        {
+            changes.Add(new ControlCountChange { Trailer = "IEA", LineNumber = lineNo, Field = "InterchangeControlNumber", OldValue = trailer.InterchangeControlNumber, NewValue = expectedControl });
+            trailer.InterchangeControlNumber = expectedControl;
+            changed = true;
+        }
+
+        if (changed && trailer.Source != null && mapOptions != null)
+            splices.Add(new PendingSplice { Source = trailer.Source, NewText = Map.SegmentToString(trailer, mapOptions, false) });
+    }
+
+    private struct PendingSplice
+    {
+        public SegmentSource Source;
+        public string NewText;
     }
 }
 
@@ -271,13 +428,10 @@ internal class x12DocumentParser
             _firstInterchangeSeen = true;
         }
 
-        _mapOptions = new MapOptions
-        {
-            Separator = header.DataElementSeparator.ToString(),
-            ComponentElementSeparator = header.ComponentDataElementSeparator,
-            LineEnding = header.ElementSeparator.ToString(),
-            StandardsVersion = header.InterchangeControlVersionNumberCode + "0"
-        };
+        _mapOptions = MapOptions.FromInterchangeHeader(header);
+        _currentInterchange.MapOptions = _mapOptions;
+        if (_doc.MapOptions == null)
+            _doc.MapOptions = _mapOptions;
 
         _currentGroup = null;
         _currentSection = null;
