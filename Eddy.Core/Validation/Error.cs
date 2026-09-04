@@ -1,5 +1,14 @@
 namespace Eddy.Core.Validation;
 
+/// <summary>How serious a validation <see cref="Error"/> is. <see cref="ValidationResult.IsValid"/> only
+/// counts <see cref="Error"/>-severity entries; a result with only Warning or Info entries is still valid.</summary>
+public enum ErrorSeverity
+{
+    Error,
+    Warning,
+    Info,
+}
+
 public class Error
 {
     public ErrorCodes ErrorCode { get; set; }
@@ -10,6 +19,10 @@ public class Error
 
     /// <summary>The element's position within its segment (the [Position] value), when known.</summary>
     public int? ElementPosition { get; set; }
+
+    /// <summary>How serious this entry is. Defaults to <see cref="ErrorSeverity.Error"/>, matching every
+    /// rule that predates severities.</summary>
+    public ErrorSeverity Severity { get; set; } = ErrorSeverity.Error;
     //public int Code { get; set; }
     public Error(ErrorCodes errorCode, params string[] data)
     {
@@ -19,7 +32,8 @@ public class Error
 
     public override string ToString()
     {
-        return string.Format(ErrorCode.Message, Data);
+        var message = string.Format(ErrorCode.Message, Data);
+        return Severity == ErrorSeverity.Warning ? "warning: " + message : message;
     }
 }
 
@@ -77,6 +91,9 @@ public class ErrorCodes
     public static ErrorCodes EdiFactInterchangeMessageCountMismatch = new ErrorCodes(5012, "Expected UNZ Interchange Control Count to be {0} but was {1}");
     public static ErrorCodes EdiFactUnsupportedVersion = new ErrorCodes(5013, "Message version {0} is not available; segments were read with version {1}");
     public static ErrorCodes EdiFactSegmentParseFailure = new ErrorCodes(5014, "Segment '{0}' could not be parsed: {1}");
+
+    //code list validation
+    public static ErrorCodes UnknownCodeValue = new ErrorCodes(6000, "{0} value '{1}' is not in code list {2}");
 
     private ErrorCodes()
     {

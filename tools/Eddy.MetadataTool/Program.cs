@@ -19,6 +19,7 @@ try
         "merge" => RunMerge(Args.Parse(rest)),
         "derive" => RunDerive(Args.Parse(rest)),
         "validate" => RunValidate(Args.Parse(rest)),
+        "gen-codes" => RunGenCodes(Args.Parse(rest, new HashSet<string> { "enums" })),
         "-h" or "--help" or "help" => Help(),
         _ => Unknown(command),
     };
@@ -63,6 +64,7 @@ static void PrintUsage()
           merge          <a.json> <b.json> ... --out <file>
           derive         --standard X12|EDIFACT --version <v> --out <file>
           validate       <file>
+          gen-codes      --pack <file> [--pack <file> ...] --namespace <ns> --out <dir> [--enums]
         """);
 }
 
@@ -290,6 +292,40 @@ static int RunDerive(Args args)
     Console.WriteLine(
         $"Wrote {outPath}: {pack.Segments.Count} segments, {pack.Composites.Count} composites, " +
         $"{pack.DataElements.Count} data elements derived from the Eddy model types");
+    return 0;
+}
+
+static int RunGenCodes(Args args)
+{
+    var options = new CodeListGenerator.Options
+    {
+        PackPaths = args.RequireAll("pack"),
+        Namespace = args.Require("namespace"),
+        OutDir = args.Require("out"),
+        Enums = args.Flag("enums"),
+    };
+
+    foreach (var path in options.PackPaths)
+    {
+        if (!File.Exists(path))
+        {
+            Console.Error.WriteLine($"error: file not found: {path}");
+            return 1;
+        }
+    }
+
+    List<CodeListGenerator.GeneratedFile> generated;
+    try
+    {
+        generated = CodeListGenerator.Generate(options);
+    }
+    catch (ArgumentException ex)
+    {
+        Console.Error.WriteLine($"error: {ex.Message}");
+        return 1;
+    }
+
+    Console.WriteLine($"Wrote {generated.Count} code list class(es) to {options.OutDir}");
     return 0;
 }
 

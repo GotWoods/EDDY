@@ -96,6 +96,16 @@ public class DerivedSegmentMetadataTests
     }
 
     [Fact]
+    public void CodeListProperty_IsReportedAsIdentifierWithCodeListId()
+    {
+        var def = DerivedSegmentMetadata.Describe(typeof(XCD_CodeProbe), "X12", "004010");
+
+        var elem = def.Elements.Single(e => e.PropertyName == "EntityCode");
+        Assert.Equal(ElementDataType.Identifier, elem.DataType);
+        Assert.Equal("9999", elem.CodeListId);
+    }
+
+    [Fact]
     public void EdifactNad_D96A_WorksWithEdifactComponentComposites()
     {
         var def = DerivedSegmentMetadata.Describe(typeof(Eddy.Edifact.Models.D96A.NAD_NameAndAddress));

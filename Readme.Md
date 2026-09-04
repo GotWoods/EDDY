@@ -153,6 +153,65 @@ This will take into account Daylight Savings Time if the date falls into the DST
 
 The use of the LT time code will cause an exception in the ConvertToTimeZone as we don't know if that is the local timezone of the sender, the recipient, or the timezone of the data the line is refering to (e.g. a location update from a company based in LA, reporting to a company based in New York, with the location update happening in Colorado)
 
+Code lists
+Eddy.Core.Codes.`Code<TList>` is a value type for an identifier element that accepts a standard code, a
+generated or hand-written enum member, or a raw partner-specific value the standard doesn't define -
+without losing any of the three. TList is a generated (or hand-written) Eddy.Core.Codes.CodeList
+subclass naming the standard, data element number and human name the list answers for:
+
+```
+public sealed class Code<TList> where TList : CodeList, new()
+{
+    public string Value { get; }                 // whatever was there - standard or not
+    public bool IsStandard { get; }               // known in any loaded version of the standard?
+    public bool IsStandardIn(string version);     // known in this specific version?
+    public string Description { get; }            // from the loaded catalog, or null
+    public static TList List { get; }              // the (cached) code list instance
+    public static implicit operator Code<TList>(string value);   // null in, null out
+    public static implicit operator string(Code<TList> code);
+    public static implicit operator Code<TList>(System.Enum value); // reads [CodeValue], else the member name
+    public bool TryGetEnum<TEnum>(out TEnum result);
+}
+```
+
+A property typed `Code<TList>` maps like any other element (Eddy.x12.Mapping.Map and
+Eddy.Edifact.Mapping.Map both read and write it), and DerivedSegmentMetadata reports it as an
+Identifier element whose CodeListId is the list's DataElementNumber - so BasicValidator.KnownCode and
+CodeListChecking (below) both see it without any extra wiring.
+
+KnownCode is a validator rule with warning severity by default:
+
+```
+validator.KnownCode(x => x.EntityIdentifierCode, "98"); // standard/version inferred from the segment's namespace
+```
+
+It's silent when no code list is loaded for that data element (Eddy.Core.Codes.CodeList.Catalog, which
+defaults to MetadataCatalog.Default); otherwise it adds an error - Warning severity by default,
+configurable process-wide via ValidationSettings.CodeListSeverity - when the value isn't in the loaded
+list. Error severity is new too: ValidationResult.IsValid only counts Error-severity entries, and
+ValidationResult.HasWarnings reports the rest, so a document can still be "valid" with only warnings
+recorded.
+
+x12ParseOptions.CodeListChecking and EdifactParseOptions.CodeListChecking (Off by default) apply the
+same check across every element of every parsed segment - including composite components - against
+whatever packs are loaded into MetadataCatalog.Default, without needing `Code<TList>` properties or
+per-segment KnownCode calls at all:
+
+```
+var document = x12Document.Parse(data, new x12ParseOptions { CodeListChecking = CodeListChecking.Warn });
+```
+
+tools/Eddy.MetadataTool's gen-codes command generates a CodeList subclass per data element that has
+codes in one or more packs:
+
+```
+dotnet run --project tools/Eddy.MetadataTool -- gen-codes --pack metadata/packs/edifact-D96A.json --namespace Eddy.Edifact.Codes.D96A --out Eddy.Edifact.Codes/D96A --enums
+```
+
+Each generated `<Name>Codes.cs` file has a `public const string` per code (e.g. `PartyQualifierCodes.BY`
+for EDIFACT 3035), and - with `--enums`, when the pack has any descriptions for that element - a nested
+enum whose members carry a `[CodeValue("BY")]` attribute so `Code<TList>` can convert to and from it.
+
 Getting a document structure
 If you want to get a programatic representation of the document structure you can use the following code:
 ```
