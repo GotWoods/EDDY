@@ -5,6 +5,7 @@ using Eddy.Core.Attributes;
 
 namespace Eddy.Edifact;
 
+[Segment("UNB")]
 public class GenericInterchangeControlHeader : EdifactSegment
 {
 

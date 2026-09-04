@@ -1,39 +1,43 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using Eddy.Core.Attributes;
 using Eddy.Edifact.Mapping;
 
 namespace Eddy.Edifact;
 
-
-//TODO: this almost matches the x12EdiSectionParserFactory and can probably be refactored into the core
 public class EdiSectionParserFactory
 {
-    private static bool _isInitialized = false;
-    private static Dictionary<string, Type> _parsers;
+    // This used to be a bool flag plus a field, assigned in that order with no barrier
+    // between them. Concurrent callers could each run LoadSegmentProviders (which reflects
+    // over every type in the assembly), and on a weak memory model a caller could observe
+    // the flag set while the field was still null. Lazy builds the dictionary once and
+    // publishes it only when it is complete; nothing mutates it afterwards, so the reads
+    // below need no further synchronization.
+    private static readonly Lazy<Dictionary<string, Type>> _parsers =
+        new Lazy<Dictionary<string, Type>>(LoadSegmentProviders, LazyThreadSafetyMode.ExecutionAndPublication);
 
+    /// <summary>Parses <paramref name="line"/> as a segment of the given version. Returns null when the
+    /// line has no data elements at all, or when <paramref name="version"/>/identifier is not known -
+    /// callers decide how to handle an unrecognized segment (throw, or record it and move on).</summary>
     public static EdifactSegment Parse(string version, string line, MapOptions mapOptions)
     {
-        if (line.IndexOf(mapOptions.Separator) == -1)
+        var separatorIndex = line.IndexOf(mapOptions.Separator, StringComparison.Ordinal);
+        var identifier = separatorIndex == -1 ? line : line.Substring(0, separatorIndex);
+        var type = GetSegmentFor(version, identifier);
+        if (type == null)
             return null;
-        var identifier = line.Substring(0, line.IndexOf(mapOptions.Separator));
-        return (EdifactSegment)Map.MapObject(GetSegmentFor(version, identifier), line, mapOptions);
+        return (EdifactSegment)Map.MapObject(type, line, mapOptions);
     }
 
+    /// <summary>Returns the model type for <paramref name="identifier"/> in <paramref name="version"/>, or
+    /// null when that version/segment combination is not defined.</summary>
     public static Type GetSegmentFor(string version, string identifier)
     {
-        if (!_isInitialized)
-        {
-            _parsers = LoadSegmentProviders();
-            _isInitialized = true;
-        }
-
-        // if (!_parsers.ContainsKey(identifier))
-        //     return typeof(Unkown_Segment);
-
-        return _parsers[version + "." + identifier];
+        _parsers.Value.TryGetValue(version + "." + identifier, out var type);
+        return type;
     }
 
     public static Dictionary<string, Type> LoadSegmentProviders()
