@@ -22,17 +22,26 @@ public class DocumentLoaderMalformedInputTests
     }
 
     [Fact]
-    public void Text_starting_with_UNB_is_reported_as_unsupported_EDIFACT()
+    public void Text_starting_with_UNB_is_parsed_as_EDIFACT()
     {
-        var text = "UNB+UNOA:1+SENDER+RECEIVER+240101:1200+1'";
+        // A minimal, well-formed single-message interchange (no UNA - default delimiters). EDIFACT parsing
+        // is exercised in depth by DocumentLoaderEdifactApiTests; this just confirms it is no longer the
+        // "not supported yet" placeholder the old (pre-hardening) loader reported.
+        var text =
+            "UNB+UNOA:1+SENDER:14+RECEIVER:14+240101:1200+REF1'\n" +
+            "UNH+1+APERAK:D:96A:UN'\n" +
+            "BGM+16+123456+9'\n" +
+            "UNT+3+1'\n" +
+            "UNZ+1+REF1'\n";
 
         var document = _loader.Load(text, "edifact", null);
 
-        Assert.Equal("EDIFACT", document.Format);
-        Assert.Empty(document.Nodes);
+        Assert.StartsWith("EDIFACT", document.Format);
+        Assert.True(document.IsValid, string.Join("; ", document.Diagnostics.Select(d => d.Message)));
+        Assert.Single(document.Nodes);
+        Assert.Equal(NodeKind.Interchange, document.Nodes[0].Kind);
         Assert.NotEmpty(document.RawLines);
-        var diagnostic = Assert.Single(document.Diagnostics);
-        Assert.Equal(DiagnosticSeverity.Info, diagnostic.Severity);
+        Assert.DoesNotContain(document.Diagnostics, d => d.Message.Contains("not supported yet"));
     }
 
     [Fact]

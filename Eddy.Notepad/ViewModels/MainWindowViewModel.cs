@@ -139,9 +139,13 @@ public sealed partial class MainWindowViewModel : ObservableObject
         var groupCount = groups.Count;
         var errorCount = document.ErrorCount;
 
+        // EDIFACT's TransactionSet nodes are UNH messages, not X12 ST transaction sets, so the wording
+        // matches the format: "... 1 message ..." vs "... 1 transaction set ...".
+        var leafWord = document.Format.StartsWith("EDIFACT", StringComparison.Ordinal) ? "message" : "transaction set";
+
         return $"{document.Format} · {interchangeCount} interchange{(interchangeCount == 1 ? "" : "s")} · " +
                $"{groupCount} group{(groupCount == 1 ? "" : "s")} · " +
-               $"{transactionSetCount} transaction set{(transactionSetCount == 1 ? "" : "s")} · " +
+               $"{transactionSetCount} {leafWord}{(transactionSetCount == 1 ? "" : "s")} · " +
                $"{errorCount} error{(errorCount == 1 ? "" : "s")}";
     }
 }

@@ -1,14 +1,16 @@
 using System.Reflection;
 using Eddy.Core.Attributes;
 using Eddy.Core.Validation;
+using Eddy.Edifact;
 using Eddy.Notepad.ViewModels;
 using Eddy.x12.Models;
 
 namespace Eddy.Notepad.Services;
 
 /// <summary>
-/// Builds the element grid (<see cref="ElementViewModel"/> list) for one Eddy model object, by
-/// reflecting over its public properties. See README.md, "Loader contract", rule 7.
+/// Builds the element grid (<see cref="ElementViewModel"/> list) for one Eddy model object (an X12
+/// EdiX12Segment/EdiX12Component or an EDIFACT EdifactSegment/EdifactComponent), by reflecting over its
+/// public properties. See README.md, "Loader contract", rule 7.
 /// </summary>
 public static class SegmentElementReader
 {
@@ -78,9 +80,9 @@ public static class SegmentElementReader
         var underlyingType = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
         var hasError = HasError(errors, property.Name, rawPosition);
 
-        if (typeof(EdiX12Component).IsAssignableFrom(underlyingType))
+        if (IsComponentType(underlyingType))
         {
-            var component = (rawValue as EdiX12Component) ?? (EdiX12Component)Activator.CreateInstance(underlyingType)!;
+            var component = rawValue ?? Activator.CreateInstance(underlyingType)!;
             var subElements = ReadPositioned(component, reference, errors);
             var filled = subElements.Where(e => e.HasValue).Select(e => e.Value).ToList();
             var value = filled.Count > 0 ? string.Join(" ", filled) : null;
@@ -90,6 +92,11 @@ public static class SegmentElementReader
         var textValue = rawValue?.ToString();
         return new ElementViewModel(reference, rawPosition, name, property.Name, string.IsNullOrEmpty(textValue) ? null : textValue) { HasError = hasError };
     }
+
+    /// <summary>A composite element's property type derives from either format's component base class:
+    /// EdiX12Component for X12, EdifactComponent for EDIFACT.</summary>
+    private static bool IsComponentType(Type type) =>
+        typeof(EdiX12Component).IsAssignableFrom(type) || typeof(EdifactComponent).IsAssignableFrom(type);
 
     /// <summary>
     /// An element is in error when a diagnostic on the owning segment names its C# PropertyName, or was

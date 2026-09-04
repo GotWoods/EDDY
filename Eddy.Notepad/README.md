@@ -1,8 +1,8 @@
 # Eddy Notepad
 
 A cross-platform EDI viewer built on the Eddy parsing libraries. It is the Phase 0 app from the
-Eddy Notepad roadmap: open an X12 file, see it as an envelope tree, inspect any segment element by
-element, and read the validation problems Eddy finds.
+Eddy Notepad roadmap: open an X12 or EDIFACT file, see it as an envelope tree, inspect any segment
+element by element, and read the validation problems Eddy finds.
 
     dotnet run --project Eddy.Notepad            # opens the window
     dotnet run --project Eddy.Notepad -- file.edi
@@ -15,12 +15,18 @@ element, and read the validation problems Eddy finds.
       Views/                        XAML and code-behind only. No parsing logic here.
       ViewModels/                   Plain observable state. No Avalonia types here.
       Services/                     DocumentLoader (parse -> view models), IFilePicker, SampleDocuments.
+                                     DocumentLoader is split across three files: DocumentLoader.cs holds
+                                     the entry point and the pieces shared by both formats, and
+                                     DocumentLoader.X12.cs / DocumentLoader.Edifact.cs hold the
+                                     format-specific tree building. The two read alike by design -- same
+                                     method names and shapes, one set of model types swapped for the other.
       Samples/*.edi                 Embedded sample files, listed under File > Open Sample.
     Eddy.Notepad.Tests/             xunit tests for Services and ViewModels. Runs headless.
 
 Dependencies: Avalonia 11.3 with the Fluent theme, CommunityToolkit.Mvvm 8.4 (use `[ObservableProperty]`
-and `[RelayCommand]`), Eddy.Core and Eddy.x12. Do not add Eddy.x12.DomainModels.* references in this
-phase; they slow the build a lot and Phase 0 does not need loop mapping.
+and `[RelayCommand]`), Eddy.Core, Eddy.x12 and Eddy.Edifact. Do not add Eddy.x12.DomainModels.* or
+Eddy.Edifact.DomainModels.* references in this phase; they slow the build a lot and Phase 0 does not
+need loop mapping.
 
 ## The screen
 
@@ -47,6 +53,10 @@ Modelled on Liaison EDI Notepad. One window, one document per tab.
     +--------------------------------------------------------------------------------+
     | Status: X12 004010 · 1 interchange · 1 group · 1 transaction set · 2 errors   |
     +--------------------------------------------------------------------------------+
+
+An EDIFACT document renders the same way, with UNB/UNG/UNH nodes instead of ISA/GS/ST, "message"
+instead of "transaction set" in the status line and Summary, and a UNH segment count instead of an
+ST/SE one -- see "Loader contract" below.
 
 Behaviour:
 
@@ -81,63 +91,97 @@ task and the core task were written against this list.
 ## Loader contract
 
 `DocumentLoader.Load(text, displayName, filePath)` must never throw. Everything Eddy cannot handle
-becomes a diagnostic. It parses with `x12Document.Parse(text, new x12ParseOptions { Lenient = true })`,
-which itself never throws for content problems (a bad file still produces a `ValidationResult`, not an
+becomes a diagnostic. It parses X12 with `x12Document.Parse(text, new x12ParseOptions { Lenient = true })`
+and EDIFACT with `EdiFactDocument.Parse(text, new EdifactParseOptions { Lenient = true })`; both never
+throw for content problems in lenient mode (a bad file still produces a `ValidationResult`, not an
 exception) -- the loader keeps only one outer catch-all, as a last resort for something unanticipated.
 
-1. Normalise: strip a UTF-8 BOM, normalise CRLF to LF, trim leading and trailing whitespace. (The
-   parser tolerates leading whitespace itself now, but the loader still needs clean text to detect
+The X12 and EDIFACT pipelines share the same shape: normalise and detect the format once, then build a
+tree, raw lines and diagnostics from whichever document the right parser produced. Rules 1-3 and 6-7
+below are literally shared code (`DocumentLoader.cs`); rules 4-5 are two parallel implementations
+(`DocumentLoader.X12.cs`, `DocumentLoader.Edifact.cs`) that read alike -- same method names and shapes,
+Eddy.Edifact model types in place of Eddy.x12 ones.
+
+1. Normalise: strip a UTF-8 BOM, normalise CRLF to LF, trim leading and trailing whitespace. (Both
+   parsers tolerate leading whitespace themselves now, but the loader still needs clean text to detect
    the format from the first three characters and, if parsing fails outright, to fall back to a plain
    split.)
 2. Detect the format from the first three characters: `ISA` is X12, `UNA` or `UNB` is EDIFACT,
-   anything else is Unknown. Phase 0 parses X12 only. EDIFACT and Unknown produce a document with
-   raw lines, no tree, and one Info diagnostic saying the format is not supported yet.
+   anything else is Unknown. X12 and EDIFACT both parse fully. Unknown still produces a document with
+   raw lines, no tree, and one Info diagnostic saying the format is not supported.
 3. Raw lines come from the parser's `Source` spans (`Eddy.Core.SegmentSource`, via `ISourceTracked`),
-   not from re-splitting the text: collect every parsed object that carries a `Source` -- the ISA
-   header, every GS header, every ST header, every segment (including `Unknown_Segment` instances),
-   every SE/GE/IEA trailer, every orphan segment -- across all of `document.Interchanges`, order them
-   by `Source.LineNumber`, and build one `RawLineViewModel` per span with `Text = Source.RawText`.
-   This is exactly the convention `ValidationResult.LineNumber` uses (non-blank segments, numbered
-   from 1 starting at ISA), so `RawLineViewModel.LineNumber` still matches it. When the parser stopped
-   early -- an invalid ISA in lenient mode leaves `Interchanges` empty or, in a multi-interchange file,
-   partial -- there are no spans for the rest of the file, so fall back to the old newline/terminator
-   split so the raw view still shows the whole file.
-4. Tree, built directly from `document.Interchanges`: one Interchange node per `x12Interchange`
-   (Model = its Header), one FunctionalGroup node per `x12FunctionalGroup` (a group whose Header is
-   null -- a missing GS, recorded only in lenient mode -- gets the title "GS (missing)" and a subtitle
-   saying so), one TransactionSet node per `Section` (Model = the Section, Elements from the ST
-   header, title "ST 204", subtitle control number and segment count), and one Segment node per
-   segment in `Section.Segments`. `Interchange.OrphanSegments` and `FunctionalGroup.OrphanSegments`
-   (segments the parser found outside any transaction set, or outside any group) become Segment nodes
-   under their container, placed by line number among their siblings, with their subtitle prefixed
-   "(outside any transaction set) ". `Unknown_Segment` instances (an unrecognised segment code, lenient
-   mode only) become Segment nodes titled "{SegmentId} Unknown segment" with elements built from their
-   `Elements` list. SE/GE/IEA trailers never get their own node: instead their line number is mapped to
-   the node they close (transaction set, group, or interchange), so a diagnostic on a trailer line lands
-   on that node, not nowhere.
+   not from re-splitting the text: collect every parsed object that carries a `Source` and order them
+   by `Source.LineNumber`, building one `RawLineViewModel` per span with `Text = Source.RawText`. For
+   X12 that is the ISA header, every GS header, every ST header, every segment (including
+   `Unknown_Segment` instances), every SE/GE/IEA trailer and every orphan segment, across all of
+   `document.Interchanges`. For EDIFACT it is the same shape one level deeper: the UNA service string
+   advice (`document.ServiceStringAdvice`, when present -- it carries its own `Source` even though it
+   is not an `EdifactSegment`), the UNB header, every UNG header, every UNH header, every segment
+   (including `Unknown_Segment`), every UNT/UNE/UNZ trailer and every orphan segment, across all of
+   `document.Interchanges`. This is exactly the convention `ValidationResult.LineNumber` uses (non-blank
+   segments, numbered from 1 starting at the interchange header, or at UNA when there is one), so
+   `RawLineViewModel.LineNumber` still matches it. When the parser stopped early -- X12's invalid ISA in
+   lenient mode leaves `Interchanges` empty or, in a multi-interchange file, partial -- there are no
+   spans for the rest of the file, so fall back to the old newline/terminator split so the raw view
+   still shows the whole file. `EdiFactDocument.Parse` does not have an equivalent failure mode in
+   lenient mode (even an unparseable UNB still gets an `EdifactInterchange`, with a null Header, so the
+   rest of the file keeps producing spans), so the EDIFACT path never takes this fallback.
+4. Tree.
+   - X12, built directly from `document.Interchanges`: one Interchange node per `x12Interchange` (Code
+     "ISA", Model = its Header), one FunctionalGroup node per `x12FunctionalGroup` (Code "GS"; a group
+     whose Header is null -- a missing GS, recorded only in lenient mode -- gets the title
+     "GS (missing)" and a subtitle saying so), one TransactionSet node per `Section` (Model = the
+     Section, Elements from the ST header, title "ST 204", subtitle control number and segment count),
+     and one Segment node per segment in `Section.Segments`. `Interchange.OrphanSegments` and
+     `FunctionalGroup.OrphanSegments` (segments the parser found outside any transaction set, or
+     outside any group) become Segment nodes under their container, placed by line number among their
+     siblings, with their subtitle prefixed "(outside any transaction set) ". SE/GE/IEA trailers never
+     get their own node: instead their line number is mapped to the node they close (transaction set,
+     group, or interchange), so a diagnostic on a trailer line lands on that node, not nowhere.
+   - EDIFACT, built directly from `document.Interchanges`: one Interchange node per `EdifactInterchange`
+     (Code "UNB", Model = its Header; the UNA line, when present, also maps to this node -- there is one
+     `ServiceStringAdvice` for the whole document, attached to the first interchange), one
+     FunctionalGroup node per `FunctionalGroup` (Code "UNG"; a group whose Header is null -- the
+     implicit group used for messages not wrapped in an explicit UNG/UNE pair -- gets the title
+     "Messages" and subtitle "no UNG group header"), one TransactionSet node per `Message` (Code =
+     `Message.MessageType`, e.g. "INVOIC"; Model = the Message; Elements from the UNH header; title
+     "UNH {MessageType}"; subtitle the message reference, version and segment count), and one Segment
+     node per segment in `Message.Segments`. `EdifactInterchange.OrphanSegments` and
+     `FunctionalGroup.OrphanSegments` become Segment nodes the same way as X12's, subtitle prefixed
+     "(outside any message) ". UNT/UNE/UNZ trailers never get their own node, same rule as X12's
+     SE/GE/IEA: their line maps to the node they close (message, group, or interchange).
+   - Both: `Unknown_Segment` instances (an unrecognised segment code, lenient mode only -- Eddy.x12's
+     and Eddy.Edifact's are different types with the same shape, `SegmentId` + `Elements`) become
+     Segment nodes titled "{SegmentId} Unknown segment" with elements built from their `Elements` list.
 5. Elements. Reflect over public properties with `[Position]` (Eddy.Core.Attributes.PositionAttribute),
-   ordered by position. Reference is code + two-digit position ("N101"). Name is the property name
-   split on capitals ("EntityIdentifierCode" -> "Entity Identifier Code"), with trailing digits kept
-   ("EntityIdentifierCode2" -> "Entity Identifier Code 2"). Value is the property value as string.
-   A property whose type derives from `EdiX12Component` is a composite: recurse into it for
-   Components and set Value to the composite's raw text if available, else the joined component
-   values. Include absent elements so the grid shows the whole segment definition.
-   The ISA header has no `[Position]` attributes; list all its public string/int properties in
-   declaration order instead. (GS headers gained `[Position]` attributes with the hardened parser, so
-   they go through the normal positioned path now.)
+   ordered by position. Reference is code + two-digit position ("N101", or "NAD01" for EDIFACT). Name is
+   the property name split on capitals ("EntityIdentifierCode" -> "Entity Identifier Code"), with
+   trailing digits kept ("EntityIdentifierCode2" -> "Entity Identifier Code 2"). Value is the property
+   value as string. A property whose type derives from `EdiX12Component` (X12) or `EdifactComponent`
+   (EDIFACT) is a composite: recurse into it for Components and set Value to the joined component
+   values. Include absent elements so the grid shows the whole segment definition. The X12 ISA header
+   has no `[Position]` attributes; list all its public string/int properties in declaration order
+   instead -- every EDIFACT header (UNB/UNG/UNH/UNT/UNE/UNZ) has `[Position]` attributes, so none of
+   them need this fallback.
 6. Diagnostics. Each `ValidationResult` in `document.ValidationErrors` becomes one DiagnosticViewModel
    per `Error`, with the result's LineNumber, `result.SegmentCode` (falling back to the raw line's
    leading identifier only when that's null), and `error.ToString()` as the message. The node is the
    one whose line number matches (via the raw line -- see rule 4 for how trailer lines resolve to a
    container node). Severity is Warning for `ErrorCodes.MissingTrailer` and
-   `ErrorCodes.SegmentOutsideTransactionSet`, Error for everything else (compare `ErrorCodes` by
-   reference or by their `ErrorCode` number). Element HasError uses `Error.PropertyName` and
+   `ErrorCodes.SegmentOutsideTransactionSet` (X12), or `ErrorCodes.EdiFactUnsupportedVersion`,
+   `ErrorCodes.EdiFactMissingTrailer` and `ErrorCodes.EdiFactSegmentOutsideMessage` (EDIFACT), Error for
+   everything else (compare `ErrorCodes` by reference). Element HasError uses `Error.PropertyName` and
    `Error.ElementPosition` (set by `Eddy.Core.Validation.BasicValidator`) instead of a message-contains
    check: an element is in error when a diagnostic on its segment has PropertyName equal to the
    element's PropertyName, or ElementPosition equal to its Position.
 7. Summary and Format handle several interchanges and groups: "X12 004010 · 2 interchanges · 3 groups
-   · 5 transaction sets · 1 error". Format uses the first group's version when there is one, else
-   plain "X12".
+   · 5 transaction sets · 1 error", or "EDIFACT D96A · 2 interchanges · 3 groups · 5 messages · 1 error"
+   for EDIFACT (the wording changes from "transaction set" to "message"; MainWindowViewModel's status
+   line wording follows the same rule, keyed off whether Format starts with "EDIFACT"). X12's Format
+   uses the first group's version when there is one, else plain "X12". EDIFACT's Format uses the first
+   message's declared standards version (`Message.Version`, e.g. "D96A"; this is the version as declared
+   in the UNH, not necessarily the version whose segment models were actually used if it needed a
+   fallback -- `EdiFactDocument` does not expose the resolved version separately), else plain "EDIFACT".
 
 Selection sync lives in `ViewModels/DocumentViewModel.Selection.cs` (a partial class): implement
 `OnSelectedNodeChanged` and `OnSelectedRawLineChanged` so each updates the other without
@@ -148,3 +192,9 @@ re-entering, and raise `SelectedElements` changed.
 Three cleaned X12 004010 files sit in Samples/. They have fixed-width ISA lines and correct SE, GE
 and IEA trailers. 204 and 210 use newline as the segment terminator; 214 uses `~` with a newline
 after it for readability, which Eddy handles because it trims each piece.
+
+One EDIFACT D96A file, Sample-INVOIC-Invoice.edi, sits alongside them: a UNA service string advice
+followed by a single UNB...UNZ interchange holding one INVOIC message (UNH, BGM, DTM, two NAD lines
+with composites, two LIN/QTY/MOA line items, UNS, a total MOA, CNT, UNT). It uses `'` as the segment
+terminator with a newline after each segment, correct UNT and UNZ counts, and one value (the supplier
+NAD's party name) that uses the release character to escape a literal `+`. It parses with zero errors.
