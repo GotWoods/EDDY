@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Eddy.Core.Validation
@@ -11,6 +11,12 @@ namespace Eddy.Core.Validation
 
         public bool IsValid => Errors.Count == 0;
         public int LineNumber { get; set; }
+
+        /// <summary>Identifier of the segment the result belongs to, e.g. "N1", or null for document level results.</summary>
+        public string SegmentCode { get; set; }
+
+        /// <summary>Where the offending segment sits in the source text, when the parser tracked it.</summary>
+        public SegmentSource Source { get; set; }
         public List<Error> Errors { get; } = new();
 
         public void Add(Error error)

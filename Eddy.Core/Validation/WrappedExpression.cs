@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq.Expressions;
 using System.Reflection;
 using Eddy.Core.Attributes;
@@ -43,6 +43,24 @@ public class WrappedExpression<T>
         return string.Empty;
     }
 
+    private PropertyInfo GetPropertyInfo()
+    {
+        var memberExpression = _expression.Body as MemberExpression;
+        if (memberExpression == null)
+        {
+            var unaryExpression = _expression.Body as UnaryExpression;
+            if (unaryExpression != null) memberExpression = unaryExpression.Operand as MemberExpression;
+        }
+
+        return memberExpression?.Member as PropertyInfo;
+    }
+
+    /// <summary>The C# property name the expression points at, or null.</summary>
+    public string GetPropertyName() => GetPropertyInfo()?.Name;
+
+    /// <summary>The [Position] value of the property, or null when it has none.</summary>
+    public int? GetPosition() => GetPropertyInfo()?.GetCustomAttribute<PositionAttribute>()?.Position;
+
     public string GetFormattedPropertyName()
     {
         var memberExpression = _expression.Body as MemberExpression;
@@ -57,9 +75,9 @@ public class WrappedExpression<T>
             var propertyInfo = memberExpression.Member as PropertyInfo;
             if (propertyInfo != null)
             {
-                var position = propertyInfo.GetCustomAttribute<PositionAttribute>().Position;
+                var position = propertyInfo.GetCustomAttribute<PositionAttribute>()?.Position;
 
-                return $"{propertyInfo.Name} ({_segmentName}-{position})";
+                return position.HasValue ? $"{propertyInfo.Name} ({_segmentName}-{position})" : propertyInfo.Name;
             }
         }
         return String.Empty;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -18,7 +18,16 @@ public class BasicValidator<T>
     public BasicValidator(T instance)
     {
         _instance = instance;
-        _segmentName = _instance.GetType().GetCustomAttribute<Segment>().Name;
+        _segmentName = _instance.GetType().GetCustomAttribute<Segment>()?.Name ?? _instance.GetType().Name;
+        Results.SegmentCode = _segmentName;
+    }
+
+    /// <summary>Records which property (and element position) an error is about, so callers can locate it.</summary>
+    private static Error Tag(Error error, WrappedExpression<T> wrapped)
+    {
+        error.PropertyName = wrapped.GetPropertyName();
+        error.ElementPosition = wrapped.GetPosition();
+        return error;
     }
 
     public void RequiredAorB(Expression<Func<T, object>> expressionA, Expression<Func<T, object>> expressionB)
@@ -33,7 +42,7 @@ public class BasicValidator<T>
         {
             var propertyNameA = a.GetFormattedPropertyName();
             var propertyNameB = b.GetFormattedPropertyName();
-            Results.Errors.Add(new Error(ErrorCodes.AorBRequired, propertyNameA, propertyNameB));
+            Results.Errors.Add(Tag(new Error(ErrorCodes.AorBRequired, propertyNameA, propertyNameB), a));
         }
 
     }
@@ -50,7 +59,7 @@ public class BasicValidator<T>
         //has to be numeric at a minimum
         if (!int.TryParse(valueA, out _))
         {
-            Results.Errors.Add(new Error(ErrorCodes.DateIsNotValidFormat, a.GetFormattedPropertyName()));
+            Results.Errors.Add(Tag(new Error(ErrorCodes.DateIsNotValidFormat, a.GetFormattedPropertyName()), a));
             return;
         }
 
@@ -58,13 +67,13 @@ public class BasicValidator<T>
         //TODO: this may be extracted as different date formats may be used. Also when models get a GetDate/GetTime/GetDateAndTime this will be duplicated
         if (!DateTime.TryParseExact(valueA, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None,out DateTime _))
         {
-            Results.Errors.Add(new Error(ErrorCodes.DateIsNotValidFormat, a.GetFormattedPropertyName()));
+            Results.Errors.Add(Tag(new Error(ErrorCodes.DateIsNotValidFormat, a.GetFormattedPropertyName()), a));
             return;
         }
 
         // if (valueA.Length == 5) //HHMMS is invalid
         // {
-        //     Results.Errors.Add(new Error(ErrorCodes.DateIsNotValidFormat, a.GetFormattedPropertyName()));
+        //     Results.Errors.Add(Tag(new Error(ErrorCodes.DateIsNotValidFormat, a.GetFormattedPropertyName()), a));
         //     return;
         // }
 
@@ -86,13 +95,13 @@ public class BasicValidator<T>
         //has to be numeric at a minimum
         if (!int.TryParse(valueA, out _))
         {
-            Results.Errors.Add(new Error(ErrorCodes.TimeIsNotValidFormat, a.GetFormattedPropertyName()));
+            Results.Errors.Add(Tag(new Error(ErrorCodes.TimeIsNotValidFormat, a.GetFormattedPropertyName()), a));
             return;
         }
 
         if (valueA.Length == 5) //HHMMS is invalid (but having one more S makes it valid, D can be be 0-2
         {
-            Results.Errors.Add(new Error(ErrorCodes.TimeIsNotValidFormat, a.GetFormattedPropertyName()));
+            Results.Errors.Add(Tag(new Error(ErrorCodes.TimeIsNotValidFormat, a.GetFormattedPropertyName()), a));
             return;
         }
 
@@ -101,7 +110,7 @@ public class BasicValidator<T>
         //TODO: this may be extracted as different date formats may be used. Also when models get a GetDate/GetTime/GetDateAndTime this will be duplicated
         if (!DateTime.TryParseExact(valueA.Substring(0,4), "HHmm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime _))
         {
-            Results.Errors.Add(new Error(ErrorCodes.TimeIsNotValidFormat, a.GetFormattedPropertyName()));
+            Results.Errors.Add(Tag(new Error(ErrorCodes.TimeIsNotValidFormat, a.GetFormattedPropertyName()), a));
             return;
         }
 
@@ -115,13 +124,13 @@ public class BasicValidator<T>
         //seconds goes from 0-59
         if (seconds > 59)
         {
-            Results.Errors.Add(new Error(ErrorCodes.TimeIsNotValidFormat, a.GetFormattedPropertyName()));
+            Results.Errors.Add(Tag(new Error(ErrorCodes.TimeIsNotValidFormat, a.GetFormattedPropertyName()), a));
             return;
         }
 
         if (decimalSeconds > 99) //really not possible as we only parse two digits and we know it is numeric
         {
-            Results.Errors.Add(new Error(ErrorCodes.TimeIsNotValidFormat, a.GetFormattedPropertyName()));
+            Results.Errors.Add(Tag(new Error(ErrorCodes.TimeIsNotValidFormat, a.GetFormattedPropertyName()), a));
             return;
         }
 
@@ -132,14 +141,14 @@ public class BasicValidator<T>
     {
         var wrap = expression.Wrap(_instance, _segmentName);
         if (!int.TryParse(wrap.GetPropertyValue(), NumberStyles.None, CultureInfo.InvariantCulture, out _))
-            Results.Errors.Add(new Error(ErrorCodes.ConvertibleToInteger, wrap.GetFormattedPropertyName()));
+            Results.Errors.Add(Tag(new Error(ErrorCodes.ConvertibleToInteger, wrap.GetFormattedPropertyName()), wrap));
     }
 
     public void Required(Expression<Func<T, object>> expression)
     {
         var wrap = expression.Wrap(_instance, _segmentName);
         if (wrap.GetPropertyValue() == "") 
-            Results.Errors.Add(new Error(ErrorCodes.Required, wrap.GetFormattedPropertyName()));
+            Results.Errors.Add(Tag(new Error(ErrorCodes.Required, wrap.GetFormattedPropertyName()), wrap));
     }
 
     public void Length(Expression<Func<T, object>> expression, int min, int max)
@@ -152,7 +161,7 @@ public class BasicValidator<T>
 
         if (propertyValue.Length < min || propertyValue.Length > max)
         {
-            Results.Errors.Add(new Error(ErrorCodes.OutOfRange, wrap.GetFormattedPropertyName(), min.ToString(), max.ToString(), propertyValue.Length.ToString()));
+            Results.Errors.Add(Tag(new Error(ErrorCodes.OutOfRange, wrap.GetFormattedPropertyName(), min.ToString(), max.ToString(), propertyValue.Length.ToString()), wrap));
         }
     }
 
@@ -164,7 +173,7 @@ public class BasicValidator<T>
             return;
         if (value.Length != length)
         {
-            Results.Errors.Add(new Error(ErrorCodes.ExactLength, wrap.GetFormattedPropertyName(), length.ToString(), value.Length.ToString()));
+            Results.Errors.Add(Tag(new Error(ErrorCodes.ExactLength, wrap.GetFormattedPropertyName(), length.ToString(), value.Length.ToString()), wrap));
         }
     }
 
@@ -181,7 +190,7 @@ public class BasicValidator<T>
 
         if (!IsNullOrEmpty(valueA) && IsNullOrEmpty(valueB))
         {
-            Results.Errors.Add(new Error(ErrorCodes.ARequiresB, a.GetFormattedPropertyName(), b.GetFormattedPropertyName()));
+            Results.Errors.Add(Tag(new Error(ErrorCodes.ARequiresB, a.GetFormattedPropertyName(), b.GetFormattedPropertyName()), a));
         }
     }
 
@@ -212,7 +221,7 @@ public class BasicValidator<T>
 
             //TODO: how to make the "or" work with localization?
             var finalString = String.Join(", ", propertyNames.ToArray(), 0, propertyNames.Count - 1) + ", or " + propertyNames.LastOrDefault();
-            Results.Errors.Add(new Error(ErrorCodes.IfOneIsFilledThenAtLeastOneOtherIsRequired, a.GetFormattedPropertyName(), finalString));
+            Results.Errors.Add(Tag(new Error(ErrorCodes.IfOneIsFilledThenAtLeastOneOtherIsRequired, a.GetFormattedPropertyName(), finalString), a));
         }
 
     }
@@ -290,7 +299,7 @@ public class BasicValidator<T>
 
         if (!IsNullOrEmpty(valueA) && !IsNullOrEmpty(valueB))
         {
-            Results.Errors.Add(new Error(ErrorCodes.OnlyOneOf, a.GetFormattedPropertyName(), b.GetFormattedPropertyName()));
+            Results.Errors.Add(Tag(new Error(ErrorCodes.OnlyOneOf, a.GetFormattedPropertyName(), b.GetFormattedPropertyName()), a));
         }
     }
 

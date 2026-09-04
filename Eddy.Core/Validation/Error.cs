@@ -1,9 +1,15 @@
-﻿namespace Eddy.Core.Validation;
+namespace Eddy.Core.Validation;
 
 public class Error
 {
     public ErrorCodes ErrorCode { get; set; }
     public object[] Data { get; set; }
+
+    /// <summary>The model property the error is about, when it concerns one element (e.g. "EntityIdentifierCode").</summary>
+    public string PropertyName { get; set; }
+
+    /// <summary>The element's position within its segment (the [Position] value), when known.</summary>
+    public int? ElementPosition { get; set; }
     //public int Code { get; set; }
     public Error(ErrorCodes errorCode, params string[] data)
     {
@@ -45,11 +51,32 @@ public class ErrorCodes
     public static ErrorCodes FunctionalGroupSectionCountMismatch = new ErrorCodes(4002, "Expected GE Number of Included Sections to be {0} but was {1}");
     public static ErrorCodes FunctionalGroupControlNumberMismatch = new ErrorCodes(4003, "Expected GE Control Number to be {0} but was {1}");
 
+    public static ErrorCodes UnknownSegment = new ErrorCodes(4004, "Segment '{0}' is not defined in version {1}");
+    public static ErrorCodes InvalidInterchangeHeader = new ErrorCodes(4005, "The ISA interchange header is invalid: {0}");
+    public static ErrorCodes MissingFunctionalGroupHeader = new ErrorCodes(4006, "A GS record was expected after the ISA record but it was not found");
+    public static ErrorCodes SegmentOutsideTransactionSet = new ErrorCodes(4007, "Segment '{0}' appeared outside of an ST/SE transaction set");
+    public static ErrorCodes UnexpectedTrailer = new ErrorCodes(4008, "Trailer '{0}' appeared without a matching header");
+    public static ErrorCodes MissingTrailer = new ErrorCodes(4009, "Expected trailer '{0}' for {1} was not found");
+    public static ErrorCodes InterchangeControlNumberMismatch = new ErrorCodes(4010, "Expected IEA Control Number to be {0} but was {1}");
+    public static ErrorCodes InterchangeGroupCountMismatch = new ErrorCodes(4011, "Expected IEA Number of Included Functional Groups to be {0} but was {1}");
+    public static ErrorCodes SegmentParseFailure = new ErrorCodes(4012, "Segment '{0}' could not be parsed: {1}");
+
     //edifact document structural issues
     public static ErrorCodes EdiFactTransactionSetSegmentCountMismatch = new ErrorCodes(5000, "Expected SE Number of Included Segments to be {0} but was {1}");
     public static ErrorCodes EdiFactTransactionSetControlNumberMismatch = new ErrorCodes(5001, "Expected SE Control Number to be {0} but was {1}");
     public static ErrorCodes EdiFactFunctionalGroupSectionCountMismatch = new ErrorCodes(5002, "Expected GE Number of Included Sections to be {0} but was {1}");
     public static ErrorCodes EdiFactFunctionalGroupControlNumberMismatch = new ErrorCodes(5003, "Expected GE Control Number to be {0} but was {1}");
+    public static ErrorCodes EdiFactUnknownSegment = new ErrorCodes(5004, "Segment '{0}' is not defined in version {1}");
+    public static ErrorCodes EdiFactInvalidInterchangeHeader = new ErrorCodes(5005, "The UNB interchange header is invalid: {0}");
+    public static ErrorCodes EdiFactSegmentOutsideMessage = new ErrorCodes(5006, "Segment '{0}' appeared outside of a UNH/UNT message");
+    public static ErrorCodes EdiFactUnexpectedTrailer = new ErrorCodes(5007, "Trailer '{0}' appeared without a matching header");
+    public static ErrorCodes EdiFactMissingTrailer = new ErrorCodes(5008, "Expected trailer '{0}' for {1} was not found");
+    public static ErrorCodes EdiFactMessageSegmentCountMismatch = new ErrorCodes(5009, "Expected UNT Number of Segments to be {0} but was {1}");
+    public static ErrorCodes EdiFactMessageReferenceMismatch = new ErrorCodes(5010, "Expected UNT Message Reference to be {0} but was {1}");
+    public static ErrorCodes EdiFactInterchangeControlReferenceMismatch = new ErrorCodes(5011, "Expected UNZ Interchange Control Reference to be {0} but was {1}");
+    public static ErrorCodes EdiFactInterchangeMessageCountMismatch = new ErrorCodes(5012, "Expected UNZ Interchange Control Count to be {0} but was {1}");
+    public static ErrorCodes EdiFactUnsupportedVersion = new ErrorCodes(5013, "Message version {0} is not available; segments were read with version {1}");
+    public static ErrorCodes EdiFactSegmentParseFailure = new ErrorCodes(5014, "Segment '{0}' could not be parsed: {1}");
 
     private ErrorCodes()
     {
