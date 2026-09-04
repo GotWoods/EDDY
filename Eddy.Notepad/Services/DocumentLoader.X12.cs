@@ -16,7 +16,7 @@ public sealed partial class DocumentLoader
         // few lines down included) -- see LoopViewBuilder's class remarks.
         LoopViewBuilder.EnsureAssembliesLoaded();
 
-        var parsed = x12Document.Parse(normalized, new x12ParseOptions { Lenient = true });
+        var parsed = x12Document.Parse(normalized, new x12ParseOptions { Lenient = true, CodeListChecking = CodeListChecking.Warn });
 
         var format = FormatOf(parsed);
         var result = new DocumentViewModel(displayName, filePath, format, normalized);

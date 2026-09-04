@@ -13,7 +13,7 @@ public sealed partial class DocumentLoader
 {
     private DocumentViewModel LoadEdifact(string normalized, string displayName, string? filePath)
     {
-        var parsed = EdiFactDocument.Parse(normalized, new EdifactParseOptions { Lenient = true });
+        var parsed = EdiFactDocument.Parse(normalized, new EdifactParseOptions { Lenient = true, CodeListChecking = CodeListChecking.Warn });
 
         var format = FormatOf(parsed);
         var result = new DocumentViewModel(displayName, filePath, format, normalized);

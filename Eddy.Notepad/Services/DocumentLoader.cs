@@ -208,7 +208,7 @@ public sealed partial class DocumentLoader : IDocumentLoader
             foreach (var error in result.Errors)
             {
                 var diagnostic = new DiagnosticViewModel(
-                    SeverityFor(error.ErrorCode, warningCodes),
+                    SeverityFor(error, warningCodes),
                     lineNumber == 0 ? null : lineNumber,
                     segmentCode ?? "",
                     error.ToString() ?? "")
@@ -225,11 +225,17 @@ public sealed partial class DocumentLoader : IDocumentLoader
     }
 
     /// <summary>A missing trailer or a segment stranded outside its container are warnings; everything else is an error.</summary>
-    private static DiagnosticSeverity SeverityFor(ErrorCodes code, IReadOnlyList<ErrorCodes> warningCodes)
+    private static DiagnosticSeverity SeverityFor(Error error, IReadOnlyList<ErrorCodes> warningCodes)
     {
+        // The library now carries a severity of its own (code list checks are warnings by default).
+        if (error.Severity == ErrorSeverity.Warning)
+            return DiagnosticSeverity.Warning;
+        if (error.Severity == ErrorSeverity.Info)
+            return DiagnosticSeverity.Info;
+
         for (var i = 0; i < warningCodes.Count; i++)
         {
-            if (ReferenceEquals(warningCodes[i], code))
+            if (ReferenceEquals(warningCodes[i], error.ErrorCode))
                 return DiagnosticSeverity.Warning;
         }
 

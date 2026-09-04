@@ -129,8 +129,18 @@ public sealed class SegmentElementReader
         for (var i = 0; i < errors.Count; i++)
         {
             var error = errors[i];
-            if (error.PropertyName == propertyName || error.ElementPosition == position)
+            // An error that names a property applies to that property only. The position fallback is for
+            // structural errors that carry no property name; matching by position alone would also tint
+            // the first component of every composite, since component positions restart at 1.
+            if (error.PropertyName != null)
+            {
+                if (error.PropertyName == propertyName)
+                    return true;
+            }
+            else if (error.ElementPosition == position)
+            {
                 return true;
+            }
         }
 
         return false;
