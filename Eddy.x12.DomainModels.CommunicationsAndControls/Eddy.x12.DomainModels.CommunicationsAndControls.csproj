@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -15,7 +15,17 @@
     <Configurations>Debug;Release;local</Configurations>
   </PropertyGroup>
 
-  <ItemGroup>
+  <!--
+    Debug and local builds compile against the sibling projects so the models are checked against the
+    current parser sources. Release is what the publish workflow packs with, after it repoints the
+    package versions, so Release uses the package references. Same pattern as Eddy.x12 and Eddy.Edifact.
+  -->
+  <ItemGroup Condition="'$(Configuration)' != 'Release'">
+    <ProjectReference Include="..\Eddy.Core\Eddy.Core.csproj" />
+    <ProjectReference Include="..\Eddy.x12\Eddy.x12.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
     <PackageReference Include="Eddy.Core" Version="0.0.8-beta" />
     <PackageReference Include="Eddy.x12Parser" Version="0.0.6-beta" />
   </ItemGroup>
