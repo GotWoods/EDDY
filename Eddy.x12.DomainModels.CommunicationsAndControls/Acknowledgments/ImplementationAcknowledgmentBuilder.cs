@@ -123,7 +123,7 @@ namespace Eddy.x12.DomainModels.CommunicationsAndControls.Acknowledgments
                         {
                             body.Add(new Eddy.x12.Models.v5010.IK4_ImplementationDataElementNote
                             {
-                                PositionInSegment = new Ik4PositionInSegment { ElementPositionInSegment = element.ElementPosition },
+                                PositionInSegment = new Eddy.x12.Models.v5010.Composites.C030_PositionInSegment { ElementPositionInSegment = element.ElementPosition },
                                 ImplementationDataElementSyntaxErrorCode = element.ErrorCode,
                                 CopyOfBadDataElement = element.BadValue
                             });

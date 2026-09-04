@@ -85,3 +85,21 @@ public class MapTests
         Assert.Equal("ST*AB~", actual);
     }
 }
+public class CompositeInheritanceMapTests
+{
+    // C030_PositionInSegment was introduced at v4020, so in v5010 it sits several subclasses below
+    // EdiX12Component. Map used to detect composites only by the immediate base class and failed on both
+    // read and write for such properties.
+    [Fact]
+    public void Composite_declared_several_versions_below_EdiX12Component_is_read_and_written()
+    {
+        var options = new Eddy.x12.Mapping.MapOptions { Separator = "*", ComponentElementSeparator = ":", LineEnding = "~", StandardsVersion = "5010" };
+
+        var parsed = Eddy.x12.Mapping.Map.MapObject<Eddy.x12.Models.v5010.IK4_ImplementationDataElementNote>("IK4*3:2**1", options);
+        Assert.NotNull(parsed.PositionInSegment);
+        Assert.Equal(3, parsed.PositionInSegment.ElementPositionInSegment);
+        Assert.Equal(2, parsed.PositionInSegment.ComponentDataElementPositionInComposite);
+
+        Assert.Equal("IK4*3:2**1~", Eddy.x12.Mapping.Map.SegmentToString(parsed, options));
+    }
+}

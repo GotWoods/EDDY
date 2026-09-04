@@ -28,14 +28,23 @@ public class ImplementationAcknowledgmentBuilderTests
         Assert.Equal("AK9*E*1*1*1", TestHelpers.SingleSegmentOf(outputText, "AK9"));
     }
 
-    // Eddy.x12.Mapping.Map only recognizes a property as a composite when its declared type's *immediate* base
-    // class is EdiX12Component (see Map.MapObject/ItemToString). IK4's PositionInSegment (C030) was introduced
-    // fresh in the v5010 model set several versioned subclasses below EdiX12Component
-    // (v5010 -> v4060 -> ... -> v4020 -> EdiX12Component), so that check never recognizes it, and re-parsing a
-    // line where it carries a value throws inside the (out-of-scope) Eddy.x12 parser. The scenario above proves
-    // Build999Text writes IK4 correctly (via an internal ToString() override -- see Ik4PositionInSegment); this
-    // one proves a 999 round-trips cleanly using a segment-identity error (IK3 only, no IK4 value), which the
-    // parser bug does not affect.
+    // Map now recognises composites anywhere in the EdiX12Component inheritance chain, so a 999 whose IK4
+    // carries an element position must round-trip through the strict parser with the composite populated.
+    [Fact]
+    public void FiveTenInputWithElementError_Reparses_WithIk4CompositePopulated()
+    {
+        var text5010 = SampleData.As5010(SampleData.With204N101Blanked());
+        var input = x12Document.Parse(text5010, new x12ParseOptions { Lenient = true });
+
+        var outputText = Builder.Build999Text(input);
+        var reparsed = x12Document.Parse(outputText);
+        Assert.Empty(reparsed.ValidationErrors);
+
+        var ik4 = reparsed.Sections.Single().Segments.OfType<Eddy.x12.Models.v5010.IK4_ImplementationDataElementNote>().Single();
+        Assert.NotNull(ik4.PositionInSegment);
+        Assert.Equal(1, ik4.PositionInSegment.ElementPositionInSegment);
+    }
+
     [Fact]
     public void FiveTenInputWithUnknownSegment_ProducesIk3_AndReparsesCleanly()
     {

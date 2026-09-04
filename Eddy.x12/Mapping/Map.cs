@@ -43,7 +43,7 @@ public class Map
                 {
                     var underlyingType = Nullable.GetUnderlyingType(item.PropertyInfo.PropertyType) ?? item.PropertyInfo.PropertyType;
                     //composite here
-                    if (underlyingType.BaseType == typeof(EdiX12Component))
+                    if (typeof(EdiX12Component).IsAssignableFrom(underlyingType))
                     {
                         var safeValue = MapObject(underlyingType, propertyValue.Trim(), options.ComponentElementSeparator, options);
                         item.PropertyInfo.SetValue(result, safeValue, null);
@@ -108,7 +108,7 @@ public class Map
             var propertyValue = item.PropertyInfo.GetValue(element)?.ToString();
 
             var underlyingType = Nullable.GetUnderlyingType(item.PropertyInfo.PropertyType) ?? item.PropertyInfo.PropertyType;
-            if (underlyingType.BaseType == typeof(EdiX12Component))
+            if (typeof(EdiX12Component).IsAssignableFrom(underlyingType))
             {
                 var component = (EdiX12Component)item.PropertyInfo.GetValue(element);
                 if (component != null)
@@ -121,9 +121,9 @@ public class Map
                 data[position] = propertyValue;
         }
 
-        var components = string.Join(options.Separator, data);
-        while (components.EndsWith(options.Separator))
-            components = components.Substring(0, components.Length - 1);
+        var components = string.Join(separator, data);
+        while (components.EndsWith(separator))
+            components = components.Substring(0, components.Length - separator.Length);
         return components;
     }
 

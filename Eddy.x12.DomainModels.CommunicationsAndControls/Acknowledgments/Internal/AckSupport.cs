@@ -16,23 +16,6 @@ namespace Eddy.x12.DomainModels.CommunicationsAndControls.Acknowledgments.Intern
         V5010
     }
 
-    /// <summary>
-    /// IK4's PositionInSegment (C030) was introduced fresh in the v5010 model set, several versioned subclasses
-    /// below EdiX12Component (v5010 -&gt; v4060 -&gt; ... -&gt; v4020 -&gt; EdiX12Component). Map.ItemToString only recognizes a
-    /// property as a composite when its declared type's *immediate* base class is EdiX12Component, so a property
-    /// declared with this deeper type falls through to Map's plain-value fallback, which calls the property's
-    /// value.ToString(). Overriding ToString() here (rather than editing the shared mapper) makes that fallback
-    /// render the one sub-element we ever populate (element position in segment) correctly; AK4's own PositionInSegment
-    /// is a shallower type (declared directly under EdiX12Component) and needs no such workaround.
-    /// </summary>
-    internal sealed class Ik4PositionInSegment : Eddy.x12.Models.v5010.Composites.C030_PositionInSegment
-    {
-        public override string ToString()
-        {
-            return ElementPositionInSegment?.ToString() ?? string.Empty;
-        }
-    }
-
     /// <summary>One data-element-level problem found on a single segment (becomes one AK4/IK4).</summary>
     internal class ElementErrorInfo
     {
