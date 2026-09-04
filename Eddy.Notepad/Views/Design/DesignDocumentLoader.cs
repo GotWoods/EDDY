@@ -211,14 +211,35 @@ public sealed class DesignDocumentLoader : IDocumentLoader
         E("NTE02", 2, "Description", "Description", "FROZEN GOODS SET TO -10d F"),
     };
 
+    // Populated with plausible metadata-pack-style values (DE numbers, formal types, requirement, code
+    // meaning) so the element grid's new columns have something realistic to show in design/headless mode,
+    // without depending on a real pack (X12 has none bundled; see docs/metadata-packs.md).
     private static readonly IReadOnlyList<ElementViewModel> N1Elements = new[]
     {
-        E("N101", 1, "Entity Identifier Code", "EntityIdentifierCode", "PF"),
-        E("N102", 2, "Name", "Name", "XYZ CORP"),
-        E("N103", 3, "Identification Code Qualifier", "IdentificationCodeQualifier", "9"),
-        E("N104", 4, "Identification Code", "IdentificationCode", "9995555500000"),
-        E("N105", 5, "Entity Relationship Code", "EntityRelationshipCode", null),
-        E("N106", 6, "Entity Identifier Code 2", "EntityIdentifierCode2", null),
+        new ElementViewModel("N101", 1, "Entity Identifier Code", "EntityIdentifierCode", "PF")
+        {
+            DataElementNumber = "98", DataTypeLabel = "ID 2..3", Requirement = "M", CodeDescription = "Party to receive shipment", Origin = "derived",
+        },
+        new ElementViewModel("N102", 2, "Name", "Name", "XYZ CORP")
+        {
+            DataElementNumber = "93", DataTypeLabel = "AN 1..60", Requirement = "C", Origin = "derived",
+        },
+        new ElementViewModel("N103", 3, "Identification Code Qualifier", "IdentificationCodeQualifier", "9")
+        {
+            DataElementNumber = "66", DataTypeLabel = "ID 1..2", Requirement = "C", CodeDescription = "D-U-N-S Number", Origin = "derived",
+        },
+        new ElementViewModel("N104", 4, "Identification Code", "IdentificationCode", "9995555500000")
+        {
+            DataElementNumber = "67", DataTypeLabel = "AN 2..80", Requirement = "C", Origin = "derived",
+        },
+        new ElementViewModel("N105", 5, "Entity Relationship Code", "EntityRelationshipCode", null)
+        {
+            DataElementNumber = "706", DataTypeLabel = "ID 2..2", Requirement = "O", Origin = "derived",
+        },
+        new ElementViewModel("N106", 6, "Entity Identifier Code 2", "EntityIdentifierCode2", null)
+        {
+            DataElementNumber = "98", DataTypeLabel = "ID 2..3", Requirement = "O", Origin = "derived",
+        },
     };
 
     private static readonly IReadOnlyList<ElementViewModel> N3Elements = new[]

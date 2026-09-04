@@ -113,7 +113,7 @@ public class DocumentLoaderX12ApiTests
         var n1 = new N1_Name { EntityIdentifierCode = "PF", Name = "XYZ CORP" };
         var errors = new List<Error> { new(ErrorCodes.Required, "unrelated text") { PropertyName = "SomethingElse", ElementPosition = 1 } };
 
-        var elements = SegmentElementReader.Read(n1, "N1", errors);
+        var elements = new SegmentElementReader(Eddy.Core.Metadata.MetadataCatalog.Default).Read(n1, "N1", errors);
 
         var n101 = elements.Single(e => e.Reference == "N101");
         Assert.True(n101.HasError);

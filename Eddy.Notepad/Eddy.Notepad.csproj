@@ -15,6 +15,11 @@
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
     <EmbeddedResource Include="Samples\*.edi" />
+    <!-- Embed the shipped metadata packs (see docs/metadata-packs.md), keeping the files themselves in
+         metadata/packs/ so Eddy.MetadataTool and other consumers still find them there. -->
+    <EmbeddedResource Include="..\metadata\packs\*.json" Link="Metadata\Packs\%(Filename)%(Extension)">
+      <LogicalName>Eddy.Notepad.Metadata.Packs.%(Filename)%(Extension)</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

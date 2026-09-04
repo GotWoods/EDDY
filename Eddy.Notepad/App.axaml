@@ -16,6 +16,7 @@
                     <SolidColorBrush x:Key="GutterForegroundBrush" Color="#66000000" />
                     <SolidColorBrush x:Key="PaneHeaderBackgroundBrush" Color="#08000000" />
                     <SolidColorBrush x:Key="PaneBorderBrush" Color="#1F000000" />
+                    <SolidColorBrush x:Key="WarningTextBrush" Color="#B8860B" />
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
                     <SolidColorBrush x:Key="ErrorRowBrush" Color="#40FF6B6B" />
@@ -26,6 +27,7 @@
                     <SolidColorBrush x:Key="GutterForegroundBrush" Color="#80FFFFFF" />
                     <SolidColorBrush x:Key="PaneHeaderBackgroundBrush" Color="#14FFFFFF" />
                     <SolidColorBrush x:Key="PaneBorderBrush" Color="#26FFFFFF" />
+                    <SolidColorBrush x:Key="WarningTextBrush" Color="#DAA520" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
@@ -83,6 +85,10 @@
         </Style>
         <Style Selector="TextBlock.absent.mono">
             <Setter Property="FontStyle" Value="Italic" />
+        </Style>
+
+        <Style Selector="TextBlock.warningText">
+            <Setter Property="Foreground" Value="{DynamicResource WarningTextBrush}" />
         </Style>
 
         <Style Selector="TextBlock.gutter">

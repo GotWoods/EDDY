@@ -1,7 +1,10 @@
+using System.Collections.ObjectModel;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using Eddy.Notepad.ViewModels;
 
 namespace Eddy.Notepad.Views;
@@ -84,6 +87,44 @@ public partial class MainWindow : Window
     }
 
     private void Exit_Click(object? sender, RoutedEventArgs e) => Close();
+
+    private void LoadedMetadata_Click(object? sender, RoutedEventArgs e)
+    {
+        var packs = ViewModel?.LoadedPacks ?? new ObservableCollection<PackInfoViewModel>();
+
+        var list = new ListBox
+        {
+            ItemsSource = packs,
+            Background = Brushes.Transparent,
+            ItemTemplate = new FuncDataTemplate<PackInfoViewModel>((pack, _) => new StackPanel
+            {
+                Margin = new Thickness(0, 3),
+                Children =
+                {
+                    new TextBlock { Text = $"{pack.Name}", FontWeight = Avalonia.Media.FontWeight.SemiBold },
+                    new TextBlock
+                    {
+                        Text = $"{pack.Standard} {pack.Version} · {pack.Source}",
+                        Classes = { "subtitle" },
+                    },
+                },
+            }),
+        };
+
+        var content = packs.Count > 0
+            ? (Control)list
+            : new TextBlock { Text = "No metadata packs are loaded.", Margin = new Thickness(4) };
+
+        var dialog = new Window
+        {
+            Title = "Loaded Metadata",
+            Width = 420,
+            Height = 320,
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+            Content = new ScrollViewer { Content = content, Margin = new Thickness(16) },
+        };
+        dialog.ShowDialog(this);
+    }
 
     private void About_Click(object? sender, RoutedEventArgs e)
     {

@@ -11,7 +11,7 @@ namespace Eddy.Notepad.Services;
 /// summary wording).</summary>
 public sealed partial class DocumentLoader
 {
-    private static DocumentViewModel LoadEdifact(string normalized, string displayName, string? filePath)
+    private DocumentViewModel LoadEdifact(string normalized, string displayName, string? filePath)
     {
         var parsed = EdiFactDocument.Parse(normalized, new EdifactParseOptions { Lenient = true });
 
@@ -44,7 +44,7 @@ public sealed partial class DocumentLoader
     /// Interchange node (there is exactly one ServiceStringAdvice per document). Returns the
     /// line-number-to-node map and every Source span found, for BuildRawLines.
     /// </summary>
-    private static (Dictionary<int, DocumentNodeViewModel> LineToNode, List<(int LineNumber, string RawText)> Sources) BuildTree(
+    private (Dictionary<int, DocumentNodeViewModel> LineToNode, List<(int LineNumber, string RawText)> Sources) BuildTree(
         DocumentViewModel document,
         EdiFactDocument parsed,
         IReadOnlyDictionary<int, List<Error>> errorsByLine)
@@ -71,7 +71,7 @@ public sealed partial class DocumentLoader
                 interchangeNode = new DocumentNodeViewModel(
                     NodeKind.Interchange, "UNB", "UNB", InterchangeSubtitle(interchange.Header), unbLine, interchange.Header)
                 {
-                    Elements = SegmentElementReader.Read(interchange.Header, "UNB", ErrorsFor(errorsByLine, unbLine)),
+                    Elements = _reader.Read(interchange.Header, "UNB", ErrorsFor(errorsByLine, unbLine)),
                 };
             }
             else
@@ -123,7 +123,7 @@ public sealed partial class DocumentLoader
         return (lineToNode, sources);
     }
 
-    private static (int LineNumber, DocumentNodeViewModel Node) BuildGroup(
+    private (int LineNumber, DocumentNodeViewModel Node) BuildGroup(
         FunctionalGroup group,
         IReadOnlyDictionary<int, List<Error>> errorsByLine,
         Dictionary<int, DocumentNodeViewModel> lineToNode,
@@ -139,7 +139,7 @@ public sealed partial class DocumentLoader
             groupNode = new DocumentNodeViewModel(
                 NodeKind.FunctionalGroup, "UNG", "UNG", GroupSubtitle(group.Header), groupLine, group.Header)
             {
-                Elements = SegmentElementReader.Read(group.Header, "UNG", ErrorsFor(errorsByLine, groupLine)),
+                Elements = _reader.Read(group.Header, "UNG", ErrorsFor(errorsByLine, groupLine)),
             };
             if (groupLine is int gl)
                 lineToNode[gl] = groupNode;
@@ -183,7 +183,7 @@ public sealed partial class DocumentLoader
             var messageNode = new DocumentNodeViewModel(NodeKind.TransactionSet, code, title, subtitle, unhLine, message)
             {
                 Elements = message.Header is not null
-                    ? SegmentElementReader.Read(message.Header, "UNH", ErrorsFor(errorsByLine, unhLine))
+                    ? _reader.Read(message.Header, "UNH", ErrorsFor(errorsByLine, unhLine))
                     : Array.Empty<ElementViewModel>(),
             };
             if (unhLine is int hl)
@@ -215,7 +215,7 @@ public sealed partial class DocumentLoader
         return (groupLine ?? int.MaxValue, groupNode);
     }
 
-    private static DocumentNodeViewModel BuildSegmentNode(
+    private DocumentNodeViewModel BuildSegmentNode(
         EdifactSegment segment, int? lineNumber, IReadOnlyList<Error> errors, string subtitlePrefix = "")
     {
         if (segment is Unknown_Segment unknown)
@@ -243,7 +243,7 @@ public sealed partial class DocumentLoader
         var namePart = NamePartOf(segment.GetType().Name);
         var title = namePart.Length == 0 ? code : $"{code} {DisplayNames.SplitPascalCase(namePart)}";
 
-        var segmentElements = SegmentElementReader.Read(segment, code, errors);
+        var segmentElements = _reader.Read(segment, code, errors);
         var subtitle = subtitlePrefix + string.Join(" ", segmentElements.Where(e => e.HasValue).Select(e => e.Value).Take(3));
 
         return new DocumentNodeViewModel(NodeKind.Segment, code, title, subtitle, lineNumber, segment)

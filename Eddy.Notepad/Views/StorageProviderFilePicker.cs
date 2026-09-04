@@ -31,4 +31,21 @@ public sealed class StorageProviderFilePicker : IFilePicker
         var files = await _owner.StorageProvider.OpenFilePickerAsync(options);
         return files.Count > 0 ? files[0].Path.LocalPath : null;
     }
+
+    public async Task<string?> PickFileAsync(string title, string[] patterns)
+    {
+        var options = new FilePickerOpenOptions
+        {
+            Title = title,
+            AllowMultiple = false,
+            FileTypeFilter = new FilePickerFileType[]
+            {
+                new(title) { Patterns = patterns },
+                FilePickerFileTypes.All,
+            },
+        };
+
+        var files = await _owner.StorageProvider.OpenFilePickerAsync(options);
+        return files.Count > 0 ? files[0].Path.LocalPath : null;
+    }
 }

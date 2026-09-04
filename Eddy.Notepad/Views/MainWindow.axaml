@@ -58,6 +58,8 @@
                 <MenuItem Header="_Open…" InputGesture="Ctrl+O" Command="{Binding OpenFileCommand}" />
                 <MenuItem x:Name="OpenSampleMenuItem" Header="Open _Sample" />
                 <Separator />
+                <MenuItem Header="Load _Metadata Pack…" Command="{Binding LoadMetadataPackCommand}" />
+                <Separator />
                 <MenuItem Header="_Close" InputGesture="Ctrl+W" Command="{Binding CloseDocumentCommand}" CommandParameter="{Binding ActiveDocument}" />
                 <Separator />
                 <MenuItem Header="E_xit" Click="Exit_Click" />
@@ -67,6 +69,7 @@
                 <MenuItem Header="_Collapse All" Click="CollapseAll_Click" />
             </MenuItem>
             <MenuItem Header="_Help">
+                <MenuItem Header="_Loaded Metadata" Click="LoadedMetadata_Click" />
                 <MenuItem Header="_About" Click="About_Click" />
             </MenuItem>
         </Menu>
@@ -165,11 +168,19 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" SharedSizeGroup="ElemRef" />
                                 <ColumnDefinition Width="Auto" SharedSizeGroup="ElemName" MinWidth="140" />
-                                <ColumnDefinition Width="*" SharedSizeGroup="ElemValue" />
+                                <ColumnDefinition Width="2*" SharedSizeGroup="ElemValue" />
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="ElemDE" MinWidth="48" />
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="ElemType" MinWidth="72" />
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="ElemReq" MinWidth="36" />
+                                <ColumnDefinition Width="1.5*" SharedSizeGroup="ElemMeaning" MinWidth="110" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="Ref" FontWeight="SemiBold" FontSize="12" MinWidth="60" />
                             <TextBlock Grid.Column="1" Text="Name" FontWeight="SemiBold" FontSize="12" Margin="10,0,0,0" />
                             <TextBlock Grid.Column="2" Text="Value" FontWeight="SemiBold" FontSize="12" Margin="10,0,0,0" />
+                            <TextBlock Grid.Column="3" Text="DE" FontWeight="SemiBold" FontSize="12" Margin="10,0,0,0" />
+                            <TextBlock Grid.Column="4" Text="Type" FontWeight="SemiBold" FontSize="12" Margin="10,0,0,0" />
+                            <TextBlock Grid.Column="5" Text="Req" FontWeight="SemiBold" FontSize="12" Margin="10,0,0,0" />
+                            <TextBlock Grid.Column="6" Text="Meaning" FontWeight="SemiBold" FontSize="12" Margin="10,0,0,0" />
                         </Grid>
                     </Border>
 
@@ -182,12 +193,21 @@
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" SharedSizeGroup="ElemRef" />
                                                 <ColumnDefinition Width="Auto" SharedSizeGroup="ElemName" MinWidth="140" />
-                                                <ColumnDefinition Width="*" SharedSizeGroup="ElemValue" />
+                                                <ColumnDefinition Width="2*" SharedSizeGroup="ElemValue" />
+                                                <ColumnDefinition Width="Auto" SharedSizeGroup="ElemDE" MinWidth="48" />
+                                                <ColumnDefinition Width="Auto" SharedSizeGroup="ElemType" MinWidth="72" />
+                                                <ColumnDefinition Width="Auto" SharedSizeGroup="ElemReq" MinWidth="36" />
+                                                <ColumnDefinition Width="1.5*" SharedSizeGroup="ElemMeaning" MinWidth="110" />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Grid.Column="0" Classes="mono" Text="{Binding Reference}" MinWidth="60" />
                                             <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="10,0,0,0" TextTrimming="CharacterEllipsis" />
                                             <TextBlock Grid.Column="2" Classes="mono" Classes.absent="{Binding !HasValue}"
                                                        Text="{Binding Value}" Margin="10,0,8,0" TextTrimming="CharacterEllipsis" />
+                                            <TextBlock Grid.Column="3" Classes="mono" Classes.absent="{Binding !HasDataElementNumber}" Text="{Binding DataElementNumber}" Margin="10,0,0,0" />
+                                            <TextBlock Grid.Column="4" Classes="mono subtitle" Text="{Binding DataTypeLabel}" Margin="10,0,0,0" TextTrimming="CharacterEllipsis" />
+                                            <TextBlock Grid.Column="5" Classes="mono subtitle" Text="{Binding Requirement}" Margin="10,0,0,0" />
+                                            <TextBlock Grid.Column="6" Classes.absent="{Binding MeaningIsDimmed}" Classes.warningText="{Binding IsUnrecognizedCode}"
+                                                       Text="{Binding Meaning}" Margin="10,0,8,0" TextTrimming="CharacterEllipsis" />
                                         </Grid>
 
                                         <ItemsControl ItemsSource="{Binding Components}" IsVisible="{Binding IsComposite}" Margin="24,0,0,0">
@@ -197,12 +217,21 @@
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="Auto" SharedSizeGroup="ElemRef" />
                                                             <ColumnDefinition Width="Auto" SharedSizeGroup="ElemName" MinWidth="116" />
-                                                            <ColumnDefinition Width="*" SharedSizeGroup="ElemValue" />
+                                                            <ColumnDefinition Width="2*" SharedSizeGroup="ElemValue" />
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="ElemDE" MinWidth="48" />
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="ElemType" MinWidth="72" />
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="ElemReq" MinWidth="36" />
+                                                            <ColumnDefinition Width="1.5*" SharedSizeGroup="ElemMeaning" MinWidth="110" />
                                                         </Grid.ColumnDefinitions>
                                                         <TextBlock Grid.Column="0" Classes="mono" Text="{Binding Reference}" Opacity="0.8" MinWidth="60" />
                                                         <TextBlock Grid.Column="1" Text="{Binding Name}" Opacity="0.8" Margin="10,0,0,0" TextTrimming="CharacterEllipsis" />
                                                         <TextBlock Grid.Column="2" Classes="mono" Classes.absent="{Binding !HasValue}"
                                                                    Text="{Binding Value}" Margin="10,0,8,0" TextTrimming="CharacterEllipsis" />
+                                                        <TextBlock Grid.Column="3" Classes="mono" Classes.absent="{Binding !HasDataElementNumber}" Text="{Binding DataElementNumber}" Margin="10,0,0,0" />
+                                                        <TextBlock Grid.Column="4" Classes="mono subtitle" Text="{Binding DataTypeLabel}" Margin="10,0,0,0" TextTrimming="CharacterEllipsis" />
+                                                        <TextBlock Grid.Column="5" Classes="mono subtitle" Text="{Binding Requirement}" Margin="10,0,0,0" />
+                                                        <TextBlock Grid.Column="6" Classes.absent="{Binding MeaningIsDimmed}" Classes.warningText="{Binding IsUnrecognizedCode}"
+                                                                   Text="{Binding Meaning}" Margin="10,0,8,0" TextTrimming="CharacterEllipsis" />
                                                     </Grid>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>

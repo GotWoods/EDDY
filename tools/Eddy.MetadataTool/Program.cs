@@ -266,15 +266,31 @@ static int RunMerge(Args args)
 
 static int RunDerive(Args args)
 {
-    _ = args.Require("standard");
-    _ = args.Require("version");
-    _ = args.Require("out");
+    var standard = args.Require("standard");
+    var version = args.Require("version");
+    var outPath = args.Require("out");
 
-    // TODO: once Eddy.Core.Metadata.DerivedSegmentMetadata is implemented, wire this command to
-    // load every model type for the given standard/version, call DerivedSegmentMetadata.Describe
-    // on each, and write the result as a pack so it can be inspected or hand-edited.
-    Console.Error.WriteLine("derive is implemented once the Eddy.Core metadata layer lands");
-    return 2;
+    MetadataPackModel pack;
+    try
+    {
+        pack = PackDeriver.Derive(standard, version);
+    }
+    catch (ArgumentException ex)
+    {
+        Console.Error.WriteLine($"error: {ex.Message}");
+        return 1;
+    }
+    catch (InvalidOperationException ex)
+    {
+        Console.Error.WriteLine($"error: {ex.Message}");
+        return 1;
+    }
+
+    PackJson.Save(pack, outPath);
+    Console.WriteLine(
+        $"Wrote {outPath}: {pack.Segments.Count} segments, {pack.Composites.Count} composites, " +
+        $"{pack.DataElements.Count} data elements derived from the Eddy model types");
+    return 0;
 }
 
 static int RunValidate(Args args)

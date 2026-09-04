@@ -1,4 +1,5 @@
 using System.Reflection;
+using Eddy.Core.Metadata;
 using Eddy.Core.Validation;
 using Eddy.Notepad.ViewModels;
 using SegmentAttribute = Eddy.Core.Attributes.Segment;
@@ -17,6 +18,21 @@ namespace Eddy.Notepad.Services;
 /// </summary>
 public sealed partial class DocumentLoader : IDocumentLoader
 {
+    private readonly MetadataCatalog _catalog;
+    private readonly SegmentElementReader _reader;
+
+    /// <summary>Uses <see cref="MetadataCatalog.Default"/>, the process-wide catalog the host application
+    /// populates at startup (see Services/MetadataPacks.cs).</summary>
+    public DocumentLoader() : this(MetadataCatalog.Default)
+    {
+    }
+
+    public DocumentLoader(MetadataCatalog catalog)
+    {
+        _catalog = catalog ?? throw new ArgumentNullException(nameof(catalog));
+        _reader = new SegmentElementReader(_catalog);
+    }
+
     public DocumentViewModel Load(string text, string displayName, string? filePath)
     {
         try
@@ -35,7 +51,7 @@ public sealed partial class DocumentLoader : IDocumentLoader
         }
     }
 
-    private static DocumentViewModel LoadCore(string text, string displayName, string? filePath)
+    private DocumentViewModel LoadCore(string text, string displayName, string? filePath)
     {
         var normalized = Normalize(text);
         var kind = DetectFormat(normalized);
@@ -48,7 +64,7 @@ public sealed partial class DocumentLoader : IDocumentLoader
         };
     }
 
-    private static DocumentViewModel LoadUnsupported(string normalized, string displayName, string? filePath, string kind)
+    private DocumentViewModel LoadUnsupported(string normalized, string displayName, string? filePath, string kind)
     {
         var document = new DocumentViewModel(displayName, filePath, kind, normalized);
         document.RawLines = SplitRawLines(normalized, '\n');

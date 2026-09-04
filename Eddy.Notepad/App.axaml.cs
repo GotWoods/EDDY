@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Eddy.Core.Metadata;
 using Eddy.Notepad.Services;
 using Eddy.Notepad.ViewModels;
 using Eddy.Notepad.Views;
@@ -19,6 +20,10 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+            // Embedded packs, then EDDY_METADATA_PACKS, before anything asks MetadataCatalog.Default to
+            // describe a segment (see Services/MetadataPacks.cs and docs/metadata-packs.md).
+            var (loadedPacks, _) = MetadataPacks.LoadDefaults(MetadataCatalog.Default);
+
             var window = new MainWindow();
 
             // Set with EDDY_NOTEPAD_DESIGN_DATA=1 to run against hand-made data instead of the
@@ -26,7 +31,9 @@ public partial class App : Application
             var useDesignData = Environment.GetEnvironmentVariable("EDDY_NOTEPAD_DESIGN_DATA") == "1";
 
             IDocumentLoader loader = useDesignData ? new DesignDocumentLoader() : new DocumentLoader();
-            var viewModel = new MainWindowViewModel(loader, new StorageProviderFilePicker(window));
+            var viewModel = new MainWindowViewModel(loader, new StorageProviderFilePicker(window), MetadataCatalog.Default);
+            foreach (var pack in loadedPacks)
+                viewModel.RegisterLoadedPack(new PackInfoViewModel(pack.Name, pack.Standard, pack.Version, pack.Source));
             window.DataContext = viewModel;
             desktop.MainWindow = window;
 

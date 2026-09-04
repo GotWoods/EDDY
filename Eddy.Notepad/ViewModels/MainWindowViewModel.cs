@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Eddy.Core.Metadata;
 using Eddy.Notepad.Services;
 
 namespace Eddy.Notepad.ViewModels;
@@ -8,23 +9,35 @@ namespace Eddy.Notepad.ViewModels;
 /// <summary>Top level state: the open documents, the active one, and the file commands.</summary>
 public sealed partial class MainWindowViewModel : ObservableObject
 {
+    private const string IdleStatusText = "Open an EDI file, or pick a sample from the File menu.";
+
     private readonly IDocumentLoader _loader;
     private readonly IFilePicker _filePicker;
+    private readonly MetadataCatalog _catalog;
 
-    public MainWindowViewModel(IDocumentLoader loader, IFilePicker filePicker)
+    /// <summary><paramref name="catalog"/> defaults to <see cref="MetadataCatalog.Default"/>, the same
+    /// catalog a parameterless <see cref="DocumentLoader"/> describes segments with; pass an explicit one
+    /// (paired with a <see cref="DocumentLoader"/> built from the same catalog) to keep it isolated, e.g. in tests.</summary>
+    public MainWindowViewModel(IDocumentLoader loader, IFilePicker filePicker, MetadataCatalog? catalog = null)
     {
         _loader = loader;
         _filePicker = filePicker;
+        _catalog = catalog ?? MetadataCatalog.Default;
         SampleNames = SampleDocuments.GetNames();
+        _statusText = WithPackSuffix(IdleStatusText);
     }
 
     public ObservableCollection<DocumentViewModel> Documents { get; } = new();
+
+    /// <summary>Metadata packs loaded into the catalog, for Help &gt; Loaded Metadata. Populated with the
+    /// embedded/environment packs by the host (App.axaml.cs) and appended to by <see cref="LoadMetadataPackAsync"/>.</summary>
+    public ObservableCollection<PackInfoViewModel> LoadedPacks { get; } = new();
 
     [ObservableProperty]
     private DocumentViewModel? _activeDocument;
 
     [ObservableProperty]
-    private string _statusText = "Open an EDI file, or pick a sample from the File menu.";
+    private string _statusText;
 
     /// <summary>Names of the bundled sample files, for the File > Open Sample menu.</summary>
     public IReadOnlyList<string> SampleNames { get; }
@@ -69,8 +82,8 @@ public sealed partial class MainWindowViewModel : ObservableObject
         }
 
         StatusText = ActiveDocument is null
-            ? "Open an EDI file, or pick a sample from the File menu."
-            : BuildStatusText(ActiveDocument);
+            ? WithPackSuffix(IdleStatusText)
+            : WithPackSuffix(BuildStatusText(ActiveDocument));
     }
 
     /// <summary>Reads a file from disk and opens it as a new tab.</summary>
@@ -80,7 +93,7 @@ public sealed partial class MainWindowViewModel : ObservableObject
         if (existing is not null)
         {
             ActiveDocument = existing;
-            StatusText = BuildStatusText(existing);
+            StatusText = WithPackSuffix(BuildStatusText(existing));
             return;
         }
 
@@ -106,7 +119,66 @@ public sealed partial class MainWindowViewModel : ObservableObject
         OnPropertyChanged(nameof(HasDocuments));
         ActiveDocument = document;
         document.SelectedNode = InitialSelection(document);
-        StatusText = BuildStatusText(document);
+        StatusText = WithPackSuffix(BuildStatusText(document));
+    }
+
+    /// <summary>Shows the file picker and loads the chosen metadata pack into the catalog, then re-describes
+    /// every open document so the element grid picks up its data (File &gt; Load Metadata Pack…).</summary>
+    [RelayCommand]
+    private async Task LoadMetadataPackAsync()
+    {
+        var path = await _filePicker.PickFileAsync("Load Metadata Pack", new[] { "*.json" });
+        if (path is null)
+            return;
+
+        MetadataPack pack;
+        try
+        {
+            pack = MetadataPack.Load(path);
+        }
+        catch (Exception ex)
+        {
+            StatusText = $"Could not load metadata pack '{Path.GetFileName(path)}': {ex.Message}";
+            return;
+        }
+
+        _catalog.AddPack(pack);
+        LoadedPacks.Add(new PackInfoViewModel(pack.Name, pack.Standard, pack.Version, Path.GetFileName(path)));
+
+        ReloadOpenDocuments();
+        StatusText = WithPackSuffix($"Loaded metadata pack '{pack.Name}' ({pack.Standard} {pack.Version})");
+    }
+
+    /// <summary>Records a metadata pack the host already added to the catalog before this view model's
+    /// window was shown (the embedded and EDDY_METADATA_PACKS packs; see App.axaml.cs), so it shows up in
+    /// Help &gt; Loaded Metadata and the status bar's pack count.</summary>
+    public void RegisterLoadedPack(PackInfoViewModel pack)
+    {
+        LoadedPacks.Add(pack);
+        StatusText = ActiveDocument is null ? WithPackSuffix(IdleStatusText) : WithPackSuffix(BuildStatusText(ActiveDocument));
+    }
+
+    /// <summary>Appends "· N metadata packs" when any are loaded, matching the "· N errors" style already used here.</summary>
+    private string WithPackSuffix(string status) =>
+        LoadedPacks.Count > 0 ? $"{status} · {LoadedPacks.Count} metadata pack{(LoadedPacks.Count == 1 ? "" : "s")}" : status;
+
+    /// <summary>Reparses every open document's text through the loader, so freshly loaded pack data shows
+    /// up in the element grid, preserving which tab is active.</summary>
+    private void ReloadOpenDocuments()
+    {
+        var active = ActiveDocument;
+        for (var i = 0; i < Documents.Count; i++)
+        {
+            var document = Documents[i];
+            var reloaded = _loader.Load(document.RawText, document.DisplayName, document.FilePath);
+            reloaded.SelectedNode = InitialSelection(reloaded);
+            Documents[i] = reloaded;
+
+            if (ReferenceEquals(document, active))
+                active = reloaded;
+        }
+
+        ActiveDocument = active;
     }
 
     /// <summary>The first node with a problem, else the first transaction set, else the root: something useful is always shown.</summary>
