@@ -22,7 +22,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '6.0.x' # Specify the .NET version
+        dotnet-version: '10.0.x' # Specify the .NET version
 
     - name: Read and bump version
       id: version

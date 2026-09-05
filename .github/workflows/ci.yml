@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: dotnet restore EDDY.sln
+
+      # Debug builds reference the sibling projects (Release uses the published packages the
+      # publish workflows repoint), so this compiles every project against the sources in the PR.
+      - name: Build
+        run: dotnet build EDDY.sln --no-restore -c Debug
+
+      - name: Test
+        env:
+          AVALONIA_TELEMETRY_OPTOUT: "1"
+        run: |
+          set -e
+          for project in \
+            Eddy.Tests/Eddy.Tests.csproj \
+            Eddy.Tests.x12/Eddy.x12.Tests.csproj \
+            Eddy.X12.Tests.Passing/Eddy.X12.Tests.Passing.csproj \
+            Eddy.Edifact.Tests/Eddy.Edifact.Tests.csproj \
+            Eddy.x12.DomainModels.CommunicationsAndControls.Tests/Eddy.x12.DomainModels.CommunicationsAndControls.Tests.csproj \
+            tools/Eddy.MetadataTool.Tests/Eddy.MetadataTool.Tests.csproj \
+            Eddy.Notepad.Tests/Eddy.Notepad.Tests.csproj
+          do
+            dotnet test "$project" --no-build -c Debug --logger "trx;LogFileName=$(basename "$project" .csproj).trx" --results-directory TestResults
+          done
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults/*.trx

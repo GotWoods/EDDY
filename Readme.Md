@@ -22,6 +22,12 @@ Formats
 - RosettaNet: not supported
 - SWIFT: not supported
 
+Building
+- The libraries (Eddy.Core, Eddy.x12, Eddy.Edifact and the DomainModels packages) target .NET Standard 2.0 so they run on any modern .NET.
+- Tests, tools and Eddy.Notepad target .NET 10; global.json pins the SDK, so install the .NET 10 SDK and run `dotnet build EDDY.sln` then `dotnet test` on any test project.
+- Debug and local configurations reference the sibling projects; Release uses the published Eddy packages, which the publish workflows repoint before packing.
+- Every pull request runs .github/workflows/ci.yml: restore, Debug build of the solution, and all unit test projects.
+
 Parsing an x12Document
 ```
 var data = File.ReadAllText(fileName);

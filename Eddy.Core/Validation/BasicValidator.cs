@@ -142,7 +142,10 @@ public class BasicValidator<T>
     public void ConvertibleToInteger(Expression<Func<T, object>> expression)
     {
         var wrap = expression.Wrap(_instance, _segmentName);
-        if (!int.TryParse(wrap.GetPropertyValue(), NumberStyles.None, CultureInfo.InvariantCulture, out _))
+        var value = wrap.GetPropertyValue();
+        if (value == "") //Required() reports an absent value; an empty optional element is not a conversion error
+            return;
+        if (!int.TryParse(value, NumberStyles.None, CultureInfo.InvariantCulture, out _))
             Results.Errors.Add(Tag(new Error(ErrorCodes.ConvertibleToInteger, wrap.GetFormattedPropertyName()), wrap));
     }
 
