@@ -39,10 +39,14 @@ public class MapTests
 
 
         var expected = new UNB_InterchangeHeader();
+        expected.SyntaxIdentifier = new S001_SyntaxIdentifier();
         expected.SyntaxIdentifier.SyntaxIdentifier = "UNOC";
         expected.SyntaxIdentifier.SyntaxVersionNumber = "3";
+        expected.InterchangeSender = new S002_InterchangeSender();
         expected.InterchangeSender.SenderIdentification = "LY78";
+        expected.InterchangeRecipient = new S003_InterchangeRecipient();
         expected.InterchangeRecipient.RecipientIdentification= "16390913";
+        expected.DateTimeOfPreparation = new S004_DateTimeOfPreparation();
         expected.DateTimeOfPreparation.DateOfPreparation = "230127";
         expected.DateTimeOfPreparation.TimeOfPreparation = "0814";
         expected.InterchangeControlReference = "614720311";

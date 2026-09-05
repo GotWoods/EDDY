@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <AssemblyName>EddyNotepad</AssemblyName>
+    <RootNamespace>Eddy.Notepad</RootNamespace>
+    <Description>Eddy Notepad: an EDI viewer built on the Eddy parsing libraries.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**" />
+    <EmbeddedResource Include="Samples\*.edi" />
+    <!-- Embed the shipped metadata packs (see docs/metadata-packs.md), keeping the files themselves in
+         metadata/packs/ so Eddy.MetadataTool and other consumers still find them there. -->
+    <EmbeddedResource Include="..\metadata\packs\*.json" Link="Metadata\Packs\%(Filename)%(Extension)">
+      <LogicalName>Eddy.Notepad.Metadata.Packs.%(Filename)%(Extension)</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.3.20" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.20" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.20" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.20" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.3.20" Condition="'$(Configuration)' == 'Debug'" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Eddy.Core\Eddy.Core.csproj" />
+    <ProjectReference Include="..\Eddy.x12\Eddy.x12.csproj" />
+    <ProjectReference Include="..\Eddy.Edifact\Eddy.Edifact.csproj" />
+    <!-- 997/999 acknowledgment generation (Tools menu; see Services/DocumentEditor.cs and README.md). -->
+    <ProjectReference Include="..\Eddy.x12.DomainModels.CommunicationsAndControls\Eddy.x12.DomainModels.CommunicationsAndControls.csproj" />
+    <!-- Loop view for X12 transaction sets (View > Show Loops; see Services/LoopViewBuilder.cs and
+         README.md). Finance is deliberately not referenced here: the registry only knows about loaded
+         assemblies, and the loop view degrades gracefully (flat list, "no loop model" note) when no
+         domain model is loaded for a transaction set's code and version. -->
+    <ProjectReference Include="..\Eddy.x12.DomainModels.Transportation\Eddy.x12.DomainModels.Transportation.csproj" />
+  </ItemGroup>
+</Project>

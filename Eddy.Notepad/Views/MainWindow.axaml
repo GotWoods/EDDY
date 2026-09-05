@@ -1,0 +1,408 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:Eddy.Notepad.ViewModels"
+        xmlns:design="using:Eddy.Notepad.Views.Design"
+        xmlns:conv="using:Avalonia.Data.Converters"
+        xmlns:converters="using:Eddy.Notepad.Converters"
+        mc:Ignorable="d"
+        x:Class="Eddy.Notepad.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        d:DataContext="{x:Static design:DesignData.Instance}"
+        Title="Eddy Notepad"
+        Width="1280" Height="820" MinWidth="820" MinHeight="480"
+        DragDrop.AllowDrop="True">
+
+    <Window.KeyBindings>
+        <KeyBinding Gesture="Ctrl+O" Command="{Binding OpenFileCommand}" />
+        <KeyBinding Gesture="Ctrl+S" Command="{Binding SaveCommand}" />
+        <KeyBinding Gesture="Ctrl+Shift+S" Command="{Binding SaveAsCommand}" />
+        <KeyBinding Gesture="Ctrl+Z" Command="{Binding UndoCommand}" />
+        <KeyBinding Gesture="Ctrl+Y" Command="{Binding RedoCommand}" />
+        <KeyBinding Gesture="Ctrl+L" Command="{Binding ToggleShowLoopsCommand}" />
+        <KeyBinding Gesture="F3" Command="{Binding FindNextCommand}" />
+        <KeyBinding Gesture="Shift+F3" Command="{Binding FindPreviousCommand}" />
+        <!-- Escape closes the search bar when it has focus. When an element's in-place editor has focus
+             instead, its own KeyDown handler (Views/MainWindow.axaml.cs) marks Escape handled first (to
+             cancel the edit), so this never fires in that case. -->
+        <KeyBinding Gesture="Escape" Command="{Binding CloseSearchCommand}" />
+        <!-- Ctrl+W and Ctrl+F are handled in code-behind (OnKeyDown) instead of a direct command binding:
+             Ctrl+W so it can confirm before closing a dirty tab, Ctrl+F so it can focus the search box once
+             shown; see MainWindow.axaml.cs. -->
+    </Window.KeyBindings>
+
+    <Window.Styles>
+        <Style Selector="ListBox.tabStrip">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+        <Style Selector="ListBox.tabStrip ScrollViewer">
+            <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+        </Style>
+        <Style Selector="ListBox.tabStrip ListBoxItem">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0,0,1,0" />
+        </Style>
+        <Style Selector="Button.tabClose">
+            <Setter Property="Width" Value="18" />
+            <Setter Property="Height" Value="18" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="CornerRadius" Value="9" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>
+        <Style Selector="Button.tabClose:pointerover">
+            <Setter Property="Background" Value="{DynamicResource ErrorRowBrush}" />
+        </Style>
+        <Style Selector="TreeViewItem" x:DataType="vm:DocumentNodeViewModel">
+            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+        </Style>
+    </Window.Styles>
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto,180,Auto">
+
+        <!-- Menu bar -->
+        <Menu Grid.Row="0">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open…" InputGesture="Ctrl+O" Command="{Binding OpenFileCommand}" />
+                <MenuItem x:Name="OpenSampleMenuItem" Header="Open _Sample" />
+                <Separator />
+                <MenuItem Header="_Save" InputGesture="Ctrl+S" Command="{Binding SaveCommand}" />
+                <MenuItem Header="Save _As…" InputGesture="Ctrl+Shift+S" Command="{Binding SaveAsCommand}" />
+                <Separator />
+                <MenuItem Header="Load _Metadata Pack…" Command="{Binding LoadMetadataPackCommand}" />
+                <Separator />
+                <MenuItem Header="_Export">
+                    <MenuItem Header="_Text…" Command="{Binding ExportTextCommand}" />
+                    <MenuItem Header="_JSON…" Command="{Binding ExportJsonCommand}" />
+                    <MenuItem Header="_CSV…" Command="{Binding ExportCsvCommand}" />
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="_Close" InputGesture="Ctrl+W" Click="CloseActiveTab_Click" />
+                <Separator />
+                <MenuItem Header="E_xit" Click="Exit_Click" />
+            </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Undo" InputGesture="Ctrl+Z" Command="{Binding UndoCommand}" />
+                <MenuItem Header="_Redo" InputGesture="Ctrl+Y" Command="{Binding RedoCommand}" />
+                <Separator />
+                <MenuItem Header="_Find…" InputGesture="Ctrl+F" Click="Find_Click" />
+                <MenuItem Header="Find _Next" InputGesture="F3" Command="{Binding FindNextCommand}" />
+                <MenuItem Header="Find _Previous" InputGesture="Shift+F3" Command="{Binding FindPreviousCommand}" />
+                <Separator />
+                <MenuItem Header="_Delete Segment" InputGesture="Delete" Command="{Binding DeleteSegmentCommand}" />
+                <MenuItem Header="Insert Segment _After…" Click="InsertSegmentAfter_Click" />
+                <MenuItem Header="Insert Segment _Before…" Click="InsertSegmentBefore_Click" />
+                <Separator />
+                <MenuItem Header="_Recalculate Control Counts" Command="{Binding RecalculateControlCountsCommand}" />
+            </MenuItem>
+            <MenuItem Header="_View">
+                <MenuItem Header="_Expand All" Click="ExpandAll_Click" />
+                <MenuItem Header="_Collapse All" Click="CollapseAll_Click" />
+                <Separator />
+                <MenuItem Header="Show _Loops" InputGesture="Ctrl+L" ToggleType="CheckBox"
+                          IsChecked="{Binding ActiveDocument.ShowLoops, Mode=TwoWay}" />
+                <Separator />
+                <MenuItem Header="_Fix Control Counts Automatically" ToggleType="CheckBox"
+                          IsChecked="{Binding FixControlCountsAutomatically, Mode=TwoWay}" />
+            </MenuItem>
+            <MenuItem Header="_Tools">
+                <MenuItem Header="Generate _997" Command="{Binding GenerateFunctionalAcknowledgmentCommand}" />
+                <MenuItem Header="Generate _999" Command="{Binding GenerateImplementationAcknowledgmentCommand}" />
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_Loaded Metadata" Click="LoadedMetadata_Click" />
+                <MenuItem Header="_About" Click="About_Click" />
+            </MenuItem>
+        </Menu>
+
+        <!-- Tab strip -->
+        <ListBox Grid.Row="1"
+                 x:Name="DocumentTabStrip"
+                 Classes="tabStrip"
+                 BorderThickness="0,0,0,1"
+                 BorderBrush="{DynamicResource PaneBorderBrush}"
+                 ItemsSource="{Binding Documents}"
+                 SelectedItem="{Binding ActiveDocument, Mode=TwoWay}">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="vm:DocumentViewModel">
+                    <StackPanel Orientation="Horizontal" Spacing="6" Margin="10,6">
+                        <TextBlock Text="{Binding TabTitle}" VerticalAlignment="Center" />
+                        <Border Classes="errorCountBadge" VerticalAlignment="Center" IsVisible="{Binding !IsValid}">
+                            <TextBlock Text="{Binding ErrorCount}" />
+                        </Border>
+                        <Button Classes="tabClose" Content="✕" Click="CloseTab_Click"
+                                ToolTip.Tip="Close (Ctrl+W)" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!-- Main content: tree | elements + raw -->
+        <Grid Grid.Row="2" IsVisible="{Binding HasDocuments}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="320" MinWidth="180" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" MinWidth="320" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Left: tree -->
+            <Border Grid.Column="0" Classes="pane">
+                <DockPanel>
+                    <Border DockPanel.Dock="Top" Classes="paneHeader">
+                        <TextBlock Text="Tree" FontWeight="SemiBold" FontSize="12" />
+                    </Border>
+
+                    <!-- Search bar: Edit > Find / Ctrl+F (see MainWindow.axaml.cs, Find_Click). -->
+                    <Border DockPanel.Dock="Top" Padding="6" IsVisible="{Binding IsSearchVisible}"
+                            BorderThickness="0,0,0,1" BorderBrush="{DynamicResource PaneBorderBrush}">
+                        <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto">
+                            <TextBox Grid.Column="0" x:Name="SearchTextBox" Watermark="Find…"
+                                     Text="{Binding SearchQuery, Mode=TwoWay}" />
+                            <TextBlock Grid.Column="1" Classes="subtitle" Text="{Binding SearchStatusText}"
+                                       VerticalAlignment="Center" Margin="8,0" MinWidth="52" />
+                            <Button Grid.Column="2" Content="▲" Command="{Binding FindPreviousCommand}"
+                                    ToolTip.Tip="Previous match (Shift+F3)" />
+                            <Button Grid.Column="3" Content="▼" Command="{Binding FindNextCommand}"
+                                    ToolTip.Tip="Next match (F3)" />
+                            <Button Grid.Column="4" Content="✕" Classes="tabClose" Command="{Binding CloseSearchCommand}"
+                                    ToolTip.Tip="Close (Esc)" />
+                        </Grid>
+                    </Border>
+
+                    <TreeView x:Name="DocumentTree"
+                              ItemsSource="{Binding ActiveDocument.Nodes}"
+                              SelectedItem="{Binding ActiveDocument.SelectedNode, Mode=TwoWay}"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <TreeView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Delete Segment" Command="{Binding DeleteSegmentCommand}" />
+                                <MenuItem Header="Insert Segment After…" Click="InsertSegmentAfter_Click" />
+                                <MenuItem Header="Insert Segment Before…" Click="InsertSegmentBefore_Click" />
+                            </ContextMenu>
+                        </TreeView.ContextMenu>
+                        <TreeView.DataTemplates>
+                            <TreeDataTemplate DataType="vm:DocumentNodeViewModel" ItemsSource="{Binding VisibleChildren}">
+                                <Grid Margin="0,3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" Classes="codeBadge" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Code}" />
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="6,0,6,0" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" />
+                                        <TextBlock Text="{Binding Subtitle}" Classes="subtitle" TextTrimming="CharacterEllipsis"
+                                                   IsVisible="{Binding Subtitle, Converter={x:Static conv:StringConverters.IsNotNullOrEmpty}}" />
+                                    </StackPanel>
+                                    <Border Grid.Column="2" Classes="errorCountBadge" VerticalAlignment="Center"
+                                            IsVisible="{Binding HasErrors}">
+                                        <TextBlock Text="{Binding ErrorCount}" />
+                                    </Border>
+                                </Grid>
+                            </TreeDataTemplate>
+                        </TreeView.DataTemplates>
+                    </TreeView>
+                </DockPanel>
+            </Border>
+
+            <GridSplitter Grid.Column="1" Width="4" ResizeDirection="Columns" />
+
+            <!-- Right: elements grid (top) + raw segments (bottom) -->
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*" MinHeight="120" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="1*" MinHeight="100" />
+                </Grid.RowDefinitions>
+
+                <!-- Elements of selected node -->
+                <Grid Grid.Row="0" Grid.IsSharedSizeScope="True">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Classes="paneHeader">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="ElemRef" />
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="ElemName" MinWidth="140" />
+                                <ColumnDefinition Width="2*" SharedSizeGroup="ElemValue" />
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="ElemDE" MinWidth="48" />
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="ElemType" MinWidth="72" />
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="ElemReq" MinWidth="36" />
+                                <ColumnDefinition Width="1.5*" SharedSizeGroup="ElemMeaning" MinWidth="110" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Ref" FontWeight="SemiBold" FontSize="12" MinWidth="60" />
+                            <TextBlock Grid.Column="1" Text="Name" FontWeight="SemiBold" FontSize="12" Margin="10,0,0,0" />
+                            <TextBlock Grid.Column="2" Text="Value" FontWeight="SemiBold" FontSize="12" Margin="10,0,0,0" />
+                            <TextBlock Grid.Column="3" Text="DE" FontWeight="SemiBold" FontSize="12" Margin="10,0,0,0" />
+                            <TextBlock Grid.Column="4" Text="Type" FontWeight="SemiBold" FontSize="12" Margin="10,0,0,0" />
+                            <TextBlock Grid.Column="5" Text="Req" FontWeight="SemiBold" FontSize="12" Margin="10,0,0,0" />
+                            <TextBlock Grid.Column="6" Text="Meaning" FontWeight="SemiBold" FontSize="12" Margin="10,0,0,0" />
+                        </Grid>
+                    </Border>
+
+                    <ScrollViewer Grid.Row="1">
+                        <ItemsControl ItemsSource="{Binding ActiveDocument.SelectedElements}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="vm:ElementViewModel">
+                                    <StackPanel>
+                                        <Grid Classes.errorRow="{Binding HasError}" Margin="0,2">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" SharedSizeGroup="ElemRef" />
+                                                <ColumnDefinition Width="Auto" SharedSizeGroup="ElemName" MinWidth="140" />
+                                                <ColumnDefinition Width="2*" SharedSizeGroup="ElemValue" />
+                                                <ColumnDefinition Width="Auto" SharedSizeGroup="ElemDE" MinWidth="48" />
+                                                <ColumnDefinition Width="Auto" SharedSizeGroup="ElemType" MinWidth="72" />
+                                                <ColumnDefinition Width="Auto" SharedSizeGroup="ElemReq" MinWidth="36" />
+                                                <ColumnDefinition Width="1.5*" SharedSizeGroup="ElemMeaning" MinWidth="110" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Classes="mono" Text="{Binding Reference}" MinWidth="60" />
+                                            <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="10,0,0,0" TextTrimming="CharacterEllipsis" />
+                                            <Grid Grid.Column="2" Margin="10,0,8,0">
+                                                <TextBlock Classes="mono" Classes.absent="{Binding !HasValue}"
+                                                           Text="{Binding Value}" TextTrimming="CharacterEllipsis"
+                                                           IsVisible="{Binding !IsEditing}" Focusable="True"
+                                                           DoubleTapped="ElementValueText_DoubleTapped"
+                                                           KeyDown="ElementValueText_KeyDown" />
+                                                <TextBox Classes="mono" Text="{Binding EditText, Mode=TwoWay}"
+                                                         IsVisible="{Binding IsEditing}"
+                                                         KeyDown="ElementValueEditor_KeyDown"
+                                                         LostFocus="ElementValueEditor_LostFocus" />
+                                            </Grid>
+                                            <TextBlock Grid.Column="3" Classes="mono" Classes.absent="{Binding !HasDataElementNumber}" Text="{Binding DataElementNumber}" Margin="10,0,0,0" />
+                                            <TextBlock Grid.Column="4" Classes="mono subtitle" Text="{Binding DataTypeLabel}" Margin="10,0,0,0" TextTrimming="CharacterEllipsis" />
+                                            <TextBlock Grid.Column="5" Classes="mono subtitle" Text="{Binding Requirement}" Margin="10,0,0,0" />
+                                            <TextBlock Grid.Column="6" Classes.absent="{Binding MeaningIsDimmed}" Classes.warningText="{Binding IsUnrecognizedCode}"
+                                                       Text="{Binding Meaning}" Margin="10,0,8,0" TextTrimming="CharacterEllipsis" />
+                                        </Grid>
+
+                                        <ItemsControl ItemsSource="{Binding Components}" IsVisible="{Binding IsComposite}" Margin="24,0,0,0">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate DataType="vm:ElementViewModel">
+                                                    <Grid Classes.errorRow="{Binding HasError}" Margin="0,1">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="ElemRef" />
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="ElemName" MinWidth="116" />
+                                                            <ColumnDefinition Width="2*" SharedSizeGroup="ElemValue" />
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="ElemDE" MinWidth="48" />
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="ElemType" MinWidth="72" />
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="ElemReq" MinWidth="36" />
+                                                            <ColumnDefinition Width="1.5*" SharedSizeGroup="ElemMeaning" MinWidth="110" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Grid.Column="0" Classes="mono" Text="{Binding Reference}" Opacity="0.8" MinWidth="60" />
+                                                        <TextBlock Grid.Column="1" Text="{Binding Name}" Opacity="0.8" Margin="10,0,0,0" TextTrimming="CharacterEllipsis" />
+                                                        <Grid Grid.Column="2" Margin="10,0,8,0">
+                                                            <TextBlock Classes="mono" Classes.absent="{Binding !HasValue}"
+                                                                       Text="{Binding Value}" TextTrimming="CharacterEllipsis"
+                                                                       IsVisible="{Binding !IsEditing}" Focusable="True"
+                                                                       DoubleTapped="ElementValueText_DoubleTapped"
+                                                                       KeyDown="ElementValueText_KeyDown" />
+                                                            <TextBox Classes="mono" Text="{Binding EditText, Mode=TwoWay}"
+                                                                     IsVisible="{Binding IsEditing}"
+                                                                     KeyDown="ElementValueEditor_KeyDown"
+                                                                     LostFocus="ElementValueEditor_LostFocus" />
+                                                        </Grid>
+                                                        <TextBlock Grid.Column="3" Classes="mono" Classes.absent="{Binding !HasDataElementNumber}" Text="{Binding DataElementNumber}" Margin="10,0,0,0" />
+                                                        <TextBlock Grid.Column="4" Classes="mono subtitle" Text="{Binding DataTypeLabel}" Margin="10,0,0,0" TextTrimming="CharacterEllipsis" />
+                                                        <TextBlock Grid.Column="5" Classes="mono subtitle" Text="{Binding Requirement}" Margin="10,0,0,0" />
+                                                        <TextBlock Grid.Column="6" Classes.absent="{Binding MeaningIsDimmed}" Classes.warningText="{Binding IsUnrecognizedCode}"
+                                                                   Text="{Binding Meaning}" Margin="10,0,8,0" TextTrimming="CharacterEllipsis" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+
+                <GridSplitter Grid.Row="1" Height="4" ResizeDirection="Rows" />
+
+                <!-- Raw segments -->
+                <DockPanel Grid.Row="2">
+                    <Border DockPanel.Dock="Top" Classes="paneHeader">
+                        <TextBlock Text="Raw segments" FontWeight="SemiBold" FontSize="12" />
+                    </Border>
+                    <ListBox ItemsSource="{Binding ActiveDocument.RawLines}"
+                             SelectedItem="{Binding ActiveDocument.SelectedRawLine, Mode=TwoWay}">
+                        <ListBox.Styles>
+                            <Style Selector="ListBoxItem">
+                                <Setter Property="MinHeight" Value="0" />
+                                <Setter Property="Padding" Value="8,3" />
+                            </Style>
+                        </ListBox.Styles>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="vm:RawLineViewModel">
+                                <Grid Classes.errorRow="{Binding HasError}" Margin="0,1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="44" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Classes="gutter" Text="{Binding LineNumber}" Margin="0,0,10,0" />
+                                    <TextBlock Grid.Column="1" Classes="mono" Text="{Binding Text}" TextTrimming="CharacterEllipsis" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+            </Grid>
+        </Grid>
+
+        <!-- Empty state -->
+        <StackPanel Grid.Row="2" IsVisible="{Binding !HasDocuments}"
+                    HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="6">
+            <TextBlock Text="No document open" FontSize="16" HorizontalAlignment="Center" />
+            <TextBlock Text="Open an EDI file, or pick a sample from the File menu." Classes="subtitle" HorizontalAlignment="Center" />
+        </StackPanel>
+
+        <GridSplitter Grid.Row="3" Height="4" ResizeDirection="Rows" />
+
+        <!-- Diagnostics -->
+        <DockPanel Grid.Row="4">
+            <Border DockPanel.Dock="Top" Classes="paneHeader">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBlock Text="Diagnostics" FontWeight="SemiBold" FontSize="12" />
+                    <TextBlock Classes="subtitle" Text="{Binding ActiveDocument.ErrorCount, StringFormat='{}{0} error(s)'}" />
+                    <TextBlock Classes="subtitle" Text="{Binding ActiveDocument.WarningCount, StringFormat='{}{0} warning(s)'}" />
+                </StackPanel>
+            </Border>
+            <ListBox x:Name="DiagnosticsList"
+                     ItemsSource="{Binding ActiveDocument.Diagnostics}"
+                     DoubleTapped="DiagnosticsList_DoubleTapped">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="vm:DiagnosticViewModel">
+                        <Grid ColumnDefinitions="20,70,60,*" Margin="0,1">
+                            <TextBlock Grid.Column="0" Text="{Binding Severity, Converter={x:Static converters:SeverityToGlyphConverter.Instance}}"
+                                       Foreground="{Binding Severity, Converter={x:Static converters:SeverityToBrushConverter.Instance}}"
+                                       HorizontalAlignment="Center" />
+                            <TextBlock Grid.Column="1" Text="{Binding Location}" Classes="mono subtitle" />
+                            <TextBlock Grid.Column="2" Text="{Binding SegmentCode}" Classes="mono subtitle" />
+                            <TextBlock Grid.Column="3" Text="{Binding Message}" TextTrimming="CharacterEllipsis" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+
+        <!-- Status bar -->
+        <Border Grid.Row="5" Classes="paneHeader">
+            <TextBlock Text="{Binding StatusText}" FontSize="12" TextTrimming="CharacterEllipsis" />
+        </Border>
+    </Grid>
+</Window>

@@ -16,4 +16,8 @@ Used with Eddy.X12 / Eddy.EdiFact projects</Description>
     <Configurations>Debug;Release;local</Configurations>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
+  </ItemGroup>
+
 </Project>

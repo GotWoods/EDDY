@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Eddy.Core.Attributes;
+using Eddy.Core.Codes;
 using Eddy.x12.Mapping.Cache;
 using Eddy.x12.Models;
 
@@ -43,9 +44,14 @@ public class Map
                 {
                     var underlyingType = Nullable.GetUnderlyingType(item.PropertyInfo.PropertyType) ?? item.PropertyInfo.PropertyType;
                     //composite here
-                    if (underlyingType.BaseType == typeof(EdiX12Component))
+                    if (typeof(EdiX12Component).IsAssignableFrom(underlyingType))
                     {
                         var safeValue = MapObject(underlyingType, propertyValue.Trim(), options.ComponentElementSeparator, options);
+                        item.PropertyInfo.SetValue(result, safeValue, null);
+                    }
+                    else if (IsCodeType(underlyingType))
+                    {
+                        var safeValue = Activator.CreateInstance(underlyingType, propertyValue);
                         item.PropertyInfo.SetValue(result, safeValue, null);
                     }
                     else
@@ -65,11 +71,36 @@ public class Map
 
     public static string SegmentToString<T>(T segment, MapOptions options) where T : EdiX12Segment
     {
+        return SegmentToString(segment, options, true);
+    }
+
+    /// <summary>Renders one segment back to text. Handles <see cref="Unknown_Segment"/> (SegmentId followed
+    /// by its raw Elements, joined by the separator, with trailing empty elements trimmed) as well as every
+    /// segment known to <see cref="MapCache"/>.</summary>
+    public static string SegmentToString<T>(T segment, MapOptions options, bool includeTerminator) where T : EdiX12Segment
+    {
+        if (segment is Unknown_Segment unknown)
+            return UnknownSegmentToString(unknown, options, includeTerminator);
+
         var segmentType = segment.GetType().GetCustomAttribute<Segment>();
         var components = ItemToString(segment, options.Separator, options);
         if (string.IsNullOrEmpty(components))
             return "";
-        return segmentType.Name + components + options.LineEnding;
+        var text = segmentType.Name + components;
+        return includeTerminator ? text + options.LineEnding : text;
+    }
+
+    private static string UnknownSegmentToString(Unknown_Segment segment, MapOptions options, bool includeTerminator)
+    {
+        var elements = new List<string>(segment.Elements ?? new List<string>());
+        while (elements.Count > 0 && string.IsNullOrEmpty(elements[elements.Count - 1]))
+            elements.RemoveAt(elements.Count - 1);
+
+        var text = segment.SegmentId;
+        if (elements.Count > 0)
+            text += options.Separator + string.Join(options.Separator, elements);
+
+        return includeTerminator ? text + options.LineEnding : text;
     }
 
     private static string ItemToString(EdiX12Segment element, string separator, MapOptions options)
@@ -83,7 +114,7 @@ public class Map
             var propertyValue = item.PropertyInfo.GetValue(element)?.ToString();
 
             var underlyingType = Nullable.GetUnderlyingType(item.PropertyInfo.PropertyType) ?? item.PropertyInfo.PropertyType;
-            if (underlyingType.BaseType == typeof(EdiX12Component))
+            if (typeof(EdiX12Component).IsAssignableFrom(underlyingType))
             {
                 var component = (EdiX12Component)item.PropertyInfo.GetValue(element);
                 if (component != null)
@@ -96,10 +127,16 @@ public class Map
                 data[position] = propertyValue;
         }
 
-        var components = string.Join(options.Separator, data);
-        while (components.EndsWith(options.Separator))
-            components = components.Substring(0, components.Length - 1);
+        var components = string.Join(separator, data);
+        while (components.EndsWith(separator))
+            components = components.Substring(0, components.Length - separator.Length);
         return components;
+    }
+
+    /// <summary>True for a closed <see cref="Code{TList}"/> type.</summary>
+    private static bool IsCodeType(Type type)
+    {
+        return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Code<>);
     }
 
 }

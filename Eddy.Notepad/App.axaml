@@ -1,0 +1,115 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Eddy.Notepad.App"
+             RequestedThemeVariant="Default">
+    <Application.Resources>
+        <ResourceDictionary>
+            <FontFamily x:Key="MonoFontFamily">Cascadia Mono, Consolas, DejaVu Sans Mono, Menlo, monospace</FontFamily>
+
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="ErrorRowBrush" Color="#33CC3333" />
+                    <SolidColorBrush x:Key="ErrorBadgeBackgroundBrush" Color="#CC3333" />
+                    <SolidColorBrush x:Key="ErrorBadgeForegroundBrush" Color="White" />
+                    <SolidColorBrush x:Key="CodeBadgeBackgroundBrush" Color="#12000000" />
+                    <SolidColorBrush x:Key="SubtitleForegroundBrush" Color="#8A000000" />
+                    <SolidColorBrush x:Key="GutterForegroundBrush" Color="#66000000" />
+                    <SolidColorBrush x:Key="PaneHeaderBackgroundBrush" Color="#08000000" />
+                    <SolidColorBrush x:Key="PaneBorderBrush" Color="#1F000000" />
+                    <SolidColorBrush x:Key="WarningTextBrush" Color="#B8860B" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="ErrorRowBrush" Color="#40FF6B6B" />
+                    <SolidColorBrush x:Key="ErrorBadgeBackgroundBrush" Color="#FF6B6B" />
+                    <SolidColorBrush x:Key="ErrorBadgeForegroundBrush" Color="Black" />
+                    <SolidColorBrush x:Key="CodeBadgeBackgroundBrush" Color="#1AFFFFFF" />
+                    <SolidColorBrush x:Key="SubtitleForegroundBrush" Color="#99FFFFFF" />
+                    <SolidColorBrush x:Key="GutterForegroundBrush" Color="#80FFFFFF" />
+                    <SolidColorBrush x:Key="PaneHeaderBackgroundBrush" Color="#14FFFFFF" />
+                    <SolidColorBrush x:Key="PaneBorderBrush" Color="#26FFFFFF" />
+                    <SolidColorBrush x:Key="WarningTextBrush" Color="#DAA520" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+
+    <Application.Styles>
+        <FluentTheme />
+
+        <Style Selector="TextBlock.mono">
+            <Setter Property="FontFamily" Value="{StaticResource MonoFontFamily}" />
+        </Style>
+        <Style Selector="TextBox.mono">
+            <Setter Property="FontFamily" Value="{StaticResource MonoFontFamily}" />
+        </Style>
+
+        <Style Selector="Border.codeBadge">
+            <Setter Property="Background" Value="{DynamicResource CodeBadgeBackgroundBrush}" />
+            <Setter Property="CornerRadius" Value="3" />
+            <Setter Property="Padding" Value="4,1" />
+            <Setter Property="MinWidth" Value="34" />
+        </Style>
+        <Style Selector="Border.codeBadge TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource MonoFontFamily}" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+
+        <Style Selector="Border.errorCountBadge">
+            <Setter Property="Background" Value="{DynamicResource ErrorBadgeBackgroundBrush}" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="5,0" />
+            <Setter Property="MinWidth" Value="16" />
+        </Style>
+        <Style Selector="Border.errorCountBadge TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource ErrorBadgeForegroundBrush}" />
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+
+        <Style Selector="TextBlock.subtitle">
+            <Setter Property="Foreground" Value="{DynamicResource SubtitleForegroundBrush}" />
+            <Setter Property="FontSize" Value="11" />
+        </Style>
+
+        <Style Selector="Grid.errorRow">
+            <Setter Property="Background" Value="{DynamicResource ErrorRowBrush}" />
+        </Style>
+        <Style Selector="Border.errorRow">
+            <Setter Property="Background" Value="{DynamicResource ErrorRowBrush}" />
+        </Style>
+
+        <Style Selector="TextBlock.absent">
+            <Setter Property="Opacity" Value="0.45" />
+        </Style>
+        <Style Selector="TextBlock.absent.mono">
+            <Setter Property="FontStyle" Value="Italic" />
+        </Style>
+
+        <Style Selector="TextBlock.warningText">
+            <Setter Property="Foreground" Value="{DynamicResource WarningTextBrush}" />
+        </Style>
+
+        <Style Selector="TextBlock.gutter">
+            <Setter Property="FontFamily" Value="{StaticResource MonoFontFamily}" />
+            <Setter Property="Foreground" Value="{DynamicResource GutterForegroundBrush}" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="TextAlignment" Value="Right" />
+        </Style>
+
+        <Style Selector="Border.paneHeader">
+            <Setter Property="Background" Value="{DynamicResource PaneHeaderBackgroundBrush}" />
+            <Setter Property="Padding" Value="8,4" />
+        </Style>
+
+        <Style Selector="Border.pane">
+            <Setter Property="BorderBrush" Value="{DynamicResource PaneBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+
+        <Style Selector="GridSplitter">
+            <Setter Property="Background" Value="{DynamicResource PaneBorderBrush}" />
+        </Style>
+    </Application.Styles>
+</Application>

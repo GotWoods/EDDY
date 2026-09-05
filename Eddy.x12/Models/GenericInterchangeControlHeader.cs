@@ -6,8 +6,11 @@ using Eddy.x12.Mapping;
 
 namespace Eddy.x12.Models;
 
-public class GenericInterchangeControlHeader
+public class GenericInterchangeControlHeader : ISourceTracked
 {
+    /// <summary>Where this segment came from in the source text, when the parser tracked it.</summary>
+    public SegmentSource Source { get; set; }
+
     public string AuthorizationInformationQualifier { get; set; }
 
     public string AuthorizationInformation { get; set; }
@@ -170,6 +173,15 @@ public class GenericInterchangeControlHeader
             resultAsString += ElementSeparator.ToString();
         return resultAsString;
 
+    }
+
+    /// <summary>Same fixed-width rendering as <see cref="ToString()"/> - the ISA header carries its own
+    /// separators/terminator (DataElementSeparator, ComponentDataElementSeparator, ElementSeparator) so
+    /// <paramref name="options"/> does not change the output. Provided so a viewer editing a document can
+    /// re-emit every segment, header included, through one uniform ToString(MapOptions) shape.</summary>
+    public string ToString(MapOptions options)
+    {
+        return ToString();
     }
 
     private string ToFixedLengthString(string input, int length, char paddingCharacter)

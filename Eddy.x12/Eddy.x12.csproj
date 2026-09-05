@@ -21,11 +21,21 @@
     <Folder Include="Models\Elements\" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(Configuration)' == 'Local'">
+  <!--
+    The Configuration comparison below used to read =='Local' (capital L), which never matched the
+    'local' configuration this project actually declares (or 'Debug', the default dotnet build/dotnet
+    test use), so every local/dev build silently fell through to the PackageReference below and built
+    against whatever Eddy.Core version happens to be in the NuGet cache, not this checkout's Eddy.Core
+    project. That stale package predates SegmentSource/ISourceTracked and the new Error/ValidationResult
+    fields this project now relies on. Only Release (what the publish workflow packs with -c Release,
+    after it repoints the Eddy.Core package version itself) should use the packaged reference; every other
+    configuration builds against the sibling Eddy.Core project directly.
+  -->
+  <ItemGroup Condition="'$(Configuration)' != 'Release'">
     <ProjectReference Include="..\Eddy.Core\Eddy.Core.csproj" />
   </ItemGroup>
-  
-  <ItemGroup Condition="'$(Configuration)' != 'Local'">
+
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
     <PackageReference Include="Eddy.Core" Version="0.0.8-beta" />
   </ItemGroup>
 

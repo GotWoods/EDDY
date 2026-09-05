@@ -19,7 +19,7 @@ FTX+AAI+++Message rejected due to incorrect syntax in segment 5'
 FTX+AAI+++Segment UNB is missing mandatory element S003'
 FTX+AAI+++Segment UNT does not match segment count'
 
-UNT+7+1'
+UNT+11+1'
 UNZ+1+987654'
 ";
     }
@@ -29,6 +29,9 @@ UNZ+1+987654'
     {
         var doc = EdiFactDocument.Parse(_sample);
         VerifyDocument(doc);
+        Assert.Equal("UNB+UNOA:1+123456789:14+987654321:14+230815:1200+987654++++++1",
+            doc.InterchangeControlHeader.Source.RawText);
+        Assert.Equal(1, doc.InterchangeControlHeader.Source.LineNumber); //no UNA - UNB is line 1
     }
 
     [Fact]
@@ -37,6 +40,9 @@ UNZ+1+987654'
         var withUna = "UNA:+.? '" + _sample;
         var doc = EdiFactDocument.Parse(withUna);
         VerifyDocument(doc);
+        Assert.NotNull(doc.ServiceStringAdvice);
+        Assert.Equal(1, doc.ServiceStringAdvice.Source.LineNumber);
+        Assert.Equal(2, doc.InterchangeControlHeader.Source.LineNumber); //UNA present - UNB is line 2
     }
 
     [Fact]
@@ -70,5 +76,21 @@ UNZ+1+987654'
         Assert.Single(doc.FunctionalGroups);
         Assert.Single(doc.FunctionalGroups[0].Messages);
         Assert.Equal(9, doc.FunctionalGroups[0].Messages[0].Segments.Count);
+
+        Assert.Single(doc.Interchanges);
+        var interchange = doc.Interchanges[0];
+        Assert.Same(doc.InterchangeControlHeader, interchange.Header);
+        Assert.NotNull(interchange.Trailer);
+        Assert.Equal("987654", interchange.Trailer.InterchangeControlReference);
+        Assert.Null(doc.FunctionalGroups[0].Header); //no UNG in the sample - implicit group
+
+        var message = doc.FunctionalGroups[0].Messages[0];
+        Assert.NotNull(message.Header);
+        Assert.Equal("APERAK", message.MessageType);
+        Assert.Equal("D96A", message.Version);
+        Assert.NotNull(message.Trailer);
+        Assert.Equal("1", message.Trailer.MessageReferenceNumber);
+
+        Assert.NotNull(interchange.Header.Source);
     }
 }
